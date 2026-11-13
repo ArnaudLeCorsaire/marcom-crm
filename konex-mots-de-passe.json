@@ -1,0 +1,19 @@
+{
+  "format": "konex-mots-de-passe",
+  "version": 1,
+  "note": "Mots de passe d'accès à Konex (espace administrateur et espace utilisateur). Aucun mot de passe n'est écrit ici : seule une empreinte PBKDF2-SHA-256 est enregistrée ; elle permet de vérifier un mot de passe, pas de le retrouver. Pour en changer : Konex › espace administrateur › Mots de passe.",
+  "admin": {
+    "algorithm": "PBKDF2-SHA-256",
+    "iterations": 600000,
+    "salt": "Z1mXHZ9HbK8dj1lmh8htsw==",
+    "hash": "RuTNDUUXKRivg9BEJZFBiZQh/IChF6Rk3OFF4MPnQ9w=",
+    "updated": "2026-11-13T15:22:44.178Z"
+  },
+  "utilisateur": {
+    "algorithm": "PBKDF2-SHA-256",
+    "iterations": 600000,
+    "salt": "v2xISNkrkdB0bDPW03RK+g==",
+    "hash": "77hT3QW3Hu9lhufFfx4zn8EBfgB74cfycSjiGy+WCp4=",
+    "updated": "2026-11-13T15:22:44.178Z"
+  }
+}

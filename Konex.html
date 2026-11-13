@@ -312,6 +312,8 @@ footer{text-align:center;font-size:12px;color:var(--muted);padding:0 16px 30px}
 .us-tmp code{font-size:20px;letter-spacing:.06em;background:var(--bg);padding:8px 14px;border-radius:10px;user-select:all}
 
 body.auth-local [data-view=users]{display:none!important}
+body.auth-json [data-view=users]{display:none!important}
+body.auth-json.std #btnMyPw{display:none!important}
 /* ---------- Petits écrans ---------- */
 @media (max-width:860px){
   .app{flex-direction:column}
@@ -9538,7 +9540,7 @@ function lkRender(keepErr){
   $('lock').hidden=false;
   const f=$('lkFields').querySelector(m==='login'&&last.login?'#lkPw':'input');if(f)setTimeout(()=>f.focus(),30);
 }
-const lkErr=k=>{$('lockErr').textContent=typeof k==='string'?t(k):k};
+const lkErr=k=>{$('lockErr').textContent=typeof k==='string'?(t(k)??k):k}; /* une clé de traduction, ou un message déjà rédigé */
 const lkVal=id=>{const e=$(id);return e?e.value:''};
 async function lkPickDir(){
   let dir;try{dir=await showDirectoryPicker({id:'marcom-share',mode:'readwrite'})}catch(_){return}
@@ -9863,18 +9865,22 @@ Object.assign(L.en,{bFrOnly:'The “Import and check” module is only available
 {const _sb=showBuilder;let warned=false;showBuilder=function(){if(lang==='en'&&!warned){warned=true;toast(t('bFrOnly'))}return _sb()}}
 
 /* =========================================================
-   MODE TEMPORAIRE — UN MOT DE PASSE PAR ESPACE (en attendant la mise en ligne)
-   AUTH_MODE='local' : l'espace utilisateur et l'espace administrateur ont chacun leur mot de passe,
-   propre à ce poste, comme dans les versions précédentes (les données existantes s'ouvrent avec leur mot de passe actuel).
-   Pour réactiver les comptes personnels (konex-utilisateurs.json, page Utilisateurs) : AUTH_MODE='accounts'.
+   MODE DE CONNEXION — une seule ligne à changer :
+   - 'json'     (actif) : un mot de passe pour l'espace utilisateur, un pour l'espace administrateur,
+                 vérifiés dans « konex-mots-de-passe.json » à la racine du dossier Konex (empreintes seulement, voir plus bas) ;
+   - 'local'    : ancien mode temporaire. Chaque poste choisit le mot de passe de chaque espace à la première ouverture,
+                 sans aucune vérification : n'importe qui peut ouvrir l'espace administrateur sur son poste ;
+   - 'accounts' : comptes personnels (konex-utilisateurs.json, page Utilisateurs), voir plus haut.
    ========================================================= */
-const AUTH_MODE='local';
+const AUTH_MODE='json';
+/* bases du coffre local de chaque espace (modes 'local' et 'json') */
 const LOCAL_DB={standard:'marcom-crm-standard',admin:'marcom-searching-tool'};
 async function hasVaultIn(name){
   try{return await new Promise(res=>{const r=indexedDB.open(name,1);r.onupgradeneeded=()=>r.result.createObjectStore('kv');
     r.onsuccess=()=>{const db=r.result;try{const q=db.transaction('kv').objectStore('kv').get('vault');q.onsuccess=()=>{db.close();res(!!q.result)};q.onerror=()=>{db.close();res(false)}}catch(_){db.close();res(false)}};
     r.onerror=()=>res(false)})}catch(_){return false}
 }
+/* ---------- mode 'local' : un mot de passe par espace, choisi sur chaque poste ---------- */
 if(AUTH_MODE==='local'){
   document.body.classList.add('auth-local');
   VIEWS.splice(VIEWS.indexOf('users'),1);
@@ -9953,8 +9959,295 @@ async function lkBootLocal(){
   try{if(sessionStorage.getItem('marcom-idle')){sessionStorage.removeItem('marcom-idle');$('lockSub').textContent=t('idleLocked')}}catch(_){}
 }
 
+/* =========================================================
+   MODE 'json' — DEUX MOTS DE PASSE COMMUNS, VÉRIFIÉS DANS « konex-mots-de-passe.json »
+   Le fichier est à la racine du dossier Konex, à côté de Konex.html. Pour « admin » et pour « utilisateur »,
+   il contient une empreinte du mot de passe, jamais le mot de passe lui-même :
+     PBKDF2-HMAC-SHA-256, 600 000 itérations, sel aléatoire de 16 octets propre à chaque mot de passe,
+     résultat de 32 octets ; sel et empreinte écrits en base64.
+   L'empreinte permet de vérifier un mot de passe saisi, pas de le retrouver.
+   - Une page ouverte depuis un fichier (file://) ne peut pas lire seule un fichier voisin, et la politique de sécurité
+     (CSP) bloque toute connexion : on choisit donc le dossier Konex une fois par poste (Edge, Chrome : le navigateur
+     s'en souvient), ou le fichier lui-même à chaque connexion (Firefox, Safari).
+   - Une fois vérifié, le mot de passe chiffre les données de ce poste, comme avant (coffre local, voir openVault).
+     Si elles avaient été chiffrées avec un autre mot de passe (ancien mode 'local', mot de passe changé depuis),
+     Konex demande une seule fois l'ancien pour les reprendre.
+   - Les administrateurs changent les mots de passe depuis le menu « Mots de passe » : Konex réécrit le fichier.
+     Si le dossier n'a pas encore de fichier, l'espace administrateur propose de le créer.
+   - Limite : sans serveur, tout se vérifie dans le navigateur. Qui peut modifier ce fichier peut y mettre ses propres
+     empreintes : seuls les administrateurs doivent avoir le droit d'écriture sur le dossier Konex (droits gérés par l'IT).
+   ========================================================= */
+const PW_FILE='konex-mots-de-passe.json',PF_FORMAT='konex-mots-de-passe',PF_ALGO='PBKDF2-SHA-256',PF_ITER=600000;
+const PF_KEY={standard:'utilisateur',admin:'admin'};   /* espace dans Konex → nom de l'entrée dans le fichier */
+const PF_NOTE="Mots de passe d'accès à Konex (espace administrateur et espace utilisateur). Aucun mot de passe n'est écrit ici : seule une empreinte PBKDF2-SHA-256 est enregistrée ; elle permet de vérifier un mot de passe, pas de le retrouver. Pour en changer : Konex › espace administrateur › Mots de passe.";
+Object.assign(L.fr,{
+  pfConnS:'Choisissez le dossier qui contient Konex et le fichier des mots de passe (konex-mots-de-passe.json). À faire une seule fois sur ce poste.',
+  pfNoApiNote:'Ce navigateur ne peut pas mémoriser le dossier : choisissez le fichier konex-mots-de-passe.json à chaque connexion. Microsoft Edge ou Google Chrome sont recommandés.',
+  pfPickFile:'Choisir le fichier konex-mots-de-passe.json',pfSrcFile:n=>`Fichier des mots de passe : ${n}`,
+  pfSubU:'Saisissez le mot de passe de l’espace utilisateur, communiqué par un administrateur.',pfSubA:'Saisissez le mot de passe de l’espace administrateur.',
+  pfForgot:'Mot de passe oublié ? Demandez-le à un administrateur.',
+  pfNoFile:'Ce dossier ne contient pas de fichier konex-mots-de-passe.json. Vérifiez le dossier choisi (« Changer ») ou demandez à un administrateur de créer le fichier.',
+  pfCreateT:'Créer le fichier des mots de passe',
+  pfCreateS:'Ce dossier ne contient pas de fichier konex-mots-de-passe.json. Si c’est bien le dossier Konex, créez-le en choisissant le mot de passe de chaque espace (seule leur empreinte sera enregistrée). Sinon, cliquez sur « Changer ».',
+  pfPwA:'Mot de passe administrateur',pfPwA2:'Confirmer le mot de passe administrateur',pfPwU:'Mot de passe utilisateur',pfPwU2:'Confirmer le mot de passe utilisateur',
+  pfCreate:'Créer le fichier et se connecter',pfExists:'Ce dossier contient déjà un fichier des mots de passe : connectez-vous.',
+  pfReadErr:'Le fichier des mots de passe n’a pas pu être lu. Vérifiez l’accès au dossier Konex (réseau de l’entreprise).',
+  pfBadFile:'konex-mots-de-passe.json est illisible ou n’est pas un fichier Konex.',
+  pfNoEntry:'Le mot de passe de cet espace manque dans konex-mots-de-passe.json ou y est mal écrit. Contactez un administrateur.',
+  pfCacheUsed:'Dossier Konex inaccessible : connexion avec la dernière copie connue du fichier des mots de passe.',
+  pfSame:'Le mot de passe utilisateur et le mot de passe administrateur doivent être différents.',
+  pfWriteErr:'Impossible d’écrire konex-mots-de-passe.json : il faut Microsoft Edge ou Google Chrome, le dossier Konex connecté et le droit de modifier ce dossier.',
+  pfMissing:'konex-mots-de-passe.json est introuvable dans le dossier Konex.',
+  pfChgT:'Mots de passe d’accès',pfChgS:'Le nouveau mot de passe remplace l’ancien dans konex-mots-de-passe.json (seule son empreinte y est enregistrée). Transmettez-le de vive voix ou par un canal sûr.',
+  pfWho:'Espace',pfCurA:'Mot de passe administrateur actuel',
+  pfDoneU:'Mot de passe de l’espace utilisateur changé. Sur chaque poste, Konex demandera une fois l’ancien pour reprendre les données.',
+  pfDoneA:'Mot de passe administrateur changé.'
+});
+Object.assign(L.en,{
+  pfConnS:'Choose the folder that contains Konex and the passwords file (konex-mots-de-passe.json). You only do this once on this computer.',
+  pfNoApiNote:'This browser cannot remember the folder: choose the konex-mots-de-passe.json file each time you sign in. Microsoft Edge or Google Chrome are recommended.',
+  pfPickFile:'Choose the konex-mots-de-passe.json file',pfSrcFile:n=>`Passwords file: ${n}`,
+  pfSubU:'Enter the user area password, given to you by an administrator.',pfSubA:'Enter the admin area password.',
+  pfForgot:'Forgot the password? Ask an administrator.',
+  pfNoFile:'This folder has no konex-mots-de-passe.json file. Check the chosen folder (“Change”) or ask an administrator to create the file.',
+  pfCreateT:'Create the passwords file',
+  pfCreateS:'This folder has no konex-mots-de-passe.json file. If it is the Konex folder, create it by choosing the password of each area (only their fingerprints are saved). Otherwise, click “Change”.',
+  pfPwA:'Admin password',pfPwA2:'Confirm the admin password',pfPwU:'User password',pfPwU2:'Confirm the user password',
+  pfCreate:'Create the file and sign in',pfExists:'This folder already has a passwords file: sign in.',
+  pfReadErr:'The passwords file could not be read. Check access to the Konex folder (company network).',
+  pfBadFile:'konex-mots-de-passe.json is unreadable or is not a Konex file.',
+  pfNoEntry:'The password of this area is missing from konex-mots-de-passe.json or is malformed. Contact an administrator.',
+  pfCacheUsed:'Konex folder unavailable: signed in with the last known copy of the passwords file.',
+  pfSame:'The user password and the admin password must be different.',
+  pfWriteErr:'konex-mots-de-passe.json could not be written: you need Microsoft Edge or Google Chrome, the Konex folder connected and the right to modify that folder.',
+  pfMissing:'konex-mots-de-passe.json cannot be found in the Konex folder.',
+  pfChgT:'Access passwords',pfChgS:'The new password replaces the old one in konex-mots-de-passe.json (only its fingerprint is saved there). Share it in person or through a secure channel.',
+  pfWho:'Area',pfCurA:'Current admin password',
+  pfDoneU:'User area password changed. On each computer, Konex will ask once for the old one to recover the data.',
+  pfDoneA:'Admin password changed.'
+});
+/* empreinte d'un mot de passe */
+async function pfHash(pw,salt,iter){
+  const b=await crypto.subtle.importKey('raw',te8(nfc(pw)),'PBKDF2',false,['deriveBits']);
+  return new Uint8Array(await crypto.subtle.deriveBits({name:'PBKDF2',salt,iterations:iter,hash:'SHA-256'},b,256));
+}
+/* nouvelle entrée du fichier (nouveau sel à chaque changement) */
+async function pfNewEntry(pw){
+  const salt=crypto.getRandomValues(new Uint8Array(16));
+  return{algorithm:PF_ALGO,iterations:PF_ITER,salt:toB64(salt),hash:toB64(await pfHash(pw,salt,PF_ITER)),updated:nowIso()};
+}
+/* entrée d'un espace, contrôlée ; null si elle manque ou est mal formée */
+function pfEntry(pf,role){
+  const e=pf&&pf[PF_KEY[role]];
+  if(!e||e.algorithm!==PF_ALGO||!Number.isInteger(e.iterations)||e.iterations<100000||e.iterations>10000000)return null;
+  const salt=fromB64(e.salt||''),hash=fromB64(e.hash||'');
+  return salt.length>=16&&hash.length===32?{iter:e.iterations,salt,hash}:null;
+}
+/* le mot de passe saisi est-il le bon ? (empreintes comparées à temps constant) */
+const pfCheck=async(pw,e)=>!!e&&sameBytes(await pfHash(pw,e.salt,e.iter),e.hash);
+/* renvoie le fichier lu (objet), null s'il n'existe pas, undefined si aucune source ; lève {k} en cas de problème */
+async function pfRead(ask){
+  let txt;
+  if(LK.dir){
+    if(!(await lkPerm(LK.dir,ask,'read')))throw{k:'lkPerm'};
+    let f;try{f=await shFile(LK.dir,PW_FILE)}catch(_){throw{k:'pfReadErr'}}
+    if(!f)return null;
+    try{txt=await f.text()}catch(_){throw{k:'pfReadErr'}}
+  }else if(LK.file){try{txt=await LK.file.text()}catch(_){throw{k:'pfReadErr'}}}
+  else return undefined;
+  let pf;try{pf=JSON.parse(txt)}catch(_){throw{k:'pfBadFile'}}
+  if(!pf||pf.format!==PF_FORMAT)throw{k:'pfBadFile'};
+  return pf;
+}
+/* écriture dans le dossier Konex (Edge, Chrome) ; la copie gardée sur le poste sert si le dossier devient inaccessible */
+async function pfWrite(pf){
+  const txt=JSON.stringify(pf,null,2)+'\n';
+  if(!LK.dir||!(await lkPerm(LK.dir,true,'readwrite')))throw{k:'pfWriteErr'};
+  try{await shWrite(LK.dir,PW_FILE,txt)}catch(_){throw{k:'pfWriteErr'}}
+  await AB.set('pfCache',txt);
+}
+async function pfPickDir(){
+  let dir;try{dir=await showDirectoryPicker({id:'marcom-share',mode:'read'})}catch(_){return}
+  LK.dir=dir;LK.file=null;LK.missing=false;LK.mode='';await AB.set('dir',dir);
+  try{LK.missing=(await pfRead(true))===null;lkRender()}catch(e){lkRender();lkErr(e.k||'pfReadErr')}
+}
+async function pfLogin(){
+  /* l'espace est fixé au clic : changer d'onglet pendant la vérification n'y change rien */
+  const role=LK.role,pw=lkVal('lkPw');
+  if(!pw)return;
+  if(Date.now()<LK.until){lkErr(t('lkWait')(Math.ceil((LK.until-Date.now())/1000)));return}
+  await lkBusy(true);
+  try{
+    let pf;LK.notice='';
+    try{pf=await pfRead(true);if(pf&&LK.dir)await AB.set('pfCache',JSON.stringify(pf))}
+    catch(e){
+      let c=null;if(LK.dir&&e.k!=='pfBadFile'){try{c=JSON.parse(await AB.get('pfCache')||'null')}catch(_){}}
+      if(!c||c.format!==PF_FORMAT){lkErr(e.k||'pfReadErr');return}
+      pf=c;LK.notice=t('pfCacheUsed');
+    }
+    if(pf===null){LK.missing=true;lkRender();return}
+    if(pf===undefined){lkRender();return}
+    const ent=pfEntry(pf,role);
+    if(!ent){lkErr('pfNoEntry');return}
+    if(!(await pfCheck(pw,ent))){
+      LK.fails++;if(LK.fails>=3)LK.until=Date.now()+Math.min(60,(LK.fails-2)*5)*1000;
+      lkErr('wrongPw');const f=$('lkPw');if(f)f.select();return;
+    }
+    LK.fails=0;
+    await pfEnter(pw,role);
+  }catch(ex){console.warn(ex);lkErr('noCrypto')}
+  finally{await lkBusy(false)}
+}
+/* premier fichier, quand le dossier n'en a pas encore : créé depuis l'espace administrateur */
+async function pfCreate(){
+  const a=lkVal('lkPwA'),u=lkVal('lkPwU');
+  if(!pwOk(a)||!pwOk(u)){lkErr(t('pwWeak')(PW_MIN));return}
+  if(a!==lkVal('lkPwA2')||u!==lkVal('lkPwU2')){lkErr('mismatch');return}
+  if(a===u){lkErr('pfSame');return}
+  await lkBusy(true);
+  try{
+    /* l'autorisation d'écrire est demandée tout de suite : le navigateur ne l'accepte que juste après un clic */
+    if(!LK.dir||!(await lkPerm(LK.dir,true,'readwrite'))){lkErr('pfWriteErr');return}
+    if(await pfRead(false)){LK.missing=false;lkRender();lkErr('pfExists');return}
+    await pfWrite({format:PF_FORMAT,version:1,note:PF_NOTE,admin:await pfNewEntry(a),utilisateur:await pfNewEntry(u)});
+    LK.missing=false;
+    await pfEnter(a,'admin');
+  }catch(ex){console.warn(ex);lkErr(ex&&ex.k?ex.k:'pfWriteErr')}
+  finally{await lkBusy(false)}
+}
+/* mot de passe vérifié : ouverture des données de cet espace sur ce poste */
+async function pfEnter(pw,role){
+  LK.role=role;const admin=role==='admin';
+  LSP=admin?'':'std:';KV_NAME=LOCAL_DB[role];BDB='marcom_unified_builder';KV_OWNED=true;
+  await KV.init();
+  HAS_VAULT=!!(await KV.get('vault'));
+  if(!HAS_VAULT&&admin){const old=getJSON('crm-vault-v1',null);if(old){await KV.set('vault',old);removeLS('crm-vault-v1');HAS_VAULT=true}}
+  /* données chiffrées avec un autre mot de passe (ancien mode 'local', ou mot de passe changé depuis) : on demande l'ancien */
+  if(HAS_VAULT){const v=await KV.get('vault');try{await dec(v,await deriveKey(pw,fromB64(v.salt)))}catch(_){LK.pw=pw;LK.mode='oldpw';lkRender();return}}
+  pfApply();
+  await openVault(pw);
+}
+/* applique l'espace : dans l'espace utilisateur, applyRole neutralise les fonctions d'administration (jusqu'au rechargement) */
+function pfApply(){
+  ME={id:'local',login:'',name:'',role:LK.role};
+  lsSet('konex-last',JSON.stringify({role:LK.role}));
+  applyRole(LK.role==='admin');setLS('crm-lang',lang);
+}
+async function pfOldPw(){
+  const old=lkVal('lkPw');if(!old)return;
+  await lkBusy(true);
+  try{
+    const v=await KV.get('vault');
+    try{await dec(v,await deriveKey(old,fromB64(v.salt)))}catch(_){lkErr('lkOldBad');$('lkPw').select();return}
+    pfApply();
+    await rekeyLocal(old,LK.pw);
+    const pw=LK.pw;LK.pw='';LK.mode='';await openVault(pw);
+  }catch(ex){console.warn(ex);lkErr('storageErr')}
+  finally{await lkBusy(false)}
+}
+async function lkBootJson(){
+  const l=lsGet('konex-lang');if(l==='en'||l==='fr')lang=l;
+  try{const last=JSON.parse(lsGet('konex-last')||'{}');LK.role=last.role==='admin'?'admin':'standard'}catch(_){}
+  if(LK.api){const d=await AB.get('dir');if(d&&typeof d.queryPermission==='function')LK.dir=d}
+  if(LK.dir&&await lkPerm(LK.dir,false,'read')){try{LK.missing=(await pfRead(false))===null}catch(_){}}
+  lkRender();
+  try{if(sessionStorage.getItem('marcom-idle')){sessionStorage.removeItem('marcom-idle');$('lockSub').textContent=t('idleLocked')}}catch(_){}
+}
+if(AUTH_MODE==='json'){
+  document.body.classList.add('auth-json');
+  VIEWS.splice(VIEWS.indexOf('users'),1);
+  LK.mode='';LK.busy=false;
+  Object.assign(L.fr,{navMyPw:'Mots de passe'});Object.assign(L.en,{navMyPw:'Passwords'});
+  lkMode=function(){
+    if(LK.mode==='oldpw')return 'oldpw';
+    if(!LK.dir&&!LK.file)return 'nosrc';
+    if(LK.missing)return LK.role==='admin'?'create':'nofile';
+    return 'login';
+  };
+  lkRender=function(keepErr){
+    const m=lkMode(),A=LK.role==='admin';
+    document.documentElement.lang=lang;
+    document.querySelectorAll('[data-lk-lang]').forEach(b=>b.classList.toggle('on',b.dataset.lkLang===lang));
+    const tabs=$('lkTabs');tabs.hidden=m==='oldpw';
+    tabs.innerHTML=[['standard','user','lkUser'],['admin','admin','lkAdmin']].map(([r,ic,k])=>`<button type="button" role="tab" aria-selected="${LK.role===r}" class="${LK.role===r?'on':''}" data-lk-role="${r}">${LK_ICON[ic]}<span>${t(k)}</span></button>`).join('');
+    $('lockCard').classList.toggle('adm',A);
+    const T={nosrc:['lkConnT','pfConnS'],login:[A?'lkTitleA':'lkTitleU',A?'pfSubA':'pfSubU'],nofile:['lkTitleU','pfNoFile'],create:['pfCreateT','pfCreateS'],oldpw:['lkOldT','lkOldS']}[m];
+    $('lockTitle').textContent=t(T[0]);$('lockSub').textContent=t(T[1]);
+    $('lkFields').innerHTML={nosrc:'',nofile:'',
+      login:lkIn('lkPw','password',t('lkPw'),'current-password'),
+      create:lkIn('lkPwA','password',t('pfPwA'),'new-password')+lkIn('lkPwA2','password',t('pfPwA2'),'new-password')+
+        lkIn('lkPwU','password',t('pfPwU'),'new-password')+lkIn('lkPwU2','password',t('pfPwU2'),'new-password')+`<div class="lk-rule">${esc(t('pwRules')(PW_MIN))}</div>`,
+      oldpw:lkIn('lkPw','password',t('lkOldPw'),'off')}[m];
+    /* delete dataset.l : lkBusy(false) ne doit pas remettre le libellé de l'écran précédent */
+    const btn=$('lockBtn');btn.hidden=m==='nofile';btn.disabled=false;delete btn.dataset.l;
+    btn.textContent=t({nosrc:LK.api?'lkConnBtn':'pfPickFile',login:'lkGo',create:'pfCreate',oldpw:'lkOldGo',nofile:'lkGo'}[m]);
+    if(!keepErr)$('lockErr').textContent='';
+    $('lkAlt').innerHTML=m==='nosrc'&&!LK.api?`<p class="lk-note">${esc(t('pfNoApiNote'))}</p>`:
+      m==='login'?`<p class="lk-note">${esc(t('pfForgot'))}</p>`:
+      m==='oldpw'?`<button type="button" class="lock-reset" data-lk="pffresh">${esc(t('lkFresh'))}</button>`:'';
+    const src=LK.dir?t('lkSrcDir')(LK.dir.name):LK.file?t('pfSrcFile')(LK.file.name):'';
+    $('lkSrc').innerHTML=src&&m!=='oldpw'?`<span>${esc(src)}</span><button type="button" class="link" data-lk="pfchange">${esc(t('lkSrcChange'))}</button>`:'';
+    if(!(window.crypto&&crypto.subtle&&window.indexedDB)){$('lockErr').textContent=t('noCrypto');btn.disabled=true}
+    $('lock').hidden=false;
+    const f=$('lkFields').querySelector('input');if(f)setTimeout(()=>f.focus(),30);
+  };
+  $('lkFileIn').onchange=async()=>{
+    const f=$('lkFileIn').files[0];if(!f)return;
+    LK.file=f;LK.dir=null;LK.missing=false;LK.mode='';lkRender();
+    try{await pfRead(false)}catch(e){lkErr(e.k||'pfReadErr')}
+  };
+  /* pendant une vérification, on ne change ni d'onglet ni de dossier (phase de capture : avant l'écouteur commun) */
+  $('lock').addEventListener('click',e=>{if(LK.busy&&e.target.closest('[data-lk-role],[data-lk]'))e.stopImmediatePropagation()},true);
+  /* les onglets et la langue sont gérés par l'écouteur commun de l'écran de connexion (plus haut) */
+  $('lock').addEventListener('click',async e=>{
+    const a=e.target.closest('[data-lk]');if(!a)return;
+    if(a.dataset.lk==='pfchange'){if(LK.api)await pfPickDir();else lkPickFile();return}
+    if(a.dataset.lk==='pffresh'&&confirm(t('lkFreshQ'))){
+      try{for(const k of await KV.keys())await KV.del(k)}catch(_){}
+      if(LK.role==='admin'){try{await bClear(BDB)}catch(_){}OLD_KEYS.forEach(removeLS)}
+      HAS_VAULT=false;const pw=LK.pw;LK.pw='';LK.mode='';pfApply();await openVault(pw);
+    }
+  });
+  $('lockForm').onsubmit=async e=>{
+    e.preventDefault();if(LK.busy)return;lkErr('');
+    const m=lkMode();
+    if(m==='nosrc'){if(LK.api)await pfPickDir();else lkPickFile();return}
+    LK.busy=true;
+    try{if(m==='login')await pfLogin();else if(m==='create')await pfCreate();else if(m==='oldpw')await pfOldPw()}
+    finally{LK.busy=false}
+  };
+  meLine=function(){const el=$('meLine');if(!el||!ME)return;el.innerHTML=`<b>${esc(t(ADMIN?'lkAdmin':'lkUser'))}</b>`};
+  /* menu « Mots de passe » : espace administrateur seulement (le bouton est masqué dans l'espace utilisateur) */
+  myPwDialog=function(){
+    if(!ADMIN)return;
+    usModal(t('pfChgT'),t('pfChgS')+' '+t('pwRules')(PW_MIN),
+      usField('',t('pfWho'),`<select id="pfWho"><option value="standard">${esc(t('lkUser'))}</option><option value="admin">${esc(t('lkAdmin'))}</option></select>`)+
+      usField('','',`<input id="mpCur" type="password" autocomplete="current-password" placeholder="${esc(t('pfCurA'))}">`)+
+      usField('','',`<input id="mpNew" type="password" autocomplete="new-password" placeholder="${esc(t('lkNewPw'))}">`)+
+      usField('','',`<input id="mpNew2" type="password" autocomplete="new-password" placeholder="${esc(t('lkPw2'))}">`),
+      t('usSave'),async()=>{
+        const role=$('pfWho').value==='admin'?'admin':'standard',cur=$('mpCur').value,pw=$('mpNew').value;
+        if(!pwOk(pw))return t('pwWeak')(PW_MIN);
+        if(pw!==$('mpNew2').value)return t('mismatch');
+        if(pw===cur)return t(role==='admin'?'pwSame':'pfSame');
+        /* l'autorisation d'écrire est demandée tout de suite : le navigateur ne l'accepte que juste après un clic */
+        if(!LK.dir||!(await lkPerm(LK.dir,true,'readwrite')))return t('pfWriteErr');
+        let pf;try{pf=await pfRead(false)}catch(e){return t(e.k||'pfReadErr')}
+        if(!pf)return t('pfMissing');
+        if(!(await pfCheck(cur,pfEntry(pf,'admin'))))return t('myPwBad');
+        if(role==='admin'&&await pfCheck(pw,pfEntry(pf,'standard')))return t('pfSame');
+        pf[PF_KEY[role]]=await pfNewEntry(pw);
+        try{await pfWrite(pf)}catch(e){return t(e.k||'pfWriteErr')}
+        /* les données administrateur de ce poste suivent le nouveau mot de passe administrateur */
+        if(role==='admin'){try{await saveChain;await rekeyLocal(cur,pw)}catch(e){console.warn(e);return t('storageErr')}}
+        toast(t(role==='admin'?'pfDoneA':'pfDoneU'));return true;
+      });
+  };
+}
+
 /* ---------- démarrage : écran de connexion ---------- */
 (async()=>{
+  if(AUTH_MODE==='json')return lkBootJson();
   if(AUTH_MODE==='local')return lkBootLocal();
   const l=lsGet('konex-lang');if(l==='en'||l==='fr')lang=l;
   try{const last=JSON.parse(lsGet('konex-last')||'{}');LK.role=last.role==='admin'?'admin':'standard'}catch(_){}

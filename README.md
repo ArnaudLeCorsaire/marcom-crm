@@ -4,7 +4,7 @@
 
 Il tient entièrement dans **un seul fichier HTML** (`Konex.html`), fonctionne **100 % hors ligne**, sans serveur, sans installation et sans aucune bibliothèque externe. À l'ouverture, on choisit l'**espace utilisateur** ou l'**espace administrateur** et on saisit le mot de passe ; les données sont **chiffrées** sur le poste.
 
-> ⏳ **Mode actuel (avant la mise en ligne) : un mot de passe par espace et par poste**, comme dans les versions précédentes. Les comptes personnels (fichier `konex-utilisateurs.json`) sont prêts dans le code mais **désactivés** ; ils seront activés à la mise en ligne (voir [Comptes et connexion](#comptes-et-connexion)).
+> 🔑 **Mode actuel : deux mots de passe**, un pour l'espace utilisateur et un pour l'espace administrateur, **vérifiés dans le fichier `konex-mots-de-passe.json`** à la racine du dossier Konex. Ce fichier ne contient que leurs **empreintes** (hash), jamais les mots de passe en clair. Les comptes personnels (fichier `konex-utilisateurs.json`) sont prêts dans le code mais **désactivés** (voir [Comptes et connexion](#comptes-et-connexion)).
 
 ---
 
@@ -33,7 +33,8 @@ Il tient entièrement dans **un seul fichier HTML** (`Konex.html`), fonctionne *
 | Fichier | Rôle |
 |---|---|
 | `Konex.html` | **L'outil**, pour tout le monde. À l'ouverture, deux fenêtres de connexion : **espace utilisateur** et **espace administrateur**. |
-| `konex-utilisateurs.json` | *(créé par Konex, pas dans ce dépôt)* Le fichier des comptes, à la racine du dossier Konex sur le réseau. Voir [Comptes et connexion](#comptes-et-connexion). |
+| `konex-mots-de-passe.json` | Les **empreintes** (hash PBKDF2-SHA-256) du mot de passe administrateur et du mot de passe utilisateur, à placer à la racine du dossier Konex, à côté de `Konex.html`. Aucun mot de passe en clair. Voir [Comptes et connexion](#comptes-et-connexion). |
+| `konex-utilisateurs.json` | *(mode comptes personnels, désactivé ; créé par Konex, pas dans ce dépôt)* Le fichier des comptes, à la racine du dossier Konex sur le réseau. |
 | `old/` | Anciennes versions archivées (`Konex-2.html`, `Konex_admin-2.html`, `Konex.html` v1, `Konex_admin.html` v1, `MarCom_CRM_admin-3/4/5.html`, `MarCom_CRM_standard-3/4.html`). Conservées pour mémoire, **ne plus les utiliser**. |
 | `README.md` | Ce document. |
 
@@ -43,8 +44,8 @@ Il tient entièrement dans **un seul fichier HTML** (`Konex.html`), fonctionne *
 
 Les anciennes éditions standard et admin sont réunies dans **un seul fichier**, `Konex.html`. L'écran de connexion propose deux onglets :
 
-- **Espace utilisateur** — ouvert à tous les comptes (y compris les administrateurs qui veulent voir l'outil comme l'équipe) ;
-- **Espace administrateur** — réservé aux comptes ayant le rôle *Administrateur*.
+- **Espace utilisateur** — s'ouvre avec le **mot de passe utilisateur**, commun à l'équipe (les administrateurs peuvent aussi l'utiliser pour voir l'outil comme l'équipe) ;
+- **Espace administrateur** — s'ouvre avec le **mot de passe administrateur**, connu des seuls administrateurs.
 
 L'espace choisi à la connexion décide de ce qui est disponible :
 
@@ -57,14 +58,14 @@ L'espace choisi à la connexion décide de ce qui est disponible :
 | Statistiques et tableau de bord | ✅ | ✅ |
 | Compléter un client ou une entreprise, ajouter une note, créer un contact | ✅ (journalisé, partagé) | ✅ |
 | Signaler une erreur ou un doublon | ✅ | — |
-| Changer son mot de passe | ✅ | ✅ |
+| Changer les mots de passe d'accès (menu **Mots de passe**) | ❌ | ✅ |
 | Modifier un événement ou une participation | ❌ (lecture seule) | ✅ |
 | Fusionner, supprimer ou archiver une fiche | ❌ (utiliser « Signaler ») | ✅ |
 | Importer des données / construire la master file | ❌ | ✅ |
 | Contrôles qualité (doublons, inversions, fautes…) | ❌ | ✅ |
 | Revoir les contributions de l'équipe | ❌ | ✅ |
 | Publier l'édition pour l'équipe | ❌ | ✅ |
-| **Gérer les comptes (Utilisateurs)** | ❌ | ✅ |
+| Gérer les comptes personnels (page **Utilisateurs**, mode comptes personnels seulement) | ❌ | ✅ |
 | Sauvegarder / restaurer | ❌ | ✅ |
 
 Chaque espace garde ses propres données sur le poste (`marcom-crm-standard` pour l'espace utilisateur, `marcom-searching-tool` pour l'espace administrateur, dans le stockage du navigateur). Les données déjà présentes des anciennes versions sont reprises automatiquement.
@@ -76,13 +77,14 @@ Chaque espace garde ses propres données sur le poste (`marcom-crm-standard` pou
 ### Utilisateur
 
 1. Ouvrez `Konex.html` dans **Microsoft Edge** ou **Google Chrome**.
-2. Onglet **Espace utilisateur**. La première fois sur ce poste, **choisissez un mot de passe** (au moins 8 caractères) : il chiffre les données de cet espace. Ensuite, saisissez-le à chaque ouverture.
-3. Suivez le **didacticiel** (≈ 3 min 30, 5 gestes essentiels sur des données fictives).
-4. **Données › Base partagée** : connectez le dossier de l'équipe avec la **clé d'équipe** transmise par un administrateur, puis chargez la dernière **édition publiée**.
+2. La première fois sur ce poste, cliquez sur **Choisir le dossier Konex** et sélectionnez le dossier qui contient `Konex.html` et `konex-mots-de-passe.json` (le navigateur s'en souvient).
+3. Onglet **Espace utilisateur** : saisissez le **mot de passe utilisateur** communiqué par un administrateur. Il chiffre aussi les données de cet espace sur le poste.
+4. Suivez le **didacticiel** (≈ 3 min 30, 5 gestes essentiels sur des données fictives).
+5. **Données › Base partagée** : connectez le dossier de l'équipe avec la **clé d'équipe** transmise par un administrateur, puis chargez la dernière **édition publiée**.
 
 ### Administrateur
 
-1. Onglet **Espace administrateur** : choisissez le mot de passe de cet espace la première fois, puis saisissez-le à chaque ouverture. Les données des anciennes versions s'ouvrent avec leur mot de passe actuel.
+1. Onglet **Espace administrateur** (même dossier Konex que ci-dessus) : saisissez le **mot de passe administrateur**. Si le poste a des données d'une version précédente, Konex demande une seule fois leur ancien mot de passe pour les reprendre.
 2. **Administration › Importer et contrôler** : déposez les fichiers Excel/CSV (listes d'invités, réponses, présences) et, si disponible, le référentiel RMPM.
 3. Suivez les 6 étapes (voir [Construction de la master file](#construction-de-la-master-file-importer-et-contrôler)), puis **Envoyer dans Konex**.
 4. Traitez les **Contrôles qualité** du menu de gauche.
@@ -95,21 +97,75 @@ Chaque espace garde ses propres données sur le poste (`marcom-crm-standard` pou
 
 ## Comptes et connexion
 
-### Mode actuel : un mot de passe par espace
+Le mode de connexion se choisit sur une ligne de `Konex.html` : `const AUTH_MODE='json';` (mode actuel), `'local'` (ancien mode) ou `'accounts'` (comptes personnels).
 
-En attendant la mise en ligne, Konex fonctionne comme les versions précédentes :
+### Mode actuel : deux mots de passe, vérifiés dans `konex-mots-de-passe.json`
 
-- chaque espace (**utilisateur** / **administrateur**) a **son propre mot de passe, propre à ce poste** ;
-- il est choisi à la première ouverture de l'espace (au moins 8 caractères) et **chiffre les données de cet espace** (AES-GCM 256, PBKDF2-SHA-256) ;
-- **Mon mot de passe** (menu de gauche) permet de le changer : les données sont rechiffrées ;
-- **Mot de passe oublié ?** efface les données de cet espace sur ce poste pour repartir de zéro ;
-- les données des anciennes versions (`Konex-2.html`, `Konex_admin-2.html`…) s'ouvrent directement avec leur mot de passe actuel.
+Konex a **deux mots de passe** :
 
-⚠️ Dans ce mode, rien n'empêche quelqu'un d'ouvrir l'espace administrateur sur son poste en choisissant un mot de passe : la séparation des rôles n'arrivera qu'avec les comptes personnels ci-dessous.
+- le **mot de passe utilisateur**, commun à l'équipe, ouvre l'**espace utilisateur** ;
+- le **mot de passe administrateur**, connu des seuls administrateurs, ouvre l'**espace administrateur**.
+
+Ils sont vérifiés dans le fichier **`konex-mots-de-passe.json`**, à la **racine du dossier Konex** (à côté de `Konex.html`). Ce fichier ne contient **aucun mot de passe**, ni en clair ni chiffré de façon réversible : seulement leur **empreinte** (hash).
+
+```json
+{
+  "format": "konex-mots-de-passe",
+  "version": 1,
+  "note": "…",
+  "admin":       { "algorithm": "PBKDF2-SHA-256", "iterations": 600000, "salt": "…", "hash": "…", "updated": "…" },
+  "utilisateur": { "algorithm": "PBKDF2-SHA-256", "iterations": 600000, "salt": "…", "hash": "…", "updated": "…" }
+}
+```
+
+| Champ | Rôle |
+|---|---|
+| `admin`, `utilisateur` | Une entrée par espace. |
+| `salt` | Sel aléatoire de 16 octets (base64), propre à chaque mot de passe et renouvelé à chaque changement : deux mots de passe identiques n'ont pas la même empreinte. |
+| `iterations` | Nombre de tours de calcul (600 000) : chaque essai prend du temps, ce qui freine les tentatives en série. |
+| `hash` | L'empreinte : PBKDF2-HMAC-SHA-256 du mot de passe (texte normalisé NFC, encodé en UTF-8), 32 octets en base64. Elle permet de **vérifier** un mot de passe, pas de le **retrouver**. |
+| `updated` | Date du dernier changement. |
+
+**À la connexion**, Konex lit le fichier, recalcule l'empreinte du mot de passe saisi avec le sel de l'espace choisi et la compare à celle du fichier. Si elles correspondent, le mot de passe **chiffre aussi les données de cet espace sur le poste** (AES-GCM 256, comme avant). Après 3 erreurs, il faut attendre quelques secondes avant un nouvel essai.
+
+#### Première connexion sur un poste
+
+Une page ouverte depuis un fichier ne peut pas lire seule un fichier voisin. Konex demande donc de **choisir le dossier Konex** une fois (bouton *Choisir le dossier Konex*) ; Edge et Chrome s'en souviennent, et peuvent redemander l'autorisation de lecture après un redémarrage. Sur Firefox et Safari, il faut choisir le fichier `konex-mots-de-passe.json` à chaque connexion.
+
+#### Changer un mot de passe
+
+Dans l'espace administrateur, menu **Mots de passe** : choisir l'espace, saisir le mot de passe administrateur actuel, puis le nouveau mot de passe (au moins 12 caractères, avec des lettres et des chiffres ; les deux mots de passe doivent être différents). Konex réécrit `konex-mots-de-passe.json` dans le dossier Konex (Edge ou Chrome, avec le droit de modifier le dossier).
+
+- Nouveau mot de passe **administrateur** : les données administrateur de ce poste sont rechiffrées aussitôt.
+- Nouveau mot de passe **utilisateur** : sur chaque poste, à la connexion suivante, Konex demande **une seule fois l'ancien** pour reprendre les données (ou propose de repartir de zéro sur ce poste).
+
+Transmettez les nouveaux mots de passe de vive voix ou par un canal sûr.
+
+#### Fichier absent ou mot de passe administrateur perdu
+
+Si le dossier ne contient pas `konex-mots-de-passe.json`, l'onglet **Espace administrateur** propose de le **créer** en choisissant les deux mots de passe. En cas de mot de passe administrateur perdu : supprimer (ou renommer) le fichier dans le dossier Konex, puis le recréer ainsi. C'est pourquoi le droit de modifier le dossier doit être réservé aux administrateurs.
+
+#### Données des versions précédentes
+
+Les données enregistrées avec l'ancien mode (un mot de passe choisi sur chaque poste) ne sont pas perdues : à la première connexion, Konex demande **une seule fois l'ancien mot de passe du poste** et rechiffre les données avec le mot de passe du fichier. *Je ne m'en souviens pas : repartir de zéro sur ce poste* efface les données locales de cet espace ; celles de l'équipe se rechargent depuis la base partagée.
+
+#### Limites
+
+Konex fonctionne sans serveur : la vérification se fait dans le navigateur.
+
+- **Seuls les administrateurs doivent pouvoir modifier le dossier Konex** (droits gérés par l'IT) : qui peut remplacer `konex-mots-de-passe.json` peut y mettre l'empreinte de son propre mot de passe. Il n'obtient pas pour autant les données déjà chiffrées sur les postes, ni la clé d'équipe de la base partagée.
+- Quelqu'un qui modifie sa propre copie de `Konex.html` peut contourner l'écran de connexion **sur son poste**, comme dans tout outil sans serveur.
+- Une empreinte ne se renverse pas, mais un mot de passe **court ou courant** peut être retrouvé en essayant des mots de passe un par un à partir du fichier : choisissez des mots de passe longs et aléatoires, surtout si le fichier est visible au-delà de l'équipe (par exemple dans un dépôt GitHub public).
+- Le mot de passe est **commun** : Konex ne sait pas qui s'est connecté. Pour des comptes nominatifs, voir les comptes personnels ci-dessous.
+- Si le dossier est inaccessible (réseau coupé), Konex utilise la **dernière copie connue** du fichier, gardée sur le poste, et le signale.
+
+### Ancien mode : un mot de passe par poste
+
+`const AUTH_MODE='local';` rétablit le fonctionnement précédent : chaque espace a son propre mot de passe, choisi sur chaque poste à la première ouverture, sans aucune vérification. ⚠️ Rien n'empêche alors quelqu'un d'ouvrir l'espace administrateur sur son poste en choisissant un mot de passe.
 
 ### À la mise en ligne : comptes personnels (prêts, désactivés)
 
-Pour les activer, remplacer `const AUTH_MODE='local';` par `const AUTH_MODE='accounts';` dans `Konex.html`. Konex demande alors de choisir le dossier Konex sur le réseau, crée `konex-utilisateurs.json` à sa racine avec le premier administrateur, et ajoute la page **Administration › Utilisateurs**. Ce qui suit décrit ce mode.
+Pour les activer, remplacer `const AUTH_MODE='json';` par `const AUTH_MODE='accounts';` dans `Konex.html`. Konex demande alors de choisir le dossier Konex sur le réseau, crée `konex-utilisateurs.json` à sa racine avec le premier administrateur, et ajoute la page **Administration › Utilisateurs**. Ce qui suit décrit ce mode.
 
 ### Le fichier des comptes : `konex-utilisateurs.json`
 
@@ -299,8 +355,8 @@ En cas d'indisponibilité du réseau, les compléments sont **conservés localem
 - **Chiffrement** : AES-GCM 256 bits ; clé dérivée du mot de passe par **PBKDF2-SHA-256, 310 000 itérations** ; IV aléatoire à chaque écriture ; données compressées (gzip) avant chiffrement.
 - **Stockage** : IndexedDB du navigateur, sur ce poste uniquement. La clé n'est **jamais** écrite sur le disque et n'est pas exportable.
 - **Verrouillage automatique** après inactivité (5, 10 [défaut], 15, 30 ou 60 min) : les données sont retirées de la mémoire. Bouton **Verrouiller** disponible à tout moment.
-- **Comptes personnels** : connexion par identifiant et mot de passe, deux espaces (utilisateur / administrateur), fichier des comptes signé et sans mot de passe (voir [Comptes et connexion](#comptes-et-connexion)).
-- **Mot de passe oublié** : un administrateur le réinitialise (mot de passe provisoire à changer à la connexion). Les données locales protégées par l'ancien mot de passe ne peuvent être reprises qu'avec celui-ci.
+- **Connexion** : deux mots de passe (utilisateur / administrateur) vérifiés dans `konex-mots-de-passe.json`, qui ne contient que leurs empreintes PBKDF2-SHA-256 (600 000 itérations, sel aléatoire propre à chaque mot de passe). Les comptes personnels signés sont prêts mais désactivés (voir [Comptes et connexion](#comptes-et-connexion)).
+- **Mot de passe oublié** : le demander à un administrateur ; les administrateurs changent les mots de passe depuis le menu **Mots de passe**. Les données locales protégées par un ancien mot de passe ne peuvent être reprises qu'avec celui-ci.
 - **Sauvegardes et base partagée chiffrées**.
 - ⚠️ Les **exports** (Excel, CSV, JSON, HTML, PNG) **ne sont pas chiffrés** : rangez-les selon les règles de l'entreprise.
 - Une **note de sécurité pour l'IT / la compliance** peut être générée depuis *Sauvegarde & sécurité*.
@@ -314,7 +370,8 @@ En cas d'indisponibilité du réseau, les compléments sont **conservés localem
 | Import (module master file) | `.xlsx`, `.xlsm`, `.xltx`, `.xltm`, `.xls` (Excel 97-2003 / BIFF8), `.ods`, `.csv`, `.tsv`, `.txt`, `.htm`/`.html` (exports « .xls » web), `.xml` (SpreadsheetML 2003). Le format est détecté **par le contenu**, pas par l'extension. |
 | Import rapide (espace administrateur) | `.xlsx`, `.xlsm`, `.csv` ; notes au format `.json` ; modèle téléchargeable. |
 | Sauvegarde / restauration | `.json` chiffré (`.mmb` pour le module master file). |
-| Comptes | `konex-utilisateurs.json` (signé, sans mot de passe). |
+| Mots de passe d'accès | `konex-mots-de-passe.json` (empreintes PBKDF2-SHA-256, aucun mot de passe en clair). |
+| Comptes personnels (désactivés) | `konex-utilisateurs.json` (signé, sans mot de passe). |
 | Exports | `.xlsx`, `.csv`, `.json`, `.html`, `.png`, copie presse-papiers (Teams, e-mail, Excel, PowerPoint). |
 
 Lecture et écriture Excel/ZIP **natives** (aucune dépendance), via `CompressionStream` / `DecompressionStream`.
@@ -327,7 +384,7 @@ Lecture et écriture Excel/ZIP **natives** (aucune dépendance), via `Compressio
 |---|---|
 | Microsoft Edge (récent) | ✅ Recommandé |
 | Google Chrome (récent) | ✅ Recommandé |
-| Firefox, Safari | ⚠️ Fonctionnement de base : fichier des comptes à choisir à chaque connexion ; **base partagée** indisponible (API d'accès aux dossiers `showDirectoryPicker` absente). |
+| Firefox, Safari | ⚠️ Fonctionnement de base : fichier `konex-mots-de-passe.json` à choisir à chaque connexion, mots de passe impossibles à changer ; **base partagée** indisponible (API d'accès aux dossiers `showDirectoryPicker` absente). |
 
 Prérequis : IndexedDB, Web Crypto (`crypto.subtle`), `CompressionStream`. Si le navigateur ne les fournit pas, l'écran de verrouillage l'indique.
 
@@ -351,10 +408,24 @@ Prérequis : IndexedDB, Web Crypto (`crypto.subtle`), `CompressionStream`. Si le
 
 ## FAQ et dépannage
 
-**J'ai oublié mon mot de passe.**
-Demandez à un administrateur de le réinitialiser (Administration › Utilisateurs). Vous recevez un mot de passe provisoire, à changer à la connexion.
+**J'ai oublié le mot de passe.**
+Demandez-le à un administrateur. Les administrateurs le changent depuis le menu **Mots de passe** de l'espace administrateur.
 
-**« Identifiant ou mot de passe incorrect » / « Trop d'essais ».**
+**« Mot de passe incorrect » / « Trop d'essais ».**
+Vérifiez l'onglet choisi (*Espace utilisateur* ou *Espace administrateur* : chacun a son mot de passe) et le mot de passe ; après 3 erreurs, attendez quelques secondes.
+
+**« Ce dossier ne contient pas de fichier konex-mots-de-passe.json ».**
+Le dossier choisi n'est pas le bon : cliquez sur *Changer* et choisissez le dossier qui contient `Konex.html` et `konex-mots-de-passe.json`. S'il n'existe vraiment pas, un administrateur le crée depuis l'onglet *Espace administrateur*.
+
+**Konex demande l'« ancien mot de passe de ce poste ».**
+C'est la première connexion depuis une ancienne version, ou le mot de passe a changé depuis : les données de ce poste sont encore chiffrées avec l'ancien. Saisissez-le une fois, elles sont rechiffrées avec le nouveau.
+
+**Le dossier Konex est inaccessible (réseau coupé).**
+Konex utilise la dernière copie connue du fichier des mots de passe (ou, en mode comptes personnels, du fichier des comptes) pour la connexion et le signale ; les changements attendront le retour du réseau.
+
+*Les trois questions suivantes concernent le mode comptes personnels (désactivé).*
+
+**« Identifiant ou mot de passe incorrect ».**
 Vérifiez l'identifiant (sans accent) et le mot de passe ; après 3 erreurs, attendez quelques secondes.
 
 **« Ce compte n'a pas accès à l'espace administrateur ».**
@@ -362,12 +433,6 @@ Votre compte a le rôle *Utilisateur* : utilisez l'onglet *Espace utilisateur*.
 
 **« Le fichier des comptes a été modifié en dehors de Konex ».**
 La signature n'est plus valide (modification à la main, fichier abîmé). Restaurez la version précédente du fichier depuis les sauvegardes du réseau, ou recréez le fichier (supprimez-le puis *Créer le premier administrateur*) et recréez les comptes.
-
-**Konex demande l'« ancien mot de passe de ce poste ».**
-C'est la première connexion depuis une ancienne version (ou après une réinitialisation) : saisissez le mot de passe utilisé jusqu'ici sur ce poste.
-
-**Le dossier Konex est inaccessible (réseau coupé).**
-Konex utilise la dernière copie connue du fichier des comptes pour la connexion et le signale ; les modifications de comptes attendront le retour du réseau.
 
 **« Ce dossier n'est pas un dossier Konex ».**
 Le fichier `marcom-equipe.json` est absent ou illisible : vérifiez que vous avez choisi le bon dossier réseau.
@@ -411,7 +476,8 @@ Konex.html
     ├── Statistiques (graphiques SVG, exports)
     ├── Base partagée (File System Access API) et contributions
     ├── Rôle appliqué à la connexion (applyRole) : fonctions d'administration neutralisées dans l'espace utilisateur
-    └── Connexion, comptes (konex-utilisateurs.json), verrouillage, didacticiel, aide
+    └── Connexion (AUTH_MODE : 'json' → konex-mots-de-passe.json, 'local', 'accounts' → konex-utilisateurs.json),
+        verrouillage, didacticiel, aide
 ```
 
 Il n'y a plus de version « standard » compilée à part : le rôle est choisi à la connexion. Dans l'espace utilisateur, `applyRole(false)` remplace les fonctions réservées aux administrateurs par des fonctions vides, exactement comme le faisait l'ancien fichier standard.
@@ -424,7 +490,7 @@ Il n'y a plus de version « standard » compilée à part : le rôle est choisi 
 
 | Version | Fichiers | Statut / nouveautés |
 |---|---|---|
-| **Konex 3** | `Konex.html` | ✅ Version actuelle — un seul fichier, deux espaces de connexion (utilisateur / administrateur) avec un mot de passe par espace, changement de mot de passe, traductions anglaises complétées ; comptes personnels `konex-utilisateurs.json` prêts mais désactivés jusqu'à la mise en ligne |
+| **Konex 3** | `Konex.html`, `konex-mots-de-passe.json` | ✅ Version actuelle — un seul fichier, deux espaces de connexion (utilisateur / administrateur), mots de passe vérifiés dans `konex-mots-de-passe.json` (empreintes seulement) et modifiables par les administrateurs, traductions anglaises complétées ; comptes personnels `konex-utilisateurs.json` prêts mais désactivés jusqu'à la mise en ligne |
 | Konex 2 | `old/Konex-2.html`, `old/Konex_admin-2.html` | Archivée — onglet RMPM, champ VIP, statuts détaillés et taux de présence sur les fiches, copie de l'historique, filtres de listes par statut et présences minimum |
 | Konex 1 | `old/Konex.html`, `old/Konex_admin.html` | Archivée |
 | MarCom CRM admin v5 | `old/MarCom_CRM_admin-5.html` | Archivée |
