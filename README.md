@@ -2,26 +2,27 @@
 
 **Konex** est l'outil de gestion des contacts et des événements de l'équipe MarCom : recherche de personnes, d'entreprises, de CMO et d'événements, construction de listes d'invités, statistiques de participation et contrôle qualité des données.
 
-Il tient entièrement dans **un seul fichier HTML**, fonctionne **100 % hors ligne**, sans serveur, sans installation et sans aucune bibliothèque externe. Les données sont **chiffrées** sur le poste de l'utilisateur.
+Il tient entièrement dans **un seul fichier HTML** (`Konex.html`), fonctionne **100 % hors ligne**, sans serveur, sans installation et sans aucune bibliothèque externe. Chaque personne se connecte avec **son propre compte** (espace utilisateur ou espace administrateur) ; les comptes sont dans le fichier `konex-utilisateurs.json`, à la racine du dossier Konex, et les données sont **chiffrées** sur le poste de chaque utilisateur.
 
 ---
 
 ## Sommaire
 
 1. [Contenu du dépôt](#contenu-du-dépôt)
-2. [Les deux éditions](#les-deux-éditions)
+2. [Un fichier, deux espaces](#un-fichier-deux-espaces)
 3. [Démarrage rapide](#démarrage-rapide)
-4. [Fonctionnalités communes](#fonctionnalités-communes)
-5. [Fonctionnalités réservées à l'édition Admin](#fonctionnalités-réservées-à-lédition-admin)
-6. [Construction de la master file (Importer et contrôler)](#construction-de-la-master-file-importer-et-contrôler)
-7. [Base partagée et travail en équipe](#base-partagée-et-travail-en-équipe)
-8. [Sécurité et conformité](#sécurité-et-conformité)
-9. [Formats de fichiers](#formats-de-fichiers)
-10. [Navigateurs compatibles](#navigateurs-compatibles)
-11. [Glossaire](#glossaire)
-12. [FAQ et dépannage](#faq-et-dépannage)
-13. [Architecture technique](#architecture-technique)
-14. [Historique des versions](#historique-des-versions)
+4. [Comptes et connexion](#comptes-et-connexion)
+5. [Fonctionnalités communes](#fonctionnalités-communes)
+6. [Fonctionnalités réservées à l'espace administrateur](#fonctionnalités-réservées-à-lespace-administrateur)
+7. [Construction de la master file (Importer et contrôler)](#construction-de-la-master-file-importer-et-contrôler)
+8. [Base partagée et travail en équipe](#base-partagée-et-travail-en-équipe)
+9. [Sécurité et conformité](#sécurité-et-conformité)
+10. [Formats de fichiers](#formats-de-fichiers)
+11. [Navigateurs compatibles](#navigateurs-compatibles)
+12. [Glossaire](#glossaire)
+13. [FAQ et dépannage](#faq-et-dépannage)
+14. [Architecture technique](#architecture-technique)
+15. [Historique des versions](#historique-des-versions)
 
 ---
 
@@ -29,51 +30,65 @@ Il tient entièrement dans **un seul fichier HTML**, fonctionne **100 % hors lig
 
 | Fichier | Rôle |
 |---|---|
-| `Konex-2.html` | **Édition standard** — pour les utilisateurs de l'équipe (recherche, fiches, listes, statistiques, compléments). |
-| `Konex_admin-2.html` | **Édition Admin** — tout l'outil : import des fichiers, contrôles qualité, gestion des événements, publication de l'édition pour l'équipe. |
-| `old/` | Anciennes versions archivées (`Konex.html`, `Konex_admin.html`, `MarCom_CRM_admin-3/4/5.html`, `MarCom_CRM_standard-3/4.html`). Conservées pour mémoire, **ne plus les utiliser**. |
+| `Konex.html` | **L'outil**, pour tout le monde. À l'ouverture, deux fenêtres de connexion : **espace utilisateur** et **espace administrateur**. |
+| `konex-utilisateurs.json` | *(créé par Konex, pas dans ce dépôt)* Le fichier des comptes, à la racine du dossier Konex sur le réseau. Voir [Comptes et connexion](#comptes-et-connexion). |
+| `old/` | Anciennes versions archivées (`Konex-2.html`, `Konex_admin-2.html`, `Konex.html` v1, `Konex_admin.html` v1, `MarCom_CRM_admin-3/4/5.html`, `MarCom_CRM_standard-3/4.html`). Conservées pour mémoire, **ne plus les utiliser**. |
 | `README.md` | Ce document. |
 
 ---
 
-## Les deux éditions
+## Un fichier, deux espaces
 
-Les deux fichiers partagent le même moteur ; seule l'édition change (`EDITION='standard'` ou `EDITION='admin'`).
+Les anciennes éditions standard et admin sont réunies dans **un seul fichier**, `Konex.html`. L'écran de connexion propose deux onglets :
 
-| Capacité | Standard (`Konex-2.html`) | Admin (`Konex_admin-2.html`) |
+- **Espace utilisateur** — ouvert à tous les comptes (y compris les administrateurs qui veulent voir l'outil comme l'équipe) ;
+- **Espace administrateur** — réservé aux comptes ayant le rôle *Administrateur*.
+
+L'espace choisi à la connexion décide de ce qui est disponible :
+
+| Capacité | Espace utilisateur | Espace administrateur |
 |---|:---:|:---:|
-| Rechercher (personnes, CMO, entreprises, événements) | ✅ | ✅ |
+| Rechercher (personnes, CMO, entreprises, RMPM, événements) | ✅ | ✅ |
 | Poser une question en langage naturel | ✅ | ✅ |
 | Consulter et copier une fiche, préparer un e-mail | ✅ | ✅ |
 | Construire et exporter des listes | ✅ | ✅ |
 | Statistiques et tableau de bord | ✅ | ✅ |
 | Compléter un client ou une entreprise, ajouter une note, créer un contact | ✅ (journalisé, partagé) | ✅ |
 | Signaler une erreur ou un doublon | ✅ | — |
+| Changer son mot de passe | ✅ | ✅ |
 | Modifier un événement ou une participation | ❌ (lecture seule) | ✅ |
 | Fusionner, supprimer ou archiver une fiche | ❌ (utiliser « Signaler ») | ✅ |
 | Importer des données / construire la master file | ❌ | ✅ |
 | Contrôles qualité (doublons, inversions, fautes…) | ❌ | ✅ |
 | Revoir les contributions de l'équipe | ❌ | ✅ |
 | Publier l'édition pour l'équipe | ❌ | ✅ |
+| **Gérer les comptes (Utilisateurs)** | ❌ | ✅ |
 | Sauvegarder / restaurer | ❌ | ✅ |
 
-Les deux éditions utilisent des espaces de stockage distincts dans le navigateur (`marcom-searching-tool` pour l'admin, `marcom-crm-standard` pour le standard) : elles peuvent coexister sur un même poste.
+Chaque espace garde ses propres données sur le poste (`marcom-crm-standard` pour l'espace utilisateur, `marcom-searching-tool` pour l'espace administrateur, dans le stockage du navigateur). Les données déjà présentes des anciennes versions sont reprises automatiquement.
 
 ---
 
 ## Démarrage rapide
 
-### Utilisateur (édition standard)
+### Mise en place (une seule fois, par un administrateur)
 
-1. Récupérez `Konex-2.html` et ouvrez-le dans **Microsoft Edge** ou **Google Chrome** (double-clic).
-2. Au premier lancement, **choisissez un mot de passe** : il chiffre toutes les données de ce poste.
-3. Suivez le **didacticiel** (≈ 3 min 30, 5 gestes essentiels sur des données fictives).
-4. Allez dans **Données › Base partagée**, sélectionnez le dossier réseau fourni par l'IT et saisissez la **clé d'équipe** transmise par un administrateur, ainsi que votre prénom et nom.
-5. Chargez la dernière **édition publiée** : vous travaillez sur les données à jour de l'équipe.
+1. Placez `Konex.html` dans le **dossier Konex** sur le réseau (fourni par l'IT). Tous les utilisateurs doivent pouvoir **lire et écrire** dans ce dossier.
+2. Ouvrez `Konex.html` dans **Microsoft Edge** ou **Google Chrome**, choisissez l'onglet **Espace administrateur**, puis **Choisir le dossier Konex**.
+3. Le dossier ne contient pas encore de fichier des comptes : Konex propose **Créer le premier administrateur** (prénom et nom, identifiant, mot de passe). Le fichier `konex-utilisateurs.json` est créé à la racine du dossier.
+4. Dans **Administration › Utilisateurs**, créez un compte pour chaque personne. Konex affiche un **mot de passe provisoire** une seule fois : transmettez-le de vive voix ou par un canal sûr.
 
-### Administrateur (édition Admin)
+### Utilisateur
 
-1. Ouvrez `Konex_admin-2.html` dans Edge ou Chrome et définissez votre mot de passe.
+1. Ouvrez `Konex.html` (depuis le dossier Konex) dans Edge ou Chrome.
+2. La première fois sur ce poste : **Choisir le dossier Konex** (le navigateur s'en souvient ensuite).
+3. Onglet **Espace utilisateur** : saisissez votre identifiant et le mot de passe provisoire, puis **choisissez votre propre mot de passe**.
+4. Suivez le **didacticiel** (≈ 3 min 30, 5 gestes essentiels sur des données fictives).
+5. **Données › Base partagée** : connectez le dossier de l'équipe avec la **clé d'équipe** transmise par un administrateur, puis chargez la dernière **édition publiée**.
+
+### Administrateur
+
+1. Onglet **Espace administrateur**, connectez-vous.
 2. **Administration › Importer et contrôler** : déposez les fichiers Excel/CSV (listes d'invités, réponses, présences) et, si disponible, le référentiel RMPM.
 3. Suivez les 6 étapes (voir [Construction de la master file](#construction-de-la-master-file-importer-et-contrôler)), puis **Envoyer dans Konex**.
 4. Traitez les **Contrôles qualité** du menu de gauche.
@@ -81,6 +96,54 @@ Les deux éditions utilisent des espaces de stockage distincts dans le navigateu
 6. Pensez à **Sauvegarder** régulièrement (fichier chiffré).
 
 > 💡 Pas encore de fichier ? Le module d'import propose des **données d'exemple « pleines de pièges »** pour tester l'outil.
+
+---
+
+## Comptes et connexion
+
+### Le fichier des comptes : `konex-utilisateurs.json`
+
+Il se trouve **à la racine du dossier Konex** et contient, pour chaque compte : identifiant, prénom et nom, rôle (*Utilisateur* ou *Administrateur*), état (actif / désactivé) et des éléments cryptographiques. **Aucun mot de passe n'y est écrit**, ni en clair ni chiffré de façon réversible :
+
+| Protection | Détail |
+|---|---|
+| **Empreinte du mot de passe** | PBKDF2-SHA-256, **600 000 itérations**, sel aléatoire de 16 octets propre à chaque compte. Seule l'empreinte est stockée : elle permet de vérifier un mot de passe, pas de le retrouver. |
+| **Signature des comptes et des rôles** | La liste des comptes, leurs rôles et leur état sont **signés (ECDSA P-256)** avec la clé des administrateurs. Ajouter un compte ou se donner le rôle administrateur en modifiant le fichier à la main **rend la signature invalide : la connexion est refusée**. |
+| **Signature des identifiants de chaque compte** | Chaque compte signe ses propres identifiants avec sa clé personnelle : personne ne peut remplacer le mot de passe d'un autre pour prendre sa place. |
+| **Clés privées chiffrées** | Clés personnelles chiffrées en **AES-GCM 256** avec une clé tirée du mot de passe de leur titulaire ; la clé des administrateurs est chiffrée pour chaque administrateur (ECDH P-256 + HKDF + AES-GCM). |
+| **Retrait d'un administrateur** | Lui retirer le rôle, désactiver ou supprimer son compte **renouvelle la clé des administrateurs**. Le nouveau fichier reste reconnu par les postes grâce à une chaîne de clés signée. |
+| **Protection contre le retour en arrière** | Chaque poste mémorise la dernière version vue du fichier : une ancienne copie remise à sa place est refusée. Si la clé de signature change sans chaîne valide (fichier recréé), le poste demande une confirmation explicite. |
+| **Essais limités** | Après 3 erreurs, attente croissante avant un nouvel essai. Le message d'erreur ne dit pas si l'identifiant existe. |
+
+Règles des mots de passe : **au moins 12 caractères, avec des lettres et des chiffres**.
+
+### Gestion des comptes (administrateurs)
+
+**Administration › Utilisateurs** : créer un compte, réinitialiser un mot de passe (nouveau mot de passe provisoire), passer un compte en administrateur ou en utilisateur, désactiver / réactiver, supprimer. Il reste toujours au moins un administrateur actif. Chaque modification relit le fichier à jour, le vérifie, le signe et le réécrit.
+
+### Mon mot de passe (tout le monde)
+
+Bouton **Mon mot de passe** dans le menu de gauche : saisir l'ancien puis le nouveau. Le fichier des comptes est mis à jour et les données de ce poste sont rechiffrées avec le nouveau mot de passe.
+
+### Données de ce poste
+
+Le mot de passe du compte **chiffre aussi les données enregistrées sur le poste** (même chiffrement qu'avant : AES-GCM 256, PBKDF2-SHA-256). Chaque compte a son propre espace chiffré sur un poste partagé.
+
+- **Passage depuis une ancienne version** : à la première connexion, Konex demande **une seule fois l'ancien mot de passe du poste** et rechiffre les données avec le mot de passe du compte. Rien n'est perdu.
+- **Mot de passe réinitialisé par un administrateur** : si vous ne vous souvenez plus de l'ancien, l'option « repartir de zéro sur ce poste » efface les données locales de cet espace ; les données de l'équipe se rechargent depuis la base partagée.
+
+### Limites à connaître
+
+Konex fonctionne sans serveur : toutes les vérifications se font dans le navigateur. Les signatures empêchent de **modifier le fichier des comptes** sans être administrateur, mais elles ne remplacent pas les droits du dossier réseau :
+
+- seuls les membres de l'équipe doivent avoir accès au dossier Konex (droits gérés par l'IT) ;
+- tous les utilisateurs ont besoin de l'**écriture** sur `konex-utilisateurs.json` pour pouvoir changer leur mot de passe ;
+- quelqu'un qui modifie sa propre copie de `Konex.html` peut contourner l'interface **sur son poste**, mais il n'obtient ni les mots de passe des autres, ni la clé d'équipe de la base partagée, ni la possibilité de signer le fichier des comptes ;
+- le fichier contient les identifiants et noms des membres (pas les mots de passe) : traitez-le comme une information interne.
+
+### Navigateurs sans accès aux dossiers (Firefox, Safari)
+
+Konex ne peut pas y mémoriser le dossier : il faut choisir le fichier `konex-utilisateurs.json` à chaque connexion, et les modifications des comptes **téléchargent** un nouveau fichier à remettre dans le dossier Konex. Edge ou Chrome sont recommandés.
 
 ---
 
@@ -133,11 +196,11 @@ Konex interprète classement, pays, entreprise, année et statut de présence, e
 - Petites aides contextuelles affichées jusqu'au premier usage de l'élément concerné.
 
 ### Langue
-Interface bilingue **français / anglais** (sélecteur FR | EN en bas du menu).
+Interface bilingue **français / anglais** : sélecteur FR | EN sur l'écran de connexion et en bas du menu. En anglais, les statuts de présence enregistrés en français dans les données (« Présent », « Refusé », « Sans réponse »…) sont traduits à l'affichage. Seul le module **Importer et contrôler** reste en français pour l'instant (un message le signale en anglais).
 
 ---
 
-## Fonctionnalités réservées à l'édition Admin
+## Fonctionnalités réservées à l'espace administrateur
 
 ### Contrôles qualité (menu de gauche, avec compteurs)
 | Contrôle | Ce qu'il détecte |
@@ -161,7 +224,7 @@ Export de tout le travail dans **un fichier chiffré** avec le mot de passe en c
 
 ## Construction de la master file (Importer et contrôler)
 
-Module intégré à l'édition Admin (anciennement *MarCom Master Builder*). Il transforme des dizaines de fichiers hétérogènes (toutes années, colonnes différentes) en **une master file propre**.
+Module de l'espace administrateur (anciennement *MarCom Master Builder*). Il transforme des dizaines de fichiers hétérogènes (toutes années, colonnes différentes) en **une master file propre**.
 
 ### Les 6 étapes
 
@@ -226,7 +289,8 @@ En cas d'indisponibilité du réseau, les compléments sont **conservés localem
 - **Chiffrement** : AES-GCM 256 bits ; clé dérivée du mot de passe par **PBKDF2-SHA-256, 310 000 itérations** ; IV aléatoire à chaque écriture ; données compressées (gzip) avant chiffrement.
 - **Stockage** : IndexedDB du navigateur, sur ce poste uniquement. La clé n'est **jamais** écrite sur le disque et n'est pas exportable.
 - **Verrouillage automatique** après inactivité (5, 10 [défaut], 15, 30 ou 60 min) : les données sont retirées de la mémoire. Bouton **Verrouiller** disponible à tout moment.
-- **Mot de passe non récupérable** : personne ne peut le réinitialiser. En cas d'oubli, seule l'option « Tout effacer et recommencer » est possible (d'où l'importance des sauvegardes).
+- **Comptes personnels** : connexion par identifiant et mot de passe, deux espaces (utilisateur / administrateur), fichier des comptes signé et sans mot de passe (voir [Comptes et connexion](#comptes-et-connexion)).
+- **Mot de passe oublié** : un administrateur le réinitialise (mot de passe provisoire à changer à la connexion). Les données locales protégées par l'ancien mot de passe ne peuvent être reprises qu'avec celui-ci.
 - **Sauvegardes et base partagée chiffrées**.
 - ⚠️ Les **exports** (Excel, CSV, JSON, HTML, PNG) **ne sont pas chiffrés** : rangez-les selon les règles de l'entreprise.
 - Une **note de sécurité pour l'IT / la compliance** peut être générée depuis *Sauvegarde & sécurité*.
@@ -238,8 +302,9 @@ En cas d'indisponibilité du réseau, les compléments sont **conservés localem
 | Usage | Formats acceptés / produits |
 |---|---|
 | Import (module master file) | `.xlsx`, `.xlsm`, `.xltx`, `.xltm`, `.xls` (Excel 97-2003 / BIFF8), `.ods`, `.csv`, `.tsv`, `.txt`, `.htm`/`.html` (exports « .xls » web), `.xml` (SpreadsheetML 2003). Le format est détecté **par le contenu**, pas par l'extension. |
-| Import rapide (édition Admin) | `.xlsx`, `.xlsm`, `.csv` ; notes au format `.json` ; modèle téléchargeable. |
+| Import rapide (espace administrateur) | `.xlsx`, `.xlsm`, `.csv` ; notes au format `.json` ; modèle téléchargeable. |
 | Sauvegarde / restauration | `.json` chiffré (`.mmb` pour le module master file). |
+| Comptes | `konex-utilisateurs.json` (signé, sans mot de passe). |
 | Exports | `.xlsx`, `.csv`, `.json`, `.html`, `.png`, copie presse-papiers (Teams, e-mail, Excel, PowerPoint). |
 
 Lecture et écriture Excel/ZIP **natives** (aucune dépendance), via `CompressionStream` / `DecompressionStream`.
@@ -252,7 +317,7 @@ Lecture et écriture Excel/ZIP **natives** (aucune dépendance), via `Compressio
 |---|---|
 | Microsoft Edge (récent) | ✅ Recommandé |
 | Google Chrome (récent) | ✅ Recommandé |
-| Firefox, Safari | ⚠️ Fonctionnement de base ; la **base partagée** n'est pas disponible (API d'accès aux dossiers `showDirectoryPicker` absente). |
+| Firefox, Safari | ⚠️ Fonctionnement de base : fichier des comptes à choisir à chaque connexion ; **base partagée** indisponible (API d'accès aux dossiers `showDirectoryPicker` absente). |
 
 Prérequis : IndexedDB, Web Crypto (`crypto.subtle`), `CompressionStream`. Si le navigateur ne les fournit pas, l'écran de verrouillage l'indique.
 
@@ -277,7 +342,22 @@ Prérequis : IndexedDB, Web Crypto (`crypto.subtle`), `CompressionStream`. Si le
 ## FAQ et dépannage
 
 **J'ai oublié mon mot de passe.**
-Il ne peut pas être récupéré. Utilisez « Mot de passe oublié ? Tout effacer et recommencer », puis restaurez une sauvegarde (admin) ou reconnectez la base partagée (standard).
+Demandez à un administrateur de le réinitialiser (Administration › Utilisateurs). Vous recevez un mot de passe provisoire, à changer à la connexion.
+
+**« Identifiant ou mot de passe incorrect » / « Trop d'essais ».**
+Vérifiez l'identifiant (sans accent) et le mot de passe ; après 3 erreurs, attendez quelques secondes.
+
+**« Ce compte n'a pas accès à l'espace administrateur ».**
+Votre compte a le rôle *Utilisateur* : utilisez l'onglet *Espace utilisateur*.
+
+**« Le fichier des comptes a été modifié en dehors de Konex ».**
+La signature n'est plus valide (modification à la main, fichier abîmé). Restaurez la version précédente du fichier depuis les sauvegardes du réseau, ou recréez le fichier (supprimez-le puis *Créer le premier administrateur*) et recréez les comptes.
+
+**Konex demande l'« ancien mot de passe de ce poste ».**
+C'est la première connexion depuis une ancienne version (ou après une réinitialisation) : saisissez le mot de passe utilisé jusqu'ici sur ce poste.
+
+**Le dossier Konex est inaccessible (réseau coupé).**
+Konex utilise la dernière copie connue du fichier des comptes pour la connexion et le signale ; les modifications de comptes attendront le retour du réseau.
 
 **« Ce dossier n'est pas un dossier Konex ».**
 Le fichier `marcom-equipe.json` est absent ou illisible : vérifiez que vous avez choisi le bon dossier réseau.
@@ -297,8 +377,8 @@ Elles sont stockées dans le navigateur : un nettoyage des données de navigatio
 **Un ancien fichier `.xls` n'est pas lu.**
 Enregistrez-le en `.xlsx` depuis Excel puis réimportez-le.
 
-**Puis-je utiliser Konex et Konex Admin sur le même poste ?**
-Oui : chaque édition a son propre espace de stockage chiffré.
+**Puis-je utiliser l'espace utilisateur et l'espace administrateur sur le même poste ?**
+Oui : chaque espace a son propre stockage chiffré. Un administrateur peut se connecter dans les deux.
 
 ---
 
@@ -307,7 +387,7 @@ Oui : chaque édition a son propre espace de stockage chiffré.
 Application monopage en HTML/CSS/JavaScript vanilla, sans build ni dépendance.
 
 ```
-Konex_admin-2.html
+Konex.html
 ├── <style>                  thème (vert MarCom), mise en page, composants
 ├── <body>                   menu latéral, recherche, grille, tiroir de fiche, modales, écran de verrouillage
 ├── <script id="mmbSrc">     module « Construction de la master file », chargé dans un iframe (srcdoc)
@@ -320,10 +400,11 @@ Konex_admin-2.html
     ├── Contrôles qualité (doublons, inversions, fautes, CMO, champs incohérents)
     ├── Statistiques (graphiques SVG, exports)
     ├── Base partagée (File System Access API) et contributions
-    └── Verrouillage, didacticiel, aide
+    ├── Rôle appliqué à la connexion (applyRole) : fonctions d'administration neutralisées dans l'espace utilisateur
+    └── Connexion, comptes (konex-utilisateurs.json), verrouillage, didacticiel, aide
 ```
 
-`Konex-2.html` est la même application compilée en édition standard (`EDITION='standard'`), sans le module de construction de la master file.
+Il n'y a plus de version « standard » compilée à part : le rôle est choisi à la connexion. Dans l'espace utilisateur, `applyRole(false)` remplace les fonctions réservées aux administrateurs par des fonctions vides, exactement comme le faisait l'ancien fichier standard.
 
 **Modifier l'outil** : éditez le fichier HTML dans un éditeur de texte, puis rouvrez-le dans le navigateur. Les données déjà enregistrées sont conservées (même nom de base IndexedDB). Testez toujours d'abord avec les données d'exemple.
 
@@ -333,7 +414,8 @@ Konex_admin-2.html
 
 | Version | Fichiers | Statut / nouveautés |
 |---|---|---|
-| **Konex 2** | `Konex-2.html`, `Konex_admin-2.html` | ✅ Version actuelle — onglet RMPM, champ VIP, statuts détaillés et taux de présence sur les fiches, copie de l'historique, filtres de listes par statut et présences minimum |
+| **Konex 3** | `Konex.html` | ✅ Version actuelle — un seul fichier, deux espaces de connexion (utilisateur / administrateur), comptes personnels dans `konex-utilisateurs.json` (empreintes PBKDF2, signatures ECDSA), gestion des utilisateurs, changement de mot de passe, reprise des données des anciennes versions, traductions anglaises complétées |
+| Konex 2 | `old/Konex-2.html`, `old/Konex_admin-2.html` | Archivée — onglet RMPM, champ VIP, statuts détaillés et taux de présence sur les fiches, copie de l'historique, filtres de listes par statut et présences minimum |
 | Konex 1 | `old/Konex.html`, `old/Konex_admin.html` | Archivée |
 | MarCom CRM admin v5 | `old/MarCom_CRM_admin-5.html` | Archivée |
 | MarCom CRM admin v4 | `old/MarCom_CRM_admin-4.html` | Archivée |
