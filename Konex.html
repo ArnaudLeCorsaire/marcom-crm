@@ -311,6 +311,7 @@ footer{text-align:center;font-size:12px;color:var(--muted);padding:0 16px 30px}
 .us-tmp{display:flex;align-items:center;gap:10px;justify-content:center;padding:6px 0 4px}
 .us-tmp code{font-size:20px;letter-spacing:.06em;background:var(--bg);padding:8px 14px;border-radius:10px;user-select:all}
 
+body.auth-local [data-view=users]{display:none!important}
 /* ---------- Petits écrans ---------- */
 @media (max-width:860px){
   .app{flex-direction:column}
@@ -9861,8 +9862,100 @@ async function usDel(id){
 Object.assign(L.en,{bFrOnly:'The “Import and check” module is only available in French for now.'});
 {const _sb=showBuilder;let warned=false;showBuilder=function(){if(lang==='en'&&!warned){warned=true;toast(t('bFrOnly'))}return _sb()}}
 
+/* =========================================================
+   MODE TEMPORAIRE — UN MOT DE PASSE PAR ESPACE (en attendant la mise en ligne)
+   AUTH_MODE='local' : l'espace utilisateur et l'espace administrateur ont chacun leur mot de passe,
+   propre à ce poste, comme dans les versions précédentes (les données existantes s'ouvrent avec leur mot de passe actuel).
+   Pour réactiver les comptes personnels (konex-utilisateurs.json, page Utilisateurs) : AUTH_MODE='accounts'.
+   ========================================================= */
+const AUTH_MODE='local';
+const LOCAL_DB={standard:'marcom-crm-standard',admin:'marcom-searching-tool'};
+async function hasVaultIn(name){
+  try{return await new Promise(res=>{const r=indexedDB.open(name,1);r.onupgradeneeded=()=>r.result.createObjectStore('kv');
+    r.onsuccess=()=>{const db=r.result;try{const q=db.transaction('kv').objectStore('kv').get('vault');q.onsuccess=()=>{db.close();res(!!q.result)};q.onerror=()=>{db.close();res(false)}}catch(_){db.close();res(false)}};
+    r.onerror=()=>res(false)})}catch(_){return false}
+}
+if(AUTH_MODE==='local'){
+  document.body.classList.add('auth-local');
+  VIEWS.splice(VIEWS.indexOf('users'),1);
+  LK.has={standard:false,admin:false};
+  lkMode=function(){return LK.has[LK.role]?'lunlock':'lsetup'};
+  lkRender=function(keepErr){
+    const m=lkMode(),A=LK.role==='admin',setup=m==='lsetup';
+    document.documentElement.lang=lang;
+    document.querySelectorAll('[data-lk-lang]').forEach(b=>b.classList.toggle('on',b.dataset.lkLang===lang));
+    const tabs=$('lkTabs');tabs.hidden=false;
+    tabs.innerHTML=[['standard','user','lkUser'],['admin','admin','lkAdmin']].map(([r,ic,k])=>`<button type="button" role="tab" aria-selected="${LK.role===r}" class="${LK.role===r?'on':''}" data-lk-role="${r}">${LK_ICON[ic]}<span>${t(k)}</span></button>`).join('');
+    $('lockCard').classList.toggle('adm',A);
+    $('lockTitle').textContent=setup?t('lockSetupTitle'):t(A?'lkTitleA':'lkTitleU');
+    $('lockSub').textContent=setup?t('lockSetupSub'):t('lockSub');
+    $('lkFields').innerHTML=setup?lkIn('lkPw','password',t('pwNew'),'new-password')+lkIn('lkPw2','password',t('pwConfirm'),'new-password'):lkIn('lkPw','password',t('pw'),'current-password');
+    const btn=$('lockBtn');btn.hidden=false;btn.disabled=false;btn.textContent=setup?t('create'):t('unlockBtn');
+    if(!keepErr)$('lockErr').textContent='';
+    $('lkAlt').innerHTML=setup?'':`<button type="button" class="lock-reset" data-lk="lreset">${esc(t('forgot'))}</button>`;
+    $('lkSrc').innerHTML='';
+    if(!(window.crypto&&crypto.subtle&&window.indexedDB)){$('lockErr').textContent=t('noCrypto');btn.disabled=true}
+    $('lock').hidden=false;
+    const f=$('lkFields').querySelector('input');if(f)setTimeout(()=>f.focus(),30);
+  };
+  $('lock').addEventListener('click',async e=>{
+    if(!e.target.closest('[data-lk="lreset"]'))return;
+    if(!confirm(t('resetConfirm')))return;
+    KV_NAME=LOCAL_DB[LK.role];await KV.init();
+    try{for(const k of await KV.keys())await KV.del(k)}catch(_){}
+    if(LK.role==='admin'){try{await bClear(BDB)}catch(_){}OLD_KEYS.forEach(removeLS)}
+    LK.has[LK.role]=false;lkRender();
+  });
+  $('lockForm').onsubmit=async e=>{
+    e.preventDefault();lkErr('');
+    const setup=lkMode()==='lsetup',pw=lkVal('lkPw');
+    if(setup){if(pw.length<8){lkErr('tooShort');return}if(pw!==lkVal('lkPw2')){lkErr('mismatch');return}}
+    if(!pw)return;
+    await lkBusy(true);
+    try{await enterLocal(pw)}catch(ex){console.warn(ex);lkErr('noCrypto')}finally{await lkBusy(false)}
+  };
+  /* le mot de passe est vérifié avant d'appliquer l'espace : on peut changer d'onglet après une erreur */
+  async function enterLocal(pw){
+    const admin=LK.role==='admin';
+    LSP=admin?'':'std:';KV_NAME=LOCAL_DB[LK.role];BDB='marcom_unified_builder';KV_OWNED=true;
+    await KV.init();
+    HAS_VAULT=!!(await KV.get('vault'));
+    if(!HAS_VAULT&&admin){const old=getJSON('crm-vault-v1',null);if(old){await KV.set('vault',old);removeLS('crm-vault-v1');HAS_VAULT=true}}
+    if(HAS_VAULT){const v=await KV.get('vault');try{await dec(v,await deriveKey(pw,fromB64(v.salt)))}catch(_){lkErr('wrongPw');$('lkPw').select();return}}
+    ME={id:'local',login:'',name:'',role:LK.role};
+    lsSet('konex-last',JSON.stringify({role:LK.role}));
+    applyRole(admin);setLS('crm-lang',lang);
+    await openVault(pw);
+  }
+  meLine=function(){const el=$('meLine');if(!el||!ME)return;el.innerHTML=`<b>${esc(t(ADMIN?'lkAdmin':'lkUser'))}</b>`};
+  myPwDialog=function(){
+    usModal(t('myPwT'),t('tooShort'),
+      usField('','',`<input id="mpCur" type="password" autocomplete="current-password" placeholder="${esc(t('myPwCur'))}">`)+
+      usField('','',`<input id="mpNew" type="password" autocomplete="new-password" placeholder="${esc(t('lkNewPw'))}">`)+
+      usField('','',`<input id="mpNew2" type="password" autocomplete="new-password" placeholder="${esc(t('lkPw2'))}">`),
+      t('usSave'),async()=>{
+        const cur=$('mpCur').value,pw=$('mpNew').value;
+        if(pw.length<8)return t('tooShort');
+        if(pw!==$('mpNew2').value)return t('mismatch');
+        if(pw===cur)return t('pwSame');
+        try{const v=await KV.get('vault');await dec(v,await deriveKey(cur,fromB64(v.salt)))}catch(_){return t('myPwBad')}
+        try{await saveChain;await rekeyLocal(cur,pw)}catch(e){console.warn(e);return t('storageErr')}
+        toast(t('myPwDone'));return true;
+      });
+  };
+}
+async function lkBootLocal(){
+  const l=lsGet('konex-lang');if(l==='en'||l==='fr')lang=l;
+  try{const last=JSON.parse(lsGet('konex-last')||'{}');LK.role=last.role==='admin'?'admin':'standard'}catch(_){}
+  LK.has.standard=await hasVaultIn(LOCAL_DB.standard);
+  LK.has.admin=await hasVaultIn(LOCAL_DB.admin)||!!lsGet('crm-vault-v1');
+  lkRender();
+  try{if(sessionStorage.getItem('marcom-idle')){sessionStorage.removeItem('marcom-idle');$('lockSub').textContent=t('idleLocked')}}catch(_){}
+}
+
 /* ---------- démarrage : écran de connexion ---------- */
 (async()=>{
+  if(AUTH_MODE==='local')return lkBootLocal();
   const l=lsGet('konex-lang');if(l==='en'||l==='fr')lang=l;
   try{const last=JSON.parse(lsGet('konex-last')||'{}');LK.role=last.role==='admin'?'admin':'standard'}catch(_){}
   if(LK.api){const d=await AB.get('dir');if(d&&typeof d.queryPermission==='function')LK.dir=d}

@@ -2,7 +2,9 @@
 
 **Konex** est l'outil de gestion des contacts et des événements de l'équipe MarCom : recherche de personnes, d'entreprises, de CMO et d'événements, construction de listes d'invités, statistiques de participation et contrôle qualité des données.
 
-Il tient entièrement dans **un seul fichier HTML** (`Konex.html`), fonctionne **100 % hors ligne**, sans serveur, sans installation et sans aucune bibliothèque externe. Chaque personne se connecte avec **son propre compte** (espace utilisateur ou espace administrateur) ; les comptes sont dans le fichier `konex-utilisateurs.json`, à la racine du dossier Konex, et les données sont **chiffrées** sur le poste de chaque utilisateur.
+Il tient entièrement dans **un seul fichier HTML** (`Konex.html`), fonctionne **100 % hors ligne**, sans serveur, sans installation et sans aucune bibliothèque externe. À l'ouverture, on choisit l'**espace utilisateur** ou l'**espace administrateur** et on saisit le mot de passe ; les données sont **chiffrées** sur le poste.
+
+> ⏳ **Mode actuel (avant la mise en ligne) : un mot de passe par espace et par poste**, comme dans les versions précédentes. Les comptes personnels (fichier `konex-utilisateurs.json`) sont prêts dans le code mais **désactivés** ; ils seront activés à la mise en ligne (voir [Comptes et connexion](#comptes-et-connexion)).
 
 ---
 
@@ -71,24 +73,16 @@ Chaque espace garde ses propres données sur le poste (`marcom-crm-standard` pou
 
 ## Démarrage rapide
 
-### Mise en place (une seule fois, par un administrateur)
-
-1. Placez `Konex.html` dans le **dossier Konex** sur le réseau (fourni par l'IT). Tous les utilisateurs doivent pouvoir **lire et écrire** dans ce dossier.
-2. Ouvrez `Konex.html` dans **Microsoft Edge** ou **Google Chrome**, choisissez l'onglet **Espace administrateur**, puis **Choisir le dossier Konex**.
-3. Le dossier ne contient pas encore de fichier des comptes : Konex propose **Créer le premier administrateur** (prénom et nom, identifiant, mot de passe). Le fichier `konex-utilisateurs.json` est créé à la racine du dossier.
-4. Dans **Administration › Utilisateurs**, créez un compte pour chaque personne. Konex affiche un **mot de passe provisoire** une seule fois : transmettez-le de vive voix ou par un canal sûr.
-
 ### Utilisateur
 
-1. Ouvrez `Konex.html` (depuis le dossier Konex) dans Edge ou Chrome.
-2. La première fois sur ce poste : **Choisir le dossier Konex** (le navigateur s'en souvient ensuite).
-3. Onglet **Espace utilisateur** : saisissez votre identifiant et le mot de passe provisoire, puis **choisissez votre propre mot de passe**.
-4. Suivez le **didacticiel** (≈ 3 min 30, 5 gestes essentiels sur des données fictives).
-5. **Données › Base partagée** : connectez le dossier de l'équipe avec la **clé d'équipe** transmise par un administrateur, puis chargez la dernière **édition publiée**.
+1. Ouvrez `Konex.html` dans **Microsoft Edge** ou **Google Chrome**.
+2. Onglet **Espace utilisateur**. La première fois sur ce poste, **choisissez un mot de passe** (au moins 8 caractères) : il chiffre les données de cet espace. Ensuite, saisissez-le à chaque ouverture.
+3. Suivez le **didacticiel** (≈ 3 min 30, 5 gestes essentiels sur des données fictives).
+4. **Données › Base partagée** : connectez le dossier de l'équipe avec la **clé d'équipe** transmise par un administrateur, puis chargez la dernière **édition publiée**.
 
 ### Administrateur
 
-1. Onglet **Espace administrateur**, connectez-vous.
+1. Onglet **Espace administrateur** : choisissez le mot de passe de cet espace la première fois, puis saisissez-le à chaque ouverture. Les données des anciennes versions s'ouvrent avec leur mot de passe actuel.
 2. **Administration › Importer et contrôler** : déposez les fichiers Excel/CSV (listes d'invités, réponses, présences) et, si disponible, le référentiel RMPM.
 3. Suivez les 6 étapes (voir [Construction de la master file](#construction-de-la-master-file-importer-et-contrôler)), puis **Envoyer dans Konex**.
 4. Traitez les **Contrôles qualité** du menu de gauche.
@@ -100,6 +94,22 @@ Chaque espace garde ses propres données sur le poste (`marcom-crm-standard` pou
 ---
 
 ## Comptes et connexion
+
+### Mode actuel : un mot de passe par espace
+
+En attendant la mise en ligne, Konex fonctionne comme les versions précédentes :
+
+- chaque espace (**utilisateur** / **administrateur**) a **son propre mot de passe, propre à ce poste** ;
+- il est choisi à la première ouverture de l'espace (au moins 8 caractères) et **chiffre les données de cet espace** (AES-GCM 256, PBKDF2-SHA-256) ;
+- **Mon mot de passe** (menu de gauche) permet de le changer : les données sont rechiffrées ;
+- **Mot de passe oublié ?** efface les données de cet espace sur ce poste pour repartir de zéro ;
+- les données des anciennes versions (`Konex-2.html`, `Konex_admin-2.html`…) s'ouvrent directement avec leur mot de passe actuel.
+
+⚠️ Dans ce mode, rien n'empêche quelqu'un d'ouvrir l'espace administrateur sur son poste en choisissant un mot de passe : la séparation des rôles n'arrivera qu'avec les comptes personnels ci-dessous.
+
+### À la mise en ligne : comptes personnels (prêts, désactivés)
+
+Pour les activer, remplacer `const AUTH_MODE='local';` par `const AUTH_MODE='accounts';` dans `Konex.html`. Konex demande alors de choisir le dossier Konex sur le réseau, crée `konex-utilisateurs.json` à sa racine avec le premier administrateur, et ajoute la page **Administration › Utilisateurs**. Ce qui suit décrit ce mode.
 
 ### Le fichier des comptes : `konex-utilisateurs.json`
 
@@ -414,7 +424,7 @@ Il n'y a plus de version « standard » compilée à part : le rôle est choisi 
 
 | Version | Fichiers | Statut / nouveautés |
 |---|---|---|
-| **Konex 3** | `Konex.html` | ✅ Version actuelle — un seul fichier, deux espaces de connexion (utilisateur / administrateur), comptes personnels dans `konex-utilisateurs.json` (empreintes PBKDF2, signatures ECDSA), gestion des utilisateurs, changement de mot de passe, reprise des données des anciennes versions, traductions anglaises complétées |
+| **Konex 3** | `Konex.html` | ✅ Version actuelle — un seul fichier, deux espaces de connexion (utilisateur / administrateur) avec un mot de passe par espace, changement de mot de passe, traductions anglaises complétées ; comptes personnels `konex-utilisateurs.json` prêts mais désactivés jusqu'à la mise en ligne |
 | Konex 2 | `old/Konex-2.html`, `old/Konex_admin-2.html` | Archivée — onglet RMPM, champ VIP, statuts détaillés et taux de présence sur les fiches, copie de l'historique, filtres de listes par statut et présences minimum |
 | Konex 1 | `old/Konex.html`, `old/Konex_admin.html` | Archivée |
 | MarCom CRM admin v5 | `old/MarCom_CRM_admin-5.html` | Archivée |
