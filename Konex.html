@@ -704,7 +704,7 @@ body.std [data-admin]{display:none!important}
 body.std .manage,body.std .flagbar .int,body.std .add-part-w,body.std [data-man-del],body.std .man-del,body.std [data-detach],body.std [data-addsub],body.std [data-man-rm]{display:none!important}
 body.tuto-on .side{z-index:70}
 .ed-tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(255,255,255,.16);border-radius:6px;padding:2px 6px;vertical-align:2px}
-.ed-tag:empty{display:none}
+.ed-tag:empty,.ed-tag[hidden]{display:none}
 .s-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;align-items:center}
 .s-tabs[hidden]{display:none}
 .s-tabs button{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff;border-radius:999px;padding:8px 16px;font-weight:600;font-size:14px;cursor:pointer;transition:background .15s}
@@ -8217,7 +8217,7 @@ applyStatic=function(){
   const ns=$('navSearch');if(ns)ns.classList.toggle('active',sv);
   const tb=$('sTabs');if(tb){tb.hidden=!SEARCH_V.includes(view);{const h0=tb.querySelector('.hint1');if(h0)h0.remove()}if(!tb.hidden&&!hintSeen('tabs'))tb.insertAdjacentHTML('beforeend',hint('tabs'));tb.querySelectorAll('[data-view]').forEach(b=>b.dataset.hk='tabs')}
   const nos=['import','stats','ask','help','share'].includes(view);$('searchWrap').hidden=nos;$('content').classList.toggle('no-search',nos);
-  const ed=$('edTag');if(ed){ed.textContent=t('edAdmin');ed.hidden=!ADMIN}
+  const ed=$('edTag');if(ed){ed.textContent=ADMIN?t('edAdmin'):'';ed.hidden=!ADMIN}
   askSgUpdate();shStatus(false);
 };
 async function shAfterUnlock(){
