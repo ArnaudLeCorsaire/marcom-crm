@@ -10322,12 +10322,73 @@ if(AUTH_MODE==='local'){
   };
 }
 
+/* ---------- Verrouillage fiable : effet immédiat, enregistrements terminés (15 s au plus), puis rechargement ---------- */
+Object.assign(L.fr,{locking:'Verrouillage…',lockingSub:'Enregistrement de vos données en cours.'});
+Object.assign(L.en,{locking:'Locking…',lockingSub:'Saving your data.'});
+let LOCKING=false;
+lockApp=async function(idle){
+  if(LOCKING)return;LOCKING=true;
+  try{ /* les données disparaissent tout de suite de l'écran */
+    $('lock').hidden=false;$('lkTabs').hidden=true;$('lkFields').innerHTML='';$('lkAlt').innerHTML='';$('lkSrc').innerHTML='';$('lockErr').textContent='';
+    $('lockTitle').textContent=t('locking');$('lockSub').textContent=t('lockingSub');$('lockBtn').hidden=true;closeDrawer();
+  }catch(_){}
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  try{await Promise.race([(async()=>{await flushBuilder();await saveChain})(),wait(15000)])}catch(_){}
+  try{if(idle)sessionStorage.setItem('marcom-idle','1')}catch(_){}
+  /* le module d'import est retiré avant de recharger : il ne peut plus bloquer la page avec « Quitter la page ? » */
+  try{if(BFRAME){BFRAME.remove();BFRAME=null;BWIN=null}}catch(_){}
+  location.reload();
+  setTimeout(()=>{try{location.replace(location.href.split('#')[0])}catch(_){}},2500);
+};
+
 /* ---------- Changer d'espace : on verrouille et on rouvre l'écran de connexion sur l'autre onglet ---------- */
 Object.assign(L.fr,{swToStd:'Vue standard',swToAdm:'Vue admin',swTitStd:'Passer à l’espace utilisateur (verrouille et demande son mot de passe)',swTitAdm:'Passer à l’espace administrateur (verrouille et demande son mot de passe)',swHint:sp=>`Saisissez le mot de passe de l’${sp}.`});
 Object.assign(L.en,{swToStd:'Standard view',swToAdm:'Admin view',swTitStd:'Switch to the user area (locks and asks for its password)',swTitAdm:'Switch to the admin area (locks and asks for its password)',swHint:sp=>`Enter the password of the ${sp}.`});
 function sessUI(){const b=$('btnSwitch');if(!b)return;$('swLbl').textContent=t(ADMIN?'swToStd':'swToAdm');b.title=t(ADMIN?'swTitStd':'swTitAdm');$('btnLock').title=t('lockNow')}
 {const _ml=meLine;meLine=function(){_ml();sessUI()}}
 $('btnSwitch').onclick=()=>{lsSet('konex-last',JSON.stringify({role:ADMIN?'standard':'admin'}));try{sessionStorage.setItem('konex-switch','1')}catch(_){}lockApp(false)};
+
+/* =========================================================
+   VERROUILLER ET CHANGER D'ESPACE SANS RECHARGER LA PAGE
+   (certains aperçus de fichiers interdisent le rechargement : le verrouillage ne doit pas en dépendre)
+   - les données déchiffrées sont retirées de la mémoire et de l'écran, puis l'écran de connexion réapparaît ;
+   - le passage admin ↔ standard est réversible : les fonctions d'administration sont mémorisées et rétablies.
+   ========================================================= */
+const ROLE_NAMES=["addPart", "addPartHTML", "afterPublish", "applyFieldFix", "applyFix", "applySafeSugg", "applySug", "applySwap", "bCheck", "bClear", "bCopyOld", "bDerive", "bExists", "bGet", "bOpen", "bSet", "buildSugg", "builderSrc", "bulkCase", "cmoDupsHTML", "coDupsHTML", "commitImport", "contribHTML", "crmDeliver", "crmSnapshot", "detectCmoDups", "detectCoDups", "detectCoDupsFast", "detectCoDupsRaw", "detectDups", "detectDupsRaw", "detectFieldIssues", "detectSwaps", "detectTypos", "doBackup", "doRestore", "downloadTemplate", "dupsHTML", "fieldsHTML", "flushBuilder", "ignoreCmo", "ignoreCo", "ignoreFieldFix", "ignoreFix", "ignorePair", "ignoreSug", "ignoreSwap", "importFiles", "importHTML", "importMaster", "importTable", "mergeCmo", "mergeCo", "mergeInto", "prepareBuilder", "rekeyAfterPublish", "removeAllSources", "removeManual", "removeSource", "resetBuilderFrame", "shAdminTake", "shAdopt", "shProv", "shPublish", "shUndo", "showBuilder", "suggHTML", "swapAll", "swapsHTML", "syncDeliver", "syncDiff", "typosHTML", "undoCmoIgnore", "undoCmoMerge", "undoCoIgnore", "undoCoMerge", "undoFieldFix", "undoFieldIgnore", "undoFix", "undoFixIgnore", "undoIgnore", "undoMerge", "undoSwapIgnore", "xFieldsHTML", "xWire", "renderNotes"];
+let ROLE_ORIG=null;
+/* fonctions globales (déclarations function) : propriétés de window — pas d'eval, interdit par la politique de sécurité */
+const gGet=n=>window[n], gSet=(n,v)=>{window[n]=v};
+{const _ar=applyRole;applyRole=function(admin){
+  if(!ROLE_ORIG){ROLE_ORIG={fns:{},edit:[L.fr.edit,L.en.edit],rows:FORMS.company.rows.slice(),nt:{...NEW_TYPE}};ROLE_NAMES.forEach(n=>{try{ROLE_ORIG.fns[n]=gGet(n)}catch(_){}})}
+  else{ROLE_NAMES.forEach(n=>{if(n in ROLE_ORIG.fns){try{gSet(n,ROLE_ORIG.fns[n])}catch(_){}}});
+    L.fr.edit=ROLE_ORIG.edit[0];L.en.edit=ROLE_ORIG.edit[1];FORMS.company.rows=ROLE_ORIG.rows.slice();
+    Object.keys(NEW_TYPE).forEach(k=>delete NEW_TYPE[k]);Object.assign(NEW_TYPE,ROLE_ORIG.nt)}
+  return _ar(admin);
+}}
+lockApp=async function(idle,toRole){
+  if(LOCKING)return;LOCKING=true;
+  try{$('lock').hidden=false;$('lkTabs').hidden=true;$('lkFields').innerHTML='';$('lkAlt').innerHTML='';$('lkSrc').innerHTML='';$('lockErr').textContent='';
+    $('lockTitle').textContent=t('locking');$('lockSub').textContent=t('lockingSub');$('lockBtn').hidden=true}catch(_){}
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  try{await Promise.race([(async()=>{await flushBuilder();await saveChain})(),wait(15000)])}catch(_){}
+  /* mémoire : plus de clé, plus de données déchiffrées */
+  try{if(BFRAME)BFRAME.remove()}catch(_){}
+  BFRAME=null;BWIN=null;BKEY=null;BSTATE='';
+  try{closeDrawer()}catch(_){}
+  CRYPTO_KEY=null;SALT=null;HAS_VAULT=false;
+  SHARE={dir:null,perm:false,key:null,busy:false,err:'',ed:null,mod:{},files:{},last:null,newer:null};SHADOW=null;
+  try{PHOTOS={};applyState({});ROWS=[];SOURCES=[];buildModel()}catch(_){}
+  try{grid.innerHTML='';$('stats').innerHTML='';$('drawer').innerHTML='';$('pfBar').innerHTML='';input.value='';$('bWrap').innerHTML='';$('bWrap').hidden=true}catch(_){}
+  MVO='';LUI.open=null;LUI.addOpen=false;
+  /* écran de connexion, sur le même espace ou sur l'autre */
+  LK.role=toRole||(ADMIN?'admin':'standard');lsSet('konex-last',JSON.stringify({role:LK.role}));
+  try{LK.has.standard=await hasVaultIn(LOCAL_DB.standard);LK.has.admin=await hasVaultIn(LOCAL_DB.admin)}catch(_){}
+  LOCKING=false;LAST_ACT=Date.now();
+  lkRender();
+  if(idle)$('lockSub').textContent=t('idleLocked');
+  else if(toRole&&LK.has[LK.role])$('lockSub').textContent=t('swHint')(t(LK.role==='admin'?'lkAdmin':'lkUser').toLowerCase());
+};
+$('btnSwitch').onclick=()=>lockApp(false,ADMIN?'standard':'admin');
 async function lkBootLocal(){
   const l=lsGet('konex-lang');if(l==='en'||l==='fr')lang=l;
   try{const last=JSON.parse(lsGet('konex-last')||'{}');LK.role=last.role==='admin'?'admin':'standard'}catch(_){}
