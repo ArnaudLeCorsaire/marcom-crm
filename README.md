@@ -103,6 +103,7 @@ En attendant la mise en ligne, Konex fonctionne comme les versions précédentes
 - chaque espace (**utilisateur** / **administrateur**) a **son propre mot de passe, propre à ce poste** ;
 - il est choisi à la première ouverture de l'espace (au moins 8 caractères) et **chiffre les données de cet espace** (AES-GCM 256, PBKDF2-SHA-256) ;
 - **Mon mot de passe** (menu de gauche) permet de le changer : les données sont rechiffrées ;
+- en haut du menu, sous le logo : l'espace actif, **Verrouiller** et **Vue standard / Vue admin**. Ce dernier bouton verrouille et rouvre l'écran de connexion sur l'autre espace, pour passer de l'un à l'autre en saisissant simplement son mot de passe (pratique pour tester ce que voit un utilisateur standard) ;
 - **Mot de passe oublié ?** efface les données de cet espace sur ce poste pour repartir de zéro ;
 - les données des anciennes versions (`Konex-2.html`, `Konex_admin-2.html`…) s'ouvrent directement avec leur mot de passe actuel.
 

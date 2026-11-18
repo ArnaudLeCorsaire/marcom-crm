@@ -366,6 +366,16 @@ body.auth-local [data-view=users]{display:none!important}
 .lbx-foot .lb-save{display:flex;gap:8px;flex:1;max-width:520px}
 .lbx-reset{border:0;background:none;color:var(--muted);font:inherit;font-size:13px;text-decoration:underline;cursor:pointer}
 @media (max-width:700px){.lbx-c{grid-template-columns:1fr 34px}.lbx-cl{grid-column:1/-1}.lbx-two{grid-template-columns:1fr}}
+
+/* ---------- Session : espace actif, changer d'espace, verrouiller (toujours visibles en haut du menu) ---------- */
+.sess{margin:0 0 6px;padding:8px;border-radius:12px;background:rgba(255,255,255,.08);display:flex;flex-direction:column;gap:8px}
+.sess .me-line{padding:0 2px}
+.sess-acts{display:flex;gap:6px}
+.sess-b{flex:1 1 auto;min-width:0;display:flex;align-items:center;justify-content:center;gap:5px;border:0;border-radius:9px;background:rgba(255,255,255,.12);color:#fff;font:inherit;font-size:11.5px;font-weight:600;padding:7px 6px;cursor:pointer;white-space:nowrap;overflow:hidden}
+.sess-b span{overflow:hidden;text-overflow:ellipsis}
+.sess-b svg{flex:none}
+.sess-b:hover{background:rgba(255,255,255,.22)}
+.sess-b.lk{flex:0 0 auto}
 /* ---------- Petits écrans ---------- */
 @media (max-width:860px){
   .app{flex-direction:column}
@@ -917,6 +927,13 @@ details.cq-sec>summary{cursor:pointer;list-style:none}details.cq-sec>summary::-w
       <span class="mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>
       <span class="txt"><span data-t="appName"></span> <span class="ed-tag" id="edTag"></span><small class="brand-by" data-t="byAuthor"></small></span>
     </div>
+    <div class="sess" id="sess">
+      <div class="me-line" id="meLine"></div>
+      <div class="sess-acts">
+        <button type="button" class="sess-b" id="btnSwitch"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4 3 8l4 4M3 8h13M17 20l4-4-4-4M21 16H8"/></svg><span id="swLbl"></span></button>
+        <button type="button" class="sess-b lk" id="btnLock"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span data-t="lockNow"></span></button>
+      </div>
+    </div>
     <div class="side-label" data-t="menu"></div>
     <nav class="nav">
       <button class="nav-item" id="navSearch" data-x="nav-search"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span class="lbl" data-t="navSearch"></span></button>
@@ -967,12 +984,10 @@ details.cq-sec>summary{cursor:pointer;list-style:none}details.cq-sec>summary::-w
         <button class="nav-item" data-admin="1" id="btnBackup"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg><span class="lbl" data-t="backup"></span><span class="nav-dot" id="bkDot" hidden></span></button>
         <button class="nav-item" data-admin="1" id="btnRestore"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3 2"/></svg><span class="lbl" data-t="restore"></span></button>
         <button class="nav-item" id="btnMyPw"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="4.5"/><path d="m10.7 12.3 9.8-9.8M17 6l3 3M14.5 8.5l2 2"/></svg><span class="lbl" data-t="navMyPw"></span></button>
-        <button class="nav-item" id="btnLock"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span class="lbl" data-t="lockNow"></span></button>
         <input type="file" id="fileData" accept=".xlsx,.xlsm,.csv,text/csv" multiple hidden>
         <input type="file" id="fileImport" accept=".json" hidden>
         <input type="file" id="fileRestore" accept=".json,application/json" hidden>
       </div>
-      <div class="me-line" id="meLine"></div>
       <div class="seg" role="group" aria-label="Langue / Language">
         <button data-lang="fr">FR</button><button data-lang="en">EN</button>
       </div>
@@ -10306,6 +10321,13 @@ if(AUTH_MODE==='local'){
       });
   };
 }
+
+/* ---------- Changer d'espace : on verrouille et on rouvre l'écran de connexion sur l'autre onglet ---------- */
+Object.assign(L.fr,{swToStd:'Vue standard',swToAdm:'Vue admin',swTitStd:'Passer à l’espace utilisateur (verrouille et demande son mot de passe)',swTitAdm:'Passer à l’espace administrateur (verrouille et demande son mot de passe)',swHint:sp=>`Saisissez le mot de passe de l’${sp}.`});
+Object.assign(L.en,{swToStd:'Standard view',swToAdm:'Admin view',swTitStd:'Switch to the user area (locks and asks for its password)',swTitAdm:'Switch to the admin area (locks and asks for its password)',swHint:sp=>`Enter the password of the ${sp}.`});
+function sessUI(){const b=$('btnSwitch');if(!b)return;$('swLbl').textContent=t(ADMIN?'swToStd':'swToAdm');b.title=t(ADMIN?'swTitStd':'swTitAdm');$('btnLock').title=t('lockNow')}
+{const _ml=meLine;meLine=function(){_ml();sessUI()}}
+$('btnSwitch').onclick=()=>{lsSet('konex-last',JSON.stringify({role:ADMIN?'standard':'admin'}));try{sessionStorage.setItem('konex-switch','1')}catch(_){}lockApp(false)};
 async function lkBootLocal(){
   const l=lsGet('konex-lang');if(l==='en'||l==='fr')lang=l;
   try{const last=JSON.parse(lsGet('konex-last')||'{}');LK.role=last.role==='admin'?'admin':'standard'}catch(_){}
@@ -10313,6 +10335,7 @@ async function lkBootLocal(){
   LK.has.admin=await hasVaultIn(LOCAL_DB.admin)||!!lsGet('crm-vault-v1');
   lkRender();
   try{if(sessionStorage.getItem('marcom-idle')){sessionStorage.removeItem('marcom-idle');$('lockSub').textContent=t('idleLocked')}}catch(_){}
+  try{if(sessionStorage.getItem('konex-switch')){sessionStorage.removeItem('konex-switch');if(LK.has[LK.role])$('lockSub').textContent=t('swHint')(t(LK.role==='admin'?'lkAdmin':'lkUser').toLowerCase())}}catch(_){}
 }
 
 /* ---------- démarrage : écran de connexion ---------- */
