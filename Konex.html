@@ -312,6 +312,60 @@ footer{text-align:center;font-size:12px;color:var(--muted);padding:0 16px 30px}
 .us-tmp code{font-size:20px;letter-spacing:.06em;background:var(--bg);padding:8px 14px;border-radius:10px;user-select:all}
 
 body.auth-local [data-view=users]{display:none!important}
+
+/* ---------- Filtres à choix multiples ---------- */
+.mv{position:relative;display:inline-block}
+.mv .cof-panel{left:0;right:auto}
+.pf-bar .mv .cof-btn{padding:6px 12px;border-radius:999px;font-size:13px}
+.pfl-gap{margin-left:10px}
+/* ---------- Construire une liste (version simplifiée) ---------- */
+.lbx{grid-column:1/-1;background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:20px 22px;position:relative;z-index:3;display:flex;flex-direction:column;gap:14px}
+.lbx-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.lbx-top h3{margin:0;font-size:18px;font-weight:650}
+.lbx-seg{display:flex;background:var(--bg);border-radius:12px;padding:4px;gap:4px}
+.lbx-seg button{border:0;background:none;border-radius:9px;padding:8px 16px;font:inherit;font-size:14px;font-weight:600;color:var(--muted);cursor:pointer}
+.lbx-seg button.on{background:#fff;color:var(--green-dark);box-shadow:0 1px 3px rgba(0,40,25,.12)}
+.lbx-saved{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12.5px;color:var(--muted)}
+.lbx-saved>span:first-child{font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:11.5px;margin-right:4px}
+.lbx-none{margin:0;color:var(--muted);font-size:14px;background:var(--bg);border-radius:12px;padding:14px 16px}
+.lbx-crits{display:flex;flex-direction:column;gap:10px}
+.lbx-c{display:grid;grid-template-columns:200px 1fr 34px;gap:12px;align-items:start;border:1px solid var(--line);border-radius:12px;padding:12px 12px 12px 14px;background:#FCFDFC}
+.lbx-cl{display:flex;align-items:center;gap:8px;min-height:40px;font-size:14px}
+.lbx-and{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:var(--bg);border-radius:6px;padding:2px 6px}
+.lbx-ic{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:9px;background:var(--green-light);color:var(--green-dark);flex:none}
+.lbx-cv{min-width:0}
+.lbx-cv select,.lbx-cv input[type=text],.lbx-cv input[type=number]{width:100%;border:1px solid #CBD5D0;border-radius:9px;padding:9px 11px;font:inherit;font-size:14px;background:#fff;color:var(--ink);outline:0}
+.lbx-cv input[type=number]{max-width:140px}
+.lbx-cv .lb-pick .cof-panel,.lbx-cv .mv .cof-panel{left:0;right:auto;width:min(560px,86vw)}
+.lbx-cv .mv,.lbx-cv .mv .cof-btn{display:flex;width:100%;max-width:none;justify-content:space-between;padding:9px 11px;font-size:14px;font-weight:500}
+.lbx-cv .mv{padding:0}
+.lbx-two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:8px}
+.lbx-sub{display:flex;gap:10px;align-items:flex-start;margin-top:8px}
+.lbx-sub>span{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;min-width:52px;padding-top:11px}
+.lbx-sub>div{flex:1;min-width:0}
+.lbx-chk{display:flex;align-items:center;gap:8px;min-height:40px;font-size:14px}
+.lbx-x{width:34px;height:34px;border-radius:9px;border:0;background:none;color:var(--muted);font-size:20px;cursor:pointer;margin-top:3px}
+.lbx-x:hover{background:var(--red-light);color:var(--red)}
+.lbx-qs{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.lbx-qs span{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-right:4px}
+.lbx-qs button{border:1px dashed var(--green);background:var(--green-light);color:var(--green-dark);border-radius:999px;padding:7px 14px;font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}
+.lbx-qs button:hover{background:#fff}
+.lbx-add{position:relative}
+.lbx-addb{border:1.5px dashed #B9C7C0;background:#fff;color:var(--green-dark);border-radius:12px;padding:11px 16px;font:inherit;font-size:14px;font-weight:650;cursor:pointer;width:100%;text-align:left}
+.lbx-addb:hover{border-color:var(--green);background:var(--green-light)}
+.lbx-menu{position:absolute;left:0;top:calc(100% + 6px);z-index:8;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 14px 36px rgba(0,40,25,.18);padding:8px;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:4px;width:min(760px,92vw)}
+.lbx-menu[hidden]{display:none}
+.lbx-menu button{display:flex;gap:10px;align-items:center;text-align:left;border:0;background:none;border-radius:10px;padding:9px 10px;font:inherit;cursor:pointer}
+.lbx-menu button:hover{background:var(--bg)}
+.lbx-menu b{display:block;font-size:14px}
+.lbx-menu small{display:block;font-size:12px;color:var(--muted)}
+.lbx-cnt{display:flex;flex-direction:column;gap:2px;min-width:0}
+.lbx-cnt b{font-size:18px}
+.lbx-sum{font-size:13px;color:var(--muted);line-height:1.4}
+.lbx-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:10px 18px;border-bottom:1px solid var(--line)}
+.lbx-foot .lb-save{display:flex;gap:8px;flex:1;max-width:520px}
+.lbx-reset{border:0;background:none;color:var(--muted);font:inherit;font-size:13px;text-decoration:underline;cursor:pointer}
+@media (max-width:700px){.lbx-c{grid-template-columns:1fr 34px}.lbx-cl{grid-column:1/-1}.lbx-two{grid-template-columns:1fr}}
 /* ---------- Petits écrans ---------- */
 @media (max-width:860px){
   .app{flex-direction:column}
@@ -2168,8 +2222,9 @@ function compute(){
         let d=sd.date?parseDate(sd.date):evDate, bad=sd.date?'':dateBad; if(d===null){ bad=clean(sd.date); d=''; }
         const raw=clean(row[ci]); let st;
         if(!raw) st=m.subEmpty||'none';
-        else { const n=stKey(raw); st=(m.subVals||{})[n]||null;
-          if(!st){ const k=sid+'|sub|'+n; (unknown[k]=unknown[k]||{sid,n,raw,count:0,file:f.name,sheet:sh.name,kind:'sub'}).count++; } }
+        else { const n=stKey(raw); st=(m.subVals||{})[n]||aliasIdx[n]||(YES.has(n)?'present':NO.has(n)?'none':null);
+          /* colonne de side event : une case remplie signifie « présent à ce side event », sauf statut reconnu ; la valeur reste à vérifier dans les contrôles */
+          if(!st){ const k=sid+'|sub|'+n; (unknown[k]=unknown[k]||{sid,n,raw,count:0,file:f.name,sheet:sh.name,kind:'sub'}).count++; st='present'; } }
         push(name,d,bad,clean(sd.lieu)||lieu,st,raw,clean(sh.rows[m.headerRow][ci]));
       }
     }
@@ -3229,7 +3284,7 @@ const ACT={
   undoAll:async()=>{ if(!await confirmBox('Annuler toutes les décisions ?',`Les ${S.log.length} décisions du journal seront annulées (fusions, corrections, validations). Les fichiers, correspondances et statuts sont conservés.`,'Tout annuler',true)) return; S.log=[]; changed('Toutes les décisions ont été annulées.'); },
   publish:async()=>{ if(!HOST) return; await busy('Envoi vers Konex…');
     try{ const rows=masterFlat(), st=[['Statut','Étape','Valeurs reconnues','Couleur'],...S.statuses.map(s=>[s.label,s.stage===0?'Automatique (non invité)':(STAGES.find(g=>g.v===s.stage)||{}).l||'',(s.aliases||[]).join(', '),'#'+hex6(s.color)])];
-      unbusy(); const ok=await HOST.publishMaster({rows,statuses:st,ref:C.ref&&C.ref.rows.length?{name:S.ref.name,at:S.ref.at,rows:C.ref.rows.map(r=>Object.assign({},r,{cmoL:splitCmo(r.cmo||'').map(l=>{const k=follow(C.D.cmoMap,norm(l));return C.cmoByKey[k]?C.cmoByKey[k].label:l;}).join(' / ')}))}:null,cmos:C.cmos.map(c=>({label:c.label,variants:Object.keys(c.variants||{}),meta:Object.assign({},c.meta)}))}); if(ok){ S.lastPublish=Date.now(); scheduleSave(); render(); } }
+      unbusy(); const ok=await HOST.publishMaster({rows,statuses:st,decisions:mmbDecisions(),ref:C.ref&&C.ref.rows.length?{name:S.ref.name,at:S.ref.at,rows:C.ref.rows.map(r=>Object.assign({},r,{cmoL:splitCmo(r.cmo||'').map(l=>{const k=follow(C.D.cmoMap,norm(l));return C.cmoByKey[k]?C.cmoByKey[k].label:l;}).join(' / ')}))}:null,cmos:C.cmos.map(c=>({label:c.label,variants:Object.keys(c.variants||{}),meta:Object.assign({},c.meta)}))}); if(ok){ S.lastPublish=Date.now(); scheduleSave(); render(); } }
     catch(e){ unbusy(); toast('Envoi impossible : '+(e.message||e),true); } },
   backup:()=>doBackup(), restore:()=>$('#restoreIn').click(), changePw:()=>changePassword(), wipe:()=>wipeAll(), lock:()=>lockNow(),
   cfAdd:async()=>{ if(await newCustomField('')) changed('Champ créé. Associez-le à une colonne dans la liste « Correspond à ».'); },
@@ -3320,32 +3375,58 @@ async function mmbSyncApply(evts){
   for(const ev of evts){ done.push(ev.id);
     try{
       if(ev.k==='edit'){ const p=findP(ev.m)||findP(Object.assign({},ev.m,{emails:[]}))||findP({full:((ev.f||{}).prenom||'')+' '+((ev.f||{}).nom||''),societe:(ev.m||{}).societe}); if(!p){ pend.add(ev.id); continue; }
-        for(const [f,v0] of Object.entries(ev.f||{})){ const v=clean(v0); if(v!==(p[f]||'')){ logAdd({t:'edit',key:p.anchor,field:f,value:v,label:`${fieldLabel(f)} corrigé dans la recherche : ${p.prenom} ${p.nom} → ${v||'(vide)'}`}); n++; } } }
+        for(const [f,v0] of Object.entries(ev.f||{})){ const v=clean(v0); if(v!==(p[f]||'')){ logAdd({src:ev.id,t:'edit',key:p.anchor,field:f,value:v,label:`${fieldLabel(f)} corrigé dans la recherche : ${p.prenom} ${p.nom} → ${v||'(vide)'}`}); n++; } } }
       else if(ev.k==='merge'||ev.k==='distinct'){ const a=findP(ev.a), b=findP(ev.b); if(!a||!b||a===b) continue;
-        logAdd({t:ev.k,keys:[a.anchor,b.anchor],label:(ev.k==='merge'?'Fiches fusionnées dans la recherche : ':'Personnes différentes (décidé dans la recherche) : ')+`${a.prenom} ${a.nom} / ${b.prenom} ${b.nom}`}); n++; }
-      else if(ev.k==='coMerge'){ const f=norm(ev.from), t=norm(ev.to); if(!f||!t||f===t) continue; logAdd({t:'coMerge',from:[f],to:t,label2:ev.to,label:`Entreprises harmonisées dans la recherche : ${ev.from} → ${ev.to}`}); n++; }
-      else if(ev.k==='coDistinct'){ logAdd({t:'coDistinct',keys:[norm(ev.a),norm(ev.b)],label:`Entreprises différentes (décidé dans la recherche) : ${ev.a} / ${ev.b}`}); n++; }
-      else if(ev.k==='cmoMerge'){ const f=cmoK(ev.from), t=cmoK(ev.to); if(!f||!t||f===t) continue; logAdd({t:'cmoMerge',from:[f],to:t,label2:ev.to,label:`CMO fusionnés dans la recherche : ${ev.from} → ${ev.to}`}); n++; }
+        logAdd({src:ev.id,t:ev.k,keys:[a.anchor,b.anchor],label:(ev.k==='merge'?'Fiches fusionnées dans la recherche : ':'Personnes différentes (décidé dans la recherche) : ')+`${a.prenom} ${a.nom} / ${b.prenom} ${b.nom}`}); n++; }
+      else if(ev.k==='coMerge'){ const f=norm(ev.from), t=norm(ev.to); if(!f||!t||f===t) continue; logAdd({src:ev.id,t:'coMerge',from:[f],to:t,label2:ev.to,label:`Entreprises harmonisées dans la recherche : ${ev.from} → ${ev.to}`}); n++; }
+      else if(ev.k==='coDistinct'){ logAdd({src:ev.id,t:'coDistinct',keys:[norm(ev.a),norm(ev.b)],label:`Entreprises différentes (décidé dans la recherche) : ${ev.a} / ${ev.b}`}); n++; }
+      else if(ev.k==='cmoMerge'){ const f=cmoK(ev.from), t=cmoK(ev.to); if(!f||!t||f===t) continue; logAdd({src:ev.id,t:'cmoMerge',from:[f],to:t,label2:ev.to,label:`CMO fusionnés dans la recherche : ${ev.from} → ${ev.to}`}); n++; }
       else if(ev.k==='evEdit'){ const e=C.evList.find(x=>norm(x.name)===norm(ev.m.name)&&(!ev.m.date||String(x.date)===String(ev.m.date)))||C.evList.find(x=>norm(x.name)===norm(ev.m.name)); if(!e) continue;
         const m=S.eventsMeta[e.id]=S.eventsMeta[e.id]||{}, f=ev.f||{}, was=`${e.name} (${fmtDate(e.date)||'sans date'})`;
         if(f.name) m.name=clean(f.name); if(f.date){ const d=parseDate(f.date); if(d) m.date=d; } if(f.lieu!=null&&f.lieu!=='') m.lieu=clean(f.lieu);
-        logAdd({t:'note',label:`Événement modifié dans la recherche : ${was} → ${[m.name||e.name,fmtDate(m.date||e.date),m.lieu||e.lieu].filter(Boolean).join(' · ')}`}); n++; }
+        logAdd({src:ev.id,t:'note',label:`Événement modifié dans la recherche : ${was} → ${[m.name||e.name,fmtDate(m.date||e.date),m.lieu||e.lieu].filter(Boolean).join(' · ')}`}); n++; }
       else if(ev.k==='cmoEdit'){ const k0=norm(ev.name), c=C.cmoByKey[follow(C.D.cmoMap,k0)]||C.cmos.find(c=>Object.keys(c.variants||{}).some(v=>norm(v)===k0));
-        if(!c){ const f=ev.f||{}; if('deleted' in f||'archived' in f){ S.cmoMeta=S.cmoMeta||{}; const kk=follow(C.D.cmoMap,k0), mm=S.cmoMeta[kk]=Object.assign({},S.cmoMeta[kk]); mm.deleted=!!f.deleted; mm.archived=f.archived||''; logAdd({t:'note',label:`CMO ${f.deleted?'supprimé':'rétabli'} dans la recherche : ${ev.name}`}); n++; } continue; }
+        if(!c){ const f=ev.f||{}; if('deleted' in f||'archived' in f){ S.cmoMeta=S.cmoMeta||{}; const kk=follow(C.D.cmoMap,k0), mm=S.cmoMeta[kk]=Object.assign({},S.cmoMeta[kk]); mm.deleted=!!f.deleted; mm.archived=f.archived||''; logAdd({src:ev.id,t:'note',label:`CMO ${f.deleted?'supprimé':'rétabli'} dans la recherche : ${ev.name}`}); n++; } continue; }
         const f=ev.f||{}; S.cmoMeta=S.cmoMeta||{}; const mm=S.cmoMeta[c.key]=Object.assign({},S.cmoMeta[c.key]);
-        ['email','phone','region','team','notes','prenom','nom'].forEach(x=>{ if(f[x]!=null&&f[x]!=='') mm[x]=x==='email'?clean(f[x]).toLowerCase():x==='notes'?String(f[x]):clean(f[x]); });
+        ['email','phone','region','team','notes','prenom','nom'].forEach(x=>{ if(f[x]!=null&&f[x]!=='') mm[x]=x==='email'?clean(f[x]).toLowerCase():x==='notes'?String(f[x]):clean(f[x]); }); if(f.extra&&typeof f.extra==='object') mm.extra=Object.assign({},f.extra);
         if('deleted' in f) mm.deleted=!!f.deleted; if('archived' in f) mm.archived=f.archived||'';
         const nl=clean(f.name||''); if(nl&&nl!==c.label){ const nk=norm(nl), tgt=C.cmoByKey[follow(C.D.cmoMap,nk)];
-          if(tgt&&tgt!==c){ moveCmoMeta([c.key],tgt.key); logAdd({t:'cmoMerge',from:[c.key],to:tgt.key,label2:tgt.label,label:`CMO fusionnés dans la recherche : ${c.label} → ${tgt.label}`}); }
-          else { if(nk!==c.key) moveCmoMeta([c.key],nk); logAdd({t:'cmoMerge',from:[c.key],to:nk,label2:nl,label:`CMO renommé dans la recherche : ${c.label} → ${nl}`}); } }
-        else logAdd({t:'note',label:`Fiche CMO complétée dans la recherche : ${c.label}`}); n++; }
-      else if(ev.k==='cmoDistinct'){ logAdd({t:'cmoDistinct',keys:[cmoK(ev.a),cmoK(ev.b)],label:`CMO différents (décidé dans la recherche) : ${ev.a} / ${ev.b}`}); n++; }
+          if(tgt&&tgt!==c){ moveCmoMeta([c.key],tgt.key); logAdd({src:ev.id,t:'cmoMerge',from:[c.key],to:tgt.key,label2:tgt.label,label:`CMO fusionnés dans la recherche : ${c.label} → ${tgt.label}`}); }
+          else { if(nk!==c.key) moveCmoMeta([c.key],nk); logAdd({src:ev.id,t:'cmoMerge',from:[c.key],to:nk,label2:nl,label:`CMO renommé dans la recherche : ${c.label} → ${nl}`}); } }
+        else logAdd({src:ev.id,t:'note',label:`Fiche CMO complétée dans la recherche : ${c.label}`}); n++; }
+      else if(ev.k==='undo'){ /* décision annulée dans Konex : on retire la décision correspondante ici */
+        const before=S.log.length; S.log=S.log.filter(e=>!((ev.ref&&e.src===ev.ref)||(ev.bref&&e.id===ev.bref))); if(S.log.length!==before) n++; }
+      else if(ev.k==='swapOk'){ const k='sw:'+norm(ev.pr)+'|'+norm(ev.no); if(!S.log.some(e=>e.t==='ack'&&(e.k===k||(e.ks||[]).includes(k)))){ logAdd({src:ev.id,t:'ack',k,label:`Nom/prénom laissés tels quels (décidé dans la recherche) : ${ev.pr} ${ev.no}`}); n++; } }
+      else if(ev.k==='cmoDistinct'){ logAdd({src:ev.id,t:'cmoDistinct',keys:[cmoK(ev.a),cmoK(ev.b)],label:`CMO différents (décidé dans la recherche) : ${ev.a} / ${ev.b}`}); n++; }
     }catch(_){}
   }
   if(n) changed(plural(n,'décision')+' reprise(s) depuis la recherche.');
   return done.filter(id=>!pend.has(id));
 }
 window.mmbSyncApply=mmbSyncApply;
+/* Décisions prises ici (et pas reçues de Konex) que Konex doit connaître pour ne pas reposer la même question :
+   personnes, entreprises et CMO distincts, noms laissés tels quels. Chaque décision garde son identifiant (bid) pour pouvoir être annulée depuis Konex. */
+function mmbDecisions(){
+  if(!S||!C) return {};
+  const pm=k=>{ const p=C.byKey[k]; return p?{emails:(p.emails||[]).slice(0,5),prenom:p.prenom,nom:p.nom,societe:p.societe}:null; };
+  const out={persons:[],cos:[],cmos:[],swapOk:[]};
+  const pairsOf=(ks,f,bid,dst)=>{ for(let i=0;i<ks.length;i++) for(let j=i+1;j<ks.length;j++){ const A=f(ks[i]),B=f(ks[j]); if(A&&B) dst.push([A,B,bid]); } };
+  S.log.forEach(e=>{ if(e.src) return;
+    if(e.t==='distinct') pairsOf(e.keys||[],pm,e.id,out.persons);
+    else if(e.t==='coDistinct') pairsOf(e.keys||[],k=>k,e.id,out.cos);
+    else if(e.t==='cmoDistinct') pairsOf(e.keys||[],k=>k,e.id,out.cmos);
+    else if(e.t==='ack') (e.ks||[e.k]).forEach(k=>{ k=String(k||'');
+      if(k.startsWith('sw:')){ const [pr,no]=k.slice(3).split('|'); if(pr&&no) out.swapOk.push([pr,no,e.id]); }
+      else if(k.startsWith('swp:')){ const [a,b]=k.slice(4).split('||'); const A=pm(a),B=pm(b); if(A&&B) out.persons.push([A,B,e.id]); } });
+  });
+  return out;
+}
+window.mmbDecisions=mmbDecisions;
+/* Envoi automatique dans Konex en quittant « Importer et contrôler », si la master file a changé depuis le dernier envoi
+   (seulement quand toutes les feuilles sont validées et qu'un premier envoi a déjà été fait) */
+window.mmbAutoPublish=async()=>{ if(!S||!C||!HOST||!S.lastPublish||!C.persons.length) return false;
+  if(!(S.changedAt>S.lastPublish)) return false; if((C.K.mapping||[]).length) return false;
+  await ACT.publish(); return true; };
 /* Instantané des saisies du CRM (fiches et participations ajoutées, informations complémentaires) : remplace le précédent */
 window.mmbCrmHash=()=>(S&&S.crm&&S.crm.hash)||'';
 window.mmbCrmApply=snap=>{ if(!S||!snap) return false; if(S.crm&&S.crm.hash===snap.hash) return true; S.crm=snap; changed(); return true; };
@@ -4867,7 +4948,7 @@ function buildModel(){
     const societe=coId?(coDisplay(coId)||pm.coName||soc):'';
     const phone=pm.phone!=null?pm.phone:(r.phone||''),linkedin=pm.linkedin!=null?pm.linkedin:(r.linkedin||'');
     const autoInt=isInternalName(societe)||emails.some(e=>/bnpparibas|bnpp\./.test(e.split('@')[1]||''));
-    const internal=autoInt, vip=false;
+    const internal=pm.internal!=null?!!pm.internal:(r.internal!=null?!!r.internal:autoInt), vip=pm.vip!=null?!!pm.vip:!!r.vip;
     const ext=Object.fromEntries(Object.entries({...(p.pext||{}),...(pm.extra||{})}).filter(([,v])=>v!=='')), U=unitsOf(p,hist), units=U.units, niUnits=U.ni, nReg=units.length, nRegd=units.filter(h=>h.cat==='registered').length, nAbs=units.filter(h=>h.cat==='absent').length;
     return{id:p.id,prenom,nom,full:(prenom+' '+nom).trim(),societe,poste,coId,rmpm:r.rmpm||'',refP:!!r.refP,phone,linkedin,internal,autoInt,vip,ext,nReg,nRegd,nAbs,units,niUnits,archived:pm.archived||null,
       fixed:!!(fix||pm.prenom!=null||pm.nom!=null),rows:p.rows,email,emails,hist,pres:units.filter(h=>h.present).length,
@@ -5142,7 +5223,7 @@ function buildEnts(){
   CMOS.forEach(c=>{if(c.team)g(c.team).cmos.add(c.id)});
   PEOPLE.forEach(p=>p.hist.forEach(h=>{const es=regEnts(h);h.ents=es;es.forEach(n=>{const o=g(n);o.people.add(p);o.ins++;if(h.present)o.pres++;(h.cmoKeys||[]).forEach(k=>o.cmos.add('cmo:'+k))})}));
   ENTS=Object.values(M).sort((a,b)=>cmp(a.name,b.name));ENTMAP=Object.fromEntries(ENTS.map(e=>[e.name,e]));
-  if(ENTSEL&&ENTSEL!=='__none'&&ENTSEL!=='__arch'&&!ENTMAP[ENTSEL])ENTSEL='';
+  if(ENTSEL&&ENTSEL!=='__none'&&ENTSEL!=='__arch'&&ENTSEL!=='__multi'&&!ENTMAP[ENTSEL])ENTSEL='';
 }
 function entBarHTML(){
   if(!ENTS.length)return '';
@@ -5948,22 +6029,28 @@ function personMatch(p){const r=(p.rows||[]).find(x=>!x.manual)||(p.rows||[])[0]
 function syncDiff(){
   if(!CRYPTO_KEY)return;
   const first=!SYNCED;SYNCED=SYNCED||{p:{},m:{},i:{},cm:{},ci:{},mm:{},mi:{}};
-  const add=e=>SYNCQ.push({id:'s'+Date.now().toString(36)+Math.random().toString(36).slice(2,7),at:new Date().toISOString(),...e});let n=0;
+  const add=e=>{const id='s'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);SYNCQ.push({id,at:new Date().toISOString(),...e});return{id}};let n=0;
   PEOPLE.forEach(p=>{const pm=PMETA[p.id]||{},fx=FIXES[p.id],ov={};
     SYNC_F.forEach(f=>{if(pm[f]!=null||(f==='societe'&&pm.coRef)||(fx&&(f==='prenom'||f==='nom')))ov[f]=p[f]||''});
     if(!Object.keys(ov).length)return;const prev=SYNCED.p[p.id]||{},ch={};
     Object.entries(ov).forEach(([f,v])=>{if(prev[f]!==v)ch[f]=v});
     if(Object.keys(ch).length){add({k:'edit',m:personMatch(p),f:ch});SYNCED.p[p.id]={...prev,...ch};n++}});
-  Object.entries(MERGES).forEach(([from,m])=>{if(SYNCED.m[from])return;add({k:'merge',a:idMatch(from),b:PMAP[resolve(m.to)]?personMatch(PMAP[resolve(m.to)]):idMatch(m.to)});SYNCED.m[from]=1;n++});
-  Object.keys(IGNORED).forEach(k=>{if(SYNCED.i[k])return;const[a,b]=k.split('||');add({k:'distinct',a:PMAP[a]?personMatch(PMAP[a]):idMatch(a),b:PMAP[b]?personMatch(PMAP[b]):idMatch(b)});SYNCED.i[k]=1;n++});
-  Object.entries(CMERGES).forEach(([k,m])=>{if(SYNCED.cm[k])return;add({k:'coMerge',from:m.from,to:m.into});SYNCED.cm[k]=1;n++});
-  Object.entries(CIGNORED).forEach(([k,m])=>{if(SYNCED.ci[k])return;add({k:'coDistinct',a:m.a,b:m.b});SYNCED.ci[k]=1;n++});
-  Object.entries(CMOMERGES).forEach(([k,m])=>{if(SYNCED.mm[k])return;add({k:'cmoMerge',from:m.from,to:m.into});SYNCED.mm[k]=1;n++});
-  Object.entries(CMOIGN).forEach(([k,m])=>{if(SYNCED.mi[k])return;add({k:'cmoDistinct',a:m.a,b:m.b});SYNCED.mi[k]=1;n++});
+  Object.entries(MERGES).forEach(([from,m])=>{if(SYNCED.m[from])return;SYNCED.m[from]=add({k:'merge',a:idMatch(from),b:PMAP[resolve(m.to)]?personMatch(PMAP[resolve(m.to)]):idMatch(m.to)});n++});
+  Object.keys(IGNORED).forEach(k=>{if(SYNCED.i[k])return;const[a,b]=k.split('||');SYNCED.i[k]=add({k:'distinct',a:PMAP[a]?personMatch(PMAP[a]):idMatch(a),b:PMAP[b]?personMatch(PMAP[b]):idMatch(b)});n++});
+  Object.entries(CMERGES).forEach(([k,m])=>{if(SYNCED.cm[k])return;SYNCED.cm[k]=add({k:'coMerge',from:m.from,to:m.into});n++});
+  Object.entries(CIGNORED).forEach(([k,m])=>{if(SYNCED.ci[k])return;SYNCED.ci[k]=add({k:'coDistinct',a:m.a,b:m.b});n++});
+  Object.entries(CMOMERGES).forEach(([k,m])=>{if(SYNCED.mm[k])return;SYNCED.mm[k]=add({k:'cmoMerge',from:m.from,to:m.into});n++});
+  Object.entries(CMOIGN).forEach(([k,m])=>{if(SYNCED.mi[k])return;SYNCED.mi[k]=add({k:'cmoDistinct',a:m.a,b:m.b});n++});
+  /* noms laissés tels quels (inversion refusée) */
+  SYNCED.sw=SYNCED.sw||{};
+  Object.entries(SWAP_IGNORED).forEach(([id,v])=>{if(SYNCED.sw[id])return;const p=PEOPLE.find(x=>x.id===id);if(!p)return;SYNCED.sw[id]=add({k:'swapOk',pr:p.prenom,no:p.nom});n++});
+  /* décisions annulées dans Konex : on prévient « Importer et contrôler » (ref = décision envoyée d'ici, bref = décision reçue de là-bas) */
+  [[SYNCED.m,MERGES],[SYNCED.i,IGNORED],[SYNCED.cm,CMERGES],[SYNCED.ci,CIGNORED],[SYNCED.mm,CMOMERGES],[SYNCED.mi,CMOIGN],[SYNCED.sw,SWAP_IGNORED]].forEach(([done,cur])=>{
+    Object.keys(done).forEach(k=>{if(cur[k])return;const v=done[k];if(v&&v.id)add({k:'undo',ref:v.id});else if(v&&v.bid)add({k:'undo',bref:v.bid});delete done[k];n++})});
   SYNCED.e=SYNCED.e||{};SYNCED.c=SYNCED.c||{};
   EVSTATS.forEach(s=>{const e=s.e,m=EVMETA[e.id];if(!m||e.manual)return;const f={};if(m.name)f.name=e.name;if(m.date)f.date=e.date;if(m.lieu)f.lieu=e.lieu;if(!Object.keys(f).length)return;
     const sig=JSON.stringify(f);if(SYNCED.e[e.id]===sig)return;add({k:'evEdit',m:{name:e.raw,date:e.rawDate},f});SYNCED.e[e.id]=sig;n++});
-  CMOS.forEach(c=>{const m=CMOMETA[c.key]||{},f={};['email','phone','region','team','prenom','nom'].forEach(x=>{if(m[x])f[x]=m[x]});{const ns=(NOTES[c.id]||[]).slice().sort((a,b)=>String(a.date).localeCompare(String(b.date)));if(ns.length)f.notes=ns.map(fmtNote).join(' | ')}if(m.name&&m.name!==c.rawName)f.name=m.name;if(m.stHist){f.deleted=0;f.archived=m.archived?'Archivé'+(m.archived.reason?' – '+m.archived.reason:''):''}if(!Object.keys(f).length)return;
+  CMOS.forEach(c=>{const m=CMOMETA[c.key]||{},f={};['email','phone','region','team','prenom','nom'].forEach(x=>{if(m[x])f[x]=m[x]});if(m.extra&&Object.keys(m.extra).length)f.extra=m.extra;{const ns=(NOTES[c.id]||[]).slice().sort((a,b)=>String(a.date).localeCompare(String(b.date)));if(ns.length)f.notes=ns.map(fmtNote).join(' | ')}if(m.name&&m.name!==c.rawName)f.name=m.name;if(m.stHist){f.deleted=0;f.archived=m.archived?'Archivé'+(m.archived.reason?' – '+m.archived.reason:''):''}if(!Object.keys(f).length)return;
     const sig=JSON.stringify(f);if(SYNCED.c[c.key]===sig)return;add({k:'cmoEdit',name:c.rawName,f});SYNCED.c[c.key]=sig;n++});
   Object.entries(CMOMETA).forEach(([k,m])=>{if(!m||!m.deleted)return;const f={deleted:1,archived:''},sig=JSON.stringify(f);if(SYNCED.c[k]===sig)return;add({k:'cmoEdit',name:m.rawName||k,f});SYNCED.c[k]=sig;n++});
   if(n||first)saveVault(true);
@@ -5984,7 +6071,8 @@ function crmSnapshot(){
   PEOPLE.forEach(p=>{const pm=PMETA[p.id]||{},r=(p.rows||[]).find(x=>!x.manual)||{},set={};
     if(pm.email)set.email=p.email;
     if(p.phone)set['Téléphone']=p.phone; if(p.linkedin)set['LinkedIn']=p.linkedin;
-    if(r.vip)set['VIP']='Oui'; if(p.internal||r.internal)set['Interne']=p.internal?'Oui':'';
+    if(p.vip)set['VIP']='Oui'; else if(pm.vip===false&&r.vip)set['VIP']='Non';
+    if(p.internal&&!p.autoInt)set['Interne']='Oui'; else if(!p.internal&&p.autoInt)set['Interne']='Non';
     Object.entries(pm.extra||{}).forEach(([k,v])=>{set[k]=v});
     const ns=(NOTES[p.id]||[]).slice().sort((a,b)=>String(a.date).localeCompare(String(b.date)));if(ns.length)set['Notes']=ns.map(fmtNote).join(' | ');
     if(p.archived)set['Statut fiche']='Archivé'+(p.archived.reason?' – '+p.archived.reason:'');
@@ -6043,14 +6131,14 @@ window.MARCOM_HOST={
   activity(){LAST_ACT=Date.now()},
   lock(){lockApp(false)},
   builderReady(w){if(BKEY&&w.mmbEnter)w.mmbEnter(BKEY)},
-  async publishMaster({rows,statuses,cmos,ref}){
+  async publishMaster({rows,statuses,cmos,ref,decisions}){
     if(ref&&ref.rows)REFDATA=ref;
     const ms=findMasterSheet([{sheet:'Master file',rows}]);
     if(!ms){toast(t('sheetErrors')('master file'),true);return false}
     const res=importMaster(ms.sh.rows,ms.hi,{sheet:'Statuts',rows:statuses});
     if(res.error){toast(res.error,true);return false}
     const ok=commitImport([{name:'MarCom — master file',sheet:'',ext:'builder',...res}],[]);
-    if(ok){rekeyAfterPublish(cmos||[]);const src=SOURCES.find(x=>x.name==='MarCom — master file');if(src)afterPublish(src.id);toast(t('pubDone')(PEOPLE.length,TOPS.length))}
+    if(ok){rekeyAfterPublish(cmos||[]);const src=SOURCES.find(x=>x.name==='MarCom — master file');if(src)afterPublish(src.id);applyBuilderDecisions(decisions);toast(t('pubDone')(PEOPLE.length,TOPS.length))}
     return !!ok;
   }
 };
@@ -6086,7 +6174,7 @@ function renderCore(){
   if(view==='builder'){showBuilder();return}
   $('bWrap').hidden=true;
   const tk=strip(input.value.trim()).split(/\s+/).filter(Boolean);
-  {const pb=$('pfBar'),on=view==='people'||view==='emails',onE=view==='cmos'&&(ENTS.length||CMOS.some(c=>!c.team)),onC=view==='companies'&&!!REFDATA;pb.hidden=!(on||onE||onC);if(on)pb.innerHTML=pfBarHTML();else if(onE)pb.innerHTML=entBarHTML();else if(onC)pb.innerHTML=cfBarHTML()}
+  {const pb=$('pfBar'),on=view==='people'||view==='emails',onE=view==='cmos'&&(ENTS.length||CMOS.some(c=>!c.team)||CMOS.some(c=>c.region)),onC=view==='companies'&&!!REFDATA;pb.hidden=!(on||onE||onC);if(on)pb.innerHTML=pfBarHTML();else if(onE)pb.innerHTML=entBarHTML();else if(onC)pb.innerHTML=cfBarHTML()}
   askSgUpdate();
   {const ab=$('addBtn'),k=NEW_TYPE[view]&&t('addNew')[view];ab.hidden=!k;if(k)ab.textContent='+ '+k}
   $('clear').classList.toggle('show',!!input.value);
@@ -6111,12 +6199,12 @@ function renderCore(){
   if(view==='people'){const l=PEOPLE.filter(pfOk).filter(rmq?personRmpm:match(o=>o.hay)).sort(sorter);n=l.length;html=pagedL(l,(p,i)=>personCard(p,tk,i))}
   else if(view==='emails'){const l=PEOPLE.filter(p=>p.email).filter(pfOk).filter(match(o=>o.ehay)).sort(sorter);n=l.length;html=pagedL(l,(p,i)=>emailCard(p,tk,i))}
   else if(view==='companies'){const l=COMPANIES.filter(rmq?coRmpm:match(o=>o.hay)).filter(c=>rmq||!REFDATA||cfOk(c)).sort(sorter);n=l.length;html=pagedL(l,(c,i)=>companyCard(c,tk,i))}
-  else if(view==='cmos'){const l=CMOS.filter(c=>ENTSEL==='__arch'?c.archived:!c.archived).filter(c=>!ENTSEL||ENTSEL==='__arch'||(ENTSEL==='__none'?!c.team:ENTMAP[ENTSEL]&&ENTMAP[ENTSEL].cmos.has(c.id))).filter(match(o=>o.hay)).sort(sorter);n=l.length;
+  else if(view==='cmos'){const l=CMOS.filter(c=>ENTSEL==='__arch'?c.archived:!c.archived).filter(c=>!ENTSEL||ENTSEL==='__arch'||ENTSEL==='__multi'||(ENTSEL==='__none'?!c.team:ENTMAP[ENTSEL]&&ENTMAP[ENTSEL].cmos.has(c.id))).filter(c=>typeof cmoMultiOk!=='function'||cmoMultiOk(c)).filter(match(o=>o.hay)).sort(sorter);n=l.length;
     if(getSort(view)==='entity'){let cur=null;l.forEach((c,i)=>{const e=c.team||t('entNone');if(e!==cur){cur=e;const E=ENTMAP[c.team];html+=`<div class="grid-sec">${esc(e)}${E?` <span>${t('entSub')(E.cmos.size,E.people.size)}</span>`:''}</div>`}html+=cmoCard(c,tk,i)})}
     else html=pagedL(l,(c,i)=>cmoCard(c,tk,i));
     if(n)html=entPanelHTML()+html}
   else{const l=TOPS.filter(s=>yearOk(s.e)).filter(match(o=>o.hay)).sort(sorter);n=l.length;html=pagedL(l,(s,i)=>eventTile(s,tk,i))}
-  $('listTitle').textContent=tk.length||(view==='events'&&YSEL!=null)||((view==='people'||view==='emails')&&(PF.f.length||PF.k))||(view==='cmos'&&ENTSEL)?t('results')(n):t(view).all;
+  $('listTitle').textContent=tk.length||(view==='events'&&YSEL!=null)||((view==='people'||view==='emails')&&(PF.f.length||PF.k))||(view==='cmos'&&(ENTSEL||(typeof REGSEL!=='undefined'&&REGSEL.length)))?t('results')(n):t(view).all;
   grid.innerHTML=n?html:`<div class="empty"><b>${t('noResult')}</b>${t('noResultHint')}</div>`;
 }
 function refreshAll(){applyStatic();renderStats();render();if(stack.length)drawDrawer(true)}
@@ -7057,6 +7145,8 @@ function catOf(r){
 const catOk=(f,x)=>!!f[x.cat||(x.present?'present':'absent')];
 const PRESENT_RE=/^(present|presente|presents|attended|participe|participee|venu|venue|aanwezig|checked in)$/;
 const REFUSE_RE=/refus|declin|excus|weiger|regret|desinscri|unregist/;
+/* statut de l'étape « Jour J » qui n'est pas une absence = présence, quel que soit son libellé (« Présent(e) », « Venu », « Participé au cocktail »…) */
+const ABSENT_DAY_RE=/absent|no show|noshow|non venu|pas venu|afwezig|not attended|did not attend|excus|refus|declin|annul|cancel/;
 /* colonnes écrites dans la master file à partir des saisies du CRM : elles restent gérées dans le CRM (pas de doublon au retour) */
 const CRM_ONLY=new Set(['notes','statut fiche','secteur','site web','adresse','description societe','groupe referentiel','top 1000 500','strategic client','core 75','gsc','gnpc','cash management sector','rmpm client coverage','coverage pilot country','cm pilot country','pilot cmo','regional cash mgt sales','rcms','rcms pole en charge']);
 const CRM_EVC=new Set(["type d evenement",'evenement principal',"description de l evenement"]);
@@ -7101,7 +7191,7 @@ function importMaster(rows,hi,statusSheet){
       if(none){ out.push({prenom:g(cli.prenom),nom,email:isEmail(em)?em.toLowerCase():em,societe:g(cli.societe),poste:g(cli.poste),event:ev,date:dt.d,dateEnd:dt.e,lieu:g(b.lieu)||bdef[b.code].lieu,
         none:true,present:false,status:st,pext:px,others,evId:multi?key+' @'+(dt.d||'sans-date'):key,...cliX}); return; }
       const sm=SM[normName(st)]||{}, ext={}; b.ext.forEach(([h,i])=>{ const v=g(i); if(v) ext[h]=v; });
-      const present=PRESENT_RE.test(normName(st)), reg=present||!(/^invitation$/.test(sm.stage||'')||/^invite/.test(normName(st))||REFUSE_RE.test(normName(st)));
+      const present=PRESENT_RE.test(normName(st))||(/^jour j|presence|day of/.test(sm.stage||'')&&!ABSENT_DAY_RE.test(normName(st))), reg=present||!(/^invitation$/.test(sm.stage||'')||/^invite/.test(normName(st))||REFUSE_RE.test(normName(st)));
       const row={prenom:g(cli.prenom),nom,email:isEmail(em)?em.toLowerCase():em,societe:g(cli.societe),poste:g(cli.poste),event:ev,date:dt.d,dateEnd:dt.e,lieu:g(b.lieu),
         present,reg,status:st,stage:sm.stage||'',stColor:sm.col||'',cmo:g(b.cmo),ext,pext:px,others,evId:multi?key+' @'+(dt.d||'sans-date'):key,...cliX};
       if(isEmail(row.poste)||(row.email&&!isEmail(row.email))||isEmail(row.societe))row.raw=r.map(x=>String(x??'').trim());
@@ -7680,7 +7770,7 @@ grid.addEventListener('drop',e=>{const d=e.target.closest('.drop');if(d){e.preve
 $('overlay').onclick=closeDrawer;
 document.addEventListener('focusin',e=>{if(e.target.classList&&e.target.classList.contains('ff-other')){const rb=e.target.closest('.ff-opt').querySelector('input[type=radio]');if(rb)rb.checked=true}});
 document.addEventListener('mousedown',e=>{
-  if(LUI.open&&!(e.target.closest&&e.target.closest('.lb-pick'))){LUI.open=null;document.querySelectorAll('.lb-pick .cof-panel').forEach(p=>p.hidden=true)}
+  if(LUI.open&&e.target.isConnected&&!(e.target.closest&&e.target.closest('.lb-pick'))){LUI.open=null;document.querySelectorAll('.lb-pick .cof-panel').forEach(p=>p.hidden=true)}
   if(yOpen&&!(e.target.closest&&e.target.closest('#yearWrap'))){yOpen=false;const pn=document.querySelector('.yf-panel');if(pn)pn.hidden=true}
 });
 document.addEventListener('mousedown',e=>{const top=stack[stack.length-1];
@@ -9152,6 +9242,278 @@ const _shs25=shSharedState;shSharedState=function(){return srcScrub(JSON.parse(J
 const _as25=applyState;applyState=function(s){if(!ADMIN&&s)s=srcScrub(JSON.parse(JSON.stringify(s)));return _as25(s)};
 
 
+
+/* =========================================================
+   FILTRES À CHOIX MULTIPLES ET CRÉATION DE LISTE SIMPLIFIÉE
+   - un même filtre accepte plusieurs valeurs (régions de CMO, entités, classements, valeurs d'un champ…) :
+     une fiche est retenue si elle correspond à AU MOINS UNE des valeurs choisies ;
+   - des filtres différents se combinent (ET) ;
+   - « Construire une liste » : on part de toute la base et on ajoute seulement les critères utiles.
+   ========================================================= */
+Object.assign(L.fr,{mvN:n=>`${n} sélectionnés`,mvAll:'Tous',mvSearch:'Rechercher…',regL:'Région',regNone:'Sans région',emptyV:'(vide)',
+  lbxQ:'Qui voulez-vous cibler ?',lbxClients:'Des clients',lbxCmos:'Des CMO',
+  lbxNone:n=>`Pas encore de critère : la liste contient toute la base (${n}). Ajoutez un critère pour l'affiner.`,
+  lbxAdd:'+ Ajouter un critère',lbxStart:'Idées pour commencer',lbxRm:'Retirer ce critère',lbxSaved:'Mes listes',lbxSaveOpen:'Enregistrer',lbxReset:'Tout effacer',
+  lbxStatusL:'Statut',lbxAnd:'et',lbxSaveT:'Enregistrer cette liste',
+  lbxC:{ev:['Événements','Invités, présents ou absents'],co:['Entreprises','Une ou plusieurs entreprises'],cmo:['CMO','Clients suivis par ces CMO'],
+    reg:['Région du CMO','Une ou plusieurs régions'],ent:['Entité','Une ou plusieurs entités'],rk:['Classement','Top 500, Top 1000, Strategic…'],
+    rd:['Donnée du référentiel','Pays, secteur, couverture…'],kind:['Type de contact','Externes, internes ou CMO'],poste:['Fonction','La fonction contient…'],
+    min:['Présences minimum','Venus au moins N fois'],cf:['Champ personnalisé','Une ou plusieurs valeurs'],email:['Avec e-mail','Seulement les contacts joignables']},
+  lbxQs:{present:'Les présents d’un événement',absent:'Les absents d’un événement',cmo:'Les clients d’un CMO',reg:'Les clients d’une région',rk:'Un classement (Top 500…)',co:'Les contacts d’une entreprise'}});
+Object.assign(L.en,{mvN:n=>`${n} selected`,mvAll:'All',mvSearch:'Search…',regL:'Region',regNone:'No region',emptyV:'(empty)',
+  lbxQ:'Who do you want to reach?',lbxClients:'Clients',lbxCmos:'CMOs',
+  lbxNone:n=>`No criteria yet: the list holds the whole base (${n}). Add a criterion to narrow it down.`,
+  lbxAdd:'+ Add a criterion',lbxStart:'Ideas to get started',lbxRm:'Remove this criterion',lbxSaved:'My lists',lbxSaveOpen:'Save',lbxReset:'Clear all',
+  lbxStatusL:'Status',lbxAnd:'and',lbxSaveT:'Save this list',
+  lbxC:{ev:['Events','Invited, attended or absent'],co:['Companies','One or more companies'],cmo:['CMOs','Clients followed by these CMOs'],
+    reg:['CMO region','One or more regions'],ent:['Entity','One or more entities'],rk:['Ranking','Top 500, Top 1000, Strategic…'],
+    rd:['Referential field','Country, sector, coverage…'],kind:['Contact type','External, internal or CMO'],poste:['Job title','Job title contains…'],
+    min:['Minimum attendances','Came at least N times'],cf:['Custom field','One or more values'],email:['With email','Only reachable contacts']},
+  lbxQs:{present:'Attendees of an event',absent:'No-shows of an event',cmo:'A CMO’s clients',reg:'Clients of a region',rk:'A ranking (Top 500…)',co:'Contacts of a company'}});
+
+/* ---------- composant : liste déroulante à cases à cocher ---------- */
+let MVO='';const MVQ={},MVSET={};
+function mvHTML(id,opts,sel,allLbl,label){
+  sel=sel||[];const name=v=>{const o=opts.find(x=>x[0]===v);return o?o[1]:v};
+  const txt=!sel.length?allLbl:sel.length===1?name(sel[0]):t('mvN')(sel.length);
+  return `<div class="mv" data-mv="${esc(id)}"><button type="button" class="cof-btn${sel.length?' on':''}" data-mv-toggle="${esc(id)}" title="${esc(sel.map(name).join(', '))}"><span>${label?esc(label)+CL():''}${esc(txt)}</span> ▾</button>
+    <div class="cof-panel"${MVO===id?'':' hidden'}>${opts.length>7?`<input type="search" class="cof-q" data-mv-q="${esc(id)}" placeholder="${esc(t('mvSearch'))}" value="${esc(MVQ[id]||'')}">`:''}
+    <div class="cof-acts"><button type="button" data-mv-none="${esc(id)}">${t('selNone')}</button></div>
+    <div class="cof-list">${opts.map(([v,l,n],i)=>{const q=strip(MVQ[id]||'');return `<div class="cof-row" data-name="${esc(strip(l))}"${q&&!strip(l).includes(q)?' hidden':''}><input type="checkbox" id="mv-${esc(id)}-${i}" data-mv-item="${esc(id)}" value="${esc(v)}"${sel.includes(v)?' checked':''}><label for="mv-${esc(id)}-${i}">${esc(l)}</label>${n!=null?`<span class="cnt">${n}</span>`:''}<button type="button" class="cof-only" data-mv-only="${esc(id)}" value="${esc(v)}">${t('only')}</button></div>`}).join('')}</div></div></div>`;
+}
+const mvSet=(id,sel)=>{const f=MVSET[id];if(f){f(sel);render()}};
+document.addEventListener('click',e=>{
+  const tg=e.target.closest&&e.target.closest('[data-mv-toggle]');
+  if(tg){e.preventDefault();e.stopPropagation();const id=tg.dataset.mvToggle;MVO=MVO===id?'':id;render();if(MVO){const q=document.querySelector(`[data-mv-q="${CSS.escape(id)}"]`);if(q)q.focus()}return}
+  const no=e.target.closest&&e.target.closest('[data-mv-none]');if(no){e.preventDefault();e.stopPropagation();mvSet(no.dataset.mvNone,[]);return}
+  const on=e.target.closest&&e.target.closest('[data-mv-only]');if(on){e.preventDefault();e.stopPropagation();MVO=on.dataset.mvOnly;mvSet(on.dataset.mvOnly,[on.value]);return}
+  if(MVO&&e.target.isConnected&&!(e.target.closest&&e.target.closest('.mv'))){MVO='';document.querySelectorAll('.mv .cof-panel').forEach(p=>p.hidden=true)}
+},true);
+document.addEventListener('change',e=>{const it=e.target.closest&&e.target.closest('[data-mv-item]');if(!it)return;e.stopPropagation();
+  const id=it.dataset.mvItem,cur=[...document.querySelectorAll(`[data-mv-item="${CSS.escape(id)}"]`)].filter(x=>x.checked).map(x=>x.value);MVO=id;mvSet(id,cur)},true);
+document.addEventListener('input',e=>{const q=e.target.closest&&e.target.closest('[data-mv-q]');if(!q)return;e.stopPropagation();const id=q.dataset.mvQ;MVQ[id]=q.value;const s=strip(q.value);
+  q.closest('.cof-panel').querySelectorAll('.cof-row').forEach(r=>r.hidden=!!s&&!r.dataset.name.includes(s))},true);
+const cntOpts=(list,fn,emptyLbl)=>{const m={};list.forEach(x=>{const v=fn(x);(Array.isArray(v)?v:[v]).forEach(y=>{const k=y==null||y===''?'__empty':String(y);m[k]=(m[k]||0)+1})});
+  return Object.entries(m).sort((a,b)=>(a[0]==='__empty')-(b[0]==='__empty')||cmp(a[0],b[0])).map(([v,n])=>[v,v==='__empty'?(emptyLbl||t('emptyV')):v,n])};
+
+/* ---------- onglets Personnes et Entreprises : classements en « OU », valeurs multiples d'un champ ---------- */
+const RKK=new Set(RK.map(x=>x[0]));
+const pfVs=()=>PF.vs||(PF.v?[PF.v]:[]), cfVs=()=>CF.vs||(CF.v?[CF.v]:[]);
+pfOk=function(p){
+  const f=PF.f;
+  if(f.includes('arch')){if(!p.archived)return false}else if(p.archived)return false;
+  const rs=PF_CHIPS.filter(([k])=>RKK.has(k)&&f.includes(k));if(rs.length&&!rs.some(([,,fn])=>fn(p)))return false;
+  for(const[k,,fn]of PF_CHIPS){if(k!=='arch'&&!RKK.has(k)&&f.includes(k)&&!fn(p))return false}
+  const vs=pfVs();if(PF.k&&vs.length&&!vs.includes(pfVal(p,PF.k)||'__empty'))return false;
+  return true;
+};
+cfOk=function(c){
+  const rs=CF_CHIPS.filter(([k])=>RKK.has(k)&&CF.f.includes(k));if(rs.length&&!rs.some(([,,fn])=>fn(c)))return false;
+  for(const[k,,fn]of CF_CHIPS)if(!RKK.has(k)&&CF.f.includes(k)&&!fn(c))return false;
+  const vs=cfVs();if(CF.k&&vs.length){const v=refVal(c.ref,CF.k)||(CF.k==='sector'?c.sector:'')||'__empty';if(!vs.includes(v))return false}
+  return true;
+};
+MVSET['pf-vs']=v=>{PF.vs=v;PF.v='';savePF()};MVSET['cf-vs']=v=>{CF.vs=v;CF.v='';saveCF()};
+{const _pf=pfBarHTML;pfBarHTML=function(){
+  const h=_pf();if(!PF.k)return h;
+  const base=PEOPLE.filter(p=>view!=='emails'||p.email);
+  return h.replace(/<select data-pf-v>[\s\S]*?<\/select>/,mvHTML('pf-vs',cntOpts(base,p=>pfVal(p,PF.k),t('pfEmpty')),pfVs(),t('pfAny')));
+}}
+{const _cf=cfBarHTML;cfBarHTML=function(){
+  const h=_cf();if(!CF.k)return h;
+  return h.replace(/<select data-cf-v>[\s\S]*?<\/select>/,mvHTML('cf-vs',cntOpts(COMPANIES,c=>refVal(c.ref,CF.k)||(CF.k==='sector'?c.sector:''),t('pfEmpty')),cfVs(),t('pfAny')));
+}}
+$('pfBar').addEventListener('change',e=>{if(e.target.matches('[data-pf-k]')){PF.vs=[];savePF()}if(e.target.matches('[data-cf-k]')){CF.vs=[];saveCF()}},true);
+
+/* ---------- onglet CMO : plusieurs entités et plusieurs régions ---------- */
+let ENTS_M=[],REGSEL=[];
+const cmoReg=c=>(c.region||'').trim()||'__none';
+function cmoMultiOk(c){
+  if(ENTSEL==='__multi'&&ENTS_M.length&&!ENTS_M.some(n=>n==='__none'?!c.team:ENTMAP[n]&&ENTMAP[n].cmos.has(c.id)))return false;
+  if(REGSEL.length&&!REGSEL.includes(cmoReg(c)))return false;
+  return true;
+}
+MVSET['cmo-reg']=v=>{REGSEL=v};
+const entOn=n=>ENTSEL==='__multi'?ENTS_M.includes(n):ENTSEL===n;
+entBarHTML=function(){
+  const none=CMOS.filter(c=>!c.team).length,na=CMOS.filter(c=>c.archived).length,hasReg=CMOS.some(c=>c.region);
+  if(!ENTS.length&&!none&&!hasReg)return'';
+  const big=new Set(ENTS.slice().sort((a,b)=>b.cmos.size-a.cmos.size).slice(0,ENT_MAIN).map(e=>e.name));
+  const shown=ENTS.filter(e=>MOREF||big.has(e.name)||entOn(e.name));
+  const ents=ENTS.length||none?`<span class="pfl">${t('entL')}</span><button type="button" class="pf-chip${!ENTSEL?' on':''}" data-ent="">${t('entAll')}<span>${CMOS.length}</span></button>${shown.map(e=>`<button type="button" class="pf-chip${entOn(e.name)?' on':''}" data-ent="${esc(e.name)}">${esc(e.name)}<span>${e.cmos.size} · ${e.people.size}</span></button>`).join('')}${none&&(MOREF||entOn('__none'))?`<button type="button" class="pf-chip warn${entOn('__none')?' on':''}" data-ent="__none">${t('entNone')}<span>${none}</span></button>`:''}${na&&(MOREF||ENTSEL==='__arch')?`<button type="button" class="pf-chip${ENTSEL==='__arch'?' on':''}" data-ent="__arch">${t('cmArchF')}<span>${na}</span></button>`:''}`:'';
+  const reg=hasReg?`<span class="pfl pfl-gap">${t('regL')}</span>${mvHTML('cmo-reg',cntOpts(CMOS.filter(c=>!c.archived),cmoReg,t('regNone')),REGSEL,t('mvAll'))}`:'';
+  return ents+reg+(ENTS.length>ENT_MAIN||none||na?moreBtn():'')+(ENTSEL||REGSEL.length?`<button type="button" class="pf-clear" data-ent-clear="1">${t('pfClear')}</button>`:'');
+};
+$('pfBar').addEventListener('click',e=>{
+  const cl=e.target.closest('[data-ent-clear]');if(cl){e.stopPropagation();ENTSEL='';ENTS_M=[];REGSEL=[];render();return}
+  const en=e.target.closest('[data-ent]');if(!en)return;e.stopPropagation();
+  const v=en.dataset.ent;
+  if(!v){ENTSEL='';ENTS_M=[]}
+  else if(v==='__arch'){ENTSEL=ENTSEL==='__arch'?'':'__arch';ENTS_M=[]}
+  else{const cur=ENTSEL==='__multi'?ENTS_M:(ENTSEL&&ENTSEL!=='__arch'?[ENTSEL]:[]);ENTS_M=cur.includes(v)?cur.filter(x=>x!==v):[...cur,v];ENTSEL=!ENTS_M.length?'':ENTS_M.length===1?ENTS_M[0]:'__multi'}
+  render();
+},true);
+
+/* ---------- construire une liste : critères à valeurs multiples ---------- */
+const lqRks=()=>LQ.rks||(LQ.rk?[LQ.rk]:[]), lqRvs=()=>LQ.rvs||(LQ.rv?[LQ.rv]:[]);
+function lqNorm(){ /* anciennes listes enregistrées : une seule valeur → liste de valeurs */
+  if(!LQ.rks&&LQ.rk)LQ.rks=[LQ.rk];if(!LQ.rvs&&LQ.rv)LQ.rvs=[LQ.rv];
+  if(LQ.cfk==='__cmoreg'){const v=strip((LQ.cfv||'').trim());LQ.regs=v?[...new Set(CMOS.filter(c=>strip(c.region||'').includes(v)).map(cmoReg))]:[];LQ.cfk='';LQ.cfv=''}
+  LQ.rk='';LQ.rv='';LQ.regs=LQ.regs||[];LQ.cfvs=LQ.cfvs||[];
+}
+MVSET['lq-regs']=v=>{LQ.regs=v};MVSET['lq-ents']=v=>{LQ.ents=v.length?v:null};MVSET['lq-rks']=v=>{LQ.rks=v};MVSET['lq-rvs']=v=>{LQ.rvs=v};MVSET['lq-cfvs']=v=>{LQ.cfvs=v};
+const rkOpts=()=>[['r5001000','Top 500 + Top 1000'],...RK.map(x=>[x[0],rkLabel(x)]),['rnone',t('cfNoRef')]];
+const cfKeysL=()=>[...new Set([...PEOPLE.flatMap(p=>Object.keys(p.ext||{})),...PEOPLE.flatMap(p=>p.hist.flatMap(h=>Object.keys(h.ext||{})))])].filter(k=>!/^fichiers? sources?$|^source files?$/i.test(k)).sort(cmp);
+const cfValsOf=(p,k)=>p.ext&&k in p.ext?[p.ext[k]||'']:p.hist.map(h=>(h.ext||{})[k]||'');
+const rkMatch=(k,r)=>k==='r5001000'?!!(r&&r.top):k==='rnone'?!r:(()=>{const x=RK.find(y=>y[0]===k);return!!(r&&x&&x[2](r))})();
+listResults=function(tk){
+  lqNorm();
+  const cmoSel=LQ.cmo?new Set(LQ.cmo):null,evSel=LQ.ev?new Set(LQ.ev):null,coSel=LQ.co?new Set(LQ.co):null,pst=strip((LQ.poste||'').trim()),out=[];
+  const rks=lqRks(),rvs=lqRvs(),regSel=LQ.regs.length?new Set(LQ.regs):null,cfvs=LQ.cfk&&LQ.cfvs.length?new Set(LQ.cfvs):null,es=LQ.ents&&LQ.ents.length?new Set(LQ.ents):null;
+  PEOPLE.forEach(p=>{
+    if(p.archived)return;
+    if(LQ.kind==='ext'&&p.internal)return;if(LQ.kind==='int'&&!p.internal)return;if(LQ.kind==='cmo'&&!p.cmoId)return;
+    if(LQ.vip&&!p.vip)return;if(LQ.hasEmail&&!p.email)return;
+    if(coSel&&!coSel.has(p.coId||''))return;
+    if(rks.length&&!rks.some(k=>rkMatch(k,p.cref)))return;
+    if(LQ.rd&&rvs.length&&!rvs.includes(refVal(p.cref,LQ.rd)||'__empty'))return;
+    if(pst&&!strip(p.poste).includes(pst))return;
+    if(tk&&tk.length&&!tk.every(x=>p.hay.includes(x)))return;
+    let regs=p.hist;
+    if(cmoSel&&!(p.pilotCmoId&&cmoSel.has(p.pilotCmoId))){regs=regs.filter(h=>(h.cmoKeys||[]).some(k=>cmoSel.has('cmo:'+k)));if(!regs.length)return}
+    if(regSel){const pil=p.pilotCmoId&&CMOMAP[p.pilotCmoId];if(!(pil&&regSel.has(cmoReg(pil)))){regs=regs.filter(h=>(h.cmoKeys||[]).some(k=>CMOMAP['cmo:'+k]&&regSel.has(cmoReg(CMOMAP['cmo:'+k]))));if(!regs.length)return}}
+    if(es){regs=regs.filter(h=>(h.ents||[]).some(x=>es.has(x)));if(!regs.length)return}
+    if(cfvs){if(p.ext&&LQ.cfk in p.ext){if(!cfvs.has(p.ext[LQ.cfk]||'__empty'))return}
+      else{regs=regs.filter(h=>cfvs.has((h.ext||{})[LQ.cfk]||'__empty'));if(!regs.length)return}}
+    if(evSel&&LQ.evStatus==='none'){if(p.hist.some(h=>evSel.has(h.ev.id)||(h.ev.gid&&evSel.has(h.ev.gid))))return;if([...evSel].some(id=>EMAP[id]&&EMAP[id].unreg&&EMAP[id].unreg.some(r=>r.p===p)))return;regs=[]}
+    else if(evSel){
+      regs=regs.filter(h=>evSel.has(h.ev.id)||(h.ev.gid&&evSel.has(h.ev.gid)));
+      if(LQ.evAll&&evSel.size>1){if(![...evSel].every(id=>stMatch(stAt(p,id).x)))return}
+      else if(!regs.some(stMatch)&&![...evSel].some(id=>stMatch(stAt(p,id).x)))return;
+    }
+    const uk=h=>h.ev.gid&&(!evSel||evSel.has(h.ev.gid))?h.ev.gid:h.ev.id;
+    const pres=new Set(regs.filter(h=>h.present).map(uk)).size;
+    if(pres<(LQ.minPres||0))return;
+    out.push({p,ins:new Set(regs.map(uk)).size,pres,regs});
+  });
+  return out;
+};
+{const _sum=lbSummary;lbSummary=function(){
+  const parts=[_sum()].filter(Boolean),nm=(o,v)=>(o.find(x=>x[0]===v)||[0,v])[1];
+  if(lqRks().length){const o=rkOpts();parts.push(lqRks().map(v=>nm(o,v)).join(` ${t('or')} `))}
+  if(LQ.rd&&lqRvs().length){const l=(RD.find(([k])=>k===LQ.rd)||[0,''])[1];parts.push(`${t(l)}${CL()}${lqRvs().map(v=>v==='__empty'?t('emptyV'):v).join(', ')}`)}
+  if(LQ.regs&&LQ.regs.length)parts.push(`${t('regL').toLowerCase()} ${LQ.regs.map(v=>v==='__none'?t('regNone'):v).join(', ')}`);
+  if(LQ.cfk&&LQ.cfvs&&LQ.cfvs.length)parts.push(`${LQ.cfk}${CL()}${LQ.cfvs.map(v=>v==='__empty'?t('emptyV'):v).join(', ')}`);
+  return parts.join(' · ');
+}}
+if(!L.fr.or)Object.assign(L.fr,{or:'ou'});if(!L.en.or)Object.assign(L.en,{or:'or'});
+
+/* critères proposés, dans l'ordre où on en a le plus souvent besoin */
+LUI.add=LUI.add||[];
+const LBX=[
+  {k:'ev',on:()=>!!LQ.ev,ctl:()=>`${lbPicker('ev')}${LQ.ev?`<div class="lbx-sub"><span>${t('lbxStatusL')}</span><div>${evStatusSel()}</div></div>`:''}`,rm:()=>{LQ.ev=null;LQ.evStatus='any';LQ.evAll=false}},
+  {k:'co',on:()=>LQ.co!=null,ctl:()=>lbPicker('co'),rm:()=>{LQ.co=null}},
+  {k:'cmo',ok:()=>CMOS.length>0,on:()=>!!LQ.cmo,ctl:()=>lbPicker('cmo'),rm:()=>{LQ.cmo=null}},
+  {k:'reg',ok:()=>CMOS.some(c=>c.region),on:()=>!!(LQ.regs&&LQ.regs.length),ctl:()=>mvHTML('lq-regs',cntOpts(CMOS.filter(c=>!c.archived),cmoReg,t('regNone')),LQ.regs,t('mvAll')),rm:()=>{LQ.regs=[]}},
+  {k:'ent',ok:()=>ENTS.length>0,on:()=>!!(LQ.ents&&LQ.ents.length),ctl:()=>mvHTML('lq-ents',ENTS.map(e=>[e.name,e.name,e.people.size]),LQ.ents||[],t('mvAll')),rm:()=>{LQ.ents=null}},
+  {k:'rk',ok:()=>!!REFDATA,on:()=>lqRks().length>0,ctl:()=>mvHTML('lq-rks',rkOpts(),lqRks(),t('mvAll')),rm:()=>{LQ.rks=[];LQ.rk=''}},
+  {k:'rd',ok:()=>!!REFDATA,on:()=>!!LQ.rd,ctl:()=>`<div class="lbx-two"><select data-lq="rd"><option value="">—</option>${RD.map(([k,l])=>`<option value="${k}"${LQ.rd===k?' selected':''}>${esc(t(l))}</option>`).join('')}</select>${LQ.rd?mvHTML('lq-rvs',cntOpts(PEOPLE.filter(p=>!p.archived),p=>refVal(p.cref,LQ.rd)),lqRvs(),t('mvAll')):''}</div>`,rm:()=>{LQ.rd='';LQ.rv='';LQ.rvs=[]}},
+  {k:'kind',on:()=>LQ.kind!=='all',ctl:()=>kindSel(),rm:()=>{LQ.kind='all'}},
+  {k:'poste',on:()=>!!(LQ.poste||'').trim(),ctl:()=>`<input type="text" data-lq="poste" value="${esc(LQ.poste)}" placeholder="${esc(t('lbPostePh'))}">`,rm:()=>{LQ.poste=''}},
+  {k:'min',on:()=>LQ.minPres>0,ctl:()=>`<input type="number" min="0" step="1" data-lq="minPres" value="${LQ.minPres||0}">`,rm:()=>{LQ.minPres=0}},
+  {k:'cf',ok:()=>cfKeysL().length>0,on:()=>!!LQ.cfk,ctl:()=>`<div class="lbx-two"><select data-lq="cfk"><option value="">—</option>${cfKeysL().map(k=>`<option value="${esc(k)}"${LQ.cfk===k?' selected':''}>${esc(k)}</option>`).join('')}</select>${LQ.cfk?mvHTML('lq-cfvs',cntOpts(PEOPLE.filter(p=>!p.archived),p=>cfValsOf(p,LQ.cfk)),LQ.cfvs||[],t('mvAll')):''}</div>`,rm:()=>{LQ.cfk='';LQ.cfv='';LQ.cfvs=[]}},
+  {k:'email',on:()=>!!LQ.hasEmail,ctl:()=>`<label class="lbx-chk"><input type="checkbox" data-lq="hasEmail"${LQ.hasEmail?' checked':''}> ${t('lbHasEmail')}</label>`,rm:()=>{LQ.hasEmail=false}}
+];
+const lbxAvail=()=>LBX.filter(c=>!c.ok||c.ok());
+const lbxActive=()=>lbxAvail().filter(c=>c.on()||(LUI.add||[]).includes(c.k));
+const LBX_ICON={ev:'<path d="M3 9h18M8 3v4M16 3v4"/><rect x="3" y="5" width="18" height="16" rx="2"/>',co:'<rect x="4" y="3" width="16" height="18" rx="1.5"/><path d="M9 7h2M13 7h2M9 11h2M13 11h2M10 21v-4h4v4"/>',
+  cmo:'<circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/>',reg:'<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+  ent:'<circle cx="8" cy="9" r="3"/><circle cx="16" cy="9" r="3"/><path d="M3 20c.6-3 2.6-4.5 5-4.5s4.4 1.5 5 4.5M11 20c.6-3 2.6-4.5 5-4.5s4.4 1.5 5 4.5"/>',
+  rk:'<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/>',rd:'<path d="M4 6h16M4 12h16M4 18h10"/>',
+  kind:'<circle cx="9" cy="8" r="4"/><path d="M2 21v-1a6 6 0 0 1 6-6h2M16 15l2 2 4-4"/>',poste:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
+  min:'<path d="M20 6 9 17l-5-5"/>',cf:'<path d="M4 7h16M4 12h10M4 17h7"/><circle cx="18" cy="16" r="3"/>',email:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>'};
+const lbxIc=k=>`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${LBX_ICON[k]||''}</svg>`;
+lbCritHTML=function(){
+  lqNorm();
+  const act=lbxActive(),avail=lbxAvail().filter(c=>!act.includes(c)),C=t('lbxC');
+  const saved=LISTS.length?`<div class="lbx-saved"><span>${t('lbxSaved')}</span>${LISTS.map(l=>`<span class="lchip"><button type="button" data-lb-load="${esc(l.id)}">${esc(l.name)}</button><button type="button" data-lb-del="${esc(l.id)}" title="${t('del')}">×</button></span>`).join('')}</div>`:'';
+  const rows=act.map((c,i)=>`<div class="lbx-c"><div class="lbx-cl">${i?`<span class="lbx-and">${t('lbxAnd')}</span>`:''}<span class="lbx-ic">${lbxIc(c.k)}</span><b>${esc(C[c.k][0])}</b></div><div class="lbx-cv">${c.ctl()}</div><button type="button" class="lbx-x" data-x="lbx-rm" data-k="${c.k}" title="${esc(t('lbxRm'))}" aria-label="${esc(t('lbxRm'))}">×</button></div>`).join('');
+  const qs=!act.length?Object.entries(t('lbxQs')).filter(([k])=>k==='rk'?!!REFDATA:k==='cmo'?CMOS.length>0:k==='reg'?CMOS.some(c=>c.region):true):[];
+  return `<div class="lbx">
+    <div class="lbx-top"><h3>${t('lbxQ')}</h3><div class="lbx-seg">${[['clients','lbxClients'],['cmos','lbxCmos']].map(([v,l])=>`<button type="button" class="${LQ.mode===v?'on':''}" data-lb-mode="${v}">${t(l)}</button>`).join('')}</div></div>
+    ${saved}
+    ${rows?`<div class="lbx-crits">${rows}</div>`:`<p class="lbx-none">${esc(t('lbxNone')(PEOPLE.filter(p=>!p.archived).length))}</p>`}
+    ${qs.length?`<div class="lbx-qs"><span>${t('lbxStart')}</span>${qs.map(([k,l])=>`<button type="button" data-x="lbx-qs" data-q="${k}">${esc(l)}</button>`).join('')}</div>`:''}
+    ${avail.length?`<div class="lbx-add"><button type="button" class="lbx-addb" data-x="lbx-addmenu">${t('lbxAdd')}</button><div class="lbx-menu"${LUI.addOpen?'':' hidden'}>${avail.map(c=>`<button type="button" data-x="lbx-add" data-k="${c.k}"><span class="lbx-ic">${lbxIc(c.k)}</span><span><b>${esc(C[c.k][0])}</b><small>${esc(C[c.k][1])}</small></span></button>`).join('')}</div></div>`:''}
+  </div>${LQ.ev?lbEvInfo():''}<div class="lb-res" id="lbRes"></div>`;
+};
+/* barre de résultat : nombre, phrase récapitulative, actions, enregistrement */
+{const _rr=renderLBRes;renderLBRes=function(){
+  _rr();const bar=document.querySelector('#lbRes .lb-bar');if(!bar)return;
+  const sum=lbSummary();
+  if(sum)bar.querySelector('b').insertAdjacentHTML('afterend',`<div class="lbx-sum">${sum}</div>`);
+  const b=bar.querySelector('b');if(b){const w=document.createElement('div');w.className='lbx-cnt';b.parentNode.insertBefore(w,b);w.appendChild(b);const s=bar.querySelector('.lbx-sum');if(s)w.appendChild(s)}
+  bar.insertAdjacentHTML('afterend',`<div class="lbx-foot">${LUI.saveOpen?`<div class="lb-save"><input type="text" id="lbName" data-lb-name="1" value="${esc(LUI.name)}" placeholder="${esc(t('lbNamePh'))}"><button type="button" class="btn sm" data-lb-save="1">${t('lbSave')}</button></div>`:`<button type="button" class="btn-o sm" data-x="lbx-saveopen">${ICON_SAVE_S} ${t('lbxSaveT')}</button>`}
+    ${lbxActive().length||LQ.mode!=='clients'?`<button type="button" class="lbx-reset" data-lb-reset="1">${t('lbxReset')}</button>`:''}</div>`);
+  if(LUI.saveOpen){const i=$('lbName');if(i&&document.activeElement!==i)i.focus()}
+}}
+const ICON_SAVE_S='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>';
+const lbxOpen=k=>{if(k==='ev'||k==='co'||k==='cmo'){LUI.open=k}else{const m={reg:'lq-regs',ent:'lq-ents',rk:'lq-rks',cf:'',rd:''}[k];if(m)MVO=m}};
+Object.assign(XACT,{
+  'lbx-addmenu':()=>{LUI.addOpen=!LUI.addOpen;render()},
+  'lbx-add':b=>{const k=b.dataset.k;LUI.addOpen=false;if(k==='email')LQ.hasEmail=true;LUI.add=LUI.add||[];if(!LUI.add.includes(k))LUI.add.push(k);lbxOpen(k);render();
+    const f=grid.querySelector(k==='poste'?'[data-lq="poste"]':k==='min'?'[data-lq="minPres"]':k==='rd'?'[data-lq="rd"]':k==='cf'?'[data-lq="cfk"]':'.nothing');if(f)f.focus()},
+  'lbx-rm':b=>{const k=b.dataset.k,c=LBX.find(x=>x.k===k);if(c)c.rm();LUI.add=(LUI.add||[]).filter(x=>x!==k);if(LUI.open===k)LUI.open=null;render()},
+  'lbx-qs':b=>{const q=b.dataset.q;
+    if(q==='present'||q==='absent'){LQ.evStatus=q;LUI.add=[...(LUI.add||[]),'ev'];LUI.open='ev'}
+    else{const k=q;LUI.add=[...(LUI.add||[]),k];lbxOpen(k)}
+    render()},
+  'lbx-saveopen':()=>{LUI.saveOpen=true;renderLBRes()}
+});
+{const _sv=lbSave;lbSave=function(){_sv();if((LUI.name||'').trim())LUI.saveOpen=false}}
+{const _ld=lbLoad;lbLoad=function(id){_ld(id);lqNorm();LUI.add=[];render()}}
+grid.addEventListener('click',e=>{if(view!=='lists')return;if(e.target.closest('[data-lb-reset]')){LUI.add=[];LUI.saveOpen=false;LUI.addOpen=false;MVO=''}},true);
+grid.addEventListener('change',e=>{if(view!=='lists')return;const k=e.target.dataset&&e.target.dataset.lq;if(k==='rd'){LQ.rvs=[]}if(k==='cfk'){LQ.cfvs=[];LQ.cfv=''}},true);
+document.addEventListener('click',e=>{if(LUI.addOpen&&e.target.isConnected&&!(e.target.closest&&e.target.closest('.lbx-add'))){LUI.addOpen=false;document.querySelectorAll('.lbx-menu').forEach(m=>m.hidden=true)}},true);
+
+/* =========================================================
+   MIROIR AVEC « IMPORTER ET CONTRÔLER »
+   - les décisions prises là-bas (personnes, entreprises, CMO distincts ; noms laissés tels quels) sont reprises ici,
+     pour que les contrôles de Konex ne reposent pas la même question ;
+   - l'espace de construction est chargé en arrière-plan dès la connexion administrateur : les décisions prises ici
+     lui parviennent tout de suite (et plus seulement quand on l'ouvre) ;
+   - en le quittant, la master file est renvoyée automatiquement dans Konex si elle a changé.
+   ========================================================= */
+function applyBuilderDecisions(d){
+  if(!d||!CRYPTO_KEY)return 0;
+  SYNCED=SYNCED||{p:{},m:{},i:{},cm:{},ci:{},mm:{},mi:{}};['i','ci','mi','sw'].forEach(k=>SYNCED[k]=SYNCED[k]||{});
+  const now=new Date().toISOString();let n=0;
+  const findPid=m=>{if(!m)return null;for(const e of m.emails||[]){const id=resolve('m:'+String(e).trim().toLowerCase());if(PEOPLE.some(p=>p.id===id))return id}
+    const k=normName((m.prenom||'')+' '+(m.nom||''));if(!k)return null;const l=PEOPLE.filter(p=>normName(p.full)===k);if(l.length===1)return l[0].id;
+    const l2=l.filter(p=>normName(p.societe)===normName(m.societe||''));return l2.length===1?l2[0].id:null};
+  const nm=m=>((m.prenom||'')+' '+(m.nom||'')).trim();
+  (d.persons||[]).forEach(([a,b,bid])=>{const A=findPid(a),B=findPid(b);if(!A||!B||A===B)return;const k=pairKey(A,B);if(IGNORED[k])return;
+    IGNORED[k]={a:nm(a),b:nm(b),date:now,from:'builder'};SYNCED.i[k]={bid};n++});
+  const coId=x=>resolveC('co:'+normName(x));
+  (d.cos||[]).forEach(([a,b,bid])=>{const A=coId(a),B=coId(b);if(!A||!B||A===B||!CMAP[A]||!CMAP[B])return;const k=pairKey(A,B);if(CIGNORED[k])return;
+    CIGNORED[k]={a:CMAP[A].name,b:CMAP[B].name,date:now,from:'builder'};SYNCED.ci[k]={bid};n++});
+  const cmoId=x=>'cmo:'+resolveCmo(normName(x));
+  (d.cmos||[]).forEach(([a,b,bid])=>{const A=cmoId(a),B=cmoId(b),ca=CMOS.find(c=>c.id===A),cb=CMOS.find(c=>c.id===B);if(!ca||!cb||A===B)return;const k=pairKey(A,B);if(CMOIGN[k])return;
+    CMOIGN[k]={a:ca.name,b:cb.name,date:now,from:'builder'};SYNCED.mi[k]={bid};n++});
+  (d.swapOk||[]).forEach(([pr,no,bid])=>{PEOPLE.filter(p=>normName(p.prenom)===normName(pr)&&normName(p.nom)===normName(no)).forEach(p=>{if(SWAP_IGNORED[p.id])return;
+    SWAP_IGNORED[p.id]={sig:p.nom+'|'+p.prenom,label:`${p.full} → ${(p.nom+' '+p.prenom).trim()}`,date:now,from:'builder'};SYNCED.sw[p.id]={bid};n++})});
+  if(n){saveVault(true);rebuild()}
+  return n;
+}
+function preloadBuilder(){
+  if(!ADMIN||BFRAME||BSTATE||!BKEY)return;
+  const w=$('bWrap');if(!w)return;
+  BFRAME=document.createElement('iframe');BFRAME.id='bFrame';BFRAME.title=t('navBuilder');BFRAME.srcdoc=builderSrc();w.appendChild(BFRAME);
+}
+{const _sau=shAfterUnlock;shAfterUnlock=async function(){const r=await _sau.apply(this,arguments);if(ADMIN)setTimeout(()=>{try{preloadBuilder()}catch(e){console.warn('builder',e)}},1500);return r}}
+{let LASTV='';const _rcm=renderCore;renderCore=function(){
+  if(LASTV==='builder'&&view!=='builder'&&BWIN&&BWIN.mmbAutoPublish)BWIN.mmbAutoPublish().catch(e=>console.warn('auto publish',e));
+  LASTV=view;return _rcm()}}
 /* =========================================================
    RÔLE : appliqué une seule fois, juste après la connexion
    - administrateur : tout l'outil

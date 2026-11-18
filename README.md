@@ -17,14 +17,15 @@ Il tient entièrement dans **un seul fichier HTML** (`Konex.html`), fonctionne *
 5. [Fonctionnalités communes](#fonctionnalités-communes)
 6. [Fonctionnalités réservées à l'espace administrateur](#fonctionnalités-réservées-à-lespace-administrateur)
 7. [Construction de la master file (Importer et contrôler)](#construction-de-la-master-file-importer-et-contrôler)
-8. [Base partagée et travail en équipe](#base-partagée-et-travail-en-équipe)
-9. [Sécurité et conformité](#sécurité-et-conformité)
-10. [Formats de fichiers](#formats-de-fichiers)
-11. [Navigateurs compatibles](#navigateurs-compatibles)
-12. [Glossaire](#glossaire)
-13. [FAQ et dépannage](#faq-et-dépannage)
-14. [Architecture technique](#architecture-technique)
-15. [Historique des versions](#historique-des-versions)
+8. [Konex et « Importer et contrôler » en miroir](#konex-et--importer-et-contrôler--en-miroir)
+9. [Base partagée et travail en équipe](#base-partagée-et-travail-en-équipe)
+10. [Sécurité et conformité](#sécurité-et-conformité)
+11. [Formats de fichiers](#formats-de-fichiers)
+12. [Navigateurs compatibles](#navigateurs-compatibles)
+13. [Glossaire](#glossaire)
+14. [FAQ et dépannage](#faq-et-dépannage)
+15. [Architecture technique](#architecture-technique)
+16. [Historique des versions](#historique-des-versions)
 
 ---
 
@@ -163,6 +164,8 @@ Konex ne peut pas y mémoriser le dossier : il faut choisir le fichier `konex-ut
 - Cinq onglets : **Personnes**, **CMO**, **Entreprises**, **Événements** et **RMPM** (recherche par code RMPM : entreprises du référentiel et employés rattachés).
 - Recherche instantanée par nom, société ou e-mail ; insensible aux accents et à la casse.
 - **Filtres** rapides (Top 500, classements, entités…) et **Plus de filtres** pour les critères moins courants.
+- **Filtres à choix multiples** : plusieurs valeurs d'un même filtre se cumulent en « ou » (ex. Top 500 **ou** Strategic ; régions Nord **et** Sud ; plusieurs valeurs d'un champ). Des filtres différents se combinent en « et ».
+- Onglet **CMO** : plusieurs **entités** à la fois et filtre **Région** (plusieurs régions au choix).
 - **Filtre par année** et **tri** configurable (dernier import, dernière venue, plus de présences, plus de contacts, plus de clients…).
 - Cliquez sur une carte pour ouvrir la **fiche détaillée**.
 
@@ -188,10 +191,14 @@ Konex interprète classement, pays, entreprise, année et statut de présence, e
 - Chaque modification est **signée** et peut être **annulée** juste après.
 
 ### Construire une liste
-- Combinez des critères : événement(s), **statut à ces événements** (tous les invités, présents, inscrits, absents, statut précis, jamais conviés), **présences minimum**, classement, entreprise, CMO, entité, pays, année…
-- En mode clients, avec 12 événements ou moins sélectionnés, une **colonne par événement** affiche le statut de chaque personne (également dans l'export).
-- **Copier les e-mails** en un clic, ou **exporter en Excel** (.xlsx).
-- Les listes peuvent être enregistrées (conservées même lors du chargement d'une nouvelle édition).
+Pensée pour aller vite, sans formulaire à remplir :
+1. **Qui voulez-vous cibler ?** — des **clients** ou des **CMO**.
+2. Au départ, la liste contient **toute la base**. Des **idées pour commencer** (« Les présents d'un événement », « Les absents d'un événement », « Les clients d'un CMO », « Les clients d'une région », « Un classement », « Les contacts d'une entreprise ») posent le premier critère en un clic.
+3. **+ Ajouter un critère** ne propose que les critères utiles : événements (avec le statut : présents, inscrits, absents, statut précis, jamais conviés), entreprises, CMO, **région du CMO**, **entité**, **classement**, donnée du référentiel, type de contact, fonction, présences minimum, champ personnalisé, avec e-mail. Chaque critère accepte **plusieurs valeurs** et se retire d'un clic (×).
+4. Le résultat se met à jour en direct, avec une **phrase récapitulative** (ex. « événements « Dîner annuel », présents · région Est, Nord »).
+5. **Copier les e-mails**, **Aperçu du mail**, **Exporter (Excel)**, ou **Enregistrer** la liste sous un nom (retrouvée dans *Mes listes*, conservée lors du chargement d'une nouvelle édition). Les listes enregistrées avec l'ancienne version sont reprises automatiquement.
+
+En mode clients, avec 12 événements ou moins sélectionnés, une **colonne par événement** affiche le statut de chaque personne (également dans l'export).
 
 ### Statistiques
 - Tableau de bord des événements, entreprises, participants et CMO.
@@ -240,7 +247,7 @@ Module de l'espace administrateur (anciennement *MarCom Master Builder*). Il tra
 
 1. **Fichiers sources** — Déposez tous les fichiers (plusieurs à la fois). Un fichier portant le même nom qu'un fichier existant le remplace en conservant les réglages. Feuilles masquées détectées, feuilles ignorables.
    *Référentiel entreprises & CMO* : le fichier RMPM (colonnes « Business Group Name », « RMPM Code », « Pilot CMO »…) est reconnu automatiquement et enrichit chaque entreprise.
-2. **Correspondance des colonnes** — L'outil reconnaît automatiquement les colonnes (FR, NL, EN, DE : *prénom, voornaam, first name…*) et **mémorise vos choix** pour les fichiers suivants. Champs : Prénom, Nom, Nom complet, E-mail, Société, Fonction, Présence/statut, CMO, Sous-événement (une colonne = un événement), Nom/Date/Lieu de l'événement, plus des **champs personnalisés** (par client ou par événement).
+2. **Correspondance des colonnes** — L'outil reconnaît automatiquement les colonnes (FR, NL, EN, DE : *prénom, voornaam, first name…*) et **mémorise vos choix** pour les fichiers suivants. Champs : Prénom, Nom, Nom complet, E-mail, Société, Fonction, Présence/statut, CMO, Sous-événement (une colonne = un *side event* : une case remplie vaut « présent » à ce side event, sauf si la valeur est un statut reconnu comme « Inscrit » ; une valeur inconnue reste signalée dans les contrôles), Nom/Date/Lieu de l'événement, plus des **champs personnalisés** (par client ou par événement).
 3. **Événements** — Événements détectés, codes, dates, lieux ; exclusion ou fusion possibles.
 4. **Statuts de présence** — Statuts configurables avec alias multilingues et couleurs :
 
@@ -269,6 +276,23 @@ Module de l'espace administrateur (anciennement *MarCom Master Builder*). Il tra
 - **Sauvegarde & sécurité** : sauvegarde chiffrée, verrouillage auto, changement de mot de passe, note IT/compliance, effacement complet.
 
 ---
+
+## Konex et « Importer et contrôler » en miroir
+
+L'espace administrateur et le module de construction de la master file partagent les mêmes décisions, dans les deux sens :
+
+| Décision | Prise dans Konex → reprise dans le module | Prise dans le module → reprise dans Konex |
+|---|:---:|:---:|
+| Fusion de fiches (personnes, entreprises, CMO) | ✅ | ✅ (via la master file) |
+| « Personnes / entreprises / CMO différents » | ✅ | ✅ |
+| Nom et prénom laissés tels quels (pas d'inversion) | ✅ | ✅ |
+| Corrections de nom, prénom, société, fonction, e-mail | ✅ | ✅ (via la master file) |
+| **Annulation** d'une de ces décisions | ✅ | ✅ |
+| Saisies : téléphone, LinkedIn, **VIP**, **interne**, notes, champs ajoutés, fiches archivées, entreprises, événements, CMO (avec leurs champs ajoutés) | ✅ | ✅ (via la master file) |
+
+- Le module est chargé **en arrière-plan** dès la connexion administrateur : une décision prise dans Konex lui parvient **tout de suite**.
+- En **quittant** « Importer et contrôler », la master file est **renvoyée automatiquement** dans Konex si elle a changé (une fois le premier envoi fait et toutes les feuilles validées). Le bouton « Envoyer dans Konex » reste disponible.
+- Les contrôles des deux outils sont complémentaires : le module vérifie les fichiers bruts (e-mails invalides, statuts inconnus, statuts contradictoires, événements, référentiel, lignes non reprises), Konex vérifie la base consolidée (doublons, inversions, fautes de frappe, champs incohérents, CMO). Une question tranchée d'un côté n'est plus reposée de l'autre.
 
 ## Base partagée et travail en équipe
 
@@ -424,7 +448,7 @@ Il n'y a plus de version « standard » compilée à part : le rôle est choisi 
 
 | Version | Fichiers | Statut / nouveautés |
 |---|---|---|
-| **Konex 3** | `Konex.html` | ✅ Version actuelle — un seul fichier, deux espaces de connexion (utilisateur / administrateur) avec un mot de passe par espace, changement de mot de passe, traductions anglaises complétées ; comptes personnels `konex-utilisateurs.json` prêts mais désactivés jusqu'à la mise en ligne |
+| **Konex 3** | `Konex.html` | ✅ Version actuelle — un seul fichier, deux espaces de connexion (utilisateur / administrateur) avec un mot de passe par espace, changement de mot de passe, traductions anglaises complétées ; filtres à choix multiples, création de liste simplifiée, Konex et « Importer et contrôler » en miroir, side events corrigés, VIP / interne rétablis ; comptes personnels `konex-utilisateurs.json` prêts mais désactivés jusqu'à la mise en ligne |
 | Konex 2 | `old/Konex-2.html`, `old/Konex_admin-2.html` | Archivée — onglet RMPM, champ VIP, statuts détaillés et taux de présence sur les fiches, copie de l'historique, filtres de listes par statut et présences minimum |
 | Konex 1 | `old/Konex.html`, `old/Konex_admin.html` | Archivée |
 | MarCom CRM admin v5 | `old/MarCom_CRM_admin-5.html` | Archivée |
