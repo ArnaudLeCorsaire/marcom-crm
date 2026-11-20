@@ -168,6 +168,7 @@ Konex ne peut pas y mémoriser le dossier : il faut choisir le fichier `konex-ut
 - **Filtres** rapides (Top 500, classements, entités…) et **Plus de filtres** pour les critères moins courants.
 - **Filtres à choix multiples** : plusieurs valeurs d'un même filtre se cumulent en « ou » (ex. Top 500 **ou** Strategic ; régions Nord **et** Sud ; plusieurs valeurs d'un champ). Des filtres différents se combinent en « et ».
 - Onglet **CMO** : plusieurs **entités** à la fois et filtre **Région** (plusieurs régions au choix).
+- **Cocher plusieurs cases d'affilée** : dans toutes les listes à cases (filtres de recherche et création de liste), rien n'est recalculé pendant qu'on coche. On coche autant de cases que nécessaire, puis **Appliquer** (ou Entrée, ou un clic à côté) ; **Échap** annule. Les cases cochées s'affichent en étiquettes en haut de la liste (× pour en retirer une), avec le compteur en bas. Toute la ligne est cliquable. Avec une recherche, **Cocher les résultats** coche d'un coup tout ce qui correspond (ex. taper « Nord » puis tout cocher).
 - **Filtre par année** et **tri** configurable (dernier import, dernière venue, plus de présences, plus de contacts, plus de clients…).
 - Cliquez sur une carte pour ouvrir la **fiche détaillée**.
 

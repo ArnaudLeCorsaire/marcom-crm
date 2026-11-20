@@ -376,6 +376,24 @@ body.auth-local [data-view=users]{display:none!important}
 .sess-b svg{flex:none}
 .sess-b:hover{background:rgba(255,255,255,.22)}
 .sess-b.lk{flex:0 0 auto}
+
+/* ---------- Panneaux à cases : cocher plusieurs cases puis Appliquer ---------- */
+.cof-panel{display:flex;flex-direction:column}
+.cof-acts{align-items:center;flex-wrap:wrap}
+.cof-hint{margin-left:auto;font-size:11.5px;color:var(--muted)}
+.cof-chips{display:flex;flex-wrap:wrap;gap:4px;margin:2px 0 6px;max-height:76px;overflow:auto}
+.cof-chips:empty{display:none}
+.cof-chip{display:inline-flex;align-items:center;gap:5px;border:0;background:var(--green-light);color:var(--green-dark);border-radius:999px;padding:3px 6px 3px 10px;font:inherit;font-size:12px;font-weight:600;cursor:pointer;max-width:220px}
+.cof-chip b{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cof-chip span{font-size:14px;line-height:1;opacity:.7}
+.cof-chip:hover span{opacity:1}
+.cof-more{font-size:12px;color:var(--muted);align-self:center}
+.cof-row{padding:8px 8px;cursor:pointer;user-select:none}
+.cof-row input{width:17px;height:17px}
+.cof-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid var(--line);margin:8px -10px -10px;padding:9px 10px;background:#FAFCFB;border-radius:0 0 12px 12px}
+.cof-n{font-size:12.5px;font-weight:600;color:var(--muted)}
+.cof-panel.dirty .cof-n{color:var(--green-dark)}
+.cof-panel.dirty .cof-foot .btn{box-shadow:0 0 0 3px var(--green-light)}
 /* ---------- Petits écrans ---------- */
 @media (max-width:860px){
   .app{flex-direction:column}
@@ -9297,17 +9315,73 @@ function mvHTML(id,opts,sel,allLbl,label){
     <div class="cof-list">${opts.map(([v,l,n],i)=>{const q=strip(MVQ[id]||'');return `<div class="cof-row" data-name="${esc(strip(l))}"${q&&!strip(l).includes(q)?' hidden':''}><input type="checkbox" id="mv-${esc(id)}-${i}" data-mv-item="${esc(id)}" value="${esc(v)}"${sel.includes(v)?' checked':''}><label for="mv-${esc(id)}-${i}">${esc(l)}</label>${n!=null?`<span class="cnt">${n}</span>`:''}<button type="button" class="cof-only" data-mv-only="${esc(id)}" value="${esc(v)}">${t('only')}</button></div>`}).join('')}</div></div></div>`;
 }
 const mvSet=(id,sel)=>{const f=MVSET[id];if(f){f(sel);render()}};
+/* ---------- Cocher plusieurs cases d'affilée : rien n'est recalculé tant qu'on n'a pas cliqué sur « Appliquer »
+   (ou cliqué ailleurs, ou appuyé sur Entrée). Échap annule. Vaut pour tous les filtres à cases : listes, onglets de recherche. ---------- */
+Object.assign(L.fr,{mvApply:'Appliquer',mvSelN:n=>n?`${n} coché${n>1?'s':''}`:'Rien de coché',mvCheckAll:'Tout cocher',mvCheckRes:'Cocher les résultats',mvUncheckAll:'Tout décocher',mvHint:'Cochez plusieurs cases puis Appliquer'});
+Object.assign(L.en,{mvApply:'Apply',mvSelN:n=>n?`${n} checked`:'Nothing checked',mvCheckAll:'Check all',mvCheckRes:'Check results',mvUncheckAll:'Uncheck all',mvHint:'Tick several boxes, then Apply'});
+const PANEL_IN='[data-mv-item],[data-lbp-item]';
+const panelKind=pn=>{const i=pn&&pn.querySelector(PANEL_IN);return!i?null:i.dataset.mvItem!=null?{t:'mv',id:i.dataset.mvItem}:{t:'lbp',id:i.dataset.lbpItem}};
+const panelBoxes=pn=>[...pn.querySelectorAll(PANEL_IN)];
+function panelSync(pn){
+  if(!pn||!panelKind(pn))return;const on=panelBoxes(pn).filter(x=>x.checked);
+  const n=pn.querySelector('.cof-foot .cof-n');if(n)n.textContent=t('mvSelN')(on.length);
+  const ch=pn.querySelector('.cof-chips');
+  if(ch)ch.innerHTML=on.slice(0,30).map(x=>{const l=pn.querySelector(`label[for="${CSS.escape(x.id)}"]`);let nm=x.value;if(l){const c=l.cloneNode(true);c.querySelectorAll('.bd,small,.ev-flag,svg,.dot').forEach(z=>z.remove());nm=c.textContent.trim()}return `<button type="button" class="cof-chip" data-cof-un="${esc(x.id)}" title="${esc(nm)}"><b>${esc(nm)}</b><span>×</span></button>`}).join('')+(on.length>30?`<span class="cof-more">+${on.length-30}</span>`:'');
+  const q=pn.querySelector('.cof-q'),ca=pn.querySelector('[data-cof-all]');if(ca)ca.textContent=q&&q.value.trim()?t('mvCheckRes'):t('mvCheckAll');
+  pn.classList.toggle('dirty',!!pn.dataset.dirty);
+}
+function panelEnhance(){
+  document.querySelectorAll('.cof-panel').forEach(pn=>{
+    if(pn.dataset.enh||!panelKind(pn))return;pn.dataset.enh='1';
+    const acts=`<div class="cof-acts"><button type="button" data-cof-all="1">${t('mvCheckAll')}</button><button type="button" data-cof-none="1">${t('mvUncheckAll')}</button><span class="cof-hint">${t('mvHint')}</span></div><div class="cof-chips"></div>`;
+    const old=pn.querySelector('.cof-acts');if(old)old.outerHTML=acts;else pn.querySelector('.cof-list').insertAdjacentHTML('beforebegin',acts);
+    pn.insertAdjacentHTML('beforeend',`<div class="cof-foot"><span class="cof-n"></span><button type="button" class="btn sm" data-cof-apply="1">${t('mvApply')}</button></div>`);
+    panelSync(pn);
+  });
+}
+const panelDirty=()=>document.querySelector('.cof-panel[data-dirty]');
+/* applique les cases cochées du panneau ; keep : laisser le panneau ouvert */
+function panelCommit(pn,keep){
+  if(!pn||!pn.dataset.dirty)return false;delete pn.dataset.dirty;
+  const k=panelKind(pn),v=panelBoxes(pn).filter(x=>x.checked).map(x=>x.value);
+  if(k.t==='mv'){MVO=keep?k.id:'';const f=MVSET[k.id];if(f)f(v);render()}
+  else{lbSetSel(k.id,k.id==='co'?v:(v.length?v:null));if(!keep){LUI.open=null;render()}}
+  return true;
+}
 document.addEventListener('click',e=>{
-  const tg=e.target.closest&&e.target.closest('[data-mv-toggle]');
+  const T=e.target,cl=s=>T.closest&&T.closest(s),dp=panelDirty();
+  /* dans un panneau : actions sans recalcul */
+  const pn=cl('.cof-panel');
+  if(pn&&panelKind(pn)){
+    if(cl('[data-cof-apply]')){e.preventDefault();e.stopPropagation();pn.dataset.dirty=pn.dataset.dirty||'1';panelCommit(pn);return}
+    const all=cl('[data-cof-all]'),none=cl('[data-cof-none]');
+    if(all||none){e.preventDefault();e.stopPropagation();panelBoxes(pn).forEach(x=>{if(none||!x.closest('.cof-row').hidden)x.checked=!!all});pn.dataset.dirty='1';panelSync(pn);return}
+    const un=cl('[data-cof-un]');if(un){e.preventDefault();e.stopPropagation();const x=document.getElementById(un.dataset.cofUn);if(x)x.checked=false;pn.dataset.dirty='1';panelSync(pn);return}
+    const row=cl('.cof-row');
+    if(row&&!cl('input,label,button')){e.preventDefault();e.stopPropagation();const x=row.querySelector(PANEL_IN);if(x){x.checked=!x.checked;pn.dataset.dirty='1';panelSync(pn)}return}
+    if(cl('[data-mv-only],[data-lbp-only]'))delete pn.dataset.dirty;               /* « Uniquement » remplace la sélection */
+    else if(cl('[data-lbp-year]')&&dp===pn)panelCommit(pn,true);                    /* années : on garde les cases déjà cochées */
+  }
+  /* ailleurs (ou sur le bouton du même filtre) : on applique ce qui a été coché */
+  else if(dp&&T.isConnected){
+    const own=cl('[data-mv-toggle],[data-lbp-toggle]'),dk=panelKind(dp),same=own&&(own.dataset.mvToggle===dk.id||own.dataset.lbpToggle===dk.id);
+    panelCommit(dp);if(same){e.preventDefault();e.stopPropagation();return}
+  }
+  const tg=cl('[data-mv-toggle]');
   if(tg){e.preventDefault();e.stopPropagation();const id=tg.dataset.mvToggle;MVO=MVO===id?'':id;render();if(MVO){const q=document.querySelector(`[data-mv-q="${CSS.escape(id)}"]`);if(q)q.focus()}return}
-  const no=e.target.closest&&e.target.closest('[data-mv-none]');if(no){e.preventDefault();e.stopPropagation();mvSet(no.dataset.mvNone,[]);return}
-  const on=e.target.closest&&e.target.closest('[data-mv-only]');if(on){e.preventDefault();e.stopPropagation();MVO=on.dataset.mvOnly;mvSet(on.dataset.mvOnly,[on.value]);return}
-  if(MVO&&e.target.isConnected&&!(e.target.closest&&e.target.closest('.mv'))){MVO='';document.querySelectorAll('.mv .cof-panel').forEach(p=>p.hidden=true)}
+  const on=cl('[data-mv-only]');if(on){e.preventDefault();e.stopPropagation();MVO=on.dataset.mvOnly;mvSet(on.dataset.mvOnly,[on.value]);return}
+  if(MVO&&T.isConnected&&!cl('.mv')){MVO='';document.querySelectorAll('.mv .cof-panel').forEach(p=>p.hidden=true)}
 },true);
-document.addEventListener('change',e=>{const it=e.target.closest&&e.target.closest('[data-mv-item]');if(!it)return;e.stopPropagation();
-  const id=it.dataset.mvItem,cur=[...document.querySelectorAll(`[data-mv-item="${CSS.escape(id)}"]`)].filter(x=>x.checked).map(x=>x.value);MVO=id;mvSet(id,cur)},true);
+/* cocher / décocher : seulement le compteur et les étiquettes du panneau */
+document.addEventListener('change',e=>{const it=e.target.closest&&e.target.closest(PANEL_IN);if(!it)return;e.stopPropagation();
+  const pn=it.closest('.cof-panel');if(pn){pn.dataset.dirty='1';panelSync(pn)}},true);
 document.addEventListener('input',e=>{const q=e.target.closest&&e.target.closest('[data-mv-q]');if(!q)return;e.stopPropagation();const id=q.dataset.mvQ;MVQ[id]=q.value;const s=strip(q.value);
-  q.closest('.cof-panel').querySelectorAll('.cof-row').forEach(r=>r.hidden=!!s&&!r.dataset.name.includes(s))},true);
+  q.closest('.cof-panel').querySelectorAll('.cof-row').forEach(r=>r.hidden=!!s&&!r.dataset.name.includes(s));panelSync(q.closest('.cof-panel'))},true);
+document.addEventListener('input',e=>{const q=e.target.closest&&e.target.closest('[data-lbp-q]');if(q)setTimeout(()=>panelSync(q.closest('.cof-panel')),0)});
+document.addEventListener('keydown',e=>{const pn=e.target.closest&&e.target.closest('.cof-panel');if(!pn||!panelKind(pn))return;
+  if(e.key==='Enter'){e.preventDefault();e.stopPropagation();pn.dataset.dirty=pn.dataset.dirty||'1';panelCommit(pn)}
+  else if(e.key==='Escape'){e.preventDefault();e.stopPropagation();delete pn.dataset.dirty;MVO='';LUI.open=null;render()}},true);
+{const _rcp=renderCore;renderCore=function(){const r=_rcp.apply(this,arguments);try{panelEnhance()}catch(_){}return r}}
 const cntOpts=(list,fn,emptyLbl)=>{const m={};list.forEach(x=>{const v=fn(x);(Array.isArray(v)?v:[v]).forEach(y=>{const k=y==null||y===''?'__empty':String(y);m[k]=(m[k]||0)+1})});
   return Object.entries(m).sort((a,b)=>(a[0]==='__empty')-(b[0]==='__empty')||cmp(a[0],b[0])).map(([v,n])=>[v,v==='__empty'?(emptyLbl||t('emptyV')):v,n])};
 
