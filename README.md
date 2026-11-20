@@ -443,6 +443,20 @@ Konex.html
 
 Il n'y a plus de version « standard » compilée à part : le rôle est choisi à la connexion. Dans l'espace utilisateur, `applyRole(false)` remplace les fonctions réservées aux administrateurs par des fonctions vides, exactement comme le faisait l'ancien fichier standard.
 
+**Performances** (base de test : 6 000 contacts, 29 000 participations) :
+- au repos, Konex ne consomme pratiquement rien (aucune tâche de fond, aucune animation en boucle) ;
+- une modification (note, VIP, correction…) coûte environ 1,6 s de calcul au lieu de 3,8 s :
+  - les enregistrements rapprochés sont regroupés en un seul chiffrement de la base ;
+  - les lignes importées, qui ne changent qu'à l'import, ne sont converties qu'une fois ;
+  - le base64 utilise les fonctions natives du navigateur ;
+- le module « Importer et contrôler », chargé en arrière-plan pour l'espace administrateur, ne recalcule et ne se redessine que lorsqu'on l'ouvre ou qu'une synchronisation en a besoin ;
+- la recherche de doublons s'arrête dès que deux noms diffèrent de plus de 2 lettres ;
+- le format des données enregistrées dans le navigateur ne change pas.
+
+Limite connue : tout est enregistré et chiffré dans le navigateur, et la base entière est réécrite à chaque modification. Pour de très gros volumes, une vraie base de données côté serveur serait plus adaptée.
+
+**Menu de gauche** : fixé à l'écran sur ordinateur, il défile indépendamment de la page, sans l'entraîner arrivé en bas, avec une barre de défilement visible.
+
 **Modifier l'outil** : éditez le fichier HTML dans un éditeur de texte, puis rouvrez-le dans le navigateur. Les données déjà enregistrées sont conservées (même nom de base IndexedDB). Testez toujours d'abord avec les données d'exemple.
 
 ---

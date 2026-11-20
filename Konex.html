@@ -394,6 +394,14 @@ body.auth-local [data-view=users]{display:none!important}
 .cof-n{font-size:12.5px;font-weight:600;color:var(--muted)}
 .cof-panel.dirty .cof-n{color:var(--green-dark)}
 .cof-panel.dirty .cof-foot .btn{box-shadow:0 0 0 3px var(--green-light)}
+
+/* ---------- Menu de gauche : fixé à l'écran, défile seul (sans entraîner la page), barre de défilement visible ---------- */
+@media (min-width:861px){
+  .side{position:fixed;left:0;top:0;bottom:0;height:auto;z-index:15;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.35) transparent}
+  .content{margin-left:268px}
+}
+@media print{.content{margin-left:0!important}}
+.side::-webkit-scrollbar{width:8px}.side::-webkit-scrollbar-track{background:transparent}.side::-webkit-scrollbar-thumb{background:rgba(255,255,255,.28);border-radius:8px}.side::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.45)}
 /* ---------- Petits écrans ---------- */
 @media (max-width:860px){
   .app{flex-direction:column}
@@ -3460,6 +3468,19 @@ window.mmbDecisions=mmbDecisions;
 window.mmbAutoPublish=async()=>{ if(!S||!C||!HOST||!S.lastPublish||!C.persons.length) return false;
   if(!(S.changedAt>S.lastPublish)) return false; if((C.K.mapping||[]).length) return false;
   await ACT.publish(); return true; };
+/* Chargé en arrière-plan dans Konex et caché : on ne recalcule et ne redessine que lorsqu'on l'affiche
+   ou qu'une opération a besoin des résultats (synchronisation, envoi). Les données sont enregistrées normalement. */
+const mmbHidden=()=>{try{return !!(HOST&&window.frameElement&&!window.frameElement.offsetParent)}catch(_){return false}};
+let MMB_DIRTY=false,MMB_RDIRTY=false;
+const mmbFresh=()=>{if(MMB_DIRTY&&S){MMB_DIRTY=false;compute()}};
+{const _r=render;render=function(){if(mmbHidden()){MMB_RDIRTY=true;return}MMB_RDIRTY=false;mmbFresh();return _r.apply(this,arguments)}}
+{const _c=compute;compute=function(){MMB_DIRTY=false;return _c.apply(this,arguments)}}
+{const _ch=changed;changed=function(msg){if(mmbHidden()&&S){S.changedAt=Date.now();MMB_DIRTY=true;MMB_RDIRTY=true;scheduleSave();if(msg)toast(msg);return}return _ch(msg)}}
+{const _en=enter;enter=function(){if(mmbHidden()&&S){$('#pw1').value='';$('#pw2').value='';$('#lock').hidden=true;$('#app').hidden=false;lastAct=Date.now();V.view='home';V.drawer=null;MMB_DIRTY=true;MMB_RDIRTY=true;return}return _en()}}
+{const _sa=mmbSyncApply;window.mmbSyncApply=async evts=>{if(evts&&evts.length)mmbFresh();return _sa(evts)}}
+{const _ap=window.mmbAutoPublish;window.mmbAutoPublish=async()=>{mmbFresh();return _ap()}}
+{const _pb=ACT.publish;ACT.publish=async(...a)=>{mmbFresh();return _pb(...a)}}
+window.mmbWake=()=>{if(MMB_DIRTY||MMB_RDIRTY){mmbFresh();render()}};
 /* Instantané des saisies du CRM (fiches et participations ajoutées, informations complémentaires) : remplace le précédent */
 window.mmbCrmHash=()=>(S&&S.crm&&S.crm.hash)||'';
 window.mmbCrmApply=snap=>{ if(!S||!snap) return false; if(S.crm&&S.crm.hash===snap.hash) return true; S.crm=snap; changed(); return true; };
@@ -4520,6 +4541,17 @@ function hl(text,tokens){
   }
   return open?out+'</mark>':out;
 }
+/* distance d'édition limitée à k : s'arrête dès qu'elle dépasse k (bien plus rapide que le calcul complet) */
+function levB(a,b,k){
+  const la=a.length,lb=b.length;if(Math.abs(la-lb)>k)return k+1;if(a===b)return 0;
+  let prev=new Array(lb+1),cur=new Array(lb+1);for(let j=0;j<=lb;j++)prev[j]=j;
+  for(let i=1;i<=la;i++){cur[0]=i;let best=i;const lo=Math.max(1,i-k),hi=Math.min(lb,i+k);
+    if(lo>1)cur[lo-1]=k+1;
+    for(let j=lo;j<=hi;j++){const v=Math.min(prev[j]+1,cur[j-1]+1,prev[j-1]+(a.charCodeAt(i-1)===b.charCodeAt(j-1)?0:1));cur[j]=v;if(v<best)best=v}
+    if(hi<lb)cur[hi+1]=k+1;
+    if(best>k)return k+1;[prev,cur]=[cur,prev]}
+  return prev[lb];
+}
 function lev(a,b){
   if(a===b)return 0; if(!a.length)return b.length; if(!b.length)return a.length;
   let prev=Array.from({length:b.length+1},(_,i)=>i);
@@ -4561,12 +4593,11 @@ const KV={db:null,ls:false,
 const OLD_KEYS=['crm-vault-v1','crm-data-v1','crm-data-meta','crm-merges-v1','crm-ignored-v1','crm-notes-v2','crm-notes-v1'];
 const B64C='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/', B64I=new Uint8Array(128); for(let i=0;i<64;i++)B64I[B64C.charCodeAt(i)]=i;
 const B64B=new Uint8Array(64),B64V=new Int16Array(128).fill(-1);for(let i=0;i<64;i++){B64B[i]=B64C.charCodeAt(i);B64V[B64B[i]]=i}
-const toB64=u=>{const L=u.length,out=new Uint8Array(Math.ceil(L/3)*4);let i=0,o=0;
-  for(;i+2<L;i+=3){const n=u[i]<<16|u[i+1]<<8|u[i+2];out[o++]=B64B[n>>18&63];out[o++]=B64B[n>>12&63];out[o++]=B64B[n>>6&63];out[o++]=B64B[n&63]}
-  const r=L-i;if(r===1){const n=u[i]<<16;out[o++]=B64B[n>>18&63];out[o++]=B64B[n>>12&63];out[o++]=61;out[o++]=61}else if(r===2){const n=u[i]<<16|u[i+1]<<8;out[o++]=B64B[n>>18&63];out[o++]=B64B[n>>12&63];out[o++]=B64B[n>>6&63];out[o++]=61}
-  let s='';for(let k=0;k<o;k+=0x8000)s+=String.fromCharCode.apply(null,out.subarray(k,Math.min(o,k+0x8000)));return s};
-const fromB64=s=>{s=String(s);const out=new Uint8Array(Math.floor(s.length*3/4)+3);let o=0,buf=0,bits=0;
+/* base64 : fonctions natives du navigateur (même format qu'avant, nettement plus rapides sur une grosse base) */
+const toB64=u=>{let s='';for(let k=0;k<u.length;k+=0x8000)s+=String.fromCharCode.apply(null,u.subarray(k,Math.min(u.length,k+0x8000)));return btoa(s)};
+const fromB64Slow=s=>{s=String(s);const out=new Uint8Array(Math.floor(s.length*3/4)+3);let o=0,buf=0,bits=0;
   for(let i=0;i<s.length;i++){const c=s.charCodeAt(i),v=c<128?B64V[c]:-1;if(v<0)continue;buf=(buf<<6|v)&0xffffff;bits+=6;if(bits>=8){bits-=8;out[o++]=buf>>bits&255}}return out.subarray(0,o)};
+const fromB64=s=>{try{const b=atob(String(s)),n=b.length,out=new Uint8Array(n);for(let i=0;i<n;i++)out[i]=b.charCodeAt(i);return out}catch(_){return fromB64Slow(s)}};
 const imgUrl=b=>'data:image/jpeg;base64,'+toB64(b);
 const blobBytes=async b=>new Uint8Array(await b.arrayBuffer());
 let CRYPTO_KEY=null,SALT=null,HAS_VAULT=false,saveChain=Promise.resolve();
@@ -4585,14 +4616,38 @@ let ROWS=[],SOURCES=[],MERGES={},IGNORED={},NOTES={},EVMETA={},PHOTOS={},FIXES={
 let LISTS=[],LAST_BACKUP=null,LAST_CHANGE=null,CMOMERGES={},CMOIGN={},CMOMETA={},DELETED={},HCRIT=[],MANROWS=[],ENTSEL='',SYNCQ=[],SYNCED=null;
 function vaultState(){return{v:3,ref:REFDATA,rows:SOURCES.length?ROWS:null,sources:SOURCES,merges:MERGES,ignored:IGNORED,notes:NOTES,evmeta:EVMETA,
     fixes:FIXES,fixIgnored:FIX_IGNORED,cmerges:CMERGES,cignored:CIGNORED,pmeta:PMETA,cmeta:CMETA,swapIgnored:SWAP_IGNORED,fieldFixes:FIELD_FIXES,fieldIgnored:FIELD_IGNORED,lists:LISTS,lastBackup:LAST_BACKUP,lastChange:LAST_CHANGE,entFix:ENTFIX,entIgn:ENTIGN,share:SHCFG,tuto:TUTO_DONE,cmoMerges:CMOMERGES,cmoIgn:CMOIGN,cmoMeta:CMOMETA,deleted:DELETED,hcrit:HCRIT,manRows:MANROWS,syncQ:SYNCQ,synced:SYNCED}}
+/* Enregistrement regroupé : les demandes rapprochées (modification, synchronisation, suivi…) donnent UN seul chiffrement de la base,
+   200 ms après la dernière ; les écritures restent dans l'ordre. saveChain se résout quand la dernière demande est écrite. */
+let VS_T=0,VS_RES=null,VS_W=Promise.resolve();
 function saveVault(keepChange){
   if(!CRYPTO_KEY||TUTO)return saveChain;
-  shTrack();
   if(keepChange!==true)LAST_CHANGE=new Date().toISOString();
-  const plain=new TextEncoder().encode(JSON.stringify(vaultState()));
-  saveChain=saveChain.then(async()=>{const e=await enc(plain);await KV.set('vault',{v:2,salt:toB64(SALT),...e})})
-                     .catch(()=>toast(t('storageErr'),true));
+  if(!VS_RES){let r;const pr=new Promise(x=>r=x);VS_RES=r;saveChain=saveChain.then(()=>pr)}
+  clearTimeout(VS_T);VS_T=setTimeout(vaultWrite,200);
   return saveChain;
+}
+function vaultWrite(){
+  clearTimeout(VS_T);VS_T=0;const done=VS_RES;VS_RES=null;if(!done)return;
+  if(!CRYPTO_KEY){done();return}
+  try{shTrack()}catch(_){}
+  const plain=vaultBytes(),key=CRYPTO_KEY,salt=SALT;
+  VS_W=VS_W.then(async()=>{const iv=crypto.getRandomValues(new Uint8Array(12)),ct=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv},key,plain));
+      await KV.set('vault',{v:2,salt:toB64(salt),iv:toB64(iv),ct:toB64(ct)})})
+    .catch(()=>toast(t('storageErr'),true)).then(done);
+}
+window.addEventListener('pagehide',()=>{if(VS_RES)vaultWrite()});
+/* Contenu de la base, en octets : les lignes importées (la partie la plus lourde, qui ne change qu'à l'import) sont converties une fois
+   et réutilisées ; seul le reste (notes, décisions, réglages…) est reconverti. Le résultat est identique à JSON.stringify(vaultState()). */
+let VROWS={ref:null,len:-1,bytes:null};
+function vaultBytes(){
+  const te=new TextEncoder(),st=vaultState(),rows=st.rows;
+  if(!Array.isArray(rows)||rows.length<500)return te.encode(JSON.stringify(st));
+  if(VROWS.ref!==rows||VROWS.len!==rows.length)VROWS={ref:rows,len:rows.length,bytes:te.encode(JSON.stringify(rows))};
+  const MK='\u0001KONEX-ROWS\u0001';st.rows=MK;
+  const js=JSON.stringify(st),mk=JSON.stringify(MK),i=js.indexOf(mk);
+  if(i<0)return te.encode(JSON.stringify({...st,rows}));
+  const h=te.encode(js.slice(0,i)),tl=te.encode(js.slice(i+mk.length)),out=new Uint8Array(h.length+VROWS.bytes.length+tl.length);
+  out.set(h,0);out.set(VROWS.bytes,h.length);out.set(tl,h.length+VROWS.bytes.length);return out;
 }
 function applyState(s){
   // Versions précédentes : un seul fichier décrit par « meta »
@@ -5082,8 +5137,8 @@ function compare(A,B){
   const fa=A.pn+' '+A.nn, fb=B.pn+' '+B.nn;
   if(fa===fb)return 'sameName';
   if(A.pn&&B.pn&&fa===B.nn+' '+B.pn)return 'swapped';
-  const d=lev(fa,fb), max=Math.max(fa.length,fb.length);
-  if(d<=(max>=12?2:1))return 'close';
+  const max=Math.max(fa.length,fb.length),k=max>=12?2:1;
+  if(levB(fa,fb,k)<=k)return 'close';
   if(A.email&&B.email&&A.email.split('@')[0]===B.email.split('@')[0]&&A.email.split('@')[0].length>=5)return 'sameLocal';
   return null;
 }
@@ -9565,6 +9620,7 @@ grid.addEventListener('click',e=>{if(view!=='lists')return;if(e.target.closest('
 grid.addEventListener('change',e=>{if(view!=='lists')return;const k=e.target.dataset&&e.target.dataset.lq;if(k==='rd'){LQ.rvs=[]}if(k==='cfk'){LQ.cfvs=[];LQ.cfv=''}},true);
 document.addEventListener('click',e=>{if(LUI.addOpen&&e.target.isConnected&&!(e.target.closest&&e.target.closest('.lbx-add'))){LUI.addOpen=false;document.querySelectorAll('.lbx-menu').forEach(m=>m.hidden=true)}},true);
 
+{const _shb=showBuilder;showBuilder=function(){const r=_shb.apply(this,arguments);try{if(BWIN&&BWIN.mmbWake)setTimeout(()=>BWIN.mmbWake(),0)}catch(_){}return r}}
 /* =========================================================
    MIROIR AVEC « IMPORTER ET CONTRÔLER »
    - les décisions prises là-bas (personnes, entreprises, CMO distincts ; noms laissés tels quels) sont reprises ici,
