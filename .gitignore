@@ -1,2 +1,4 @@
 # Fichier des comptes Konex : créé par Konex dans le dossier réseau, à ne pas publier sur GitHub
 konex-utilisateurs.json
+data/
+__pycache__/

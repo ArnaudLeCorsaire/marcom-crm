@@ -4,6 +4,8 @@
 
 Il tient entièrement dans **un seul fichier HTML** (`Konex.html`), fonctionne **100 % hors ligne**, sans serveur, sans installation et sans aucune bibliothèque externe. À l'ouverture, on choisit l'**espace utilisateur** ou l'**espace administrateur** et on saisit le mot de passe ; les données sont **chiffrées** sur le poste.
 
+> 🖥️ **Sur Domino** (ou tout serveur) : lancez `app.sh`. Konex range alors toutes ses données dans des fichiers d'un dossier fixe (un dataset Domino), sans rien choisir à la main. Voir [Déployer sur Domino](#déployer-sur-domino).
+
 > ⏳ **Mode actuel (avant la mise en ligne) : un mot de passe par espace et par poste**, comme dans les versions précédentes. Les comptes personnels (fichier `konex-utilisateurs.json`) sont prêts dans le code mais **désactivés** ; ils seront activés à la mise en ligne (voir [Comptes et connexion](#comptes-et-connexion)).
 
 ---
@@ -13,6 +15,7 @@ Il tient entièrement dans **un seul fichier HTML** (`Konex.html`), fonctionne *
 1. [Contenu du dépôt](#contenu-du-dépôt)
 2. [Un fichier, deux espaces](#un-fichier-deux-espaces)
 3. [Démarrage rapide](#démarrage-rapide)
+   - [Déployer sur Domino](#déployer-sur-domino)
 4. [Comptes et connexion](#comptes-et-connexion)
 5. [Fonctionnalités communes](#fonctionnalités-communes)
 6. [Préparer un événement à venir](#préparer-un-événement-à-venir)
@@ -37,6 +40,8 @@ Il tient entièrement dans **un seul fichier HTML** (`Konex.html`), fonctionne *
 | `Konex.html` | **L'outil**, pour tout le monde. À l'ouverture, deux fenêtres de connexion : **espace utilisateur** et **espace administrateur**. |
 | `konex-utilisateurs.json` | *(créé par Konex, pas dans ce dépôt)* Le fichier des comptes, à la racine du dossier Konex sur le réseau. Voir [Comptes et connexion](#comptes-et-connexion). |
 | `old/` | Anciennes versions archivées (`Konex-2.html`, `Konex_admin-2.html`, `Konex.html` v1, `Konex_admin.html` v1, `MarCom_CRM_admin-3/4/5.html`, `MarCom_CRM_standard-3/4.html`). Conservées pour mémoire, **ne plus les utiliser**. |
+| `konex_server.py` | Petit serveur Python (bibliothèque standard uniquement) pour Domino : sert `Konex.html` et range toutes les données dans des fichiers. |
+| `app.sh` | Script de lancement de l'app Domino (port 8888). |
 | `README.md` | Ce document. |
 
 ---
@@ -94,6 +99,59 @@ Chaque espace garde ses propres données sur le poste (`marcom-crm-standard` pou
 > 💡 Pas encore de fichier ? Le module d'import propose des **données d'exemple « pleines de pièges »** pour tester l'outil.
 
 ---
+
+## Déployer sur Domino
+
+Ouvert directement comme fichier, Konex garde ses données dans le navigateur et la base de l'équipe dans un dossier choisi à la main. Sur **Domino**, l'espace de travail du projet est remis à zéro à chaque redémarrage de l'app : il faut donc ranger les données sur un **dataset** (stockage persistant). C'est ce que fait `konex_server.py`.
+
+### Mise en place (une fois)
+1. Créez un **dataset** dans le projet Domino, par exemple `konex`.
+2. Dans **App Settings → Environment Variables**, ajoutez :
+
+   | Variable | Valeur |
+   |---|---|
+   | `KONEX_DATA_DIR` | `/domino/datasets/local/konex/konex` (projet Domino File System) ou `/mnt/data/konex/konex` (projet Git) |
+
+   Sans cette variable, Konex utilise tout seul un dataset nommé `konex` s'il le trouve (`/domino/datasets/local/konex` ou `/mnt/data/konex`). Sinon il écrit dans `./data`, qui **n'est pas persistant** sur Domino : Konex l'indique en orange sur l'écran de connexion.
+3. Publiez l'app : Domino exécute `app.sh`, qui lance `python3 konex_server.py` sur le port 8888. Aucune dépendance à installer.
+
+Pour essayer sur votre poste :
+
+```bash
+KONEX_DATA_DIR=~/konex-data python3 konex_server.py
+```
+
+Puis ouvrez `http://localhost:8888/`.
+
+### Où sont les données
+
+```
+<KONEX_DATA_DIR>/
+├── base-partagee/            base de l'équipe : édition publiée, contributions, documents des événements (chiffrés)
+├── espaces/<utilisateur>/    données de chaque personne : coffre admin, coffre utilisateur, module d'import (chiffrés)
+├── master/                   déposez-y la master file Excel : Konex la propose à l'import
+└── exports/                  copie de tout ce que Konex exporte (Excel, CSV, .ics, master file…)
+```
+
+- **Plus aucun dossier à choisir** : la base de l'équipe est connectée automatiquement. Un administrateur la crée une fois (**Base partagée → Créer la base de l'équipe**, avec la clé d'équipe), puis chaque utilisateur la rejoint avec cette clé. Les connexions suivantes la retrouvent toutes seules.
+- **Master file** : dans *Importer et contrôler*, le bouton d'import ouvre la liste des fichiers du dossier `master/` (le plus récent est coché). *Depuis cet ordinateur…* reste possible.
+- **Exports** : chaque fichier exporté est téléchargé comme d'habitude **et** rangé dans `exports/`.
+- **Un espace par personne** : Konex sépare les données de chaque personne grâce à l'identité que Domino transmet à l'app (en-tête `domino-username`). Le nom reconnu est affiché dans **Base partagée → Stockage Domino**. Si Domino ne transmet pas l'identité, tout le monde partage l'espace `local` : définissez alors `KONEX_USER` ou vérifiez les réglages d'identité de l'app.
+- **Sécurité** : le chiffrement reste fait dans le navigateur (AES-GCM 256). Le serveur ne reçoit et n'écrit que des données chiffrées, sauf dans `master/` et `exports/`, qui contiennent vos fichiers Excel. Les chemins sont vérifiés (impossible de sortir du dossier des données) et chaque écriture est atomique (fichier temporaire puis remplacement).
+- La page **Base partagée** montre tous ces chemins dans le bloc **Stockage Domino**.
+
+### Variables disponibles
+
+| Variable | Rôle | Défaut |
+|---|---|---|
+| `KONEX_DATA_DIR` | Dossier des données (sur un dataset) | dataset `konex` détecté, sinon `./data` |
+| `KONEX_PORT` | Port d'écoute | `8888` |
+| `KONEX_USER` | Nom de l'espace si Domino ne transmet pas l'identité | `local` |
+| `KONEX_MAX_MB` | Taille maximale d'un fichier envoyé | `300` |
+| `KONEX_PERSISTENT` | `1` pour déclarer persistant un autre volume monté | — |
+| `KONEX_LOG` | `1` pour journaliser les requêtes | — |
+
+Si plusieurs personnes écrivent beaucoup en même temps, le passage à une vraie base de données (SQLite, Postgres) ne toucherait que `konex_server.py` : les fonctions `kv_get` / `do_PUT` (espaces) et `fs_*` (fichiers).
 
 ## Comptes et connexion
 

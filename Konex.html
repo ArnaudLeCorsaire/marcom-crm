@@ -6,6 +6,156 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; font-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; form-action 'none'; base-uri 'none'">
 <meta name="referrer" content="no-referrer">
 <title>Konex</title>
+<script>
+/* =========================================================
+   KONEX SERVEUR (Domino) — actif seulement quand la page est servie par konex_server.py
+   (window.KONEX_SERVER est alors injecté par le serveur). Ouvert directement comme fichier, rien ne change.
+   - le stockage du navigateur (IndexedDB) est remplacé par des fichiers dans <données>/espaces/<utilisateur>/ ;
+   - la base de l'équipe est le dossier <données>/base-partagee/ : plus aucun dossier à choisir ;
+   - la master file se charge depuis <données>/master/, les exports sont aussi rangés dans <données>/exports/.
+   Les données restent chiffrées dans le navigateur : le serveur n'enregistre que du chiffré.
+   ========================================================= */
+(function(){
+  const S=window.KONEX_SERVER;if(!S||!S.on)return;
+  /* adresse de base : les appels sont relatifs à la page (Domino sert l'app sous un préfixe) */
+  let base=location.pathname;if(!base.endsWith('/')){const last=base.split('/').pop();base=last.includes('.')?base.slice(0,base.lastIndexOf('/')+1):base+'/'}
+  const U=p=>base+'api/'+p;
+  const encP=p=>p.split('/').map(encodeURIComponent).join('/');
+  async function call(method,p,body){
+    let r,tries=0;
+    for(;;){try{r=await fetch(U(p),{method,body,cache:'no-store',credentials:'same-origin'});break}
+      catch(e){if(++tries>=4)throw e;await new Promise(z=>setTimeout(z,400*tries))}}
+    return r;
+  }
+  /* ---------- valeurs : JSON avec les octets en base64 ---------- */
+  const B64='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+  function b64(u8){let s='';const CH=0x8000;for(let i=0;i<u8.length;i+=CH)s+=String.fromCharCode.apply(null,u8.subarray(i,i+CH));return btoa(s)}
+  function unb64(s){const b=atob(s),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u}
+  const TA={Uint8Array,Int8Array,Uint8ClampedArray,Uint16Array,Int16Array,Uint32Array,Int32Array,Float32Array,Float64Array};
+  function pack(v){
+    if(v===null||typeof v!=='object')return typeof v==='function'?undefined:v;
+    if(v instanceof ArrayBuffer)return{$kx:'ab',d:b64(new Uint8Array(v))};
+    if(ArrayBuffer.isView(v)){const n=v.constructor.name;return{$kx:'ta',t:n,d:b64(new Uint8Array(v.buffer,v.byteOffset,v.byteLength))}}
+    if(v instanceof Date)return{$kx:'date',d:v.getTime()};
+    if(v.__kxHandle)return undefined; /* dossier du serveur : recréé à la connexion, inutile de le stocker */
+    if(typeof FileSystemHandle!=='undefined'&&v instanceof FileSystemHandle)return undefined;
+    if(Array.isArray(v))return v.map(x=>{const p=pack(x);return p===undefined?null:p});
+    if(v instanceof Map)return{$kx:'map',d:[...v].map(([a,b])=>[pack(a),pack(b)])};
+    if(v instanceof Set)return{$kx:'set',d:[...v].map(pack)};
+    const o={};for(const k in v){if(!Object.prototype.hasOwnProperty.call(v,k))continue;const p=pack(v[k]);if(p!==undefined)o[k]=p}
+    if(o.$kx)o.$kx_=o.$kx,delete o.$kx;
+    return o;
+  }
+  function unpack(v){
+    if(v===null||typeof v!=='object')return v;
+    if(Array.isArray(v))return v.map(unpack);
+    if(typeof v.$kx==='string'){
+      if(v.$kx==='ab')return unb64(v.d).buffer;
+      if(v.$kx==='ta'){const u=unb64(v.d),C=TA[v.t]||Uint8Array;return C===Uint8Array?u:new C(u.buffer)}
+      if(v.$kx==='date')return new Date(v.d);
+      if(v.$kx==='map')return new Map(v.d.map(([a,b])=>[unpack(a),unpack(b)]));
+      if(v.$kx==='set')return new Set(v.d.map(unpack));
+    }
+    const o={};for(const k in v)o[k===('$kx_')?'$kx':k]=unpack(v[k]);return o;
+  }
+  /* ---------- IndexedDB → fichiers du serveur (le sous-ensemble utilisé par Konex) ---------- */
+  const CHAIN=new Map(); /* écritures d'une même clé : dans l'ordre, jamais deux en même temps */
+  function serial(id,fn){const prev=CHAIN.get(id)||Promise.resolve();const p=prev.catch(()=>{}).then(fn);CHAIN.set(id,p);p.finally(()=>{if(CHAIN.get(id)===p)CHAIN.delete(id)}).catch(()=>{});return p}
+  const kvU=(db,k)=>'kv/'+encodeURIComponent(db)+(k===undefined?'':'/'+encodeURIComponent(String(k)));
+  const KVAPI={
+    async get(db,k){await (CHAIN.get(db+'\u0001'+k)||Promise.resolve()).catch(()=>{});const r=await call('GET',kvU(db,k));if(r.status===404)return undefined;if(!r.ok)throw new Error('kv '+r.status);return unpack(JSON.parse(await r.text()))},
+    put(db,k,v){const txt=JSON.stringify(pack(v));return serial(db+'\u0001'+k,async()=>{const r=await call('PUT',kvU(db,k),txt);if(!r.ok)throw new Error('kv '+r.status)})},
+    del(db,k){return serial(db+'\u0001'+k,async()=>{const r=await call('DELETE',kvU(db,k));if(!r.ok)throw new Error('kv '+r.status)})},
+    async keys(db){const r=await call('GET',kvU(db));if(!r.ok)return[];return(await r.json()).keys||[]},
+    async clear(db){await Promise.all([...CHAIN.keys()].filter(x=>x.startsWith(db+'\u0001')).map(x=>CHAIN.get(x).catch(()=>{})));await call('DELETE',kvU(db))},
+    async dbs(){const r=await call('GET','kv');if(!r.ok)return[];return(await r.json()).dbs||[]}
+  };
+  function Req(){this.result=undefined;this.error=null;this.onsuccess=null;this.onerror=null;this.readyState='pending'}
+  function fire(req,ok,val){setTimeout(()=>{req.readyState='done';if(ok){req.result=val;req.onsuccess&&req.onsuccess({target:req})}else{req.error=val;req.onerror&&req.onerror({target:req})}},0)}
+  function Tx(db){this.db=db;this.jobs=[];this.oncomplete=null;this.onerror=null;this.onabort=null;this.error=null;
+    const store={
+      get:k=>this._job(()=>KVAPI.get(db.name,k)),
+      put:(v,k)=>this._job(()=>KVAPI.put(db.name,k,v)),
+      add:(v,k)=>this._job(()=>KVAPI.put(db.name,k,v)),
+      delete:k=>this._job(()=>KVAPI.del(db.name,k)),
+      clear:()=>this._job(()=>KVAPI.clear(db.name)),
+      getAllKeys:()=>this._job(()=>KVAPI.keys(db.name)),
+      getAll:()=>this._job(async()=>Promise.all((await KVAPI.keys(db.name)).map(k=>KVAPI.get(db.name,k))))
+    };
+    this.objectStore=()=>store;
+    setTimeout(()=>this._finish(),0);
+  }
+  Tx.prototype._job=function(fn){const req=new Req();const p=Promise.resolve().then(fn).then(v=>fire(req,true,v),e=>{fire(req,false,e);throw e});this.jobs.push(p);return req};
+  Tx.prototype._finish=async function(){let n=0;while(n!==this.jobs.length){n=this.jobs.length;try{await Promise.all(this.jobs)}catch(e){this.error=e;setTimeout(()=>{this.onerror&&this.onerror({target:this});this.onabort&&this.onabort({target:this})},5);return}}
+    setTimeout(()=>{this.oncomplete&&this.oncomplete({target:this})},5)};
+  function DB(name){this.name=name;this.version=1;this.objectStoreNames={contains:()=>true,length:1,item:()=>'kv'}}
+  DB.prototype.transaction=function(){return new Tx(this)};
+  DB.prototype.createObjectStore=function(){return{}};
+  DB.prototype.close=function(){};
+  const KNOWN=new Set();
+  const IDB={
+    open(name){const req=new Req();req.onupgradeneeded=null;req.onblocked=null;
+      (async()=>{const db=new DB(name);let fresh=false;
+        if(!KNOWN.has(name)){try{const r=await call('GET',kvU(name));fresh=!(r.ok&&(await r.json()).exists)}catch(_){}KNOWN.add(name)}
+        setTimeout(()=>{req.result=db;if(fresh&&req.onupgradeneeded)req.onupgradeneeded({target:req,oldVersion:0,newVersion:1});req.readyState='done';req.onsuccess&&req.onsuccess({target:req})},0)})();
+      return req},
+    deleteDatabase(name){const req=new Req();KVAPI.clear(name).then(()=>fire(req,true,undefined),e=>fire(req,false,e));return req},
+    async databases(){return(await KVAPI.dbs()).map(name=>({name,version:1}))},
+    cmp:(a,b)=>a<b?-1:a>b?1:0
+  };
+  /* ---------- dossiers du serveur, avec l'interface des dossiers du navigateur ---------- */
+  const nf=n=>{const e=new Error('absent : '+n);e.name='NotFoundError';return e};
+  const tm=n=>{const e=new Error('type : '+n);e.name='TypeMismatchError';return e};
+  function lazyFile(path,name,meta){
+    let buf=null;const load=async()=>{if(buf)return buf;const r=await call('GET','fs/'+encP(path));if(r.status===404)throw nf(name);if(!r.ok)throw new Error('fs '+r.status);
+      buf=await r.arrayBuffer();meta.mtime=+r.headers.get('X-Mtime')||meta.mtime;return buf};
+    return{name,size:meta.size||0,type:'',get lastModified(){return meta.mtime||0},__kxHandle:1,
+      arrayBuffer:async()=>(await load()).slice(0),text:async()=>new TextDecoder().decode(await load()),
+      bytes:async()=>new Uint8Array(await load()),
+      blob:async()=>new Blob([await load()]),
+      slice(a,b,t){return{arrayBuffer:async()=>(await load()).slice(a,b),text:async()=>new TextDecoder().decode((await load()).slice(a,b))}}};
+  }
+  function FileH(path,name,meta){this.kind='file';this.name=name;this.path=path;this.meta=meta||null;this.__kxHandle=1}
+  FileH.prototype.getFile=async function(){
+    let meta=this.meta;
+    if(!meta){const r=await call('GET','fs/'+encP(this.path));if(r.status===404)throw nf(this.name);if(!r.ok)throw new Error('fs '+r.status);
+      const ab=await r.arrayBuffer(),mt=+r.headers.get('X-Mtime')||Date.now();return new File([ab],this.name,{lastModified:mt})}
+    return lazyFile(this.path,this.name,{...meta});
+  };
+  FileH.prototype.createWritable=async function(){const parts=[],path=this.path;
+    return{write:async d=>{if(d&&typeof d==='object'&&d.type==='write')d=d.data;parts.push(d)},seek:async()=>{},truncate:async()=>{},
+      close:async()=>{const r=await call('PUT','fs/'+encP(path),new Blob(parts));if(!r.ok)throw new Error('fs '+r.status)},abort:async()=>{}}};
+  FileH.prototype.queryPermission=FileH.prototype.requestPermission=async()=>'granted';
+  FileH.prototype.isSameEntry=async function(o){return!!o&&o.path===this.path};
+  function DirH(path,name){this.kind='directory';this.name=name;this.path=path;this.__kxHandle=1}
+  DirH.prototype.queryPermission=DirH.prototype.requestPermission=async()=>'granted';
+  DirH.prototype.isSameEntry=async function(o){return!!o&&o.path===this.path};
+  DirH.prototype.getDirectoryHandle=async function(n,o){const p=this.path+'/'+n;
+    if(o&&o.create){const r=await call('POST','mkdir/'+encP(p));if(r.status===409)throw tm(n);if(!r.ok)throw new Error('fs '+r.status)}
+    else{const r=await call('GET','ls/'+encP(p));if(r.status===404)throw nf(n);if(!r.ok)throw new Error('fs '+r.status)}
+    return new DirH(p,n)};
+  DirH.prototype.getFileHandle=async function(n,o){const p=this.path+'/'+n;
+    if(o&&o.create){const r=await call('GET','ls/'+encP(this.path));const L=r.ok?(await r.json()).entries:[];const e=L.find(x=>x.name===n);
+      if(e&&e.kind==='directory')throw tm(n);if(!e){const w=await call('PUT','fs/'+encP(p),'');if(!w.ok)throw new Error('fs '+w.status)}}
+    return new FileH(p,n)};
+  DirH.prototype.removeEntry=async function(n){const r=await call('DELETE','fs/'+encP(this.path+'/'+n));if(!r.ok&&r.status!==404)throw new Error('fs '+r.status)};
+  DirH.prototype._list=async function(){const r=await call('GET','ls/'+encP(this.path));if(r.status===404)throw nf(this.name);if(!r.ok)throw new Error('fs '+r.status);
+    return(await r.json()).entries.map(e=>e.kind==='directory'?new DirH(this.path+'/'+e.name,e.name):new FileH(this.path+'/'+e.name,e.name,{size:e.size,mtime:e.mtime}))};
+  DirH.prototype.values=async function*(){for(const h of await this._list())yield h};
+  DirH.prototype.keys=async function*(){for(const h of await this._list())yield h.name};
+  DirH.prototype.entries=async function*(){for(const h of await this._list())yield[h.name,h]};
+  DirH.prototype[Symbol.asyncIterator]=DirH.prototype.entries;
+  /* ---------- branchement ---------- */
+  try{Object.defineProperty(window,'indexedDB',{configurable:true,get:()=>IDB})}catch(_){}
+  window.KXIDB=IDB;
+  window.KXDOM={on:true,info:S,call,encP,base,
+    dir:area=>new DirH(area,{base:'base-partagee',master:'master',exports:'exports'}[area]||area),
+    async list(area){const r=await call('GET','ls/'+encP(area));return r.ok?(await r.json()).entries:[]},
+    async read(area,name){const r=await call('GET','fs/'+encP(area+'/'+name));if(!r.ok)throw new Error('fs '+r.status);return new File([await r.arrayBuffer()],name,{lastModified:+r.headers.get('X-Mtime')||Date.now()})},
+    async write(area,name,data){const r=await call('PUT','fs/'+encP(area+'/'+name),data instanceof Blob?data:new Blob([data]));if(!r.ok)throw new Error('fs '+r.status);return true}
+  };
+})();
+</script>
 <meta name="author" content="MarCom">
 <style>
 :root{
@@ -1119,6 +1269,12 @@ details.cq-sec>summary{cursor:pointer;list-style:none}details.cq-sec>summary::-w
 .side-label.tg .sum,.side-label.tg .sum[hidden]+.car{margin-left:auto}
 .side-label.tg.col .car{transform:rotate(-90deg)}
 .side-label.tg .sum{background:var(--amber,#E0A100);color:#1b1b1b;border-radius:999px;font-size:10.5px;padding:1px 7px;letter-spacing:0}
+.kx-store{border-left:4px solid var(--green)}.kx-store.warn{border-left-color:var(--amber,#E0A100)}
+.kx-dirs{display:grid;grid-template-columns:max-content 1fr;gap:6px 14px;margin:8px 0 0;font-size:13px}.kx-dirs dt{color:var(--muted)}.kx-dirs dd{margin:0;word-break:break-all}
+.kx-dirs code{font-size:12px;background:var(--bg);padding:2px 6px;border-radius:6px}.kx-warn{color:#8a5a00;font-weight:600;margin-top:10px}
+.kx-files{display:flex;flex-direction:column;gap:6px;max-height:50vh;overflow:auto}.kx-file{display:flex;gap:10px;align-items:flex-start;border:1px solid #e2e8e5;border-radius:10px;padding:10px 12px;cursor:pointer}
+.kx-file small{display:block;color:var(--muted);font-size:12px}.kx-none{color:var(--muted)}
+.kx-lockline{margin:14px 0 0!important;font-size:11.5px!important;color:var(--muted);word-break:break-all}.kx-lockline.warn{color:#8a5a00!important;font-weight:600}
 </style>
 </head>
 <body>
@@ -1278,6 +1434,7 @@ details.cq-sec>summary{cursor:pointer;list-style:none}details.cq-sec>summary::-w
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; font-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; form-action 'none'; base-uri 'none'">
+<script>try{if(window.parent!==window&&parent.KXIDB)Object.defineProperty(window,"indexedDB",{configurable:true,get:function(){return parent.KXIDB}})}catch(e){}<\/script>
 <meta name="referrer" content="no-referrer">
 <meta name="robots" content="noindex,nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -1925,6 +2082,7 @@ function isoToSerial(iso){ const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(iso||''); if
    Elle doit s'ouvrir tout de suite après le clic ; le contenu est préparé ensuite. Renvoie false si l'utilisateur annule. */
 const SAVE_TYPES={xlsx:['Classeur Excel','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],csv:['Fichier CSV','text/csv'],json:['Fichier JSON','application/json'],html:['Page HTML','text/html'],mmb:['Sauvegarde chiffrée','application/octet-stream']};
 async function saveAs(name,makeData){
+  if(window.parent!==window&&parent.kxSaveAs) return parent.kxSaveAs(name,makeData);
   if(typeof window.showSaveFilePicker!=='function') throw new Error('ce navigateur ne propose pas la fenêtre « Enregistrer sous ». Utilisez Microsoft Edge ou Google Chrome.');
   const ext=name.split('.').pop().toLowerCase(), t=SAVE_TYPES[ext]||['Fichier','application/octet-stream'];
   let handle; try{ handle=await window.showSaveFilePicker({suggestedName:name,types:[{description:t[0],accept:{[t[1]]:['.'+ext]}}]}); }
@@ -3392,7 +3550,7 @@ function confirmSheet(sid){ const m=S.maps[sid]; if(mapIssues(sid).length) retur
   Object.entries(m.cols).forEach(([i,f])=>{ const h=norm((S.sheets[sid].rows[m.headerRow]||[])[i]); if(h&&f) S.memory[h]=f; }); return true; }
 const ACT={
   go:el=>go(el.dataset.v),
-  pick:()=>$('#fileIn').click(),
+  pick:()=>{ if(window.parent!==window&&parent.kxMasterPick){ parent.kxMasterPick(f=>importFiles(f)); return; } $('#fileIn').click(); },
   demo:()=>{ loadDemo(); V.sheet=null; changed('Données d\'exemple chargées : 5 fichiers remplis de pièges à détecter.'); go('mapping'); },
   removeDemo:async()=>{ if(!await confirmBox('Retirer les données d\'exemple ?','Les fichiers d\'exemple et les décisions qui les concernent seront retirés.','Retirer')) return; S.files.filter(f=>f.kind==='demo').forEach(f=>removeFile(f.id)); if(!S.files.length){ S.log=[]; S.eventsMeta={}; } changed('Données d\'exemple retirées.'); },
   removeFile:async el=>{ const f=S.files.find(x=>x.id===el.dataset.fid); if(!f||!await confirmBox('Retirer ce fichier ?',`« ${f.name} » sera retiré de la master file. Vos décisions (fusions, corrections) sont conservées et resserviront si vous le réimportez.`,'Retirer',true)) return; removeFile(f.id); changed('Fichier retiré.'); },
@@ -3564,7 +3722,7 @@ const CHG={
     logAdd({t:'cmo',key:p.anchor,ev:ev.id,value:v,label:`CMO : ${p.prenom} ${p.nom} · ${ev.name} → ${v||'(vide)'}`}); changed('CMO enregistré.'); }
 };
 document.addEventListener('click',e=>{ const el=e.target.closest('[data-act]'); if(!el||!S&&el.dataset.act!=='lock') return; if(el.tagName==='TR'&&e.target.closest('button,a,input,select')) return; const f=ACT[el.dataset.act]; if(f){ e.preventDefault(); f(el,e); } });
-document.addEventListener('keydown',e=>{ if((e.key==='Enter'||e.key===' ')&&e.target.matches('.drop')){ e.preventDefault(); $('#fileIn').click(); } if(e.key==='Escape'&&$('#drawer').classList.contains('on')) closeDrawer(); });
+document.addEventListener('keydown',e=>{ if((e.key==='Enter'||e.key===' ')&&e.target.matches('.drop')){ e.preventDefault(); if(window.parent!==window&&parent.kxMasterPick) parent.kxMasterPick(f=>importFiles(f)); else $('#fileIn').click(); } if(e.key==='Escape'&&$('#drawer').classList.contains('on')) closeDrawer(); });
 document.addEventListener('change',e=>{ const el=e.target.closest('[data-chg]'); if(!el||!S) return; const f=CHG[el.dataset.chg]; if(f) f(el); });
 let inpT=null;
 document.addEventListener('input',e=>{ const nm=e.target.closest('[data-nm]'); if(!nm||!S) return; const k=nm.dataset.nm, p=C.byKey[k]; if(!p) return;
@@ -11537,6 +11695,68 @@ document.querySelectorAll('.side-label.tg').forEach(l=>{
 });
 {const _ra=refreshAll;refreshAll=function(){const r=_ra.apply(this,arguments);try{sideSecs()}catch(_){}return r}}
 sideSecs();
+
+/* =========================================================
+   KONEX SUR DOMINO (servi par konex_server.py) : tout passe par des fichiers à des endroits fixes
+   - base de l'équipe : <données>/base-partagee/ (connectée toute seule, plus de dossier à choisir)
+   - master file : <données>/master/ (proposée à l'import)
+   - exports : <données>/exports/ (une copie de chaque fichier exporté)
+   ========================================================= */
+const KXD=window.KXDOM&&window.KXDOM.on?window.KXDOM:null;
+Object.assign(L.fr,{kxStoreT:'Stockage Domino',kxStoreOn:'Toutes les données sont enregistrées dans des fichiers sur la machine :',kxStoreWarn:'Attention : ce dossier n’est pas persistant. Il sera effacé au redémarrage de l’app. Définissez la variable KONEX_DATA_DIR vers un dataset Domino (voir README).',
+  kxDirBase:'Base de l’équipe',kxDirEsp:'Vos données (chiffrées)',kxDirMaster:'Master file à importer',kxDirExp:'Exports',kxUser:'Utilisateur Domino',
+  kxPickT:'Importer la master file',kxPickH:'Fichiers déposés dans le dossier « master » du dataset Domino.',kxPickNone:'Aucun fichier dans le dossier « master ». Déposez-y la master file Excel, ou choisissez un fichier sur cet ordinateur.',
+  kxPickPc:'Depuis cet ordinateur…',kxPickOk:'Importer',kxPickSel:'Choisissez au moins un fichier.',kxSaved:p=>`Enregistré aussi dans ${p}`,kxSaveErr:'Le fichier n’a pas pu être rangé dans le dossier des exports.',
+  kxLockLine:(d,p)=>`Données : ${d}${p?'':' (non persistant)'}`});
+Object.assign(L.en,{kxStoreT:'Domino storage',kxStoreOn:'All data is saved in files on the machine:',kxStoreWarn:'Warning: this folder is not persistent. It will be erased when the app restarts. Set the KONEX_DATA_DIR variable to a Domino dataset (see README).',
+  kxDirBase:'Team database',kxDirEsp:'Your data (encrypted)',kxDirMaster:'Master file to import',kxDirExp:'Exports',kxUser:'Domino user',
+  kxPickT:'Import the master file',kxPickH:'Files placed in the “master” folder of the Domino dataset.',kxPickNone:'No file in the “master” folder. Put the Excel master file there, or choose a file on this computer.',
+  kxPickPc:'From this computer…',kxPickOk:'Import',kxPickSel:'Choose at least one file.',kxSaved:p=>`Also saved in ${p}`,kxSaveErr:'The file could not be stored in the exports folder.',
+  kxLockLine:(d,p)=>`Data: ${d}${p?'':' (not persistent)'}`});
+if(KXD){
+  const I=KXD.info,D=I.dirs;
+  /* base partagée : le dossier du serveur, sans fenêtre de choix */
+  Object.assign(L.fr,{shCreateBtn:'Créer la base de l’équipe',shCreateT:'Créer la base de l’équipe',shCreateHint:'Choisissez une clé d’équipe d’au moins 12 caractères. Transmettez-la de vive voix aux utilisateurs : elle chiffre toutes les données de la base (dossier base-partagee du dataset).',shReconBanner:'La base de l’équipe n’a pas pu être lue.'});
+  Object.assign(L.en,{shCreateBtn:'Create the team database',shCreateT:'Create the team database',shCreateHint:'Choose a team key of at least 12 characters. Give it to users in person: it encrypts all the data in the database (base-partagee folder of the dataset).',shReconBanner:'The team database could not be read.'});
+  shPick=async function(){return KXD.dir('base')};
+  shInit=async function(){
+    if(SHCFG){SHARE.dir=KXD.dir('base');SHARE.perm=true;SHCFG.folder=D.base;await shSync(true)}
+    shStatus();
+  };
+  shReconnect=async function(){SHARE.dir=KXD.dir('base');SHARE.perm=true;SHARE.key=null;await shSync(true);shStatus()};
+  /* « Base partagée » : où sont les fichiers ; plus de « Changer de dossier » */
+  const kxCard=()=>`<div class="sh-how kx-store${I.persistent?'':' warn'}"><b>${t('kxStoreT')}</b><p>${esc(t('kxStoreOn'))}</p><dl class="kx-dirs">
+      <dt>${esc(t('kxDirBase'))}</dt><dd><code>${esc(D.base)}</code></dd><dt>${esc(t('kxDirEsp'))}</dt><dd><code>${esc(D.espaces)}</code></dd>
+      <dt>${esc(t('kxDirMaster'))}</dt><dd><code>${esc(D.master)}</code></dd><dt>${esc(t('kxDirExp'))}</dt><dd><code>${esc(D.exports)}</code></dd>
+      <dt>${esc(t('kxUser'))}</dt><dd>${esc(I.user)}</dd></dl>${I.persistent?'':`<p class="kx-warn">${esc(t('kxStoreWarn'))}</p>`}</div>`;
+  {const _sh=shareHTML;shareHTML=function(){return _sh().replace(/<button class="btn-o" data-x="sh-join">[^<]*<\/button>(?=<\/div><\/div><\/div>)/,'')+kxCard()}}
+  /* exports : copie dans <données>/exports/, et téléchargement habituel */
+  async function kxExport(blob,name){
+    let ok=false;try{await KXD.write('exports',name,blob);ok=true}catch(_){}
+    try{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=String(name).normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[–—]/g,'-').replace(/[^\x20-\x7E]/g,'_');document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000)}catch(_){}
+    setTimeout(()=>toast(ok?t('kxSaved')(D.exports+'/'+name):t('kxSaveErr'),!ok),300);return true;
+  }
+  window.kxSaveAs=async function(name,makeData){const d=await makeData();return kxExport(d instanceof Blob?d:new Blob([d]),name)};
+  pickSave=async function(name){const parts=[];return{createWritable:async()=>({write:async d=>{parts.push(d)},close:async()=>{await kxExport(new Blob(parts),name)}})}};
+  download=async function(content,name){const ty=(SAVE_TYPES[name.split('.').pop().toLowerCase()]||[])[1];return kxExport(content instanceof Blob?content:new Blob([content],{type:ty||'application/octet-stream'}),name)};
+  saveBlob=async function(bytes,name,mime){return kxExport(bytes instanceof Blob?bytes:new Blob([bytes],{type:mime||'application/octet-stream'}),name)};
+  /* master file : choisie dans <données>/master/ */
+  window.kxMasterPick=async function(go){
+    const L0=(await KXD.list('master')).filter(e=>e.kind==='file'&&/\.(xlsx|xlsm|xltx|xltm|xls|ods|csv|txt|tsv|htm|html|xml)$/i.test(e.name)).sort((a,b)=>b.mtime-a.mtime);
+    const pc=()=>{const i=document.createElement('input');i.type='file';i.multiple=true;i.accept='.xlsx,.xlsm,.xltx,.xltm,.xls,.ods,.csv,.txt,.tsv,.htm,.html,.xml';i.onchange=()=>{if(i.files.length)go([...i.files])};i.click()};
+    const body=L0.length?`<div class="kx-files">${L0.map((e,i)=>`<label class="kx-file"><input type="checkbox" value="${esc(e.name)}"${i?'':' checked'}><span><b>${esc(e.name)}</b><small>${esc(fmtDT(new Date(e.mtime).toISOString()))} · ${(e.size/1048576).toFixed(1)} Mo</small></span></label>`).join('')}</div>`:`<p class="kx-none">${esc(t('kxPickNone'))}</p>`;
+    const m=kxModal(t('kxPickT'),t('kxPickH')+' '+D.master,body,L0.length?t('kxPickOk'):'',async()=>{
+      const sel=[...m.querySelectorAll('.kx-file input:checked')].map(x=>x.value);if(!sel.length)return t('kxPickSel');
+      const files=await Promise.all(sel.map(n=>KXD.read('master',n)));setTimeout(()=>go(files),0);return true},null,`<button type="button" class="btn-o" data-kx-pc>${esc(t('kxPickPc'))}</button>`);
+    m.querySelector('[data-kx-pc]').onclick=()=>{m.hidden=true;m.innerHTML='';pc()};
+  };
+  /* écran de connexion : où sont les données */
+  const lockLine=()=>{const lk=$('lock');if(!lk)return;let p=$('kxLockLine');if(!p){p=document.createElement('p');p.id='kxLockLine';p.className='kx-lockline';(lk.querySelector('.lock-card')||lk).appendChild(p)}
+    p.textContent=t('kxLockLine')(I.dataDir,I.persistent);p.classList.toggle('warn',!I.persistent)};
+  {const _lr=lkRender;lkRender=function(){const r=_lr.apply(this,arguments);try{lockLine()}catch(_){}return r}}
+  try{lockLine()}catch(_){}
+  if(!I.persistent)setTimeout(()=>{try{toast(t('kxStoreWarn'),true)}catch(_){}},2500);
+}
 async function lkBootLocal(){
   const l=lsGet('konex-lang');if(l==='en'||l==='fr')lang=l;
   try{const last=JSON.parse(lsGet('konex-last')||'{}');LK.role=last.role==='admin'?'admin':'standard'}catch(_){}
