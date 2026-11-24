@@ -402,6 +402,109 @@ body.auth-local [data-view=users]{display:none!important}
 }
 @media print{.content{margin-left:0!important}}
 .side::-webkit-scrollbar{width:8px}.side::-webkit-scrollbar-track{background:transparent}.side::-webkit-scrollbar-thumb{background:rgba(255,255,255,.28);border-radius:8px}.side::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.45)}
+
+/* ---------- Page événement (pleine largeur) et préparation des événements ---------- */
+@media (max-width:860px){.drawer.pg{width:100%}}
+@media (min-width:861px){.drawer.pg{left:268px;width:auto;max-width:none;box-shadow:none}}
+body.pgmode .overlay{opacity:0!important;pointer-events:none!important}
+.drawer.pg .d-head{padding:26px 32px 22px}
+.drawer.pg .d-body{padding:0 32px 40px}
+.pg-tabs{position:sticky;top:0;z-index:4;display:flex;gap:4px;background:#fff;border-bottom:1px solid var(--line);margin:0 -32px 18px;padding:10px 32px 0}
+.pg-tabs button{border:0;background:none;padding:10px 14px;font:inherit;font-size:14px;font-weight:600;color:var(--muted);border-bottom:3px solid transparent;cursor:pointer}
+.pg-tabs button.on{color:var(--green-dark);border-bottom-color:var(--green)}
+.pg-tabs button span{font-size:12px;background:var(--bg);border-radius:999px;padding:1px 7px;margin-left:4px}
+.pg-sec[hidden]{display:none}
+.pl-card{border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 18px;background:#FCFDFC}
+.pl-ghost{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;background:var(--green-light);border-color:var(--green-mid)}
+.pl-ghost>div:first-child{display:flex;flex-direction:column;gap:2px}.pl-ghost span{font-size:13px;color:var(--muted)}
+.pl-life{display:inline-block;font-size:12px;font-weight:700;border-radius:999px;padding:3px 10px;margin-bottom:12px}
+.pl-life.prep{background:var(--amber-light);color:var(--amber)}.pl-life.sent{background:#E7F0FB;color:#2F6FB5}.pl-life.past{background:var(--bg);color:var(--muted)}
+.pl-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:14px}
+.pl-kpis div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px}.pl-kpis b{display:block;font-size:22px;color:var(--green-dark)}.pl-kpis span{font-size:12px;color:var(--muted)}
+.pl-acts{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn-o.danger{color:var(--red);border-color:#E7B3BC}
+.pl-val{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:var(--amber-light);border:1px solid var(--amber-line);border-radius:12px;padding:12px 16px;margin:0 0 14px;font-size:13.5px}
+.pl-h4{margin:16px 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.pl-act{margin:0;padding-left:18px;font-size:13px;line-height:1.7;color:var(--ink)}
+.pl-sec{margin:0 0 26px}
+.pl-sh{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.pl-sh h3{margin:0;font-size:16px}.pl-sh h3 span{font-size:12.5px;color:var(--muted);background:var(--bg);border-radius:999px;padding:1px 8px;margin-left:4px}
+.pl-filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.pl-filters select,.pl-q{border:1px solid #CBD5D0;border-radius:9px;padding:7px 10px;font:inherit;font-size:13px;background:#fff}
+.pl-q{flex:1;min-width:180px}
+.pl-mine{display:flex;gap:6px;align-items:center;font-size:13px}
+.pl-seg{display:inline-flex;background:var(--bg);border-radius:10px;padding:3px;gap:2px}
+.pl-seg button{border:0;background:none;border-radius:8px;padding:6px 10px;font:inherit;font-size:12.5px;font-weight:600;color:var(--muted);cursor:pointer;white-space:nowrap}
+.pl-seg button span{font-weight:500;opacity:.8}.pl-seg button.on{background:#fff;color:var(--green-dark);box-shadow:0 1px 3px rgba(0,40,25,.12)}
+.pl-seg-sm{margin-right:6px}
+.pl-selbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:var(--green-light);border-radius:10px;padding:8px 12px;margin-bottom:10px}
+.pl-selbar[hidden]{display:none}
+.pl-tw{border:1px solid var(--line);border-radius:12px;overflow:auto;max-height:70vh}
+.pl-t{width:100%;border-collapse:collapse;font-size:13.5px}
+.pl-t th{position:sticky;top:0;background:#F7FAF8;text-align:left;font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:9px 10px;border-bottom:1px solid var(--line);z-index:1}
+.pl-t td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.pl-t tr[hidden]{display:none}
+.pl-t td small{display:block;color:var(--muted);font-size:12px}
+.pl-name{font-weight:600;text-decoration:none;text-align:left;padding:0}
+.pl-int{color:var(--orange-dark)}
+.pl-by{font-size:12px;color:var(--muted);white-space:nowrap}
+.pl-x{border:0;background:none;color:var(--muted);font-size:18px;line-height:1;cursor:pointer;border-radius:7px;width:28px;height:28px}
+.pl-x:hover{background:var(--red-light);color:var(--red)}
+.pl-st{display:inline-block;font-size:12px;font-weight:700;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.pl-st.todo{background:var(--bg);color:var(--muted)}.pl-st.noemail{background:#F5F5F5;color:#999}
+.pl-st.sent,.pl-st.open,.pl-st.click{background:#E7F0FB;color:#2F6FB5}
+.pl-st.acc,.pl-st.reg{background:var(--green-light);color:var(--green-dark)}
+.pl-st.dec,.pl-st.can,.pl-st.bounce{background:var(--red-light);color:var(--red)}
+.pl-st.tent{background:var(--amber-light);color:var(--amber)}
+.pl-sub{display:block;margin-top:3px}
+.pl-more{margin-top:10px}
+.pl-empty{box-shadow:none;border:1px dashed var(--line)}
+.pl-drop{border:2px dashed #B9C7C0;border-radius:14px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;color:var(--green-dark);cursor:pointer;background:#FBFDFC}
+.pl-drop span{font-size:12.5px;color:var(--muted)}.pl-drop.over,.pl-drop:hover{border-color:var(--green);background:var(--green-light)}
+.pl-docs{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.pl-doc{display:flex;gap:12px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:10px 12px;flex-wrap:wrap}
+.pl-dic{width:44px;height:44px;border-radius:10px;background:var(--green-light);color:var(--green-dark);display:flex;flex-direction:column;align-items:center;justify-content:center;flex:none}
+.pl-dic span{font-size:9.5px;font-weight:800;letter-spacing:.04em}
+.pl-dm{flex:1;min-width:200px;display:flex;flex-direction:column;gap:2px}.pl-dm small{color:var(--muted);font-size:12px}
+.pl-store.folder{color:var(--green-dark)!important}.pl-store.local{color:var(--amber)!important}
+.pl-doc select{border:1px solid #CBD5D0;border-radius:8px;padding:5px 7px;font:inherit;font-size:12.5px}
+.pl-log{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:12px}
+.pl-log li{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-bottom:1px solid var(--line);font-size:13.5px}
+.pl-log li:last-child{border-bottom:0}.pl-log li.mine{background:#FAFCFB}.pl-log li>div{flex:1}.pl-log small{color:var(--muted)}
+.pl-dot{width:10px;height:10px;border-radius:50%;background:#2F6FB5;margin-top:5px;flex:none}.pl-dot.relance,.pl-dot.rappel{background:var(--amber)}.pl-dot.autre{background:var(--muted)}
+.pl-note{font-size:12.5px;color:var(--muted);margin:8px 2px 0}
+.pl-menu-w{position:relative}
+.pl-menu{position:absolute;right:0;top:calc(100% + 4px);z-index:8;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 28px rgba(0,40,25,.16);padding:6px;display:flex;flex-direction:column;min-width:240px}
+.pl-menu[hidden]{display:none}.pl-menu button{border:0;background:none;text-align:left;padding:8px 10px;border-radius:8px;font:inherit;font-size:13.5px;cursor:pointer}.pl-menu button:hover{background:var(--bg)}
+.pl-up{background:var(--green-light);border-radius:12px;padding:10px 14px;margin:0 0 14px;display:flex;flex-direction:column;gap:4px;font-size:13.5px}
+.pl-up .link{text-align:left;padding:0}
+.pl-tile{display:flex;gap:6px;flex-wrap:wrap;padding:0 14px 12px}
+.pl-chip{font-size:11.5px;font-weight:700;border-radius:999px;padding:2px 9px;background:var(--green-light);color:var(--green-dark)}.pl-chip.prop{background:var(--amber-light);color:var(--amber)}
+.pl-prop-chip{background:rgba(255,236,200,.9)!important;color:#7A4A00!important}
+/* fenêtres de création / envoi / aperçu */
+.kx-card{width:min(720px,100%)}.kx-card.kx-wide{width:min(980px,100%)}
+.kx-body{padding:4px 22px 6px;overflow:auto;max-height:70vh}
+.kx-sp{flex:1}
+.kx-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
+.kx-f{display:flex;flex-direction:column;gap:5px;font-size:12px;font-weight:600;color:var(--muted)}.kx-wide{grid-column:1/-1}
+.kx-f input,.kx-f select,.kx-f textarea,.kx-q,.kx-sel,.kx-blk input,.kx-blk select,.kx-blk textarea{border:1px solid #CBD5D0;border-radius:9px;padding:9px 11px;font:inherit;font-size:14px;color:var(--ink);background:#fff;width:100%}
+.kx-choice{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:6px 0 10px}
+.kx-choice button{border:1.5px solid var(--line);background:#fff;border-radius:14px;padding:18px;text-align:left;cursor:pointer;font:inherit;display:flex;flex-direction:column;gap:6px}
+.kx-choice button:hover{border-color:var(--green);background:var(--green-light)}.kx-choice b{font-size:15px;color:var(--green-dark)}.kx-choice span{font-size:13px;color:var(--muted)}
+.kx-evl{display:flex;flex-direction:column;gap:4px;max-height:46vh;overflow:auto;margin-top:10px}
+.kx-ev{border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px 12px;text-align:left;cursor:pointer;font:inherit;display:flex;flex-direction:column}
+.kx-ev[hidden]{display:none}.kx-ev:hover{border-color:var(--green);background:var(--green-light)}.kx-ev span{font-size:12.5px;color:var(--muted)}
+.kx-chk{display:flex;gap:8px;align-items:center;font-size:13.5px;margin:10px 0 4px}
+.kx-seg,.kx-radios{display:flex;flex-wrap:wrap;gap:6px 14px;font-weight:500;color:var(--ink);font-size:13.5px}
+.kx-radios{flex-direction:column}
+.kx-blk{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px}.kx-blk h4{margin:0 0 8px;font-size:13px}
+.kx-row{display:flex;gap:8px;align-items:center;margin-top:6px}.kx-row input,.kx-row select{flex:1}
+.kx-p{font-size:13.5px;margin:6px 0}
+.kx-hd{display:flex;gap:10px;font-size:13.5px;padding:4px 0;border-bottom:1px solid var(--line)}.kx-hd span{width:70px;color:var(--muted);flex:none}
+.kx-mail{width:100%;height:56vh;border:1px solid var(--line);border-radius:10px;margin-top:12px;background:#fff}
+.kx-pre{white-space:pre-wrap;font:inherit;font-size:13.5px;background:var(--bg);border-radius:10px;padding:12px;max-height:50vh;overflow:auto}
+.kx-att{display:flex;flex-direction:column;gap:4px}.kx-att>div{display:flex;gap:10px;align-items:center;font-size:13px;border-bottom:1px solid var(--line);padding:4px 0}.kx-att span{flex:1}.kx-att small{color:var(--muted)}
+@media (max-width:700px){.kx-grid,.kx-choice{grid-template-columns:1fr}.drawer.pg .d-body{padding:0 16px 30px}.pg-tabs{margin:0 -16px 14px;padding:8px 16px 0}}
 /* ---------- Petits écrans ---------- */
 @media (max-width:860px){
   .app{flex-direction:column}
@@ -3706,19 +3809,24 @@ async function exportXlsx(){
   const jSheet=sheet('Journal',['Date','Décision'],S.log.map(e=>[new Date(e.at).toLocaleString('fr-BE'),logLabel(e)]),[20,110]);
   const rjSheet=sheet('Lignes non reprises',['Fichier','Feuille','Ligne','Raison','Aperçu'],C.rejected.map(r=>[r.src.file,r.src.sheet,r.src.row,r.reason,r.preview]),[34,20,8,26,70]);
   const srcSheet=sheet('Sources',['Fichier','Feuille','État','Événement','Lignes','Importé le'],S.files.flatMap(f=>f.sheetIds.map(sid=>{ const sh=S.sheets[sid], m=S.maps[sid]; return [f.name,sh.name,{ok:'Validée',todo:'À vérifier',invalid:'Incomplète (non utilisée)',ignored:'Ignorée'}[mapState(sid)],evLabelForSheet(sid).replace(/^→ /,''),Math.max(0,sh.rows.length-m.headerRow-1),new Date(f.importedAt).toLocaleString('fr-BE')]; })),[36,20,22,40,10,20]);
+  const PL=(S.crm&&S.crm.plans)||[], fD=x=>x?new Date(x).toLocaleDateString('fr-BE'):'';
+  const plSheet=PL.length?sheet('Événements à venir',['Événement','Date','Heure','Lieu','Type','Description','Créé à partir de','Événement déjà connu','Créé par','Créé le','Validé par','Validé le','Invités'],
+    PL.map(p=>[p.name,isoToSerial(p.date)?{v:isoToSerial(p.date),s:nd}:p.date,p.time,p.lieu,p.type,p.desc,p.from,p.existing?'Oui':'',p.by,fD(p.created),p.valBy,fD(p.valAt),p.guests.length]),[34,12,8,20,16,40,30,10,18,12,18,12,9]):null;
+  const giSheet=PL.length?sheet("Listes d'invités",['Événement','Date','Prénom','Nom','E-mail','Société','Interne','Ajouté par','Ajouté le','Origine'],
+    PL.flatMap(p=>p.guests.map(g=>[p.name,isoToSerial(p.date)?{v:isoToSerial(p.date),s:nd}:p.date,g.prenom,g.nom,g.email,g.societe,g.int?'Oui':'',g.by,fD(g.at),{manual:'Ajout manuel',list:'Liste',copy:'Autre événement',paste:'Adresses collées',file:'Fichier'}[g.src]||g.src])),[30,12,16,18,32,28,8,18,12,16]):null;
   const cl=cmoListRows(), cc=cmoClientRows();
   const R=C.ref||{rows:[]}, nCo={}; C.persons.forEach(p=>{ if(p.ref){ const x=nCo[p.ref.rmpm]=nCo[p.ref.rmpm]||{n:0,pres:0,cos:new Set()}; x.n++; x.cos.add(p.societe); x.pres+=Object.values(p.ev).filter(e=>e.final==='present').length; } });
   const refSheet=R.rows.length?sheet('Référentiel entreprises',['RMPM','Groupe','Top 1000/500','Strategic Client','Core 75','GSC','GNPC','Cash Management Sector','RMPM Client Coverage','Coverage Pilot Country','CM Pilot Country','Pilot CMO','Regional Cash Mgt Sales','RCMS','RCMS – pôle en charge','Sociétés des fichiers rattachées','Clients','Présences'],
     R.rows.map(r=>{ const x=nCo[r.rmpm]||{n:0,pres:0,cos:new Set()}; return [r.rmpm,r.group,r.top,r.strat,r.core75,r.gsc,r.gnpc,r.sector,r.coverage,r.covCountry,r.cmCountry,r.cmo,r.rcmSales,r.rcms,r.pole,[...x.cos].join(' ; '),x.n,x.pres]; }),[12,34,10,16,9,10,10,22,20,16,16,24,24,14,20,34,8,9]):null;
   const cmoSheet=sheet('CMO',cl[0],cl.slice(1),[26,30,16,16,18,9,11,13,11,10,40]), ccSheet=sheet('Clients par CMO',cc[0],cc.slice(1),[24,16,16,18,30,26,24,12,40,10,22,18]);
-  return buildXlsx([master,evSheet,...(refSheet?[refSheet]:[]),stSheet,...(C.cmos.length?[cmoSheet,ccSheet]:[]),ctlSheet,jSheet,rjSheet,srcSheet],st);
+  return buildXlsx([master,evSheet,...(plSheet?[plSheet,giSheet]:[]),...(refSheet?[refSheet]:[]),stSheet,...(C.cmos.length?[cmoSheet,ccSheet]:[]),ctlSheet,jSheet,rjSheet,srcSheet],st);
 }
 function masterFlat(){ const M=masterMatrix(); return [[...M.idH,...M.evs.flatMap(M.evH)],...M.rows.map(r=>[...r.id,...r.ev.flatMap(x=>[x.name,fmtDate(x.date),x.lieu,x.cmo,...x.cf,x.label||''])])]; }
 function longRows(){ const cfC=cfList().filter(f=>f.scope!=='event'), cfE=cfList().filter(f=>f.scope==='event');
   const out=[['Prénom','Nom','E-mail','Société','Poste',...cfC.map(f=>f.label),'Événement','Date','Lieu','CMO',...cfE.map(f=>f.label),'Présence']];
   const GL=evGroups(C.evList.filter(e=>!e.excluded)); exportPersons().forEach(p=>C.evList.filter(e=>!e.excluded).forEach(e=>{ const s=mainPres(p,e,GL,cmoPres(p,e,personStatus(p,e))); if(s.id==='none') return; out.push([p.prenom,p.nom,p.email,coName(p.societe),p.poste,...cfC.map(f=>p.cf[f.id]||''),e.name,fmtDate(e.date),e.lieu,s.cmo||'',...cfE.map(f=>entF(f,(s.cf||{})[f.id]||'')),s.id?statusById(s.id).label:s.raw]); })); return out; }
 function jsonExport(){ const evs=C.evList.filter(e=>!e.excluded);
-  return JSON.stringify({app:APP,format:'marcom-master-v1',generated:new Date().toISOString(),
+  return JSON.stringify({app:APP,format:'marcom-master-v1',generated:new Date().toISOString(),plans:(S.crm&&S.crm.plans)||[],
     statuses:S.statuses.map(s=>({id:s.id,label:s.label,stage:s.stage,color:'#'+hex6(s.color)})),
     customFields:cfList().map(f=>({label:f.label,scope:f.scope})),
     events:evs.map(e=>({code:e.code,name:e.name,date:dStart(e.date),endDate:isRange(e.date)?dEnd(e.date):null,days:isFullDate(e.date)?rangeDays(e.date):null,location:e.lieu})),
@@ -6171,7 +6279,7 @@ function crmSnapshot(){
   const evs=[];EVSTATS.forEach(s=>{const e=s.e,m=EVMETA[e.id]||{},set={};if(e.type)set.type=e.type;if(e.desc)set.desc=e.desc;
     const g=e.gid&&GROUPMAP[e.gid];if(g)set.parent=evName(g)||g.name||'';if(m.extra&&Object.keys(m.extra).length)set.extra=m.extra;{const ns=(NOTES['ev:'+e.id]||[]).slice().sort((a,b)=>String(a.date).localeCompare(String(b.date)));if(ns.length)set.notes=ns.map(fmtNote).join(' | ')}
     if(Object.keys(set).length)evs.push({name:e.name,date:e.date||'',set})});
-  const ents=Object.keys(ENT_RAW).filter(v=>entCanon(v)!==v).map(v=>[v,entCanon(v)]);const body={v:1,rows,persons,cos,evs,ents},js=JSON.stringify(body);let h=5381;for(let i=0;i<js.length;i++)h=(Math.imul(h,33)+js.charCodeAt(i))|0;
+  const ents=Object.keys(ENT_RAW).filter(v=>entCanon(v)!==v).map(v=>[v,entCanon(v)]);const body={v:1,rows,persons,cos,evs,ents,plans:plSnap()},js=JSON.stringify(body);let h=5381;for(let i=0;i<js.length;i++)h=(Math.imul(h,33)+js.charCodeAt(i))|0;
   return{...body,hash:(h>>>0).toString(36)+'-'+js.length,at:new Date().toISOString()};
 }
 function crmDeliver(){try{if(!BWIN||!BWIN.mmbCrmApply)return;const sn=crmSnapshot();if(BWIN.mmbCrmHash&&BWIN.mmbCrmHash()===sn.hash)return;BWIN.mmbCrmApply(sn)}catch(e){console.warn('crm',e)}}
@@ -6541,7 +6649,7 @@ function coFilterUI(top,regs){
       <button type="button" class="cof-only" data-cof-only="${esc(c.id)}">${t('only')}</button></label>`).join('')}</div></div></div>`;
 }
 function eventBody(o,top){
-  const e=o.e,base=coFiltered(top,[...o.regs,...(o.unreg||[])]),ps=sortList(top,'parts','parts',applyFilt(top,base));
+  const e=o.e,base=ieFilt(top,coFiltered(top,[...o.regs,...(o.unreg||[])])),ps=sortList(top,'parts','parts',applyFilt(top,base));
   const g=e.gid&&GROUPMAP[e.gid];
   const cand=o.isGroup?EVSTATS.filter(s=>!s.e.gid&&yearOf(s.e)===yearOf(e)).sort((a,b)=>evCmp.recent(a.e,b.e)):[];
   return `<div class="d-body">
@@ -7384,7 +7492,7 @@ async function pickSave(name){
   catch(e){if(e&&e.name==='AbortError')return null;toast(String(e&&e.message||e),true);return null}
 }
 async function writeSave(h,content){const w=await h.createWritable();await w.write(content);await w.close()}
-async function download(content,name){const h=await pickSave(name);if(!h)return false;try{await writeSave(h,content);return true}catch(e){toast(t('storageErr'),true);return false}}
+async function download(content,name){if(typeof window.showSaveFilePicker!=='function'&&typeof saveBlob==='function'){const ty=(SAVE_TYPES[name.split('.').pop().toLowerCase()]||[])[1];return saveBlob(content,name,ty)}const h=await pickSave(name);if(!h)return false;try{await writeSave(h,content);return true}catch(e){toast(t('storageErr'),true);return false}}
 function downloadTemplate(){
   const fr=lang==='fr';
   const hd=fr?['Prénom','Nom','E-mail','Société','Poste','Événement','Date','Lieu','Présence']:['First name','Last name','Email','Company','Job title','Event','Date','Venue','Attended'];
@@ -9621,6 +9729,722 @@ grid.addEventListener('change',e=>{if(view!=='lists')return;const k=e.target.dat
 document.addEventListener('click',e=>{if(LUI.addOpen&&e.target.isConnected&&!(e.target.closest&&e.target.closest('.lbx-add'))){LUI.addOpen=false;document.querySelectorAll('.lbx-menu').forEach(m=>m.hidden=true)}},true);
 
 {const _shb=showBuilder;showBuilder=function(){const r=_shb.apply(this,arguments);try{if(BWIN&&BWIN.mmbWake)setTimeout(()=>BWIN.mmbWake(),0)}catch(_){}return r}}
+/* =========================================================
+   ÉVÉNEMENTS À VENIR — Konex prépare aussi les prochains événements
+   - création d'un événement (de zéro, à partir d'un événement existant ou édition suivante) ;
+     dans l'espace utilisateur, l'événement est « proposé » jusqu'à sa validation par un administrateur ;
+   - une vraie page par événement : Vue d'ensemble · Invités et suivi · Notes et documents ;
+   - liste d'invités vivante jusqu'au jour J (chaque ajout / retrait est daté et signé) ;
+   - invitations déposées par glisser-déposer (.oft, .msg, .eml, .ics, PDF…), aperçu et téléchargement,
+     fichiers chiffrés dans le dossier Konex (base partagée), sinon sur ce poste en attendant ;
+   - suivi : qui a envoyé quoi, à qui et quand (Outlook, invitation .ics, export d'un outil d'emailing).
+   La master file reçoit les événements créés et leurs listes d'invités — jamais les statuts d'invitation.
+   ========================================================= */
+Object.assign(L.fr,{
+  plNew:'Créer un événement',plTabOv:'Vue d\'ensemble',plTabInv:'Invités et suivi',plTabNd:'Notes et documents',
+  plUpcoming:'À venir',plPast:'Passés',plToValidate:'À valider',plProposed:'Proposé',plWaitVal:'En attente de validation par un administrateur.',
+  plPropBy:(n,d)=>`Proposé par ${n} le ${d}.`,plValidate:'Valider l\'événement',plReject:'Refuser',plRejectQ:'Refuser et supprimer cet événement proposé ?',plValidated:'Événement validé.',
+  plStPrep:'En préparation',plStSent:'Invitations envoyées',plStPast:'Passé',
+  plKGuests:'sur la liste',plKInvited:'invitations envoyées',plKAcc:'réponses positives',plKDec:'refus',plKNoResp:'sans réponse',plKTodo:'à inviter',
+  plEdit:'Modifier l\'événement',plDelete:'Supprimer l\'événement',plDeleteQ:'Supprimer cet événement, sa liste d\'invités et son suivi ?',plDeleted:'Événement supprimé.',
+  plNext:'Préparer l\'édition suivante',plPrepare:'Préparer les invitations de cet événement',plPrepareTxt:'Créez la liste d\'invités, déposez les invitations et suivez les envois.',
+  plWizT:'Créer un événement',plFromZero:'Partir de zéro',plFromZeroS:'Un nouvel événement, sans historique.',plFromEx:'À partir d\'un événement existant',plFromExS:'Reprend le nom, le lieu, le type et, si vous le souhaitez, les invités. Idéal pour l\'édition suivante d\'un événement récurrent.',
+  plPickEv:'Choisissez l\'événement de départ',plSearchEv:'Rechercher un événement…',plNextEd:'Édition suivante (année +1)',plCopyGuests:'Reprendre les invités',
+  plCG:{none:'Aucun',all:'Tous les invités',present:'Les présents',absent:'Les absents et non-venus',plan:'La liste d\'invités préparée'},
+  plName:'Nom de l\'événement',plDate:'Date',plTime:'Heure (facultatif)',plPlace:'Lieu',plType:'Type',plDesc:'Description',plCreate:'Créer l\'événement',plSave:'Enregistrer',plContinue:'Continuer',plBack:'‹ Retour',
+  plNeedName:'Indiquez le nom de l\'événement.',plNeedEv:'Choisissez un événement.',plCreated:'Événement créé.',plCreatedStd:'Événement proposé : il sera visible dans la master file après validation par un administrateur.',
+  plNoShare:'Base partagée non connectée : l\'événement reste sur ce poste tant que vous ne l\'avez pas connectée.',
+  plGuests:'Invités',plAdd:'+ Ajouter des invités',plAddT:'Ajouter des invités',plAddSearch:'Rechercher un contact',plAddSearchPh:'Nom, société ou e-mail…',plAddList:'Depuis une liste enregistrée',plAddEv:'Depuis un autre événement',plAddPaste:'Coller des adresses e-mail',plAddPastePh:'Une adresse par ligne, ou séparées par ; ou ,',plAddBtn:'Ajouter',plAdded:n=>`${n} invité${n>1?'s':''} ajouté${n>1?'s':''}.`,plNoneAdded:'Aucun nouvel invité (déjà sur la liste).',
+  plRemoved:n=>`${n} invité${n>1?'s':''} retiré${n>1?'s':''} de la liste.`,plRemoveQ:n=>`Retirer ${n} invité${n>1?'s':''} de la liste ?`,
+  plAll:'Tous',plInt:'Internes BNP Paribas',plExt:'Externes',plMine:'Mes envois',plSearchG:'Filtrer les invités…',
+  plSt:{todo:'À inviter',sent:'Invité',acc:'Accepté',dec:'Refusé',tent:'Peut-être',reg:'Inscrit',can:'Désinscrit',open:'Ouvert',click:'Cliqué',bounce:'Erreur d\'envoi',noemail:'Sans e-mail'},
+  plStF:{all:'Tous les statuts',todo:'À inviter',sent:'Invités sans réponse',acc:'Réponses positives',dec:'Refus',noemail:'Sans e-mail'},
+  plSentOn:(d,by)=>`le ${d}${by?' par '+by:''}`,plRelOn:d=>`relancé le ${d}`,plAddedBy:(by,d)=>`ajouté par ${by||'—'} le ${d}`,
+  plSel:n=>`${n} sélectionné${n>1?'s':''}`,plMarkSent:'Marquer comme envoyé…',plRemove:'Retirer de la liste',plCopyEmails:'Copier les e-mails',plSelAll:'Tout sélectionner',
+  plNoGuests:'Aucun invité pour l\'instant.',plNoGuestsH:'Ajoutez des invités depuis une liste, un autre événement ou en collant des adresses.',plMore:n=>`Afficher ${n} de plus`,
+  plDocs:'Invitations et documents',plDocsOther:'Documents',plDrop:'Déposez ici vos invitations (.oft, .msg, .eml, .ics) ou tout autre document',plDropS:'ou cliquez pour choisir des fichiers · ils sont chiffrés et rangés dans le dossier Konex',
+  plKind:{invitation:'Invitation',relance:'Relance',rappel:'Rappel',programme:'Programme',autre:'Autre document'},
+  plStoreF:'Dossier Konex',plStoreL:'Sur ce poste (en attente du dossier Konex)',plPreview:'Aperçu',plDownload:'Télécharger',plDocDelQ:'Supprimer ce document ?',plDocAdded:n=>`${n} document${n>1?'s':''} ajouté${n>1?'s':''}.`,
+  plNeedShare:'Connectez la base partagée (dossier Konex) pour ouvrir ce fichier.',plFileMissing:'Fichier introuvable dans le dossier Konex.',plFileElsewhere:'Ce fichier est encore sur le poste de la personne qui l\'a déposé ; il sera disponible dès qu\'elle aura connecté le dossier Konex.',
+  plFrom:'De',plToL:'À',plCc:'Cc',plSubject:'Objet',plWhen:'Date',plRecips:n=>`${n} destinataire${n>1?'s':''} dans le fichier`,plNoPreview:'Pas d\'aperçu pour ce type de fichier : téléchargez-le pour l\'ouvrir.',
+  plIcsAtt:'Participants',plIcsResp:{ACCEPTED:'Accepté',DECLINED:'Refusé',TENTATIVE:'Peut-être','NEEDS-ACTION':'Sans réponse',DELEGATED:'Délégué'},
+  plTrack:'Suivi des envois',plNoTrack:'Aucun envoi enregistré.',plNoTrackH:'Après avoir envoyé une invitation depuis Outlook ou votre outil d\'emailing, enregistrez-la ici : Konex saura qui a reçu quoi, et quand.',
+  plRecSend:'Enregistrer un envoi',plImpTrack:'Importer un suivi (Excel / CSV)',plImpIcs:'Importer des réponses (.ics)',
+  plSendT:'Enregistrer un envoi',plSendDoc:'Document envoyé',plSendNoDoc:'(aucun document)',plSendKind:'Type d\'envoi',plSendCh:'Envoyé par',plCh:{outlook:'Outlook',outil:'Outil d\'emailing',autre:'Autre'},plSendDate:'Date d\'envoi',
+  plSendTo:'Destinataires',plTo:{sel:n=>`La sélection (${n})`,todo:n=>`Les invités pas encore invités (${n})`,all:n=>`Tous les invités (${n})`,file:n=>`Les destinataires du fichier (${n})`},plSendNone:'Aucun destinataire avec une adresse e-mail.',
+  plSent:n=>`Envoi enregistré pour ${n} personne${n>1?'s':''}.`,plSendLine:(by,k,d,n,doc)=>`${by||'—'} · ${k} « ${doc} » envoyée le ${d} à ${n} personne${n>1?'s':''}`,plSendLine0:(by,k,d,n)=>`${by||'—'} · ${k} envoyée le ${d} à ${n} personne${n>1?'s':''}`,
+  plSendDelQ:'Supprimer cet envoi du suivi ?',plImpLine:(by,src,d,n)=>`${by||'—'} · réponses importées (${src}) le ${d} : ${n}`,
+  plIcsQT:'Invitation Outlook (.ics)',plIcsQ:(n,a,d,p)=>`Ce fichier contient ${n} participant${n>1?'s':''} : ${a} accepté${a>1?'s':''}, ${d} refus, ${p} sans réponse.`,
+  plIcsImpSend:'Enregistrer l\'envoi de cette invitation à ces participants',plIcsImpResp:'Importer leurs réponses',plAddMissing:n=>`Ajouter à la liste les ${n} personne${n>1?'s':''} qui n\'y sont pas encore`,plImport:'Importer',
+  plTrkT:'Importer un suivi',plTrkCols:(e,s,d)=>`Colonnes reconnues — e-mail : ${e} · statut : ${s||'—'} · date : ${d||'—'}`,plTrkSum:(n,s,a,d)=>`${n} ligne${n>1?'s':''} : ${s} envoi${s>1?'s':''}, ${a} réponse${a>1?'s':''} positive${a>1?'s':''}, ${d} refus.`,plTrkNoEmail:'Aucune colonne d\'adresses e-mail trouvée dans ce fichier.',
+  plImported:n=>`Suivi importé : ${n} personne${n>1?'s':''} mise${n>1?'s':''} à jour.`,
+  plExport:'Exporter',plExpXlsx:'Liste et suivi (Excel)',plExpIcs:'Ajouter au calendrier (.ics)',plExpIcsAtt:'Invitation avec les invités (.ics)',
+  plMeT:'Votre nom',plMeS:'Il signe vos envois et vos ajouts (« envoyé par… »).',plMePh:'Prénom et nom',
+  plToEv:'Ajouter à un événement',plToEvT:'Ajouter ces contacts à un événement',plToEvS:'Choisissez l\'événement à venir : les contacts de la liste rejoignent ses invités.',plNoUpcoming:'Aucun événement à venir. Créez-en un depuis l\'onglet Événements.',
+  plUpcomingP:'À venir',plOnList:(n,d)=>`sur la liste d'invités de « ${n} » (${d})`,plActivity:'Dernières actions',plGuestsAdd:(by,n,d)=>`${by||'—'} a ajouté ${n} invité${n>1?'s':''} le ${d}`,
+  plCopied:n=>`${n} adresse${n>1?'s':''} copiée${n>1?'s':''}.`,plInvalid:'Fichier illisible.',plStdOwn:'Vous pouvez modifier votre proposition tant qu\'elle n\'est pas validée.'
+});
+Object.assign(L.en,{
+  plNew:'Create an event',plTabOv:'Overview',plTabInv:'Guests and tracking',plTabNd:'Notes and documents',
+  plUpcoming:'Upcoming',plPast:'Past',plToValidate:'To validate',plProposed:'Proposed',plWaitVal:'Waiting for validation by an administrator.',
+  plPropBy:(n,d)=>`Proposed by ${n} on ${d}.`,plValidate:'Validate the event',plReject:'Reject',plRejectQ:'Reject and delete this proposed event?',plValidated:'Event validated.',
+  plStPrep:'In preparation',plStSent:'Invitations sent',plStPast:'Past',
+  plKGuests:'on the list',plKInvited:'invitations sent',plKAcc:'positive answers',plKDec:'declined',plKNoResp:'no answer',plKTodo:'to invite',
+  plEdit:'Edit the event',plDelete:'Delete the event',plDeleteQ:'Delete this event, its guest list and its tracking?',plDeleted:'Event deleted.',
+  plNext:'Prepare the next edition',plPrepare:'Prepare the invitations for this event',plPrepareTxt:'Build the guest list, drop the invitations and track what was sent.',
+  plWizT:'Create an event',plFromZero:'Start from scratch',plFromZeroS:'A new event, with no history.',plFromEx:'From an existing event',plFromExS:'Reuses the name, venue, type and, if you wish, the guests. Ideal for the next edition of a recurring event.',
+  plPickEv:'Choose the starting event',plSearchEv:'Search for an event…',plNextEd:'Next edition (year +1)',plCopyGuests:'Reuse the guests',
+  plCG:{none:'None',all:'All invitees',present:'Attendees',absent:'No-shows and absentees',plan:'The prepared guest list'},
+  plName:'Event name',plDate:'Date',plTime:'Time (optional)',plPlace:'Venue',plType:'Type',plDesc:'Description',plCreate:'Create the event',plSave:'Save',plContinue:'Continue',plBack:'‹ Back',
+  plNeedName:'Enter the event name.',plNeedEv:'Choose an event.',plCreated:'Event created.',plCreatedStd:'Event proposed: it will appear in the master file once an administrator validates it.',
+  plNoShare:'Shared base not connected: the event stays on this computer until you connect it.',
+  plGuests:'Guests',plAdd:'+ Add guests',plAddT:'Add guests',plAddSearch:'Search for a contact',plAddSearchPh:'Name, company or email…',plAddList:'From a saved list',plAddEv:'From another event',plAddPaste:'Paste email addresses',plAddPastePh:'One address per line, or separated by ; or ,',plAddBtn:'Add',plAdded:n=>`${n} guest${n>1?'s':''} added.`,plNoneAdded:'No new guest (already on the list).',
+  plRemoved:n=>`${n} guest${n>1?'s':''} removed from the list.`,plRemoveQ:n=>`Remove ${n} guest${n>1?'s':''} from the list?`,
+  plAll:'All',plInt:'BNP Paribas internals',plExt:'Externals',plMine:'My sends',plSearchG:'Filter guests…',
+  plSt:{todo:'To invite',sent:'Invited',acc:'Accepted',dec:'Declined',tent:'Maybe',reg:'Registered',can:'Unsubscribed',open:'Opened',click:'Clicked',bounce:'Delivery error',noemail:'No email'},
+  plStF:{all:'All statuses',todo:'To invite',sent:'Invited, no answer',acc:'Positive answers',dec:'Declined',noemail:'No email'},
+  plSentOn:(d,by)=>`on ${d}${by?' by '+by:''}`,plRelOn:d=>`reminded on ${d}`,plAddedBy:(by,d)=>`added by ${by||'—'} on ${d}`,
+  plSel:n=>`${n} selected`,plMarkSent:'Mark as sent…',plRemove:'Remove from the list',plCopyEmails:'Copy emails',plSelAll:'Select all',
+  plNoGuests:'No guest yet.',plNoGuestsH:'Add guests from a list, another event or by pasting addresses.',plMore:n=>`Show ${n} more`,
+  plDocs:'Invitations and documents',plDocsOther:'Documents',plDrop:'Drop your invitations here (.oft, .msg, .eml, .ics) or any other document',plDropS:'or click to choose files · they are encrypted and stored in the Konex folder',
+  plKind:{invitation:'Invitation',relance:'Reminder',rappel:'Last call',programme:'Programme',autre:'Other document'},
+  plStoreF:'Konex folder',plStoreL:'On this computer (waiting for the Konex folder)',plPreview:'Preview',plDownload:'Download',plDocDelQ:'Delete this document?',plDocAdded:n=>`${n} document${n>1?'s':''} added.`,
+  plNeedShare:'Connect the shared base (Konex folder) to open this file.',plFileMissing:'File not found in the Konex folder.',plFileElsewhere:'This file is still on the computer of the person who dropped it; it will be available once they connect the Konex folder.',
+  plFrom:'From',plToL:'To',plCc:'Cc',plSubject:'Subject',plWhen:'Date',plRecips:n=>`${n} recipient${n>1?'s':''} in the file`,plNoPreview:'No preview for this file type: download it to open it.',
+  plIcsAtt:'Attendees',plIcsResp:{ACCEPTED:'Accepted',DECLINED:'Declined',TENTATIVE:'Maybe','NEEDS-ACTION':'No answer',DELEGATED:'Delegated'},
+  plTrack:'Sending log',plNoTrack:'No send recorded.',plNoTrackH:'After sending an invitation from Outlook or your emailing tool, record it here: Konex will know who received what, and when.',
+  plRecSend:'Record a send',plImpTrack:'Import tracking (Excel / CSV)',plImpIcs:'Import answers (.ics)',
+  plSendT:'Record a send',plSendDoc:'Document sent',plSendNoDoc:'(no document)',plSendKind:'Kind of send',plSendCh:'Sent with',plCh:{outlook:'Outlook',outil:'Emailing tool',autre:'Other'},plSendDate:'Sending date',
+  plSendTo:'Recipients',plTo:{sel:n=>`The selection (${n})`,todo:n=>`Guests not invited yet (${n})`,all:n=>`All guests (${n})`,file:n=>`The file's recipients (${n})`},plSendNone:'No recipient with an email address.',
+  plSent:n=>`Send recorded for ${n} ${n>1?'people':'person'}.`,plSendLine:(by,k,d,n,doc)=>`${by||'—'} · ${k} “${doc}” sent on ${d} to ${n} ${n>1?'people':'person'}`,plSendLine0:(by,k,d,n)=>`${by||'—'} · ${k} sent on ${d} to ${n} ${n>1?'people':'person'}`,
+  plSendDelQ:'Remove this send from the log?',plImpLine:(by,src,d,n)=>`${by||'—'} · answers imported (${src}) on ${d}: ${n}`,
+  plIcsQT:'Outlook invitation (.ics)',plIcsQ:(n,a,d,p)=>`This file has ${n} attendee${n>1?'s':''}: ${a} accepted, ${d} declined, ${p} without answer.`,
+  plIcsImpSend:'Record the sending of this invitation to these attendees',plIcsImpResp:'Import their answers',plAddMissing:n=>`Add the ${n} ${n>1?'people':'person'} not on the list yet`,plImport:'Import',
+  plTrkT:'Import tracking',plTrkCols:(e,s,d)=>`Columns found — email: ${e} · status: ${s||'—'} · date: ${d||'—'}`,plTrkSum:(n,s,a,d)=>`${n} row${n>1?'s':''}: ${s} sent, ${a} positive answer${a>1?'s':''}, ${d} declined.`,plTrkNoEmail:'No email address column found in this file.',
+  plImported:n=>`Tracking imported: ${n} ${n>1?'people':'person'} updated.`,
+  plExport:'Export',plExpXlsx:'List and tracking (Excel)',plExpIcs:'Add to calendar (.ics)',plExpIcsAtt:'Invitation with guests (.ics)',
+  plMeT:'Your name',plMeS:'It signs your sends and additions (“sent by…”).',plMePh:'First and last name',
+  plToEv:'Add to an event',plToEvT:'Add these contacts to an event',plToEvS:'Choose the upcoming event: the contacts of the list join its guests.',plNoUpcoming:'No upcoming event. Create one from the Events tab.',
+  plUpcomingP:'Upcoming',plOnList:(n,d)=>`on the guest list of “${n}” (${d})`,plActivity:'Latest actions',plGuestsAdd:(by,n,d)=>`${by||'—'} added ${n} guest${n>1?'s':''} on ${d}`,
+  plCopied:n=>`${n} address${n>1?'es':''} copied.`,plInvalid:'Unreadable file.',plStdOwn:'You can edit your proposal until it is validated.'
+});
+
+/* ---------- données ---------- */
+let PLANS={},EVPLAN={},PLANEV={};
+{const _vs=vaultState;vaultState=function(){const s=_vs();s.plans=PLANS;return s}}
+{const _ap=applyState;applyState=function(s){_ap(s);PLANS=(s&&s.plans&&typeof s.plans==='object')?s.plans:{}}}
+const kxId=p=>p+Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const isoDay=d=>{const x=d||new Date();return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`};
+const nowIsoT=()=>new Date().toISOString();
+const meName=()=>(typeof SHCFG!=='undefined'&&SHCFG&&SHCFG.user&&SHCFG.user.name)||getLS('me-name')||'';
+const plList=()=>Object.values(PLANS).filter(P=>P&&P.meta);
+const planFor=evId=>{const pid=EVPLAN[evId];return pid?PLANS[pid]:null};
+const plEvId=P=>PLANEV[P.meta.id]||P.meta.id;
+const plGuests=P=>Object.values(P.g||{}).filter(g=>!g.off);
+const plDocs=P=>Object.values(P.d||{}).sort((a,b)=>String(b.at).localeCompare(String(a.at)));
+const plSends=P=>Object.values(P.s||{}).sort((a,b)=>String(b.at).localeCompare(String(a.at)));
+const plCanEdit=P=>ADMIN||P.meta.status!=='validated'||!!P.meta.bind;
+async function askMe(){
+  if(meName())return meName();
+  return new Promise(res=>{kxModal(t('plMeT'),t('plMeS'),`<input id="kxMe" placeholder="${esc(t('plMePh'))}" autocomplete="name">`,t('plSave'),()=>{const v=($('kxMe').value||'').trim();if(v.length<2)return t('shNameReq');setLS('me-name',v);setTimeout(()=>res(v),0);return true},()=>setTimeout(()=>res(''),0))});
+}
+
+/* ---------- événements des plans dans le modèle (événements créés dans Konex) ---------- */
+let DATA_EVK={ref:null,len:-1,set:null};
+function dataEvKeys(){if(DATA_EVK.ref!==ROWS||DATA_EVK.len!==ROWS.length){const s=new Set();ROWS.forEach(r=>{if(r.event)s.add(normName(r.event)+'|'+(r.date||''))});DATA_EVK={ref:ROWS,len:ROWS.length,set:s}}return DATA_EVK.set}
+{const _bm=buildModel;buildModel=function(){
+  const keys=dataEvKeys(),add=[],metaAdd=[];
+  plList().forEach(P=>{const m=P.meta;if(m.bind)return;if(keys.has(normName(m.name)+'|'+(m.date||'')))return;
+    add.push({manual:true,evOnly:true,mid:m.id,event:m.name,evId:m.id,date:m.date||'',lieu:m.lieu||'',created:m.created,__plan:1});
+    if(!EVMETA[m.id]){EVMETA[m.id]={...(m.type?{type:m.type}:{}),...(m.desc?{desc:m.desc}:{})};metaAdd.push(m.id)}});
+  if(add.length)MANROWS=MANROWS.concat(add);
+  try{_bm()}finally{if(add.length)MANROWS=MANROWS.filter(r=>!r.__plan);metaAdd.forEach(k=>delete EVMETA[k])}
+  EVPLAN={};PLANEV={};
+  plList().forEach(P=>{const m=P.meta;let id=null;
+    if(m.bind&&EMAP[m.bind])id=m.bind;else if(EMAP[m.id])id=m.id;
+    else{const s=EVSTATS.find(x=>normName(x.e.raw||x.e.name)===normName(m.name)&&(x.e.date||'')===(m.date||''));if(s)id=s.e.id}
+    if(id){EVPLAN[id]=m.id;PLANEV[m.id]=id}});
+}}
+
+/* ---------- contributions (base partagée) : chaque élément d'un plan est une opération ---------- */
+const PK='\u0001';
+function plFlat(){const o={};plList().forEach(P=>{const id=P.meta.id;o[id+PK+'meta']=JSON.stringify(P.meta);['g','d','s','r'].forEach(part=>Object.entries(P[part]||{}).forEach(([k,v])=>{o[id+PK+part+PK+k]=JSON.stringify(v)}))});return o}
+{const _sn=shSnap;shSnap=function(){const o=_sn();o.plan=plFlat();return o}}
+{const _df=shDiff;shDiff=function(){const A=SHADOW,r=_df(),B=SHADOW;
+  if(A&&B&&A.plan&&B.plan)for(const k of new Set([...Object.keys(A.plan),...Object.keys(B.plan)])){if(A.plan[k]===B.plan[k])continue;
+    r.ops.push({s:'plan',k,v:B.plan[k]?JSON.parse(B.plan[k]):null});r.inv.push({s:'plan',k,v:A.plan[k]?JSON.parse(A.plan[k]):null})}
+  return r}}
+const plKey=k=>{const a=String(k).split(PK);return a.length===2&&a[1]==='meta'?{id:a[0],part:'meta'}:a.length===3&&['g','d','s','r'].includes(a[1])?{id:a[0],part:a[1],item:a[2]}:null};
+{const _ok=shOk;shOk=function(o){if(o&&o.s==='plan'){const x=plKey(o.k);return!!x&&x.id.length<80&&(o.v===null||(!!o.v&&typeof o.v==='object'&&!Array.isArray(o.v)&&JSON.stringify(o.v).length<400000))}return _ok(o)}}
+{const _sa=shApply;shApply=function(o){
+  if(!o||o.s!=='plan')return _sa(o);
+  if(!shOk(o))return undefined;const x=plKey(o.k);let P=PLANS[x.id];
+  if(x.part==='meta'){const old=P?P.meta:null;
+    if(o.v===null){if(old&&old.status==='validated'&&!old.bind)return undefined;delete PLANS[x.id];return old}
+    const v={...o.v,id:x.id};if(v.status==='validated'&&!(old&&old.status==='validated')&&!v.bind)v.status='proposed'; /* seule une administratrice ou un administrateur valide */
+    if(!P)P=PLANS[x.id]={meta:v,g:{},d:{},s:{},r:{}};else P.meta=v;return old}
+  if(!P)P=PLANS[x.id]={meta:{id:x.id,name:'?',status:'proposed'},g:{},d:{},s:{},r:{}};
+  P[x.part]=P[x.part]||{};const old=P[x.part][x.item]||null;if(o.v===null)delete P[x.part][x.item];else P[x.part][x.item]=o.v;return old}}
+{const _ct=ctTarget;ctTarget=function(o){if(o&&o.s==='plan'){const x=plKey(o.k),P=x&&PLANS[x.id],m=P?P.meta:(x&&x.part==='meta'&&o.v)||{};const ev=P&&find.event(plEvId(P));return[ev?'event':null,ev?plEvId(P):null,m.name||'—']}return _ct(o)}}
+{const _cd=ctDesc;ctDesc=function(c){const o=c.op;if(o&&o.s==='plan'){const x=plKey(o.k)||{},v=o.v;
+  if(x.part==='meta')return v?`<b>${esc(t('plProposed'))}</b> : ${esc([v.name,v.date&&numDate(v.date),v.lieu].filter(Boolean).join(' · '))}`:`<b>${esc(t('plDeleted'))}</b>`;
+  if(x.part==='g')return v?`<b>${esc(v.off?t('plRemove'):t('plGuests'))}</b> : ${esc([v.name,v.societe,v.email].filter(Boolean).join(' · '))}`:'—';
+  if(x.part==='d')return v?`<b>${esc((t('plKind')[v.kind]||v.kind))}</b> : ${esc(v.name)}`:`<b>${esc(t('ctErased'))}</b>`;
+  if(x.part==='s')return v?`<b>${esc(t('plTrack'))}</b> : ${esc(sendLine(v,PLANS[x.id]))}`:`<b>${esc(t('ctErased'))}</b>`;
+  if(x.part==='r')return v?`<b>${esc(t('plSt')[stKeyOf(v.st)]||v.st)}</b> : ${esc(x.item)}`:'—';return''}return _cd(c)}}
+
+/* ---------- statut d'un invité (pour l'utilisateur : qui a envoyé quoi, quand) ---------- */
+const RESP_RANK={accepted:9,declined:9,cancelled:9,registered:8,tentative:6,bounced:5,clicked:3,opened:2};
+const stKeyOf=st=>({accepted:'acc',declined:'dec',tentative:'tent',registered:'reg',cancelled:'can',opened:'open',clicked:'click',bounced:'bounce'}[st]||st);
+function guestInfo(P,g){
+  const em=(g.email||'').toLowerCase(),me=meName();
+  const ss=em?plSends(P).filter(s=>(s.to||[]).includes(em)):[];
+  const inv=ss.filter(s=>s.kind==='invitation'||!s.kind),rel=ss.filter(s=>s.kind&&s.kind!=='invitation');
+  const first=ss.length?ss[ss.length-1]:null,lastRel=rel[0]||null,r=em&&P.r?P.r[em]:null;
+  let st=!em?'noemail':r&&RESP_RANK[r.st]>=5?stKeyOf(r.st):ss.length?'sent':'todo';
+  return{st,first,lastRel,r,ss,mine:!!me&&ss.some(s=>s.by===me),grp:st==='acc'||st==='reg'?'acc':st==='dec'||st==='can'?'dec':st==='sent'||st==='tent'||st==='open'||st==='click'||st==='bounce'?'sent':st};
+}
+const plChip=(st,txt)=>`<span class="pl-st ${st}">${esc(txt)}</span>`;
+function guestStatusHTML(P,g,I){
+  const ST=t('plSt');
+  if(I.st==='todo'||I.st==='noemail')return plChip(I.st,ST[I.st]);
+  const main=I.st==='sent'?ST.sent:ST[I.st];
+  const sub=[I.first?t('plSentOn')(numDate(String(I.first.at).slice(0,10)),I.first.by):'',I.lastRel&&I.lastRel!==I.first?t('plRelOn')(numDate(String(I.lastRel.at).slice(0,10))):'',I.r&&I.st!=='sent'&&I.r.at?numDate(String(I.r.at).slice(0,10)):''].filter(Boolean).join(' · ');
+  return plChip(I.st,main)+(sub?`<small class="pl-sub">${esc(sub)}</small>`:'');
+}
+const sendLine=(s,P)=>{const d=P&&P.d&&s.doc&&P.d[s.doc],k=(t('plKind')[s.kind]||t('plKind').invitation),dt=numDate(String(s.at).slice(0,10)),n=(s.to||[]).length;return d?t('plSendLine')(s.by,k,dt,n,d.name):t('plSendLine0')(s.by,k,dt,n)};
+
+/* ---------- création / modification ---------- */
+function plNew(meta,guests){
+  const id=kxId('pl-'),now=nowIsoT(),by=meName();
+  const P={meta:{id,name:meta.name,date:meta.date||'',time:meta.time||'',lieu:meta.lieu||'',type:meta.type||'',desc:meta.desc||'',from:meta.from||'',mode:meta.mode||'new',bind:meta.bind||'',
+    created:now,by,status:ADMIN||meta.bind?'validated':'proposed',...(ADMIN?{valBy:by,valAt:now}:{})},g:{},d:{},s:{},r:{}};
+  PLANS[id]=P;if(guests&&guests.length)plAddGuests(P,guests,'copy',true);return P;
+}
+function personGuest(p){return{pid:p.id,email:(p.email||'').toLowerCase(),name:p.full,societe:p.societe||'',int:!!p.internal}}
+function plAddGuests(P,list,src,quiet){
+  const by=meName(),at=nowIsoT();let n=0;P.g=P.g||{};
+  list.forEach(x=>{if(!x)return;const gid=x.pid||('x:'+(x.email||'').toLowerCase());if(!gid||gid==='x:')return;const cur=P.g[gid];if(cur&&!cur.off)return;
+    P.g[gid]={...x,gid,by,at,src};n++});
+  if(!quiet){saveVault();toast(n?t('plAdded')(n):t('plNoneAdded'))}
+  return n;
+}
+function plRemoveGuests(P,gids){const by=meName(),at=nowIsoT();gids.forEach(g=>{const x=P.g[g];if(x&&!x.off)P.g[g]={...x,off:true,offBy:by,offAt:at}});saveVault();toast(t('plRemoved')(gids.length))}
+const nextName=n=>{const m=String(n).match(/(19|20)\d{2}/g);if(!m)return n;const y=m[m.length-1];const i=n.lastIndexOf(y);return n.slice(0,i)+(+y+1)+n.slice(i+4)};
+const nextDate=d=>{if(!d||!/^\d{4}-\d{2}-\d{2}/.test(d))return'';return(+d.slice(0,4)+1)+d.slice(4,10)};
+function guestsFromEvent(s,how){
+  const P=planFor(s.e.id);
+  if(how==='plan'&&P)return plGuests(P).map(g=>({pid:g.pid,email:g.email,name:g.name,societe:g.societe,int:g.int}));
+  const regs=s.regs||[];const f=how==='present'?r=>r.present:how==='absent'?r=>!r.present:()=>true;
+  const seen=new Set();return regs.filter(f).map(r=>r.p).filter(p=>p&&!p.archived&&!seen.has(p.id)&&seen.add(p.id)).map(personGuest);
+}
+const plTypes=()=>[...new Set(EVSTATS.map(s=>s.e.type).filter(Boolean))].sort(cmp);
+function plFormHTML(m){
+  return `<div class="kx-grid">
+    <label class="kx-f kx-wide"><span>${t('plName')}</span><input id="plfName" value="${esc(m.name||'')}"></label>
+    <label class="kx-f"><span>${t('plDate')}</span><input id="plfDate" type="date" value="${esc(m.date||'')}"></label>
+    <label class="kx-f"><span>${t('plTime')}</span><input id="plfTime" type="time" value="${esc(m.time||'')}"></label>
+    <label class="kx-f"><span>${t('plPlace')}</span><input id="plfLieu" value="${esc(m.lieu||'')}"></label>
+    <label class="kx-f"><span>${t('plType')}</span><input id="plfType" list="plTypeL" value="${esc(m.type||'')}"><datalist id="plTypeL">${plTypes().map(x=>`<option value="${esc(x)}">`).join('')}</datalist></label>
+    <label class="kx-f kx-wide"><span>${t('plDesc')}</span><textarea id="plfDesc" rows="3">${esc(m.desc||'')}</textarea></label></div>`;
+}
+const plFormVal=()=>({name:($('plfName').value||'').trim(),date:$('plfDate').value||'',time:$('plfTime').value||'',lieu:($('plfLieu').value||'').trim(),type:($('plfType').value||'').trim(),desc:($('plfDesc').value||'').trim()});
+async function planWizard(pre){
+  await askMe();
+  const W={step:pre?'form':'choose',src:pre||null,next:!!pre,how:'none',q:''};
+  const draw=()=>{
+    if(W.step==='choose'){kxModal(t('plWizT'),'',`<div class="kx-choice"><button type="button" data-kxw="zero"><b>${t('plFromZero')}</b><span>${t('plFromZeroS')}</span></button><button type="button" data-kxw="ex"><b>${t('plFromEx')}</b><span>${t('plFromExS')}</span></button></div>`,null,null);
+      document.querySelectorAll('[data-kxw]').forEach(b=>b.onclick=()=>{W.step=b.dataset.kxw==='zero'?'form':'pick';draw()});return}
+    if(W.step==='pick'){
+      const list=EVSTATS.slice().sort((a,b)=>evCmp.recent(a.e,b.e));
+      kxModal(t('plWizT'),t('plPickEv'),`<input id="kxEvQ" class="kx-q" placeholder="${esc(t('plSearchEv'))}"><div class="kx-evl" id="kxEvL">${list.map(s=>`<button type="button" class="kx-ev" data-kxev="${esc(s.e.id)}" data-h="${esc(strip(evName(s.e)+' '+(s.e.lieu||'')+' '+(s.e.date||'')))}"><b>${esc(evName(s.e))}</b><span>${esc([s.e.date?numWhen(s.e):'',s.e.lieu&&place(s.e.lieu),s.ins?t('registeredN')(s.ins):''].filter(Boolean).join(' · '))}</span></button>`).join('')}</div>`,null,null,`<button type="button" class="btn-o" data-kxw="back">${t('plBack')}</button>`);
+      $('kxEvQ').oninput=()=>{const q=strip($('kxEvQ').value);document.querySelectorAll('#kxEvL .kx-ev').forEach(b=>b.hidden=!!q&&!b.dataset.h.includes(q))};$('kxEvQ').focus();
+      document.querySelectorAll('[data-kxev]').forEach(b=>b.onclick=()=>{W.src=EMAP[b.dataset.kxev];W.next=true;W.step='form';draw()});
+      document.querySelector('[data-kxw="back"]').onclick=()=>{W.step='choose';draw()};return}
+    const s=W.src,e=s&&s.e,base=e?{name:W.next?nextName(evName(e)):evName(e),date:W.next?nextDate(e.date):'',lieu:e.lieu||'',type:e.type||'',desc:e.desc||''}:{};
+    const hasPlan=e&&planFor(e.id);
+    const cg=e?`<div class="kx-f kx-wide"><span>${t('plCopyGuests')}</span><div class="kx-seg">${['none','all','present','absent',...(hasPlan?['plan']:[])].map(k=>`<label><input type="radio" name="kxCg" value="${k}"${W.how===k?' checked':''}> ${esc(t('plCG')[k])}</label>`).join('')}</div></div>`:'';
+    kxModal(t('plWizT'),e?`${t('plFromEx')} : ${evName(e)}`:t('plFromZero'),plFormHTML(base)+(e?`<label class="kx-chk"><input type="checkbox" id="kxNext"${W.next?' checked':''}> ${t('plNextEd')}</label>`:'')+cg,t('plCreate'),()=>{
+      const v=plFormVal();if(!v.name)return t('plNeedName');
+      const how=(document.querySelector('[name=kxCg]:checked')||{}).value||'none';
+      const P=plNew({...v,from:e?e.id:'',mode:e?(W.next?'next':'copy'):'new'},e&&how!=='none'?guestsFromEvent(s,how):[]);
+      saveVault();rebuild();toast(ADMIN?t('plCreated'):t('plCreatedStd'));
+      if(!ADMIN&&!SHCFG)setTimeout(()=>toast(t('plNoShare')),2600);
+      setTimeout(()=>{openFiche('event',plEvId(P));const top=stack[stack.length-1];if(top){top.tab='inv';drawDrawer()}},0);return true},null,
+      pre?'':`<button type="button" class="btn-o" data-kxw="back">${t('plBack')}</button>`);
+    const nx=$('kxNext');if(nx)nx.onchange=()=>{W.next=nx.checked;const cur=plFormVal();W.how=(document.querySelector('[name=kxCg]:checked')||{}).value||W.how;draw();
+      if(!nx.checked){$('plfName').value=evName(e);$('plfDate').value=''}};
+    const bk=document.querySelector('[data-kxw="back"]');if(bk)bk.onclick=()=>{W.step=e?'pick':'choose';draw()};
+  };
+  draw();
+}
+function plEditModal(P){
+  kxModal(t('plEdit'),P.meta.status==='proposed'&&!ADMIN?t('plStdOwn'):'',plFormHTML(P.meta),t('plSave'),()=>{const v=plFormVal();if(!v.name)return t('plNeedName');
+    P.meta={...P.meta,...v,upd:nowIsoT(),updBy:meName()};saveVault();rebuild();toast(t('saved'));return true});
+}
+
+/* ---------- fichiers : dossier Konex (base partagée) chiffré, sinon ce poste ---------- */
+const FDIR='konex-fichiers';
+async function shReady(){try{if(!SHCFG||!SHARE.dir)return false;if(!SHARE.perm)SHARE.perm=await shPerm(SHARE.dir,false);if(!SHARE.perm)return false;if(!SHARE.key)SHARE.key=await shTeamKey(SHARE.dir,SHCFG.pass);return!!SHARE.key}catch(_){return false}}
+async function aesE(key,bytes){const iv=crypto.getRandomValues(new Uint8Array(12)),ct=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv},key,bytes)),o=new Uint8Array(12+ct.length);o.set(iv);o.set(ct,12);return o}
+async function aesD(key,b){return new Uint8Array(await crypto.subtle.decrypt({name:'AES-GCM',iv:b.subarray(0,12)},key,b.subarray(12)))}
+async function fileSave(id,bytes){
+  if(await shReady()){try{const d=await SHARE.dir.getDirectoryHandle(FDIR,{create:true}),fh=await d.getFileHandle(id+'.kxf',{create:true}),w=await fh.createWritable();await w.write(await aesE(SHARE.key,bytes));await w.close();return'folder'}catch(_){}}
+  await KV.set('file:'+id,await aesE(CRYPTO_KEY,bytes));return'local';
+}
+async function fileLoad(doc){
+  if(doc.store==='folder'){if(!(await shReady()))throw{k:'plNeedShare'};let f=null;try{const d=await SHARE.dir.getDirectoryHandle(FDIR);f=await(await d.getFileHandle(doc.id+'.kxf')).getFile()}catch(_){}
+    if(!f)throw{k:'plFileMissing'};return aesD(SHARE.key,new Uint8Array(await f.arrayBuffer()))}
+  const v=await KV.get('file:'+doc.id);if(!v)throw{k:'plFileElsewhere'};return aesD(CRYPTO_KEY,v);
+}
+let FMIG=false;
+async function fileMigrate(){ /* documents gardés sur ce poste → dossier Konex dès qu'il est connecté */
+  if(FMIG||!CRYPTO_KEY)return;FMIG=true;
+  try{if(!(await shReady()))return;let n=0;
+    for(const P of plList())for(const d of Object.values(P.d||{})){if(d.store!=='local')continue;const v=await KV.get('file:'+d.id);if(!v)continue;
+      try{const b=await aesD(CRYPTO_KEY,v);if(await fileSave(d.id,b)==='folder'){P.d[d.id]={...d,store:'folder'};await KV.del('file:'+d.id);n++}}catch(_){}}
+    if(n)saveVault();
+  }finally{FMIG=false}
+}
+{const _ss=shSync;shSync=async function(){const r=await _ss.apply(this,arguments);fileMigrate().catch(()=>{});return r}}
+async function saveBlob(bytes,name,mime){
+  const blob=new Blob([bytes],{type:mime||'application/octet-stream'});
+  if(typeof window.showSaveFilePicker==='function'){try{const h=await window.showSaveFilePicker({suggestedName:name});await writeSave(h,blob);return true}catch(e){if(e&&e.name==='AbortError')return false}}
+  try{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=String(name).normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[\u2013\u2014]/g,'-').replace(/[^\x20-\x7E]/g,'_');document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000);return true}catch(_){return false}
+}
+
+/* ---------- lecture des fichiers d'invitation ---------- */
+const bin=u8=>{let s='';for(let i=0;i<u8.length;i+=0x8000)s+=String.fromCharCode.apply(null,u8.subarray(i,i+0x8000));return s};
+const tdec=(bytes,cs)=>{try{return new TextDecoder((cs||'utf-8').toLowerCase().replace(/^(us-ascii|ascii)$/,'utf-8')).decode(bytes)}catch(_){return new TextDecoder('windows-1252').decode(bytes)}};
+const strBytes=s=>{const u=new Uint8Array(s.length);for(let i=0;i<s.length;i++)u[i]=s.charCodeAt(i)&255;return u};
+function qpDecode(s){return strBytes(s.replace(/=\r?\n/g,'').replace(/=([0-9A-Fa-f]{2})/g,(m,h)=>String.fromCharCode(parseInt(h,16))))}
+function mimeWords(s){return String(s||'').replace(/=\?([^?]+)\?([bqBQ])\?([^?]*)\?=(\s+(?==\?))?/g,(m,cs,enc,txt)=>{try{const b=enc.toUpperCase()==='B'?fromB64(txt):qpDecode(txt.replace(/_/g,' '));return tdec(b,cs)}catch(_){return txt}})}
+function emlParse(u8){
+  const raw=bin(u8);
+  const part=(txt)=>{const i=txt.search(/\r?\n\r?\n/),hs=i<0?txt:txt.slice(0,i),body=i<0?'':txt.slice(i).replace(/^\r?\n\r?\n/,'');
+    const H={};hs.replace(/\r?\n[ \t]+/g,' ').split(/\r?\n/).forEach(l=>{const j=l.indexOf(':');if(j>0){const k=l.slice(0,j).trim().toLowerCase();H[k]=H[k]?H[k]+', '+l.slice(j+1).trim():l.slice(j+1).trim()}});return{H,body}};
+  const top=part(raw),out={html:'',text:'',att:[]};
+  const walk=(p,depth)=>{if(depth>8)return;const ct=p.H['content-type']||'text/plain',bd=(ct.match(/boundary="?([^";]+)"?/i)||[])[1];
+    if(/^multipart\//i.test(ct)&&bd){p.body.split('--'+bd).slice(1).forEach(seg=>{if(/^--/.test(seg))return;walk(part(seg.replace(/^\r?\n/,'')),depth+1)});return}
+    const te=(p.H['content-transfer-encoding']||'').toLowerCase(),cs=(ct.match(/charset="?([^";]+)"?/i)||[])[1],disp=p.H['content-disposition']||'';
+    let bytes=te==='base64'?fromB64(p.body.replace(/\s+/g,'')):te==='quoted-printable'?qpDecode(p.body):strBytes(p.body);
+    const fn=(disp.match(/filename="?([^";]+)"?/i)||ct.match(/name="?([^";]+)"?/i)||[])[1];
+    if(/attachment/i.test(disp)||(fn&&!/^text\//i.test(ct))){out.att.push(mimeWords(fn||'?'));return}
+    if(/^text\/html/i.test(ct)&&!out.html)out.html=tdec(bytes,cs);else if(/^text\/plain/i.test(ct)&&!out.text)out.text=tdec(bytes,cs);
+    else if(/^text\/calendar/i.test(ct)&&!out.ics)out.ics=icsParse(tdec(bytes,cs))};
+  walk(top,0);
+  const H=top.H,emails=s=>[...new Set((mimeWords(s||'').match(/[A-Z0-9._%+'-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi)||[]).map(x=>x.toLowerCase()))];
+  return{kind:'mail',subject:mimeWords(H.subject||''),from:mimeWords(H.from||''),to:mimeWords(H.to||''),cc:mimeWords(H.cc||''),date:H.date||'',recips:[...emails(H.to),...emails(H.cc),...emails(H.bcc)],html:out.html,text:out.text,att:out.att,ics:out.ics||null};
+}
+function icsParse(text){
+  const lines=String(text).replace(/\r?\n[ \t]/g,'').split(/\r?\n/);const evs=[];let cur=null,method='';
+  const un=v=>String(v||'').replace(/\\n/gi,'\n').replace(/\\([,;\\])/g,'$1');
+  const dt=v=>{const m=String(v||'').match(/^(\d{4})(\d{2})(\d{2})(?:T(\d{2})(\d{2}))?/);return m?{d:`${m[1]}-${m[2]}-${m[3]}`,t:m[4]?`${m[4]}:${m[5]}`:''}:{d:'',t:''}};
+  lines.forEach(l=>{const i=l.indexOf(':');if(i<0)return;const head=l.slice(0,i),val=l.slice(i+1),[name,...ps]=head.split(';'),N=name.toUpperCase(),P={};ps.forEach(p=>{const j=p.indexOf('=');if(j>0)P[p.slice(0,j).toUpperCase()]=p.slice(j+1).replace(/^"|"$/g,'')});
+    if(N==='METHOD')method=val.trim().toUpperCase();
+    else if(N==='BEGIN'&&val.trim().toUpperCase()==='VEVENT')cur={att:[]};
+    else if(N==='END'&&val.trim().toUpperCase()==='VEVENT'){if(cur)evs.push(cur);cur=null}
+    else if(cur){if(N==='SUMMARY')cur.summary=un(val);else if(N==='LOCATION')cur.location=un(val);else if(N==='DESCRIPTION')cur.desc=un(val);
+      else if(N==='DTSTART')cur.start=dt(val);else if(N==='DTEND')cur.end=dt(val);else if(N==='DTSTAMP')cur.stamp=dt(val);
+      else if(N==='ORGANIZER')cur.org=(P.CN?P.CN+' ':'')+val.replace(/^mailto:/i,'');
+      else if(N==='ATTENDEE'){const em=val.replace(/^mailto:/i,'').trim().toLowerCase();if(/@/.test(em))cur.att.push({email:em,name:P.CN||'',ps:(P.PARTSTAT||'NEEDS-ACTION').toUpperCase(),role:P.ROLE||''})}}});
+  const e=evs[0]||{att:[]};
+  return{kind:'ics',method,summary:e.summary||'',location:e.location||'',desc:e.desc||'',start:e.start||{d:'',t:''},end:e.end||{d:'',t:''},stamp:e.stamp||{d:'',t:''},org:e.org||'',att:evs.flatMap(x=>x.att)};
+}
+/* fichiers Outlook .msg / .oft : conteneur OLE (Compound File) + propriétés MAPI */
+function cfbRead(u8){
+  const dv=new DataView(u8.buffer,u8.byteOffset,u8.byteLength);
+  if(dv.getUint32(0,true)!==0xE011CFD0||dv.getUint32(4,true)!==0xE11AB1A1)throw new Error('cfb');
+  const ss=1<<dv.getUint16(30,true),mss=1<<dv.getUint16(32,true),nFat=dv.getUint32(44,true),dirStart=dv.getInt32(48,true),miniCut=dv.getUint32(56,true),mfStart=dv.getInt32(60,true),nMf=dv.getUint32(64,true),difStart=dv.getInt32(68,true),nDif=dv.getUint32(72,true);
+  const off=i=>(i+1)*ss,q=ss/4,fs=[];
+  for(let i=0;i<109&&fs.length<nFat;i++){const v=dv.getInt32(76+i*4,true);if(v>=0)fs.push(v)}
+  for(let d=difStart,k=0;k<nDif&&d>=0&&fs.length<nFat;k++){const o=off(d);for(let i=0;i<q-1&&fs.length<nFat;i++){const v=dv.getInt32(o+i*4,true);if(v>=0)fs.push(v)}d=dv.getInt32(o+ss-4,true)}
+  const fat=new Int32Array(fs.length*q);fs.forEach((s,j)=>{const o=off(s);for(let i=0;i<q&&o+i*4+4<=u8.length;i++)fat[j*q+i]=dv.getInt32(o+i*4,true)});
+  const chain=(st,arr)=>{const out=[];const seen=new Set();for(let s=st;s>=0&&s<arr.length&&!seen.has(s);s=arr[s]){seen.add(s);out.push(s)}return out};
+  const readC=(st,size)=>{const c=chain(st,fat),b=new Uint8Array(c.length*ss);c.forEach((s,i)=>b.set(u8.subarray(off(s),Math.min(u8.length,off(s)+ss)),i*ss));return size!=null?b.subarray(0,size):b};
+  const dir=readC(dirStart),E=[];
+  for(let o=0;o+128<=dir.length;o+=128){const dd=new DataView(dir.buffer,dir.byteOffset+o,128),nl=dd.getUint16(64,true);
+    E.push({name:nl>2?new TextDecoder('utf-16le').decode(dir.subarray(o,o+Math.min(nl,64)-2)):'',type:dir[o+66],l:dd.getInt32(68,true),r:dd.getInt32(72,true),c:dd.getInt32(76,true),start:dd.getInt32(116,true),size:dd.getUint32(120,true)})}
+  const root=E[0];if(!root)throw new Error('cfb');
+  const mini=root.start>=0?readC(root.start,root.size):new Uint8Array(0);
+  const mfat=(()=>{if(!nMf||mfStart<0)return new Int32Array(0);const b=readC(mfStart),a=new Int32Array(b.length/4),v=new DataView(b.buffer,b.byteOffset,b.byteLength);for(let i=0;i<a.length;i++)a[i]=v.getInt32(i*4,true);return a})();
+  const readM=(st,size)=>{const c=chain(st,mfat),b=new Uint8Array(c.length*mss);c.forEach((s,i)=>b.set(mini.subarray(s*mss,s*mss+mss),i*mss));return b.subarray(0,size)};
+  const files={},seen=new Set();
+  const walk=(i,path)=>{if(i<0||i>=E.length||seen.has(i))return;seen.add(i);const e=E[i];walk(e.l,path);walk(e.r,path);
+    const p=path?path+'/'+e.name:e.name;if(e.type===2)files[p]=e.size<miniCut?readM(e.start,e.size):readC(e.start,e.size);else if(e.type===1)walk(e.c,p)};
+  walk(root.c,'');return files;
+}
+function msgParse(u8){
+  const F=cfbRead(u8),g=(base,tag)=>{const u=F[(base?base+'/':'')+'__substg1.0_'+tag+'001F'];if(u)return new TextDecoder('utf-16le').decode(u).replace(/\0+$/,'');const a=F[(base?base+'/':'')+'__substg1.0_'+tag+'001E'];return a?tdec(a,'windows-1252').replace(/\0+$/,''):''};
+  const htmlB=F['__substg1.0_10130102'];let html=htmlB?tdec(htmlB,(tdec(htmlB.subarray(0,2000),'utf-8').match(/charset=["']?([\w-]+)/i)||[])[1]||'utf-8'):g('','1013');
+  const recips=[],names=[];Object.keys(F).map(k=>k.split('/')[0]).filter((x,i,a)=>/^__recip_version1\.0_/.test(x)&&a.indexOf(x)===i).forEach(r=>{const em=(g(r,'39FE')||g(r,'3003')||'').trim().toLowerCase();if(/@/.test(em))recips.push(em);const n=g(r,'3001');if(n)names.push(n)});
+  const att=Object.keys(F).map(k=>k.split('/')[0]).filter((x,i,a)=>/^__attach_version1\.0_/.test(x)&&a.indexOf(x)===i).map(a=>g(a,'3707')||g(a,'3704')).filter(Boolean);
+  return{kind:'mail',subject:g('','0037'),from:[g('','0C1A'),g('','0C1F')].filter(Boolean).join(' '),to:g('','0E04')||names.join('; '),cc:g('','0E03'),date:'',recips:[...new Set(recips)],html,text:g('','1000'),att};
+}
+function filePreview(name,u8){
+  const ext=(name.split('.').pop()||'').toLowerCase();
+  try{
+    if(ext==='ics'||ext==='ical'||ext==='vcs')return icsParse(tdec(u8,'utf-8'));
+    if(ext==='eml')return emlParse(u8);
+    if(ext==='msg'||ext==='oft')return msgParse(u8);
+    if(['txt','csv','htm','html'].includes(ext)){const s=tdec(u8,'utf-8');return/htm/.test(ext)?{kind:'mail',html:s,text:'',recips:[]}:{kind:'text',text:s}}
+  }catch(_){}
+  return{kind:'none'};
+}
+const pvLight=pv=>{ /* ce qui est gardé dans la base (léger) : l'aperçu complet se recalcule à partir du fichier */
+  if(!pv||pv.kind==='none')return{kind:'none'};
+  const cut=(s,n)=>String(s||'').length>n?String(s).slice(0,n):String(s||'');
+  if(pv.kind==='ics')return{kind:'ics',method:pv.method,summary:cut(pv.summary,300),location:cut(pv.location,300),start:pv.start,end:pv.end,stamp:pv.stamp,org:cut(pv.org,200),natt:pv.att.length};
+  return{kind:pv.kind,subject:cut(pv.subject,300),from:cut(pv.from,300),to:cut(pv.to,600),date:pv.date||'',nrec:(pv.recips||[]).length,text:cut((pv.text||(pv.html||'').replace(/<style[\s\S]*?<\/style>/gi,'').replace(/<[^>]+>/g,' ').replace(/&nbsp;/g,' ').replace(/\s+/g,' ')),400)};
+};
+
+/* ---------- dépôt de documents ---------- */
+const DOC_KIND=n=>/\.ics$/i.test(n)?'invitation':/relance|reminder|rappel/i.test(n)?'relance':/\.(oft|msg|eml)$/i.test(n)?'invitation':/programme|agenda|program/i.test(n)?'programme':'autre';
+async function plAddFiles(P,files,kindDef){
+  if(!files||!files.length)return;await askMe();let n=0;const icsList=[];
+  for(const f of files){try{
+    const u8=new Uint8Array(await f.arrayBuffer()),pv=filePreview(f.name,u8),id=kxId('d-');
+    const store=await fileSave(id,u8);
+    P.d=P.d||{};P.d[id]={id,name:f.name,mime:f.type||'',size:u8.length,kind:kindDef||DOC_KIND(f.name),by:meName(),at:nowIsoT(),store,pv:pvLight(pv),recips:(pv.recips||[]).slice(0,5000)};n++;
+    const ics=pv.kind==='ics'?pv:pv.ics;if(ics&&ics.att&&ics.att.length)icsList.push({doc:id,ics});
+  }catch(e){console.warn(e);toast(t('plInvalid'),true)}}
+  if(n){saveVault();toast(t('plDocAdded')(n));drawDrawer(true)}
+  for(const x of icsList)await plIcsImport(P,x.ics,x.doc);
+}
+function plIcsImport(P,ics,docId){
+  return new Promise(res=>{
+    const att=ics.att,cnt=k=>att.filter(a=>a.ps===k).length,inList=new Set(plGuests(P).map(g=>g.email)),miss=att.filter(a=>!inList.has(a.email));
+    kxModal(t('plIcsQT'),t('plIcsQ')(att.length,cnt('ACCEPTED'),cnt('DECLINED'),cnt('NEEDS-ACTION')+cnt('TENTATIVE')),
+      `<label class="kx-chk"><input type="checkbox" id="kxIs" checked> ${esc(t('plIcsImpSend'))}${ics.stamp&&ics.stamp.d?' ('+numDate(ics.stamp.d)+')':''}</label>
+       <label class="kx-chk"><input type="checkbox" id="kxIr" checked> ${esc(t('plIcsImpResp'))}</label>
+       ${miss.length?`<label class="kx-chk"><input type="checkbox" id="kxIm" checked> ${esc(t('plAddMissing')(miss.length))}</label>`:''}`,t('plImport'),()=>{
+        const by=meName(),now=nowIsoT();
+        if($('kxIm')&&$('kxIm').checked)plAddGuests(P,miss.map(a=>{const p=PEOPLE.find(x=>x.emails.includes(a.email));return p?personGuest(p):{email:a.email,name:a.name||a.email,societe:''}}),'file',true);
+        if($('kxIs').checked){const id=kxId('s-');P.s[id]={id,at:(ics.stamp&&ics.stamp.d)||isoDay(),by,doc:docId||'',kind:'invitation',ch:'outlook',to:att.map(a=>a.email),src:'ics'}}
+        if($('kxIr').checked){const M={ACCEPTED:'accepted',DECLINED:'declined',TENTATIVE:'tentative'};att.forEach(a=>{const st=M[a.ps];if(!st)return;const cur=P.r[a.email];if(cur&&RESP_RANK[cur.st]>RESP_RANK[st])return;P.r[a.email]={st,at:now,src:'ics',by}})}
+        saveVault();drawDrawer(true);toast(t('plImported')(att.length));res(true);return true},()=>res(false));
+  });
+}
+
+/* ---------- envois ---------- */
+function plSendModal(P,top,docId){
+  askMe().then(()=>{
+    const G=plGuests(P).filter(g=>g.email),sel=G.filter(g=>top.sel&&top.sel.has(g.gid)),todo=G.filter(g=>guestInfo(P,g).st==='todo'),docs=plDocs(P),d0=docId&&P.d[docId],fileR=d0&&(d0.recips||[]).length?d0.recips:[];
+    const opts=[['sel',sel.length],['todo',todo.length],['all',G.length],...(fileR.length?[['file',fileR.length]]:[])];
+    const def=fileR.length?'file':sel.length?'sel':'todo';
+    kxModal(t('plSendT'),evName(find.event(plEvId(P)).e),`<div class="kx-grid">
+      <label class="kx-f kx-wide"><span>${t('plSendDoc')}</span><select id="kxSd"><option value="">${esc(t('plSendNoDoc'))}</option>${docs.map(d=>`<option value="${esc(d.id)}"${d.id===docId?' selected':''}>${esc((t('plKind')[d.kind]||'')+' · '+d.name)}</option>`).join('')}</select></label>
+      <label class="kx-f"><span>${t('plSendKind')}</span><select id="kxSk">${['invitation','relance','rappel','autre'].map(k=>`<option value="${k}"${d0&&d0.kind===k?' selected':''}>${esc(t('plKind')[k])}</option>`).join('')}</select></label>
+      <label class="kx-f"><span>${t('plSendCh')}</span><select id="kxSc">${Object.entries(t('plCh')).map(([k,l])=>`<option value="${k}">${esc(l)}</option>`).join('')}</select></label>
+      <label class="kx-f"><span>${t('plSendDate')}</span><input id="kxSdt" type="date" value="${isoDay()}"></label>
+      <div class="kx-f kx-wide"><span>${t('plSendTo')}</span><div class="kx-radios">${opts.map(([k,n])=>`<label><input type="radio" name="kxSt" value="${k}"${k===def?' checked':''}${n?'':' disabled'}> ${esc(t('plTo')[k](n))}</label>`).join('')}</div></div></div>`,t('plSave'),()=>{
+        const w=(document.querySelector('[name=kxSt]:checked')||{}).value,to=w==='file'?fileR:(w==='sel'?sel:w==='all'?G:todo).map(g=>g.email);
+        if(!to.length)return t('plSendNone');
+        if(w==='file'){const inL=new Set(G.map(g=>g.email)),miss=to.filter(e=>!inL.has(e));if(miss.length)plAddGuests(P,miss.map(e=>{const p=PEOPLE.find(x=>x.emails.includes(e));return p?personGuest(p):{email:e,name:e,societe:''}}),'file',true)}
+        const id=kxId('s-');P.s[id]={id,at:$('kxSdt').value||isoDay(),by:meName(),doc:$('kxSd').value||'',kind:$('kxSk').value,ch:$('kxSc').value,to:[...new Set(to)]};
+        if(top.sel)top.sel.clear();saveVault();drawDrawer(true);toast(t('plSent')(P.s[id].to.length));return true});
+    const sd=$('kxSd');sd.onchange=()=>{const d=P.d[sd.value];if(d)$('kxSk').value=d.kind==='autre'||d.kind==='programme'?'invitation':d.kind};
+  });
+}
+/* suivi venant d'un outil d'emailing (Excel / CSV) */
+const TRK_ST=v=>{const n=normName(v);if(!n)return'';
+  if(/bounce|rejet|echec|failed|invalide|undeliver|non distribu|hard|soft/.test(n))return'bounced';
+  if(/desinscri|unsubscrib|annul|cancel/.test(n))return'cancelled';
+  if(/refus|declin|^non$|^no$|not going|regret|absent/.test(n))return'declined';
+  if(/peut etre|maybe|tentative|provisoire/.test(n))return'tentative';
+  if(/accept|inscrit|registered|confirm|^oui$|^yes$|going|present|participe/.test(n))return'accepted';
+  if(/clic|click/.test(n))return'clicked';if(/ouvert|opened|^open/.test(n))return'opened';
+  if(/envoy|sent|deliver|delivr|remis|distribu|recu/.test(n))return'sent';return''};
+async function plTrackImport(P,file){
+  await askMe();let rows=[];
+  try{const buf=await file.arrayBuffer(),ext=(file.name.split('.').pop()||'').toLowerCase();
+    if(ext==='xlsx'||ext==='xlsm'){const sh=await readXlsx(buf);rows=(sh.find(s=>s.rows.length>1)||{rows:[]}).rows}
+    else{let tx;try{tx=new TextDecoder('utf-8',{fatal:true}).decode(buf)}catch(_){tx=new TextDecoder('windows-1252').decode(buf)}rows=parseCSV(tx)}}catch(_){toast(t('plInvalid'),true);return}
+  const EM=/[A-Z0-9._%+'-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i,hi=Math.max(0,rows.slice(0,8).findIndex(r=>r.some(c=>/mail|statut|status|etat|date/i.test(normName(c))))),H=(rows[hi]||[]).map(c=>normName(c)),body=rows.slice(hi+1);
+  const score=i=>body.slice(0,200).filter(r=>EM.test(String(r[i]||''))).length;let ei=-1,best=0;(rows[hi]||[]).forEach((_,i)=>{const s=score(i);if(s>best){best=s;ei=i}});
+  if(ei<0||!best){toast(t('plTrkNoEmail'),true);return}
+  const si=H.findIndex(h=>/statut|status|etat|state|reponse|response|rsvp|activite|activity|resultat|event/.test(h)),di=H.findIndex(h=>/date|envoi|sent|time|horodat/.test(h));
+  const data=body.map(r=>({email:((String(r[ei]||'').match(EM)||[''])[0]).toLowerCase(),st:si>=0?TRK_ST(r[si]):'sent',d:di>=0?(parseDate(r[di])||''):''})).filter(x=>x.email);
+  const c=k=>data.filter(x=>x.st===k).length,inL=new Set(plGuests(P).map(g=>g.email)),miss=[...new Set(data.map(x=>x.email))].filter(e=>!inL.has(e));
+  kxModal(t('plTrkT'),file.name,`<p class="kx-p">${esc(t('plTrkCols')((rows[hi]||[])[ei]||'',si>=0?(rows[hi]||[])[si]:'',di>=0?(rows[hi]||[])[di]:''))}</p>
+    <p class="kx-p"><b>${esc(t('plTrkSum')(data.length,data.filter(x=>x.st).length,c('accepted'),c('declined')))}</b></p>
+    ${miss.length?`<label class="kx-chk"><input type="checkbox" id="kxTm" checked> ${esc(t('plAddMissing')(miss.length))}</label>`:''}`,t('plImport'),()=>{
+      const by=meName(),now=nowIsoT();
+      if($('kxTm')&&$('kxTm').checked)plAddGuests(P,miss.map(e=>{const p=PEOPLE.find(x=>x.emails.includes(e));return p?personGuest(p):{email:e,name:e,societe:''}}),'file',true);
+      const byDate={};data.filter(x=>x.st).forEach(x=>{const d=x.d||isoDay();(byDate[d]=byDate[d]||new Set()).add(x.email)});
+      Object.entries(byDate).forEach(([d,set])=>{const id=kxId('s-');P.s[id]={id,at:d,by,doc:'',kind:'invitation',ch:'outil',to:[...set],src:file.name}});
+      data.forEach(x=>{if(!x.st||x.st==='sent')return;const cur=P.r[x.email];if(cur&&RESP_RANK[cur.st]>RESP_RANK[x.st])return;P.r[x.email]={st:x.st,at:x.d||now,src:'outil',by}});
+      saveVault();drawDrawer(true);toast(t('plImported')(new Set(data.map(x=>x.email)).size));return true});
+}
+
+/* ---------- exports ---------- */
+const icsEsc=s=>String(s||'').replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\r?\n/g,'\\n');
+const icsFold=l=>{const out=[];let s=l;while(s.length>73){out.push(s.slice(0,73));s=' '+s.slice(73)}out.push(s);return out.join('\r\n')};
+function eventIcs(o,P,withGuests){
+  const e=o.e,m=P?P.meta:{},d=(m.date||e.date||'').slice(0,10).replace(/-/g,''),tm=(m.time||'').replace(':','');
+  const st=d?(tm?`DTSTART:${d}T${tm}00`:`DTSTART;VALUE=DATE:${d}`):'',en=d?(tm?`DTEND:${d}T${String(Math.min(23,+tm.slice(0,2)+2)).padStart(2,'0')}${tm.slice(2)}00`:`DTEND;VALUE=DATE:${isoDay(new Date(new Date((m.date||e.date).slice(0,10)+'T12:00').getTime()+864e5)).replace(/-/g,'')}`):'';
+  const L2=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//MarCom//Konex//FR','CALSCALE:GREGORIAN','METHOD:'+(withGuests?'REQUEST':'PUBLISH'),'BEGIN:VEVENT',`UID:konex-${(P?P.meta.id:e.id).replace(/[^\w-]/g,'')}@marcom`,`DTSTAMP:${new Date().toISOString().replace(/[-:]/g,'').slice(0,15)}Z`,st,en,
+    `SUMMARY:${icsEsc(m.name||evName(e))}`,(m.lieu||e.lieu)?`LOCATION:${icsEsc(m.lieu||e.lieu)}`:'',(m.desc||e.desc)?`DESCRIPTION:${icsEsc(m.desc||e.desc)}`:'',
+    ...(withGuests&&P?plGuests(P).filter(g=>g.email).map(g=>`ATTENDEE;CN=${icsEsc(g.name||g.email)};ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:${g.email}`):[]),'END:VEVENT','END:VCALENDAR'].filter(Boolean);
+  return L2.map(icsFold).join('\r\n')+'\r\n';
+}
+async function plExportXlsx(o,P){
+  const ST=t('plSt'),fr=lang==='fr';
+  const head=fr?['Nom','Société','E-mail','Interne','Statut','Première invitation','Envoyée par','Dernière relance','Réponse','Date de la réponse','Ajouté par','Ajouté le']:['Name','Company','Email','Internal','Status','First invitation','Sent by','Last reminder','Answer','Answer date','Added by','Added on'];
+  const rows=[head,...plGuests(P).sort((a,b)=>cmp(a.name,b.name)).map(g=>{const I=guestInfo(P,g);return[g.name,g.societe,g.email,g.int?t('yes'):t('no'),ST[I.st]||I.st,I.first?numDate(String(I.first.at).slice(0,10)):'',I.first?I.first.by||'':'',I.lastRel?numDate(String(I.lastRel.at).slice(0,10)):'',I.r?(ST[stKeyOf(I.r.st)]||I.r.st):'',I.r&&I.r.at?numDate(String(I.r.at).slice(0,10)):'',g.by||'',numDate(String(g.at||'').slice(0,10))]})];
+  const sends=[[fr?'Date':'Date',fr?'Envoyé par':'Sent by',fr?'Type':'Kind',fr?'Document':'Document',fr?'Destinataires':'Recipients'],...plSends(P).map(s=>[numDate(String(s.at).slice(0,10)),s.by||'',t('plKind')[s.kind]||s.kind,(P.d[s.doc]||{}).name||'',(s.to||[]).length])];
+  const name=(P.meta.name||evName(o.e)).replace(/[\\/:*?"<>|]+/g,' ').slice(0,60);
+  const ok=await download(xlsxBook([{name:fr?'Invités':'Guests',freeze:1,rows,styles:{0:1}},{name:fr?'Envois':'Sends',freeze:1,rows:sends,styles:{0:1}}]),`${name} - ${fr?'invités':'guests'}.xlsx`);if(ok)toast(t('saved'));
+}
+
+/* ---------- fenêtre modale générique ---------- */
+let KX_ESC=null;
+document.addEventListener('keydown',e=>{const m=$('kxModal');if(e.key==='Escape'&&m&&!m.hidden&&KX_ESC){e.preventDefault();e.stopPropagation();const f=KX_ESC;KX_ESC=null;f()}},true);
+function kxModal(title,hint,body,okLbl,onOk,onCancel,extraFoot){
+  let m=$('kxModal');if(!m){m=document.createElement('div');m.className='modal';m.id='kxModal';document.body.appendChild(m)}
+  m.innerHTML=`<form class="modal-card kx-card" autocomplete="off" novalidate><div class="modal-head"><h2>${esc(title)}</h2><button class="modal-x" type="button" data-kx-x>×</button></div>
+    ${hint?`<p class="modal-hint">${esc(hint)}</p>`:''}<div class="kx-body">${body}<div class="lock-err" id="kxErr"></div></div>
+    <div class="modal-foot">${extraFoot||''}<span class="kx-sp"></span><button class="btn-o" type="button" data-kx-x>${esc(t('cancel'))}</button>${okLbl?`<button class="btn" type="submit">${esc(okLbl)}</button>`:''}</div></form>`;
+  m.hidden=false;const close=()=>{m.hidden=true;m.innerHTML=''};
+  m.querySelectorAll('[data-kx-x]').forEach(b=>b.onclick=()=>{close();if(onCancel)onCancel()});
+  m.onkeydown=null;KX_ESC=()=>{close();if(onCancel)onCancel()};
+  const f=m.querySelector('form');setTimeout(()=>{const i=f.querySelector('input:not([type=radio]):not([type=checkbox]),select,textarea');if(i)i.focus()},30);
+  f.onsubmit=async e=>{e.preventDefault();if(!onOk)return;const b=f.querySelector('[type=submit]');if(b)b.disabled=true;$('kxErr').textContent='';
+    try{const r=await onOk();if(r===true)close();else if(r)$('kxErr').textContent=r}finally{if(b)b.disabled=false}};
+  return m;
+}
+
+/* ---------- page événement : onglets ---------- */
+const plIc=(p,s=16)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+const IC_FILE='<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/>',IC_UP='<path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v4h16v-4"/>',IC_DL='<path d="M12 4v12M7 11l5 5 5-5"/><path d="M4 20h16"/>',IC_EYE='<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',IC_SEND='<path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/>';
+function plLife(o,P){const d=(P&&P.meta.date)||o.e.date||'';if(d&&d.slice(0,10)<isoDay())return['past',t('plStPast')];if(P&&plSends(P).length)return['sent',t('plStSent')];return['prep',t('plStPrep')]}
+function plKpis(P){const G=plGuests(P),I=G.map(g=>guestInfo(P,g));const c=f=>I.filter(f).length;
+  return[[G.length,t('plKGuests')],[c(x=>x.st!=='todo'&&x.st!=='noemail'),t('plKInvited')],[c(x=>x.grp==='acc'),t('plKAcc')],[c(x=>x.grp==='dec'),t('plKDec')],[c(x=>x.grp==='todo'),t('plKTodo')]]}
+function plOverviewHTML(o,P){
+  const e=o.e,[lk,ll]=plLife(o,P);
+  const btnNext=`<button type="button" class="btn-o sm" data-x="pl-next" data-ev="${esc(e.id)}">${t('plNext')}</button>`;
+  if(!P)return`<div class="pl-card pl-ghost"><div><b>${esc(t('plPrepare'))}</b><span>${esc(t('plPrepareTxt'))}</span></div><div class="pl-acts"><button type="button" class="btn sm" data-x="pl-prep" data-ev="${esc(e.id)}">${t('plPrepare')}</button>${btnNext}</div></div>`;
+  const m=P.meta,prop=m.status==='proposed';
+  const val=prop?`<div class="pl-val"><div><b>${esc(t('plProposed'))}</b> · ${esc(t('plPropBy')(m.by||'—',numDate(String(m.created).slice(0,10))))}${ADMIN?'':' '+esc(t('plWaitVal'))}</div>${ADMIN?`<div class="pl-acts"><button type="button" class="btn sm" data-x="pl-val" data-p="${esc(m.id)}">${t('plValidate')}</button><button type="button" class="btn-o sm danger" data-x="pl-rej" data-p="${esc(m.id)}">${t('plReject')}</button></div>`:''}</div>`:'';
+  const act=[];plSends(P).slice(0,6).forEach(s=>act.push([s.at,sendLine(s,P)]));
+  const byDay={};plGuests(P).forEach(g=>{const k=(g.by||'')+'|'+String(g.at||'').slice(0,10);byDay[k]=(byDay[k]||0)+1});Object.entries(byDay).forEach(([k,n])=>{const[by,d]=k.split('|');act.push([d,t('plGuestsAdd')(by,n,numDate(d))])});
+  plDocs(P).slice(0,4).forEach(d=>act.push([d.at,`${d.by||'—'} · ${t('plKind')[d.kind]||''} « ${d.name} » · ${numDate(String(d.at).slice(0,10))}`]));
+  act.sort((a,b)=>String(b[0]).localeCompare(String(a[0])));
+  return`${val}<div class="pl-card"><div class="pl-life ${lk}">${esc(ll)}</div><div class="pl-kpis">${plKpis(P).map(([n,l])=>`<div><b>${n}</b><span>${esc(l)}</span></div>`).join('')}</div>
+    <div class="pl-acts">${plCanEdit(P)&&!m.bind?`<button type="button" class="btn-o sm" data-x="pl-edit" data-p="${esc(m.id)}">${t('plEdit')}</button>`:''}<button type="button" class="btn sm" data-x="pl-tab" data-t="inv">${t('plTabInv')} →</button>${btnNext}
+      ${(ADMIN||(prop&&m.by===meName()))&&!m.bind?`<button type="button" class="btn-o sm danger" data-x="pl-del" data-p="${esc(m.id)}">${t('plDelete')}</button>`:''}</div>
+    ${act.length?`<h4 class="pl-h4">${t('plActivity')}</h4><ul class="pl-act">${act.slice(0,8).map(([,x])=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}</div>`;
+}
+const PL_PAGE=300;
+function plGuestsHTML(o,P,top){
+  const F=top.pf=top.pf||{ie:'all',st:'all',mine:false};top.sel=top.sel||new Set();
+  const G=plGuests(P).map(g=>({g,I:guestInfo(P,g)})).sort((a,b)=>cmp(a.g.name,b.g.name));
+  const ok=x=>(F.ie==='all'||(F.ie==='int'?x.g.int:!x.g.int))&&(F.st==='all'||x.I.grp===F.st||(F.st==='noemail'&&x.I.st==='noemail'))&&(!F.mine||x.I.mine);
+  const L2=G.filter(ok),lim=top.plim||PL_PAGE,ni=G.filter(x=>x.g.int).length;
+  const seg=(k,l,n)=>`<button type="button" class="${F.ie===k?'on':''}" data-x="pl-ie" data-v="${k}">${esc(l)} <span>${n}</span></button>`;
+  const rows=L2.slice(0,lim).map(({g,I})=>`<tr data-h="${esc(strip(g.name+' '+g.societe+' '+g.email))}"><td><input type="checkbox" data-plsel="${esc(g.gid)}"${top.sel.has(g.gid)?' checked':''}></td>
+    <td>${g.pid&&PMAP[g.pid]?`<button type="button" class="link pl-name" data-go="person" data-id="${esc(g.pid)}">${esc(g.name)}</button>`:`<b>${esc(g.name||g.email)}</b>`}${g.int?` <span class="pl-int">${ICON_INT}</span>`:''}<small>${esc(g.email||'')}</small></td>
+    <td>${esc(g.societe||'')}</td><td>${guestStatusHTML(P,g,I)}</td><td class="pl-by">${esc(t('plAddedBy')(g.by,numDate(String(g.at||'').slice(0,10))))}</td>
+    <td><button type="button" class="pl-x" data-x="pl-rm1" data-p="${esc(P.meta.id)}" data-g="${esc(g.gid)}" title="${esc(t('plRemove'))}">×</button></td></tr>`).join('');
+  return`<div class="pl-sec"><div class="pl-sh"><h3>${t('plGuests')} <span>${G.length}</span></h3><div class="pl-acts">
+      <button type="button" class="btn sm" data-x="pl-add" data-p="${esc(P.meta.id)}">${t('plAdd')}</button>
+      <div class="pl-menu-w"><button type="button" class="btn-o sm" data-x="pl-expm">${t('plExport')} ▾</button><div class="pl-menu" hidden>
+        <button type="button" data-x="pl-xlsx" data-p="${esc(P.meta.id)}">${t('plExpXlsx')}</button><button type="button" data-x="pl-ics" data-p="${esc(P.meta.id)}">${t('plExpIcs')}</button><button type="button" data-x="pl-icsg" data-p="${esc(P.meta.id)}">${t('plExpIcsAtt')}</button></div></div></div></div>
+    <div class="pl-filters"><div class="pl-seg">${seg('all',t('plAll'),G.length)}${seg('int',t('plInt'),ni)}${seg('ext',t('plExt'),G.length-ni)}</div>
+      <select data-plst="1">${Object.entries(t('plStF')).map(([k,l])=>`<option value="${k}"${F.st===k?' selected':''}>${esc(l)}</option>`).join('')}</select>
+      <label class="pl-mine"><input type="checkbox" data-plmine="1"${F.mine?' checked':''}> ${t('plMine')}</label>
+      <input type="search" class="pl-q" data-plq="1" placeholder="${esc(t('plSearchG'))}" value="${esc(top.pq||'')}"></div>
+    <div class="pl-selbar"${top.sel.size?'':' hidden'}><b data-plseln>${esc(t('plSel')(top.sel.size))}</b><button type="button" class="btn sm" data-x="pl-send" data-p="${esc(P.meta.id)}">${plIc(IC_SEND,14)} ${t('plMarkSent')}</button><button type="button" class="btn-o sm" data-x="pl-copy" data-p="${esc(P.meta.id)}">${t('plCopyEmails')}</button><button type="button" class="btn-o sm danger" data-x="pl-rms" data-p="${esc(P.meta.id)}">${t('plRemove')}</button></div>
+    ${G.length?`<div class="pl-tw"><table class="pl-t"><thead><tr><th><input type="checkbox" data-plselall="1" title="${esc(t('plSelAll'))}"></th><th>${t('thLast')}</th><th>${t('thCompany')}</th><th>${t('thStatus')}</th><th></th><th></th></tr></thead><tbody>${rows}</tbody></table></div>
+      ${L2.length>lim?`<button type="button" class="btn-o sm pl-more" data-x="pl-more">${t('plMore')(Math.min(PL_PAGE,L2.length-lim))}</button>`:''}`:`<div class="empty pl-empty"><b>${t('plNoGuests')}</b>${t('plNoGuestsH')}</div>`}</div>`;
+}
+function plDocsHTML(P,which){
+  const D=plDocs(P).filter(d=>which==='inv'?['invitation','relance','rappel'].includes(d.kind):!['invitation','relance','rappel'].includes(d.kind));
+  return`<div class="pl-sec"><div class="pl-sh"><h3>${which==='inv'?t('plDocs'):t('plDocsOther')} <span>${D.length}</span></h3></div>
+    <div class="pl-drop" data-pldrop="${esc(P.meta.id)}" data-kind="${which==='inv'?'':'autre'}" role="button" tabindex="0">${plIc(IC_UP,26)}<b>${esc(t('plDrop'))}</b><span>${esc(t('plDropS'))}</span></div>
+    ${D.length?`<div class="pl-docs">${D.map(d=>{const pv=d.pv||{};return`<div class="pl-doc"><div class="pl-dic">${plIc(IC_FILE,20)}<span>${esc((d.name.split('.').pop()||'').toUpperCase().slice(0,4))}</span></div>
+      <div class="pl-dm"><b>${esc(pv.subject||pv.summary||d.name)}</b><small>${esc([pv.subject||pv.summary?d.name:'',t('plKind')[d.kind],(d.by||'—')+' · '+numDate(String(d.at).slice(0,10)),d.recips&&d.recips.length?t('plRecips')(d.recips.length):'',pv.natt?t('plRecips')(pv.natt):''].filter(Boolean).join(' · '))}</small>
+        <small class="pl-store ${d.store}">${esc(d.store==='folder'?t('plStoreF'):t('plStoreL'))}</small></div>
+      <div class="pl-acts"><select data-plkind="${esc(P.meta.id)}|${esc(d.id)}">${Object.entries(t('plKind')).map(([k,l])=>`<option value="${k}"${d.kind===k?' selected':''}>${esc(l)}</option>`).join('')}</select>
+        <button type="button" class="btn-o sm" data-x="pl-pv" data-p="${esc(P.meta.id)}" data-d="${esc(d.id)}">${plIc(IC_EYE,14)} ${t('plPreview')}</button>
+        <button type="button" class="btn-o sm" data-x="pl-dl" data-p="${esc(P.meta.id)}" data-d="${esc(d.id)}">${plIc(IC_DL,14)} ${t('plDownload')}</button>
+        ${which==='inv'?`<button type="button" class="btn sm" data-x="pl-send" data-p="${esc(P.meta.id)}" data-d="${esc(d.id)}">${plIc(IC_SEND,14)} ${t('plMarkSent')}</button>`:''}
+        <button type="button" class="pl-x" data-x="pl-ddel" data-p="${esc(P.meta.id)}" data-d="${esc(d.id)}" title="${esc(t('del'))}">×</button></div></div>`}).join('')}</div>`:''}</div>`;
+}
+function plTrackHTML(P){
+  const S2=plSends(P),me=meName(),rs=Object.values(P.r||{});
+  return`<div class="pl-sec"><div class="pl-sh"><h3>${t('plTrack')} <span>${S2.length}</span></h3><div class="pl-acts">
+      <button type="button" class="btn sm" data-x="pl-send" data-p="${esc(P.meta.id)}">${plIc(IC_SEND,14)} ${t('plRecSend')}</button>
+      <button type="button" class="btn-o sm" data-x="pl-trk" data-p="${esc(P.meta.id)}">${t('plImpTrack')}</button>
+      <button type="button" class="btn-o sm" data-x="pl-icsimp" data-p="${esc(P.meta.id)}">${t('plImpIcs')}</button></div></div>
+    ${S2.length?`<ul class="pl-log">${S2.map(s=>`<li class="${s.by===me?'mine':''}"><span class="pl-dot ${s.kind||'invitation'}"></span><div>${esc(sendLine(s,P))}${s.ch?` <small>· ${esc(t('plCh')[s.ch]||s.ch)}${s.src&&s.src!=='ics'?' · '+esc(s.src):''}</small>`:''}</div>
+      ${ADMIN||s.by===me?`<button type="button" class="pl-x" data-x="pl-sdel" data-p="${esc(P.meta.id)}" data-s="${esc(s.id)}" title="${esc(t('del'))}">×</button>`:''}</li>`).join('')}</ul>`:`<div class="empty pl-empty"><b>${t('plNoTrack')}</b>${t('plNoTrackH')}</div>`}
+    ${rs.length?`<p class="pl-note">${esc(Object.entries(rs.reduce((m,r)=>{const k=t('plSt')[stKeyOf(r.st)]||r.st;m[k]=(m[k]||0)+1;return m},{})).map(([k,n])=>k+CL()+n).join(' · '))}</p>`:''}</div>`;
+}
+/* onglets de la page événement */
+{const _eb=eventBody;eventBody=function(o,top){
+  const P=planFor(o.e.id),nb=notesBlock();let h=_eb(o,top);
+  h=h.replace(nb,'');if(P&&!P.meta.bind)h=h.replace(/<div class="manage"><button class="btn-danger" data-man-rm="1">[\s\S]*?<\/button><\/div>/,'');
+  const inner=h.slice(h.indexOf('>')+1,h.lastIndexOf('</div>'));
+  top.tab=top.tab||((P&&!o.ins)?'inv':'ov');
+  const tabs=[['ov',t('plTabOv')],['inv',t('plTabInv')+(P?` <span>${plGuests(P).length}</span>`:'')],['nd',t('plTabNd')]];
+  return`<div class="d-body pg-body"><div class="pg-tabs" role="tablist">${tabs.map(([k,l])=>`<button type="button" role="tab" class="${top.tab===k?'on':''}" data-x="pl-tab" data-t="${k}">${l}</button>`).join('')}</div>
+    <section class="pg-sec"${top.tab==='ov'?'':' hidden'}>${plOverviewHTML(o,P)}${inner}</section>
+    <section class="pg-sec"${top.tab==='inv'?'':' hidden'}>${P?plGuestsHTML(o,P,top)+plDocsHTML(P,'inv')+plTrackHTML(P):plOverviewHTML(o,null)}</section>
+    <section class="pg-sec"${top.tab==='nd'?'':' hidden'}>${nb}${P?plDocsHTML(P,'other'):`<div class="pl-sec"><div class="pl-drop" data-pldrop="__ev:${esc(o.e.id)}" data-kind="autre" role="button" tabindex="0">${plIc(IC_UP,26)}<b>${esc(t('plDrop'))}</b><span>${esc(t('plDropS'))}</span></div></div>`}</section></div>`;
+}}
+/* filtre internes (BNP Paribas) / externes sur les participants d'un événement passé */
+{const _cfu=coFilterUI;coFilterUI=function(top,regs){const h=_cfu(top,regs);if(top.type!=='event')return h;
+  const n=regs.length,ni=regs.filter(r=>r.p&&r.p.internal).length,ie=top.ie||'all',b=(k,l,c)=>`<button type="button" class="${ie===k?'on':''}" data-x="ev-ie" data-v="${k}">${esc(l)} <span>${c}</span></button>`;
+  return`<div class="pl-seg pl-seg-sm">${b('all',t('plAll'),n)}${b('int',t('plInt'),ni)}${b('ext',t('plExt'),n-ni)}</div>`+h}}
+function ieFilt(top,list){if(!top||!top.ie||top.ie==='all')return list;return list.filter(x=>x.p&&(top.ie==='int'?x.p.internal:!x.p.internal))}
+XACT['ev-ie']=b=>{const top=stack[stack.length-1];if(top){top.ie=b.dataset.v;drawDrawer(true)}};
+
+/* page pleine largeur, statistiques de l'en-tête, liaisons */
+{const _dd=drawDrawer;drawDrawer=function(keep){
+  _dd(keep);const top=stack[stack.length-1],d=$('drawer'),pg=!!top&&top.type==='event';
+  d.classList.toggle('pg',pg);document.body.classList.toggle('pgmode',pg);
+  if(!top)return;
+  if(pg){const o=find.event(top.id),P=o&&planFor(o.e.id);
+    if(o&&P&&!top.edit&&!o.ins){const st=d.querySelector('.d-stats');if(st)st.innerHTML=plKpis(P).slice(0,3).map(([n,l])=>`<div><b>${n}</b><span>${esc(l)}</span></div>`).join('')}
+    if(o&&P&&!P.meta.bind){const e=$('dEdit');if(e){if(plCanEdit(P))e.onclick=()=>plEditModal(P);else e.remove()}}
+    if(P&&P.meta.status==='proposed'){const h=d.querySelector('.h-chips')||d.querySelector('.d-sub');if(h&&!d.querySelector('.pl-prop-chip'))h.insertAdjacentHTML('afterend',`<div class="h-chips"><span class="h-chip pl-prop-chip">${esc(t('plProposed'))}</span></div>`)}
+    d.querySelectorAll('[data-pldrop]').forEach(z=>{
+      const go=files=>{const v=z.dataset.pldrop;let P2=v.startsWith('__ev:')?plEnsure(find.event(v.slice(5))):PLANS[v];if(P2)plAddFiles(P2,[...files],z.dataset.kind||'')};
+      z.onclick=()=>{const i=document.createElement('input');i.type='file';i.multiple=true;i.onchange=()=>go(i.files);i.click()};
+      z.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();z.click()}};
+      z.ondragover=e=>{e.preventDefault();e.stopPropagation();z.classList.add('over')};z.ondragleave=()=>z.classList.remove('over');
+      z.ondrop=e=>{e.preventDefault();e.stopPropagation();z.classList.remove('over');if(e.dataTransfer&&e.dataTransfer.files.length)go(e.dataTransfer.files)}});
+    const q=d.querySelector('[data-plq]');if(q){const f=()=>{const s=strip(q.value);top.pq=q.value;d.querySelectorAll('.pl-t tbody tr').forEach(r=>r.hidden=!!s&&!r.dataset.h.includes(s))};q.oninput=f;if(q.value)f()}
+  }else if(top.type==='person'){const p=PMAP[top.id];if(p&&!top.edit){const ups=plList().filter(P=>P.g&&P.g[p.id]&&!P.g[p.id].off);
+    if(ups.length){const b=d.querySelector('.d-body');if(b)b.insertAdjacentHTML('afterbegin',`<div class="pl-up"><b>${esc(t('plUpcomingP'))}</b>${ups.map(P=>`<button type="button" class="link" data-go="event" data-id="${esc(plEvId(P))}">${esc(t('plOnList')(P.meta.name,P.meta.date?numDate(P.meta.date):'—'))}</button>`).join('')}</div>`);
+      b.querySelectorAll('.pl-up [data-go]').forEach(x=>x.onclick=()=>openFiche('event',x.dataset.id,true))}}}
+}}
+{const _cd2=closeDrawer;closeDrawer=function(){_cd2();document.body.classList.remove('pgmode');$('drawer').classList.remove('pg')}}
+function plEnsure(o){if(!o)return null;const ex=planFor(o.e.id);if(ex)return ex;const P=plNew({name:evName(o.e),date:o.e.date||'',lieu:o.e.lieu||'',type:o.e.type||'',desc:o.e.desc||'',bind:o.e.id},[]);EVPLAN[o.e.id]=P.meta.id;PLANEV[P.meta.id]=o.e.id;saveVault();return P}
+document.addEventListener('change',e=>{
+  const el=e.target;if(!el.closest||!el.closest('#drawer'))return;const top=stack[stack.length-1];if(!top)return;
+  if(el.matches('[data-plsel]')){top.sel=top.sel||new Set();if(el.checked)top.sel.add(el.dataset.plsel);else top.sel.delete(el.dataset.plsel);plSelUI(top);return}
+  if(el.matches('[data-plselall]')){top.sel=top.sel||new Set();$('drawer').querySelectorAll('.pl-t tbody tr:not([hidden]) [data-plsel]').forEach(c=>{c.checked=el.checked;if(el.checked)top.sel.add(c.dataset.plsel);else top.sel.delete(c.dataset.plsel)});plSelUI(top);return}
+  if(el.matches('[data-plst]')){top.pf.st=el.value;drawDrawer(true);return}
+  if(el.matches('[data-plmine]')){top.pf.mine=el.checked;drawDrawer(true);return}
+  if(el.matches('[data-plkind]')){const[p,dd]=el.dataset.plkind.split('|'),P=PLANS[p];if(P&&P.d[dd]){P.d[dd]={...P.d[dd],kind:el.value};saveVault();drawDrawer(true)}}
+});
+function plSelUI(top){const b=$('drawer').querySelector('.pl-selbar');if(!b)return;b.hidden=!top.sel.size;const n=b.querySelector('[data-plseln]');if(n)n.textContent=t('plSel')(top.sel.size)}
+const curTop=()=>stack[stack.length-1];
+Object.assign(XACT,{
+  'pl-tab':b=>{const top=curTop();if(top){top.tab=b.dataset.t;drawDrawer();const bd=$('drawer').querySelector('.d-body');if(bd)bd.scrollTop=0}},
+  'pl-ie':b=>{const top=curTop();if(top){top.pf.ie=b.dataset.v;drawDrawer(true)}},
+  'pl-more':()=>{const top=curTop();if(top){top.plim=(top.plim||PL_PAGE)+PL_PAGE;drawDrawer(true)}},
+  'pl-prep':async b=>{await askMe();const P=plEnsure(find.event(b.dataset.ev));if(P){const top=curTop();top.tab='inv';drawDrawer(true)}},
+  'pl-next':b=>{const s=EMAP[b.dataset.ev];if(s)planWizard(s)},
+  'pl-edit':b=>{const P=PLANS[b.dataset.p];if(P)plEditModal(P)},
+  'pl-del':b=>{const P=PLANS[b.dataset.p];if(!P||!confirm(t('plDeleteQ')))return;delete PLANS[P.meta.id];saveVault();closeDrawer();rebuild();toast(t('plDeleted'))},
+  'pl-val':b=>{const P=PLANS[b.dataset.p];if(!P)return;P.meta={...P.meta,status:'validated',valBy:meName(),valAt:nowIsoT()};saveVault();rebuild();drawDrawer(true);toast(t('plValidated'))},
+  'pl-rej':b=>{const P=PLANS[b.dataset.p];if(!P||!confirm(t('plRejectQ')))return;delete PLANS[P.meta.id];saveVault();closeDrawer();rebuild();toast(t('plDeleted'))},
+  'pl-add':b=>{const P=PLANS[b.dataset.p];if(P)plAddModal(P)},
+  'pl-rm1':b=>{const P=PLANS[b.dataset.p];if(P){plRemoveGuests(P,[b.dataset.g]);const top=curTop();if(top&&top.sel)top.sel.delete(b.dataset.g);drawDrawer(true)}},
+  'pl-rms':b=>{const P=PLANS[b.dataset.p],top=curTop();if(!P||!top||!top.sel||!top.sel.size||!confirm(t('plRemoveQ')(top.sel.size)))return;plRemoveGuests(P,[...top.sel]);top.sel.clear();drawDrawer(true)},
+  'pl-copy':async b=>{const P=PLANS[b.dataset.p],top=curTop();if(!P)return;const ems=plGuests(P).filter(g=>g.email&&(!top.sel||!top.sel.size||top.sel.has(g.gid))).map(g=>g.email);const ok=await copyText([...new Set(ems)].join('; '));toast(ok?t('plCopied')(ems.length):t('copyFail'),!ok)},
+  'pl-send':b=>{const P=PLANS[b.dataset.p];if(P)plSendModal(P,curTop(),b.dataset.d||'')},
+  'pl-sdel':b=>{const P=PLANS[b.dataset.p];if(!P||!confirm(t('plSendDelQ')))return;delete P.s[b.dataset.s];saveVault();drawDrawer(true)},
+  'pl-ddel':b=>{const P=PLANS[b.dataset.p];if(!P||!confirm(t('plDocDelQ')))return;const d=P.d[b.dataset.d];delete P.d[b.dataset.d];saveVault();drawDrawer(true);
+    if(d){KV.del('file:'+d.id).catch(()=>{});shReady().then(ok=>{if(ok&&d.store==='folder')SHARE.dir.getDirectoryHandle(FDIR).then(x=>x.removeEntry(d.id+'.kxf')).catch(()=>{})})}},
+  'pl-dl':async b=>{const P=PLANS[b.dataset.p],d=P&&P.d[b.dataset.d];if(!d)return;try{const u8=await fileLoad(d);await saveBlob(u8,d.name,d.mime)}catch(e){toast(t(e&&e.k||'plInvalid'),true)}},
+  'pl-pv':async b=>{const P=PLANS[b.dataset.p],d=P&&P.d[b.dataset.d];if(!d)return;let pv=null;try{pv=filePreview(d.name,await fileLoad(d))}catch(e){toast(t(e&&e.k||'plInvalid'),true);return}plPreviewModal(P,d,pv)},
+  'pl-trk':b=>{const P=PLANS[b.dataset.p];if(!P)return;const i=document.createElement('input');i.type='file';i.accept='.xlsx,.xlsm,.csv,.txt';i.onchange=()=>{if(i.files[0])plTrackImport(P,i.files[0])};i.click()},
+  'pl-icsimp':b=>{const P=PLANS[b.dataset.p];if(!P)return;const i=document.createElement('input');i.type='file';i.accept='.ics,.eml,.msg';i.onchange=()=>{if(i.files[0])plAddFiles(P,[i.files[0]],'invitation')};i.click()},
+  'pl-expm':b=>{const m=b.parentNode.querySelector('.pl-menu');if(m)m.hidden=!m.hidden},
+  'pl-xlsx':b=>{const P=PLANS[b.dataset.p];if(P)plExportXlsx(find.event(plEvId(P)),P)},
+  'pl-ics':b=>{const P=PLANS[b.dataset.p],o=P&&find.event(plEvId(P));if(o)saveBlob(new TextEncoder().encode(eventIcs(o,P,false)),(P.meta.name||'evenement').replace(/[\\/:*?"<>|]+/g,' ')+'.ics','text/calendar')},
+  'pl-icsg':b=>{const P=PLANS[b.dataset.p],o=P&&find.event(plEvId(P));if(o)saveBlob(new TextEncoder().encode(eventIcs(o,P,true)),(P.meta.name||'evenement').replace(/[\\/:*?"<>|]+/g,' ')+' - invitation.ics','text/calendar')}
+});
+document.addEventListener('click',e=>{if(!(e.target.closest&&e.target.closest('.pl-menu-w')))document.querySelectorAll('.pl-menu').forEach(m=>m.hidden=true)});
+function plPreviewModal(P,d,pv){
+  const H=(k,v)=>v?`<div class="kx-hd"><span>${esc(k)}</span><b>${esc(v)}</b></div>`:'';
+  let body='';
+  if(pv.kind==='mail'){body=H(t('plSubject'),pv.subject)+H(t('plFrom'),pv.from)+H(t('plToL'),pv.to)+H(t('plCc'),pv.cc)+H(t('plWhen'),pv.date)+(pv.att&&pv.att.length?H('📎',pv.att.join(', ')):'')+
+      (pv.html?`<iframe class="kx-mail" sandbox="" referrerpolicy="no-referrer" title="${esc(pv.subject||d.name)}"></iframe>`:`<pre class="kx-pre">${esc(pv.text||'')}</pre>`);}
+  else if(pv.kind==='ics'){const R=t('plIcsResp');body=H(t('plSubject'),pv.summary)+H(t('plWhen'),[pv.start.d&&numDate(pv.start.d),pv.start.t].filter(Boolean).join(' '))+H(t('plPlace'),pv.location)+H(t('plFrom'),pv.org)+(pv.desc?`<pre class="kx-pre">${esc(pv.desc)}</pre>`:'')+
+      (pv.att.length?`<h4 class="pl-h4">${t('plIcsAtt')} (${pv.att.length})</h4><div class="kx-att">${pv.att.map(a=>`<div><span>${esc(a.name||a.email)}</span><small>${esc(a.email)}</small>${plChip(a.ps==='ACCEPTED'?'acc':a.ps==='DECLINED'?'dec':a.ps==='TENTATIVE'?'tent':'sent',R[a.ps]||a.ps)}</div>`).join('')}</div>`:'');}
+  else if(pv.kind==='text')body=`<pre class="kx-pre">${esc(pv.text.slice(0,20000))}</pre>`;
+  else body=`<p class="kx-p">${esc(t('plNoPreview'))}</p>`;
+  const m=kxModal(d.name,`${t('plKind')[d.kind]||''} · ${d.by||'—'} · ${numDate(String(d.at).slice(0,10))}`,body,null,null,null,`<button type="button" class="btn" data-kx-dl>${plIc(IC_DL,14)} ${t('plDownload')}</button>`);
+  m.querySelector('.kx-card').classList.add('kx-wide');
+  const fr=m.querySelector('.kx-mail');if(fr)fr.srcdoc=`<!doctype html><meta charset="utf-8"><base target="_blank"><style>body{font-family:Segoe UI,Arial,sans-serif;font-size:14px;margin:12px;color:#222}img{max-width:100%}</style>`+String(pv.html).replace(/<script[\s\S]*?<\/script>/gi,'');
+  m.querySelector('[data-kx-dl]').onclick=async()=>{try{await saveBlob(await fileLoad(d),d.name,d.mime)}catch(e){toast(t(e&&e.k||'plInvalid'),true)}};
+}
+function plAddModal(P){
+  askMe().then(()=>{
+    const evs=EVSTATS.slice().sort((a,b)=>evCmp.recent(a.e,b.e)).filter(s=>s.e.id!==plEvId(P));
+    kxModal(t('plAddT'),P.meta.name,`
+      <div class="kx-blk"><h4>${t('plAddSearch')}</h4><div class="kx-row"><input id="kxGs" list="kxGsL" placeholder="${esc(t('plAddSearchPh'))}"><datalist id="kxGsL">${PEOPLE.filter(p=>!p.archived).slice(0,6000).map(p=>`<option value="${esc(p.full+(p.societe?' — '+p.societe:'')+(p.email?' <'+p.email+'>':''))}">`).join('')}</datalist><button type="button" class="btn sm" data-kxa="s">${t('plAddBtn')}</button></div></div>
+      ${LISTS.length?`<div class="kx-blk"><h4>${t('plAddList')}</h4><div class="kx-row"><select id="kxGl">${LISTS.map(l=>`<option value="${esc(l.id)}">${esc(l.name)}</option>`).join('')}</select><button type="button" class="btn sm" data-kxa="l">${t('plAddBtn')}</button></div></div>`:''}
+      <div class="kx-blk"><h4>${t('plAddEv')}</h4><div class="kx-row"><select id="kxGe">${evs.map(s=>`<option value="${esc(s.e.id)}">${esc(evName(s.e)+(s.e.date?' · '+numWhen(s.e):''))}</option>`).join('')}</select><select id="kxGh">${['all','present','absent','plan'].map(k=>`<option value="${k}">${esc(t('plCG')[k])}</option>`).join('')}</select><button type="button" class="btn sm" data-kxa="e">${t('plAddBtn')}</button></div></div>
+      <div class="kx-blk"><h4>${t('plAddPaste')}</h4><textarea id="kxGp" rows="3" placeholder="${esc(t('plAddPastePh'))}"></textarea><div class="kx-row"><span class="kx-sp"></span><button type="button" class="btn sm" data-kxa="p">${t('plAddBtn')}</button></div></div>`,null,null);
+    const done=n=>{saveVault();drawDrawer(true);toast(n?t('plAdded')(n):t('plNoneAdded'))};
+    document.querySelectorAll('[data-kxa]').forEach(b=>b.onclick=()=>{const k=b.dataset.kxa;let list=[];
+      if(k==='s'){const v=$('kxGs').value,em=(v.match(/<([^>]+)>/)||[])[1],p=em?PEOPLE.find(x=>x.emails.includes(em.toLowerCase())):PEOPLE.find(x=>normName(x.full+(x.societe?' — '+x.societe:''))===normName(v.replace(/<[^>]*>/,'').trim())||normName(x.full)===normName(v));if(p)list=[personGuest(p)];$('kxGs').value=''}
+      if(k==='l'){const l=LISTS.find(x=>x.id===$('kxGl').value);if(l){const keep=LQ;LQ={...defaultLQ(),...JSON.parse(JSON.stringify(l.q)),mode:'clients'};try{list=listResults([]).map(r=>personGuest(r.p))}finally{LQ=keep}}}
+      if(k==='e'){const s=EMAP[$('kxGe').value];if(s)list=guestsFromEvent(s,$('kxGh').value)}
+      if(k==='p'){const ems=[...new Set((($('kxGp').value||'').match(/[A-Z0-9._%+'-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi)||[]).map(x=>x.toLowerCase()))];list=ems.map(e=>{const p=PEOPLE.find(x=>x.emails.includes(e));return p?personGuest(p):{email:e,name:e,societe:''}});$('kxGp').value=''}
+      done(plAddGuests(P,list,k==='s'?'manual':k==='l'?'list':k==='e'?'copy':'paste',true))});
+  });
+}
+
+/* ---------- onglet Événements : bouton de création, sections À valider / À venir / Passés ---------- */
+{const _rc=renderCore;renderCore=function(){const r=_rc.apply(this,arguments);
+  if(view==='events'){const ab=$('addBtn');ab.hidden=false;ab.textContent='+ '+t('plNew');plGridSections()}return r}}
+{const _ob=$('addBtn').onclick;$('addBtn').onclick=()=>{if(view==='events')return planWizard();if(_ob)_ob()}}
+function plGridSections(){
+  const g=$('grid'),tiles=[...g.querySelectorAll(':scope > [data-open="event"]')];if(!tiles.length||input.value.trim())return;
+  const td=isoDay(),dOf=id=>{const s=EMAP[id];return s&&s.e.date?s.e.date.slice(0,10):''};
+  let firstUp=null,firstPast=null,prop=[];
+  tiles.forEach(el=>{const id=el.dataset.id,P=planFor(id);
+    if(P){const n=plGuests(P).length;el.insertAdjacentHTML('beforeend',`<div class="pl-tile">${P.meta.status==='proposed'?`<span class="pl-chip prop">${esc(t('plProposed'))}</span>`:''}${n?`<span class="pl-chip">${esc(t('plKGuests'))} : ${n}</span>`:''}</div>`);
+      if(P.meta.status==='proposed'&&ADMIN)prop.push(el)}
+    const d=dOf(id);if(d&&d>=td){if(!firstUp)firstUp=el}else if(!firstPast&&firstUp)firstPast=el});
+  if(getSort('events')!=='recent')return;
+  if(firstUp)firstUp.insertAdjacentHTML('beforebegin',`<div class="grid-sec">${esc(t('plUpcoming'))}</div>`);
+  if(firstPast)firstPast.insertAdjacentHTML('beforebegin',`<div class="grid-sec">${esc(t('plPast'))}</div>`);
+  if(prop.length){g.insertAdjacentHTML('afterbegin',`<div class="grid-sec">${esc(t('plToValidate'))} (${prop.length})</div>`);const h=g.firstElementChild;prop.slice().reverse().forEach(el=>h.after(el.cloneNode(true)))}
+}
+
+/* ---------- construire une liste → ajouter à un événement ---------- */
+{const _rr=renderLBRes;renderLBRes=function(){_rr();const bar=document.querySelector('#lbRes .lb-acts');if(!bar||LQ.mode!=='clients'||bar.querySelector('[data-x="pl-toev"]'))return;
+  bar.insertAdjacentHTML('afterbegin',`<button type="button" class="btn-o sm" data-x="pl-toev">+ ${t('plToEv')}</button>`)}}
+XACT['pl-toev']=async()=>{
+  await askMe();const td=isoDay();
+  const up=plList().filter(P=>!P.meta.date||P.meta.date>=td).sort((a,b)=>String(a.meta.date).localeCompare(String(b.meta.date)));
+  const evUp=EVSTATS.filter(s=>s.e.date&&s.e.date.slice(0,10)>=td&&!planFor(s.e.id));
+  if(!up.length&&!evUp.length){toast(t('plNoUpcoming'),true);return}
+  const res=lbRows(curTokens());
+  kxModal(t('plToEvT'),t('plToEvS'),`<select id="kxTe" class="kx-sel">${up.map(P=>`<option value="p:${esc(P.meta.id)}">${esc(P.meta.name+(P.meta.date?' · '+numDate(P.meta.date):''))}</option>`).join('')}${evUp.map(s=>`<option value="e:${esc(s.e.id)}">${esc(evName(s.e)+' · '+numWhen(s.e))}</option>`).join('')}</select>`,t('plAddBtn'),()=>{
+    const v=$('kxTe').value,P=v.startsWith('p:')?PLANS[v.slice(2)]:plEnsure(find.event(v.slice(2)));if(!P)return t('plNeedEv');
+    const n=plAddGuests(P,res.map(r=>personGuest(r.p)),'list',true);saveVault();toast(n?t('plAdded')(n):t('plNoneAdded'));
+    setTimeout(()=>{openFiche('event',plEvId(P));const top=curTop();if(top){top.tab='inv';drawDrawer()}},0);return true});
+};
+
+/* ---------- ordre des onglets de recherche : Événements en premier ---------- */
+SEARCH_V.splice(SEARCH_V.indexOf('events'),1);SEARCH_V.unshift('events');
+{const st=$('sTabs'),b=st&&st.querySelector('[data-view="events"]');if(b)st.insertBefore(b,st.firstChild)}
+XACT['nav-search']=()=>{const v=getLS('crm-stab');goView(SEARCH_V.includes(v)?v:'events');input.focus()};
+
+/* changement de mot de passe : les documents gardés sur ce poste sont rechiffrés eux aussi */
+{const _rk=rekeyLocal;rekeyLocal=async function(oldPw,newPw){
+  let oldKey=null;try{const v=await KV.get('vault');oldKey=CRYPTO_KEY&&$('lock').hidden?CRYPTO_KEY:await deriveKey(oldPw,fromB64(v.salt))}catch(_){}
+  const files=[];if(oldKey)for(const k of await KV.keys()){if(!String(k).startsWith('file:'))continue;try{files.push([k,await aesD(oldKey,await KV.get(k))])}catch(_){}}
+  await _rk(oldPw,newPw);
+  for(const[k,b]of files){try{await KV.set(k,await aesE(CRYPTO_KEY,b))}catch(_){}}
+}}
+/* vers la master file : événements créés dans Konex (validés) et leurs listes d'invités — sans aucun statut d'invitation */
+function plSnap(){
+  return plList().filter(P=>P.meta.status==='validated').sort((a,b)=>String(a.meta.date).localeCompare(String(b.meta.date))).map(P=>{const m=P.meta,src=m.from&&EMAP[m.from],bd=m.bind&&EMAP[m.bind];
+    return{name:m.name,date:m.date||'',time:m.time||'',lieu:m.lieu||'',type:m.type||'',desc:m.desc||'',from:src?evName(src.e)+(src.e.date?' ('+src.e.date.slice(0,10)+')':''):'',mode:m.mode||'',
+      existing:bd?1:0,by:m.by||'',created:m.created||'',valBy:m.valBy||'',valAt:m.valAt||'',
+      guests:plGuests(P).map(g=>{const p=g.pid&&PMAP[g.pid];return{prenom:p?p.prenom:'',nom:p?p.nom:(g.name||''),email:g.email||'',societe:g.societe||(p?p.societe:''),int:g.int?1:0,by:g.by||'',at:g.at||'',src:g.src||''}})}});
+}
+
 /* =========================================================
    MIROIR AVEC « IMPORTER ET CONTRÔLER »
    - les décisions prises là-bas (personnes, entreprises, CMO distincts ; noms laissés tels quels) sont reprises ici,

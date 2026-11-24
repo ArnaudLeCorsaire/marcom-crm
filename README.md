@@ -15,17 +15,18 @@ Il tient entièrement dans **un seul fichier HTML** (`Konex.html`), fonctionne *
 3. [Démarrage rapide](#démarrage-rapide)
 4. [Comptes et connexion](#comptes-et-connexion)
 5. [Fonctionnalités communes](#fonctionnalités-communes)
-6. [Fonctionnalités réservées à l'espace administrateur](#fonctionnalités-réservées-à-lespace-administrateur)
-7. [Construction de la master file (Importer et contrôler)](#construction-de-la-master-file-importer-et-contrôler)
-8. [Konex et « Importer et contrôler » en miroir](#konex-et--importer-et-contrôler--en-miroir)
-9. [Base partagée et travail en équipe](#base-partagée-et-travail-en-équipe)
-10. [Sécurité et conformité](#sécurité-et-conformité)
-11. [Formats de fichiers](#formats-de-fichiers)
-12. [Navigateurs compatibles](#navigateurs-compatibles)
-13. [Glossaire](#glossaire)
-14. [FAQ et dépannage](#faq-et-dépannage)
-15. [Architecture technique](#architecture-technique)
-16. [Historique des versions](#historique-des-versions)
+6. [Préparer un événement à venir](#préparer-un-événement-à-venir)
+7. [Fonctionnalités réservées à l'espace administrateur](#fonctionnalités-réservées-à-lespace-administrateur)
+8. [Construction de la master file (Importer et contrôler)](#construction-de-la-master-file-importer-et-contrôler)
+9. [Konex et « Importer et contrôler » en miroir](#konex-et--importer-et-contrôler--en-miroir)
+10. [Base partagée et travail en équipe](#base-partagée-et-travail-en-équipe)
+11. [Sécurité et conformité](#sécurité-et-conformité)
+12. [Formats de fichiers](#formats-de-fichiers)
+13. [Navigateurs compatibles](#navigateurs-compatibles)
+14. [Glossaire](#glossaire)
+15. [FAQ et dépannage](#faq-et-dépannage)
+16. [Architecture technique](#architecture-technique)
+17. [Historique des versions](#historique-des-versions)
 
 ---
 
@@ -163,7 +164,7 @@ Konex ne peut pas y mémoriser le dossier : il faut choisir le fichier `konex-ut
 ## Fonctionnalités communes
 
 ### Rechercher
-- Cinq onglets : **Personnes**, **CMO**, **Entreprises**, **Événements** et **RMPM** (recherche par code RMPM : entreprises du référentiel et employés rattachés).
+- Cinq onglets, **Événements** en premier : **Événements**, **Personnes**, **CMO**, **Entreprises** et **RMPM** (recherche par code RMPM : entreprises du référentiel et employés rattachés).
 - Recherche instantanée par nom, société ou e-mail ; insensible aux accents et à la casse.
 - **Filtres** rapides (Top 500, classements, entités…) et **Plus de filtres** pour les critères moins courants.
 - **Filtres à choix multiples** : plusieurs valeurs d'un même filtre se cumulent en « ou » (ex. Top 500 **ou** Strategic ; régions Nord **et** Sud ; plusieurs valeurs d'un champ). Des filtres différents se combinent en « et ».
@@ -217,6 +218,51 @@ En mode clients, avec 12 événements ou moins sélectionnés, une **colonne par
 
 ### Langue
 Interface bilingue **français / anglais** : sélecteur FR | EN sur l'écran de connexion et en bas du menu. En anglais, les statuts de présence enregistrés en français dans les données (« Présent », « Refusé », « Sans réponse »…) sont traduits à l'affichage. Seul le module **Importer et contrôler** reste en français pour l'instant (un message le signale en anglais).
+
+---
+
+## Préparer un événement à venir
+
+Konex ne fait plus seulement la synthèse du passé : il prépare les prochains événements, de la liste d'invités jusqu'au jour J.
+
+### Créer un événement
+Onglet **Événements**, bouton **+ Créer un événement**. Deux possibilités :
+- **Partir de zéro** : nom, date, heure, lieu, type, description.
+- **À partir d'un événement existant** : Konex reprend le nom, le lieu et le type, et propose l'**édition suivante** (année +1). On peut aussi reprendre les invités : tous, les présents, les absents et non-venus, ou la liste préparée.
+
+Le bouton **Préparer l'édition suivante** existe aussi sur chaque page d'événement.
+
+Dans l'**espace utilisateur**, l'événement est **proposé** : il est visible avec un bandeau « En attente de validation », puis un administrateur le **valide** ou le **refuse** depuis sa page. Il n'entre dans la master file qu'une fois validé. Il arrive chez les administrateurs par la base partagée, comme les autres compléments.
+
+### La page d'un événement
+Un clic sur un événement ouvre une **page pleine largeur** avec trois onglets :
+- **Vue d'ensemble** :
+  - étape (en préparation, invitations envoyées, passé) et chiffres clés (sur la liste, invitations envoyées, réponses positives, refus, à inviter) ;
+  - dernières actions, et pour un événement passé, ses participants, filtrables **Internes BNP Paribas / Externes**.
+- **Invités et suivi**, sur une même page :
+  - **Invités** : la liste reste modifiable jusqu'au jour J. On ajoute des contacts par recherche, depuis une liste enregistrée, depuis un autre événement, ou en collant des adresses e-mail. On peut aussi les ajouter depuis *Construire une liste* (bouton « Ajouter à un événement »). Chaque ajout et chaque retrait est daté et signé. Filtres : Internes / Externes, statut, **Mes envois**. Sélection multiple : marquer comme envoyé, copier les e-mails, retirer.
+  - **Invitations et documents** : dépôt par **glisser-déposer** des invitations déjà produites par votre outil (`.oft`, `.msg`, `.eml`, `.ics`) ou de tout autre document. Konex affiche un **aperçu** (objet, expéditeur, destinataires, contenu du mail ; date, lieu et participants d'un `.ics`), et le fichier se **télécharge** à tout moment.
+  - **Suivi des envois** : qui a envoyé quoi, à qui et quand. Trois façons de l'alimenter :
+    1. **Outlook (e-mail)** : *Marquer comme envoyé* sur une invitation. Les destinataires sont la sélection, les invités pas encore invités, tous les invités, ou ceux lus dans le fichier `.msg` / `.eml`.
+    2. **Invitation Outlook (`.ics`)** : en déposant le `.ics`, Konex enregistre l'envoi et importe les réponses (accepté, refusé, peut-être).
+    3. **Outil d'emailing ou d'inscription** : *Importer un suivi (Excel / CSV)*. Konex reconnaît les colonnes e-mail, statut et date (envoyé, ouvert, cliqué, inscrit, refusé, désinscrit, erreur d'envoi).
+
+    Chaque invité affiche son statut : à inviter, invité le… par…, relancé le…, accepté, refusé…
+- **Notes et documents** : notes et autres documents de l'événement.
+
+Exports : **liste et suivi (Excel)**, **ajouter au calendrier (`.ics`)**, **invitation avec les invités (`.ics`)**.
+
+Sur la fiche d'un contact, un encadré **À venir** indique les listes d'invités sur lesquelles il figure.
+
+### Où sont rangés les fichiers
+Les documents sont **chiffrés** (avec la clé d'équipe) et rangés dans le **dossier Konex** de la base partagée (`konex-fichiers/`). Si la base partagée n'est pas connectée, ils restent chiffrés sur ce poste, avec la mention « en attente du dossier Konex ». Ils y sont **déplacés automatiquement** dès que le dossier est connecté.
+
+### Dans la master file
+Deux onglets s'ajoutent à l'Excel master :
+- **Événements à venir** : les événements créés dans Konex et validés ;
+- **Listes d'invités** : les personnes sur chaque liste, avec qui les a ajoutées et quand.
+
+Les **statuts d'invitation** (envoyé, relancé, accepté…) n'y figurent **pas** : ils restent dans Konex, car ils sont gérés dans Outlook.
 
 ---
 
@@ -465,7 +511,7 @@ Limite connue : tout est enregistré et chiffré dans le navigateur, et la base 
 
 | Version | Fichiers | Statut / nouveautés |
 |---|---|---|
-| **Konex 3** | `Konex.html` | ✅ Version actuelle — un seul fichier, deux espaces de connexion (utilisateur / administrateur) avec un mot de passe par espace, changement de mot de passe, traductions anglaises complétées ; filtres à choix multiples, création de liste simplifiée, Konex et « Importer et contrôler » en miroir, side events corrigés, VIP / interne rétablis ; comptes personnels `konex-utilisateurs.json` prêts mais désactivés jusqu'à la mise en ligne |
+| **Konex 3** | `Konex.html` | ✅ Version actuelle — préparation des événements à venir (création, page événement, invités, invitations `.oft`/`.msg`/`.eml`/`.ics`, suivi des envois), onglet Événements en premier, filtre Internes / Externes ; un seul fichier, deux espaces de connexion (utilisateur / administrateur) avec un mot de passe par espace, changement de mot de passe, traductions anglaises complétées ; filtres à choix multiples, création de liste simplifiée, Konex et « Importer et contrôler » en miroir, side events corrigés, VIP / interne rétablis ; comptes personnels `konex-utilisateurs.json` prêts mais désactivés jusqu'à la mise en ligne |
 | Konex 2 | `old/Konex-2.html`, `old/Konex_admin-2.html` | Archivée — onglet RMPM, champ VIP, statuts détaillés et taux de présence sur les fiches, copie de l'historique, filtres de listes par statut et présences minimum |
 | Konex 1 | `old/Konex.html`, `old/Konex_admin.html` | Archivée |
 | MarCom CRM admin v5 | `old/MarCom_CRM_admin-5.html` | Archivée |
