@@ -257,13 +257,21 @@ Konex interprète classement, pays, entreprise, année et statut de présence, e
 - Garde-fous de saisie : téléphone, LinkedIn (`linkedin.com/in/…`), site web, entreprise et secteur choisis dans une liste, détection des fiches proches avant création.
 - Chaque modification est **signée** et peut être **annulée** juste après.
 
-### Construire une liste
-Pensée pour aller vite, sans formulaire à remplir :
-1. **Qui voulez-vous cibler ?** — des **clients** ou des **CMO**.
-2. Au départ, la liste contient **toute la base**.
-3. **+ Ajouter un critère** ne propose que les critères utiles : événements (avec le statut : présents, inscrits, absents, statut précis, jamais conviés), entreprises, CMO, **région du CMO**, **entité**, **classement**, donnée du référentiel, type de contact, fonction, présences minimum, champ personnalisé, avec e-mail. Chaque critère accepte **plusieurs valeurs** et se retire d'un clic (×).
-4. Le résultat se met à jour en direct, avec une **phrase récapitulative** (ex. « événements « Dîner annuel », présents · région Est, Nord »).
-5. **Copier les e-mails**, **Aperçu du mail**, **Exporter (Excel)**, ou **Enregistrer** la liste sous un nom (retrouvée dans *Mes listes*, conservée lors du chargement d'une nouvelle édition). Les listes enregistrées avec l'ancienne version sont reprises automatiquement.
+### Créer une liste
+Un parcours guidé en trois étapes, avec des questions en langage courant, pour que quelqu'un qui n'est pas du métier s'y retrouve :
+1. **Qui voulez-vous contacter ?** — *Des contacts* (clients, prospects, collègues) ou *Des CMO* (avec le nombre de leurs clients concernés).
+2. **Comment les choisir ?** — toutes les questions sont visibles d'emblée ; on coche seulement celles qui comptent, et le nombre de personnes correspondantes s'affiche en direct (« → 9 contacts pour l'instant ») :
+   - *Elles sont liées à un événement* (puis « Lesquelles ? » : toutes les personnes invitées, celles qui sont venues, celles qui ne sont pas venues, celles qui n'ont pas été invitées ; un statut précis reste disponible) ;
+   - *Quel type de personnes ?* (tout le monde, externes, internes, CMO) ;
+   - *Elles travaillent dans certaines entreprises* (rien n'est coché au départ : on coche celles qu'on veut) ;
+   - *Elles sont suivies par certains CMO*, *Leur CMO est dans une région*, *Elles dépendent d'une entité*, *Leur entreprise a un classement* (si ces données existent) ;
+   - *Leur fonction contient un mot*, *Ce sont des habitués* (venues au moins N fois, boutons − / +), *Seulement celles qu'on peut écrire* ;
+   - *Plus de critères* : donnée du référentiel, information ajoutée aux fiches.
+
+   Règle rappelée à l'écran : chaque critère coché réduit la liste ; dans un même critère, plusieurs choix veulent dire « l'un ou l'autre ».
+3. **Votre liste** — le nombre, une phrase récapitulative, puis **Ajouter à un événement**, **Copier les e-mails**, **Préparer un e-mail**, **Télécharger (Excel)** et **Enregistrer cette liste**. Les listes enregistrées se reprennent d'un clic en haut de la page.
+
+La barre de recherche en haut cherche une personne dans la liste obtenue.
 
 En mode clients, avec 12 événements ou moins sélectionnés, une **colonne par événement** affiche le statut de chaque personne (également dans l'export).
 
@@ -299,26 +307,28 @@ Dans l'**espace utilisateur**, l'événement est **proposé** : il est visible a
 
 ### La page d'un événement
 Un clic sur un événement ouvre une **page pleine largeur**. Les onglets dépendent de la date :
-- événement **à venir** : *Vue d'ensemble*, *Invités et suivi*, *Notes et documents* ;
-- événement **passé** : *Vue d'ensemble*, *Participants*, *Notes et documents* (pas de suivi d'invitations).
+- événement **à venir** : *Vue d'ensemble* et *Invités et suivi* ;
+- événement **passé** : *Vue d'ensemble* et *Participants* (pas de suivi d'invitations).
+
+Si l'événement a une **photo**, elle sert de bandeau en haut de la page. Toute la page défile d'un seul bloc : le menu et la page derrière ne bougent pas.
 
 - **Vue d'ensemble** : un tableau de bord qui occupe toute la page, sans charger la liste des participants :
   - chiffres clés en tuiles de couleur (à venir : sur la liste, invitations envoyées, réponses positives, refus, à inviter ; passé : invitations, présents, taux de présence, absents, entreprises) ;
-  - carte **Informations** : photo, date, heure, lieu, type, événement principal, informations ajoutées, description, et **Modifier l'événement** (formulaire complet avec photo recadrée) ;
+  - carte **Informations** : date, heure, lieu, type, événement principal, informations ajoutées, description, et **Modifier l'événement** (formulaire complet avec photo recadrée) ;
   - à venir : **avancement** des invitations (barre de progression) et répartition Internes / Externes ; passé : répartition Internes / Externes et **entreprises les plus présentes** ;
   - **Prochaines étapes** : boutons de couleur (ajouter des invités, déposer l'invitation, enregistrer un envoi, préparer l'édition suivante…) ;
-  - dernières actions, notes récentes et side events.
-- **Participants** (événements passés) : la liste telle qu'elle vient de la master file, filtrable **Internes / Externes**.
-- **Invités et suivi** (événements à venir), trois blocs de couleur sur une même page :
-  - **Invités** : la liste reste modifiable jusqu'au jour J. On ajoute des contacts par recherche, depuis une liste enregistrée, depuis un autre événement, ou en collant des adresses e-mail. On peut aussi les ajouter depuis *Construire une liste* (bouton « Ajouter à un événement »). Chaque ajout et chaque retrait est daté et signé. Filtres : Internes / Externes, statut, **Mes envois**. Sélection multiple : marquer comme envoyé, copier les e-mails, retirer.
-  - **Invitations et documents** : dépôt par **glisser-déposer** des invitations déjà produites par votre outil (`.oft`, `.msg`, `.eml`, `.ics`) ou de tout autre document. Konex affiche un **aperçu** (objet, expéditeur, destinataires, contenu du mail ; date, lieu et participants d'un `.ics`), et le fichier se **télécharge** à tout moment.
+  - dernières actions, notes récentes (bouton *Toutes les notes*) et side events.
+- **Participants** (événements passés) : la liste telle qu'elle vient de la master file, filtrable **Internes / Externes**, avec à côté les **notes** et les **documents** de l'événement.
+- **Invités et suivi** (événements à venir), quatre blocs de couleur sur une même page :
+  - **Invités** : la liste reste modifiable jusqu'au jour J. La fenêtre **Ajouter des invités** propose : *Une personne* (recherche), *Mes listes* (cocher **plusieurs listes** puis **Appliquer**), *Autres événements* (cocher **plusieurs événements**, choisir qui reprendre, puis **Appliquer**), *Fichier Excel* (un `.xlsx` ou `.csv` avec une colonne e-mail ; nom, prénom et société sont repris, et les personnes déjà connues sont rapprochées de leur fiche) et *Coller des e-mails*. Une personne présente plusieurs fois n'est ajoutée qu'une fois. On peut aussi ajouter depuis *Créer une liste* (bouton « Ajouter à un événement »). Chaque ajout et chaque retrait est daté et signé. Filtres : Internes / Externes, statut, **Mes envois**. Sélection multiple : marquer comme envoyé, copier les e-mails, retirer.
+  - **Invitations** : dépôt par **glisser-déposer** des invitations déjà produites par votre outil (`.oft`, `.msg`, `.eml`, `.ics`) ou de tout autre document. Konex affiche un **aperçu** (objet, expéditeur, destinataires, contenu du mail ; date, lieu et participants d'un `.ics`), et le fichier se **télécharge** à tout moment.
   - **Suivi des envois** : qui a envoyé quoi, à qui et quand. Trois façons de l'alimenter :
     1. **Outlook (e-mail)** : *Marquer comme envoyé* sur une invitation. Les destinataires sont la sélection, les invités pas encore invités, tous les invités, ou ceux lus dans le fichier `.msg` / `.eml`.
     2. **Invitation Outlook (`.ics`)** : en déposant le `.ics`, Konex enregistre l'envoi et importe les réponses (accepté, refusé, peut-être).
     3. **Outil d'emailing ou d'inscription** : *Importer un suivi (Excel / CSV)*. Konex reconnaît les colonnes e-mail, statut et date (envoyé, ouvert, cliqué, inscrit, refusé, désinscrit, erreur d'envoi).
 
     Chaque invité affiche son statut : à inviter, invité le… par…, relancé le…, accepté, refusé…
-- **Notes et documents** : notes et autres documents de l'événement.
+  - **Notes** : les notes de l'équipe sur l'événement, et un champ pour en ajouter une.
 
 Exports : **liste et suivi (Excel)**, **ajouter au calendrier (`.ics`)**, **invitation avec les invités (`.ics`)**.
 

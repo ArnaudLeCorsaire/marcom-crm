@@ -468,7 +468,7 @@ body.auth-local [data-view=users]{display:none!important}
 .mv .cof-panel{left:0;right:auto}
 .pf-bar .mv .cof-btn{padding:6px 12px;border-radius:999px;font-size:13px}
 .pfl-gap{margin-left:10px}
-/* ---------- Construire une liste (version simplifiée) ---------- */
+/* ---------- Créer une liste (version simplifiée) ---------- */
 .lbx{grid-column:1/-1;background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:20px 22px;position:relative;z-index:3;display:flex;flex-direction:column;gap:14px}
 .lbx-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .lbx-top h3{margin:0;font-size:18px;font-weight:650}
@@ -657,14 +657,75 @@ body.pgmode .overlay{opacity:0!important;pointer-events:none!important}
 @media (max-width:700px){.kx-grid,.kx-choice{grid-template-columns:1fr}.drawer.pg .d-body{padding:0 16px 30px}.pg-tabs{margin:0 -16px 14px;padding:8px 16px 0}}
 
 /* ---------- Page événement : tableau de bord clair ---------- */
-.drawer.pg .d-head{background:#fff!important;color:var(--ink);border-bottom:1px solid var(--line);min-height:0!important;padding:22px 32px 16px}
-.drawer.pg .d-head h2{color:var(--ink);font-size:26px}
-.drawer.pg .d-sub,.drawer.pg .d-head .h-chip{color:var(--muted)}
-.drawer.pg .d-head .h-chip{background:var(--bg)}
+.drawer.pg .d-head:not(.cover){background:#fff!important;color:var(--ink);border-bottom:1px solid var(--line);min-height:0!important;padding:22px 32px 16px}
+.drawer.pg .d-head:not(.cover) h2{color:var(--ink);font-size:26px}
+.drawer.pg .d-head:not(.cover) .d-sub,.drawer.pg .d-head:not(.cover) .h-chip{color:var(--muted)}
+.drawer.pg .d-head:not(.cover) .h-chip{background:var(--bg)}
 .drawer.pg .d-stats{display:none}
-.drawer.pg .d-btn{background:var(--bg);color:var(--ink);border:1px solid var(--line)}
-.drawer.pg .d-btn:hover{background:var(--green-light)}
-.drawer.pg .d-btn.fc{background:var(--green);color:#fff;border-color:var(--green)}
+.drawer.pg .d-head:not(.cover) .d-btn{background:var(--bg);color:var(--ink);border:1px solid var(--line)}
+.drawer.pg .d-head:not(.cover) .d-btn:hover{background:var(--green-light)}
+.drawer.pg .d-head:not(.cover) .d-btn.fc{background:var(--green);color:#fff;border-color:var(--green)}
+/* photo de l'événement : bandeau d'en-tête de la page */
+.drawer.pg .d-head.cover{min-height:210px!important;padding:26px 32px 24px;background-position:center 40%;box-shadow:inset 0 -120px 90px -40px rgba(0,25,15,.72)}
+.drawer.pg .d-head.cover h2{font-size:30px;text-shadow:0 2px 12px rgba(0,0,0,.35)}
+.drawer.pg .d-head.cover .d-sub{color:rgba(255,255,255,.92)}
+/* modification : formulaire à taille humaine, photo en vignette */
+.drawer.pg #evForm{max-width:860px}
+.drawer.pg #evForm .photo-prev.event{max-width:420px;aspect-ratio:16/9}
+.drawer.pg #evForm .photo-prev.event:not(.has){aspect-ratio:auto;min-height:120px}
+/* défilement unique : la page derrière ne bouge plus, seul le contenu de la page événement défile */
+html:has(body.pgmode),body.pgmode{overflow:hidden}
+.drawer.pg .d-body{overscroll-behavior:contain;scrollbar-gutter:stable}
+.side{overscroll-behavior:contain}
+.kx-srcs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}.kx-srcs button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 13px;font:inherit;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer}
+.kx-srcs button.on{background:var(--green);border-color:var(--green);color:#fff}
+.kx-pan .kx-p{margin:0 0 8px;color:var(--muted);font-size:13px}
+.kx-checks{display:flex;flex-direction:column;gap:4px;max-height:42vh;overflow:auto;border:1px solid var(--line);border-radius:10px;padding:6px;margin:6px 0}
+.kx-checks label{display:flex;gap:10px;align-items:center;padding:7px 8px;border-radius:8px;cursor:pointer;font-size:14px}.kx-checks label:hover{background:var(--bg)}
+.kx-checks label span{flex:1}.kx-checks small{color:var(--muted);font-size:12px;white-space:nowrap}.kx-checks label[hidden]{display:none}
+.kx-lbl{font-size:13px;color:var(--muted);white-space:nowrap}
+.pl-drop.sm{padding:16px}.kx-xres{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:10px;font-size:13px;display:flex;flex-direction:column;gap:4px}.kx-xres ul{margin:4px 0 0;padding-left:18px;color:var(--muted)}
+body.v-lists #stats{display:none!important}
+.lg{grid-column:1/-1;display:flex;flex-direction:column;gap:14px}
+.lg-s{position:relative}.lg-s:focus-within,.lg-s:has(.cof-panel:not([hidden])){z-index:6}
+.lg-s{display:grid;grid-template-columns:40px 1fr;gap:14px;background:#fff;border-radius:16px;padding:20px 22px;box-shadow:0 1px 2px rgba(0,40,25,.06),0 8px 24px rgba(0,40,25,.05)}
+.lg-n{width:34px;height:34px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:700;font-size:16px}
+.lg-c{min-width:0}.lg-c h3{margin:4px 0 12px;font-size:18px}
+.lg-h2{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}.lg-h2 h3{margin-bottom:4px}.lg-count{color:var(--green-dark);font-weight:700;font-size:14px}
+.lg-hint{margin:0 0 12px;color:var(--muted);font-size:14px}.lg-rule{margin:12px 0 0;color:var(--muted);font-size:12.5px}
+.lg-who{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.lg-wc{display:grid;grid-template-columns:22px 1fr;gap:2px 10px;text-align:left;border:2px solid var(--line);background:#fff;border-radius:14px;padding:14px 16px;cursor:pointer;font:inherit;color:var(--ink)}
+.lg-wc b{font-size:15.5px}.lg-wc small{grid-column:2;color:var(--muted);font-size:13px;line-height:1.4}
+.lg-dot{width:18px;height:18px;border-radius:50%;border:2px solid #B8C6BF;margin-top:2px}
+.lg-wc.on{border-color:var(--green);background:var(--green-light)}.lg-wc.on .lg-dot{border:6px solid var(--green)}
+.lg-wc:hover{border-color:var(--green)}
+.lg-qs{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:10px;align-items:start}
+.lg-q{border:1.5px solid var(--line);border-radius:14px;background:#fff;transition:border-color .15s}
+.lg-q.on{border-color:var(--green);box-shadow:0 0 0 3px var(--green-light);grid-column:1/-1}
+.lg-qh{display:flex;gap:12px;align-items:center;width:100%;text-align:left;background:none;border:0;padding:12px 14px;cursor:pointer;font:inherit;color:var(--ink)}
+.lg-box{width:22px;height:22px;flex:none;border-radius:6px;border:2px solid #B8C6BF;display:grid;place-items:center;font-size:13px;font-weight:800;color:#fff}
+.lg-q.on .lg-box{background:var(--green);border-color:var(--green)}
+.lg-qt{flex:1;display:flex;flex-direction:column;gap:2px}.lg-qt b{font-size:14.5px}.lg-qt small{color:var(--muted);font-size:12.5px}
+.lg-act{font-size:12.5px;font-weight:700;color:var(--green-dark);white-space:nowrap}.lg-q.on .lg-act{color:var(--muted)}
+.lg-q .lbx-ic{color:var(--green-dark)}
+.lg-qb{padding:2px 14px 14px 48px;display:flex;flex-direction:column;gap:10px}
+.lg-qb select,.lg-qb input[type=text],.lg-qb input[type=number]{border:1px solid #CBD5D0;border-radius:9px;padding:9px 11px;font:inherit;font-size:14px;max-width:420px}
+.lg-sub{display:flex;flex-direction:column;gap:8px}.lg-sub>span{font-size:13px;font-weight:700;color:var(--muted)}
+.lg-chips{display:flex;flex-wrap:wrap;gap:8px}
+.lg-chip{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;font:inherit;font-size:13.5px;font-weight:600;color:var(--ink);cursor:pointer}
+.lg-chip:hover{border-color:var(--green)}.lg-chip.on{background:var(--green);border-color:var(--green);color:#fff}
+.lg-chk{display:flex;gap:8px;align-items:center;font-size:13.5px}
+.lg-det summary{cursor:pointer;font-size:13px;color:var(--green-dark);font-weight:600}.lg-det[open] summary{margin-bottom:8px}
+.lg-more{margin-top:12px}.lg-more>summary{cursor:pointer;font-weight:700;color:var(--green-dark);font-size:14px}.lg-more[open]>summary{margin-bottom:10px}
+.lg-step{display:flex;align-items:center;gap:8px;font-size:14px}.lg-step input{width:70px;text-align:center}
+.lg-pm{width:34px;height:34px;border-radius:9px;border:1px solid #CBD5D0;background:#fff;font-size:18px;font-weight:700;cursor:pointer;color:var(--ink)}
+.lg-note{margin:0;font-size:13.5px;color:var(--muted)}
+.lg-saved{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:13.5px;color:var(--muted)}
+.lg-evdet{margin-bottom:10px}
+.lg .lb-res{margin-top:0}
+@media (max-width:700px){.lg-s{grid-template-columns:1fr;padding:16px}.lg-qs{grid-template-columns:1fr}.lg-qb{padding-left:14px}}
+.ib-p{border-top-color:#7B4FB5}.ib-p .ib-h span{background:#7B4FB5}.ib-p .ib-h{color:#5E3A8F}
+.ib-p .note-form{margin-top:4px}
 .dash{display:flex;flex-direction:column;gap:16px}
 .dkpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
 .dk{border-radius:14px;padding:14px 16px;border:1px solid var(--line);background:#fff;border-top:4px solid var(--muted)}
@@ -1037,7 +1098,7 @@ span.arch-chip{color:#55615C!important}
 .cof-row label{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}
 .cof-row label small{color:var(--muted)}
 
-/* ---------- Construire une liste ---------- */
+/* ---------- Créer une liste ---------- */
 .lb-crit{grid-column:1/-1;background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:18px 20px;position:relative;z-index:3}
 .lb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px 18px}
 .lb-f select,.lb-f input[type=text],.lb-f input[type=number],.lb-save input{width:100%;border:1px solid #CBD5D0;border-radius:9px;padding:9px 11px;font:inherit;font-size:14px;background:#fff;color:var(--ink);outline:0}
@@ -4293,7 +4354,7 @@ const L={
   fr:{
     appName:'Konex', byAuthor:'by MarCom', menu:'Menu', quality:'Contrôle', dataL:'Données',
     navPeople:'Rechercher une personne', navEmails:'Rechercher un e-mail', navCompanies:'Rechercher une entreprise', navEvents:'Rechercher un événement',
-    navDups:'Doublons de contacts', navSwaps:'Inversions nom/prénom', navTypos:'Fautes de frappe', navCoDups:"Doublons d'entreprises", navFields:'Champs incohérents', navLists:'Construire une liste', navImport:'Importer des données',
+    navDups:'Doublons de contacts', navSwaps:'Inversions nom/prénom', navTypos:'Fautes de frappe', navCoDups:"Doublons d'entreprises", navFields:'Champs incohérents', navLists:'Créer une liste', navImport:'Importer des données',
     template:'Télécharger le modèle', exportNotes:'Exporter les notes', importNotes:'Importer des notes',
     footerDemo:"Données d'exemple. Importez vos fichiers depuis « Importer des données ». Données chiffrées sur ce poste.",
     footerFiles:(n,r)=>`${n} fichier${n>1?'s':''} importé${n>1?'s':''} · ${r} lignes. Données chiffrées sur ce poste.`,
@@ -4353,7 +4414,7 @@ const L={
     confirmCoMerge:(a,b)=>`Fusionner « ${a} » dans « ${b} » ? Ses contacts et ses notes seront regroupés sous « ${b} ». Vous pourrez annuler depuis l'onglet Doublons d'entreprises.`,
     coIgnoredDone:'Marquées comme deux entreprises différentes.', moreN:n=>`+ ${n} autre${n>1?'s':''}`,
     sortL:'Trier', sAZ:'A → Z', sZA:'Z → A', sFirst:'Prénom A → Z', sMostPres:'Plus de présences', sMostContacts:'Plus de contacts', sRecent:'Plus récents', sOld:'Plus anciens', sCo:'Entreprise A → Z', coFilter:'Entreprises', coAll:'toutes', coSel:n=>`${n} sélectionnées`, coSearch:'Rechercher une entreprise…', selAll:'Tout cocher', selNone:'Tout décocher', only:'Uniquement',
-    lists:{title:'Construire une liste',sub:"Combinez des critères pour obtenir une liste de contacts à inviter, à relancer ou à partager.",ph:'Filtrer le résultat par nom, société, poste, e-mail…',all:''},
+    lists:{title:'Créer une liste',sub:"Répondez à quelques questions simples : Konex trouve les bonnes personnes, puis vous copiez les e-mails, téléchargez la liste ou l’ajoutez à un événement.",ph:'Chercher une personne dans la liste (nom, société, e-mail…)',all:''},
     lbEvents:'Événements', lbEvAll:'aucun filtre', lbEvSel:n=>`${n} événements`, lbEvSearch:'Rechercher un événement…', byYear:'Par année :',
     lbStatus:'Statut à ces événements', stAny:'Inscrits', stPresent:'Présents', stAbsent:'Absents (inscrits non venus)',
     lbCos:'Entreprises', lbCoAll:'toutes', lbKind:'Type de contact', kAll:'Tous', kExt:'Externes uniquement', kInt:'Internes uniquement',
@@ -4419,7 +4480,7 @@ const L={
   en:{
     appName:'Konex', byAuthor:'by MarCom', menu:'Search', quality:'Quality', dataL:'Data',
     navPeople:'Search for a person', navEmails:'Search for an email', navCompanies:'Search for a company', navEvents:'Search for an event',
-    navDups:'Duplicate contacts', navSwaps:'Swapped names', navTypos:'Possible typos', navCoDups:'Duplicate companies', navFields:'Misplaced fields', navLists:'Build a list', navImport:'Import data',
+    navDups:'Duplicate contacts', navSwaps:'Swapped names', navTypos:'Possible typos', navCoDups:'Duplicate companies', navFields:'Misplaced fields', navLists:'Create a list', navImport:'Import data',
     template:'Download template', exportNotes:'Export notes', importNotes:'Import notes',
     footerDemo:'Sample data. Import your files from "Import data". Data is encrypted on this computer.',
     footerFiles:(n,r)=>`${n} file${n>1?'s':''} imported · ${r} rows. Data is encrypted on this computer.`,
@@ -4479,7 +4540,7 @@ const L={
     confirmCoMerge:(a,b)=>`Merge "${a}" into "${b}"? Its contacts and notes will be grouped under "${b}". You can undo this from Duplicate companies.`,
     coIgnoredDone:'Marked as two different companies.', moreN:n=>`+ ${n} more`,
     sortL:'Sort', sAZ:'A → Z', sZA:'Z → A', sFirst:'First name A → Z', sMostPres:'Most attendances', sMostContacts:'Most contacts', sRecent:'Most recent', sOld:'Oldest', sCo:'Company A → Z', coFilter:'Companies', coAll:'all', coSel:n=>`${n} selected`, coSearch:'Search for a company…', selAll:'Select all', selNone:'Clear all', only:'Only',
-    lists:{title:'Build a list',sub:'Combine criteria to get a list of contacts to invite, follow up or share.',ph:'Filter the result by name, company, job title, email…',all:''},
+    lists:{title:'Create a list',sub:'Answer a few simple questions: Konex finds the right people, then copy the emails, download the list or add it to an event.',ph:'Filter the result by name, company, job title, email…',all:''},
     lbEvents:'Events', lbEvAll:'no filter', lbEvSel:n=>`${n} events`, lbEvSearch:'Search for an event…', byYear:'By year:',
     lbStatus:'Status at these events', stAny:'Registered', stPresent:'Attended', stAbsent:'Absent (registered, did not come)',
     lbCos:'Companies', lbCoAll:'all', lbKind:'Contact type', kAll:'All', kExt:'External only', kInt:'Internal only',
@@ -4754,7 +4815,7 @@ Object.assign(L.fr,{lbOnly:l=>`uniquement : ${l}`,lbNoAtt:l=>`Pas de données de
   kAllN:'Tous',navAsk:'Poser une question',ask:{title:'Poser une question',sub:"Interrogez vos données en langage courant : personnes, entreprises, événements, CMO, années, statuts. Tout est calculé sur ce poste, hors ligne.",ph:'',all:''},
   askPh:'Ex. Qui de Fintra était présent aux Rencontres Techs 2025 ?',askBtn:'Demander',askUnd:'Compris :',askNone:"Je n'ai reconnu aucun élément connu dans cette question.",
   askHelp:"Citez un événement (ou sa famille, avec ou sans l'année), une entreprise, un CMO ou une personne, et ce que vous cherchez : qui, combien, taux, classement, présents, inscrits, refus, sans réponse, pas venus, non conviés, jamais venus, VIP, internes, externes.",
-  askToList:'Ouvrir dans « Construire une liste »',askTooMany:n=>`… et ${n} autres. Ouvrez la liste complète dans « Construire une liste ».`,askPeople:n=>`${n} personne${n>1?'s':''}`,
+  askToList:'Ouvrir dans « Créer une liste »',askTooMany:n=>`… et ${n} autres. Ouvrez la liste complète dans « Créer une liste ».`,askPeople:n=>`${n} personne${n>1?'s':''}`,
   askSum:(i,a,r,x)=>`${i} invité${i>1?'s':''} · ${a} présent${a>1?'s':''} (${i?Math.round(a/i*100):0} %) · ${r} inscrit${r>1?'s':''} · ${x} absent${x>1?'s':''}`,
   askNoAtt:'présence non connue',askInvOnly:'réponses et présence non connues (invitations seulement)',askRank:(d,m)=>`Classement des ${d} par ${m}`,askDims:{co:'entreprises',cmo:'CMO',ev:'événements',people:'personnes'},askMetric:{pres:'présences',inv:'invitations',rate:'taux de présence'},
   askNever:'jamais venus',askEvt:'événement',askCo:'entreprise',askCmo:'CMO',askPerson:'personne',askYear:'année',askStatus:'statut',askKind:'type',
@@ -4768,7 +4829,7 @@ Object.assign(L.en,{lbOnly:l=>`only: ${l}`,lbNoAtt:l=>`No attendance data (sign-
   kAllN:'All',navAsk:'Ask a question',ask:{title:'Ask a question',sub:'Query your data in plain language: people, companies, events, CMOs, years, statuses. Everything is computed on this computer, offline.',ph:'',all:''},
   askPh:'e.g. Who from Fintra attended Tech Meetings 2025?',askBtn:'Ask',askUnd:'Understood:',askNone:'I did not recognise any known item in this question.',
   askHelp:'Mention an event (or its family, with or without the year), a company, a CMO or a person, and what you are looking for: who, how many, rate, ranking, attended, registered, declined, no answer, no-show, not invited, never attended, VIP, internal, external.',
-  askToList:'Open in “Build a list”',askTooMany:n=>`… and ${n} more. Open the full list in “Build a list”.`,askPeople:n=>`${n} ${n>1?'people':'person'}`,
+  askToList:'Open in “Create a list”',askTooMany:n=>`… and ${n} more. Open the full list in “Create a list”.`,askPeople:n=>`${n} ${n>1?'people':'person'}`,
   askSum:(i,a,r,x)=>`${i} invited · ${a} attended (${i?Math.round(a/i*100):0} %) · ${r} registered · ${x} absent`,
   askNoAtt:'attendance unknown',askInvOnly:'answers and attendance unknown (invitations only)',askRank:(d,m)=>`Ranking of ${d} by ${m}`,askDims:{co:'companies',cmo:'CMOs',ev:'events',people:'people'},askMetric:{pres:'attendances',inv:'invitations',rate:'attendance rate'},
   askNever:'never attended',askEvt:'event',askCo:'company',askCmo:'CMO',askPerson:'person',askYear:'year',askStatus:'status',askKind:'type',
@@ -4782,14 +4843,14 @@ Object.assign(L.fr,{presDeduced:'Présent (vu à une partie de l\'événement)',
   entList:'Voir la liste des contacts',entExport:'Exporter (Excel)',entCopy:'Copier les e-mails',sEntity:'Entité A → Z',lbEnts:'Entités CMO',entAllL:'Toutes les entités',cmoListBtn:'Liste de ses clients',
   addNew:{people:'Ajouter une personne',companies:'Ajouter une entreprise',events:'Ajouter un événement',cmos:'Ajouter un CMO'},newTitle:{person:'Nouvelle personne',company:'Nouvelle entreprise',event:'Nouvel événement',cmo:'Nouveau CMO'},
   create:'Créer la fiche',created:'Fiche créée.',exists:n=>`Cette fiche existe déjà : ${n}. Elle a été ouverte.`,manualChip:'ajout manuel',manualDel:'Supprimer cette fiche',manualDelQ:n=>`Supprimer la fiche « ${n} » créée à la main ?`,manualDeleted:'Fiche supprimée.',
-  xTitle:'Informations complémentaires',xHint:"Ajoutez toute information utile : elle s'affiche sur la fiche, et pour les personnes elle devient un filtre, un tri et une colonne de « Construire une liste ».",xKey:'Nom du champ (ex. Langue)',xVal:'Valeur',xAdd:'+ Ajouter une information',
+  xTitle:'Informations complémentaires',xHint:"Ajoutez toute information utile : elle s'affiche sur la fiche, et pour les personnes elle devient un filtre, un tri et une colonne de « Créer une liste ».",xKey:'Nom du champ (ex. Langue)',xVal:'Valeur',xAdd:'+ Ajouter une information',
   apTitle:'Ajouter un participant',apWho:'Personne (nom, société ou e-mail)',apEv:'Événement',apStatus:'Statut',apCmo:'CMO (facultatif)',apAdd:'Ajouter',apPerson:'Ajouter à un événement',apUnknown:"Choisissez une personne de la liste (ou créez-la d'abord dans « Rechercher une personne »).",apUnknownEv:'Choisissez un événement de la liste.',apDone:'Participation ajoutée.',apDel:'Participation retirée.',apDelQ:'Retirer cette participation ajoutée à la main ?'});
 Object.assign(L.en,{presDeduced:'Attended (seen at part of the event)',entAll:'All entities',entNone:'No entity',entL:'Entity',entCmos:n=>`${n} CMO${n>1?'s':''}`,entClients:n=>`${n} client contact${n>1?'s':''}`,
   entPanel:(e,c,n)=>`${e}`,entSub:(c,n)=>`${c} CMO${c>1?'s':''} · ${n} client contact${n>1?'s':''}`,
   entList:'See the contact list',entExport:'Export (Excel)',entCopy:'Copy emails',sEntity:'Entity A → Z',lbEnts:'CMO entities',entAllL:'All entities',cmoListBtn:'List of their clients',
   addNew:{people:'Add a person',companies:'Add a company',events:'Add an event',cmos:'Add a CMO'},newTitle:{person:'New person',company:'New company',event:'New event',cmo:'New CMO'},
   create:'Create',created:'Record created.',exists:n=>`This record already exists: ${n}. It has been opened.`,manualChip:'added manually',manualDel:'Delete this record',manualDelQ:n=>`Delete the record “${n}” created manually?`,manualDeleted:'Record deleted.',
-  xTitle:'Additional information',xHint:'Add any useful information: it appears on the record, and for people it becomes a filter, a sort and a column in “Build a list”.',xKey:'Field name (e.g. Language)',xVal:'Value',xAdd:'+ Add information',
+  xTitle:'Additional information',xHint:'Add any useful information: it appears on the record, and for people it becomes a filter, a sort and a column in “Create a list”.',xKey:'Field name (e.g. Language)',xVal:'Value',xAdd:'+ Add information',
   apTitle:'Add a participant',apWho:'Person (name, company or email)',apEv:'Event',apStatus:'Status',apCmo:'CMO (optional)',apAdd:'Add',apPerson:'Add to an event',apUnknown:'Choose a person from the list (or create them first in “Search a person”).',apUnknownEv:'Choose an event from the list.',apDone:'Participation added.',apDel:'Participation removed.',apDelQ:'Remove this manually added participation?'});
 Object.assign(L.fr,{navBuildL:'Construire',navBuilder:'Importer et contrôler',builder:{title:'Importer et contrôler',sub:'',ph:'',all:''},
   bMigT:'Récupérer les données de votre Master Builder',bMigP:"Ce poste contient les données de l'ancien Master Builder (fichiers importés, correspondances, décisions, corrections). Elles sont chiffrées avec son propre mot de passe : saisissez-le une seule fois pour les reprendre dans Konex. Le Master Builder d'origine n'est pas modifié.",
@@ -8263,7 +8324,7 @@ Object.assign(L.fr,{
   tutoS:[['Rechercher un contact','Tapez « Lambert » dans la barre de recherche, puis cliquez sur la carte d\'Éric Lambert pour ouvrir sa fiche.'],
     ['Copier la fiche pour Teams','Sur la fiche ouverte, cliquez sur « Copier la fiche ». Vous pourriez maintenant la coller dans Teams.'],
     ['Filtrer les entreprises Top 500','Fermez la fiche, cliquez sur l\'onglet « Entreprises », puis sur le filtre « Top 500 ».'],
-    ['Construire une liste et l\'exporter','Cliquez sur « Listes » dans le menu de gauche, puis sur « Exporter ». Vous pouvez d\'abord ajouter un critère, par exemple un événement.'],
+    ['Créer une liste et l\'exporter','Cliquez sur « Créer une liste » dans le menu de gauche, puis sur « Exporter ». Vous pouvez d\'abord ajouter un critère, par exemple un événement.'],
     ['Compléter une information','Ouvrez une fiche de personne, cliquez sur « Compléter », ajoutez un numéro de téléphone puis « Enregistrer ».']]
 });
 Object.assign(L.en,{
@@ -9565,7 +9626,7 @@ Object.assign(L.en,{
   hlSecs:[['Search','Pick the People, CMOs, Companies or Events tab, then type a name, a company, an email or an RMPM code (exact match). Click a card to open the record.'],
     ['Records','At the top: name, company and email; then Copy record (for Teams or an email), Email and Complete. The history is folded: click to unfold it.'],
     ['Complete a record','Add a phone number, a LinkedIn profile, a job title or a planned piece of information. Every change is signed and can be undone right afterwards.'],
-    ['Lists','Build a list from criteria (event, ranking, company, CMO…), then copy the emails or export it to Excel.'],
+    ['Lists','Create a list from criteria (event, ranking, company, CMO…), then copy the emails or export it to Excel.'],
     ['Statistics','Key figures on contacts, companies, CMOs and events, ready to copy into your presentations.']],
   hlGl:[['CMO','Colleague who follows the client. The Pilot CMO is the company’s main CMO, according to the referential.'],['Top 500 / Top 1000','Ranking of client companies in the RMPM referential.'],['Strategic, Core 75, GSC, GNPC','Other referential rankings, shown on company records.'],['RMPM','Unique code of a company in the referential.']],
   hlRightsStd:[['Search, view records, copy a record, statistics',1],['Build and export lists',1],['Complete a client or a company, add a note, create a contact',1],['Edit an event or a participation',0],['Merge, delete or archive a record (use “Report”)',0]],
@@ -9573,7 +9634,7 @@ Object.assign(L.en,{
   tutoEndD:x=>`In ${x}, you learned to search, copy a record, filter, build a list and complete a piece of information.`,
   tutoIntro:'Welcome! Before you start: 5 essential steps in under 4 minutes, on demo data.',
   tutoS:[['Search for a contact','Type “Lambert” in the search bar, then click Éric Lambert’s card to open his record.'],['Copy the record for Teams','On the open record, click “Copy record”. You could now paste it into Teams.'],
-    ['Filter Top 500 companies','Close the record, click the “Companies” tab, then the “Top 500” filter.'],['Build a list and export it','Click “Lists” in the left menu, then “Export”. You can first add a criterion, for example an event.'],
+    ['Filter Top 500 companies','Close the record, click the “Companies” tab, then the “Top 500” filter.'],['Create a list and export it','Click “Lists” in the left menu, then “Export”. You can first add a criterion, for example an event.'],
     ['Complete a piece of information','Open a person’s record, click “Complete”, add a phone number then “Save”.']],
   stxVs:y=>`vs ${y}`,stxPts:'pts',stxCsv:'CSV',stxDataCopied:'Data copied: paste it into Excel, PowerPoint or an email.',stxSumCopied:'Summary copied: paste it into your presentation or email.',
   stxMsgSub:'Written automatically from the chosen scope; copy them as they are into a presentation.',
@@ -9675,7 +9736,7 @@ const _as25=applyState;applyState=function(s){if(!ADMIN&&s)s=srcScrub(JSON.parse
    - un même filtre accepte plusieurs valeurs (régions de CMO, entités, classements, valeurs d'un champ…) :
      une fiche est retenue si elle correspond à AU MOINS UNE des valeurs choisies ;
    - des filtres différents se combinent (ET) ;
-   - « Construire une liste » : on part de toute la base et on ajoute seulement les critères utiles.
+   - « Créer une liste » : on part de toute la base et on ajoute seulement les critères utiles.
    ========================================================= */
 Object.assign(L.fr,{mvN:n=>`${n} sélectionnés`,mvAll:'Tous',mvSearch:'Rechercher…',regL:'Région',regNone:'Sans région',emptyV:'(vide)',
   lbxQ:'Qui voulez-vous cibler ?',lbxClients:'Des clients',lbxCmos:'Des CMO',
@@ -9972,7 +10033,7 @@ document.addEventListener('click',e=>{if(LUI.addOpen&&e.target.isConnected&&!(e.
    La master file reçoit les événements créés et leurs listes d'invités — jamais les statuts d'invitation.
    ========================================================= */
 Object.assign(L.fr,{
-  plNew:'Créer un événement',plTabOv:'Vue d\'ensemble',plTabInv:'Invités et suivi',plTabNd:'Notes et documents',
+  plNew:'Créer un événement',plTabOv:'Vue d\'ensemble',plTabInv:'Invités et suivi',plTabNd:'Notes et documents',plDocsH:'Documents',plNotesAll:'Toutes les notes',
   plUpcoming:'À venir',plPast:'Passés',plToValidate:'À valider',plProposed:'Proposé',plWaitVal:'En attente de validation par un administrateur.',
   plPropBy:(n,d)=>`Proposé par ${n} le ${d}.`,plValidate:'Valider l\'événement',plReject:'Refuser',plRejectQ:'Refuser et supprimer cet événement proposé ?',plValidated:'Événement validé.',
   plStPrep:'En préparation',plStSent:'Invitations envoyées',plStPast:'Passé',
@@ -9985,7 +10046,7 @@ Object.assign(L.fr,{
   plName:'Nom de l\'événement',plDate:'Date',plTime:'Heure (facultatif)',plPlace:'Lieu',plType:'Type',plDesc:'Description',plCreate:'Créer l\'événement',plSave:'Enregistrer',plContinue:'Continuer',plBack:'‹ Retour',
   plNeedName:'Indiquez le nom de l\'événement.',plNeedEv:'Choisissez un événement.',plCreated:'Événement créé.',plCreatedStd:'Événement proposé : il sera visible dans la master file après validation par un administrateur.',
   plNoShare:'Base partagée non connectée : l\'événement reste sur ce poste tant que vous ne l\'avez pas connectée.',
-  plGuests:'Invités',plAdd:'+ Ajouter des invités',plAddT:'Ajouter des invités',plAddSearch:'Rechercher un contact',plAddSearchPh:'Nom, société ou e-mail…',plAddList:'Depuis une liste enregistrée',plAddEv:'Depuis un autre événement',plAddPaste:'Coller des adresses e-mail',plAddPastePh:'Une adresse par ligne, ou séparées par ; ou ,',plAddBtn:'Ajouter',plAdded:n=>`${n} invité${n>1?'s':''} ajouté${n>1?'s':''}.`,plNoneAdded:'Aucun nouvel invité (déjà sur la liste).',
+  plGuests:'Invités',plAdd:'+ Ajouter des invités',plAddT:'Ajouter des invités',plAddSearch:'Rechercher un contact',plAddSearchPh:'Nom, société ou e-mail…',plAddList:'Depuis une liste enregistrée',plSrcS:'Une personne',plSrcL:'Mes listes',plSrcE:'Autres événements',plSrcX:'Fichier Excel',plSrcP:'Coller des e-mails',plAddSearchH:'Tapez un nom, une société ou un e-mail, puis choisissez dans la liste.',plAddListH:'Cochez une ou plusieurs listes, puis « Appliquer ». Les personnes présentes dans plusieurs listes ne sont ajoutées qu’une fois.',plNoLists:'Vous n’avez pas encore de liste enregistrée. Créez-en une dans « Créer une liste ».',plAddEvH:'Cochez un ou plusieurs événements, choisissez qui reprendre, puis « Appliquer ».',plEvFilter:'Filtrer les événements…',plWho:'Qui reprendre ?',plApply:'Appliquer',plPickOne:'Cochez au moins une case.',plNSel:n=>`${n} cochée${n>1?'s':''}`,plAddXH:'Un fichier Excel ou CSV avec au moins une colonne e-mail (nom, prénom et société sont repris s’ils existent).',plAddXDrop:'Déposez le fichier ici ou cliquez pour le choisir',plAddXSum:(n,k,nw)=>`${n} personne${n>1?'s':''} trouvée${n>1?'s':''} · ${k} déjà dans Konex · ${nw} nouvelle${nw>1?'s':''} pour cet événement`,plAddXBtn:n=>`Ajouter ${n} invité${n>1?'s':''}`,plAddEv:'Depuis un autre événement',plAddPaste:'Coller des adresses e-mail',plAddPastePh:'Une adresse par ligne, ou séparées par ; ou ,',plAddBtn:'Ajouter',plAdded:n=>`${n} invité${n>1?'s':''} ajouté${n>1?'s':''}.`,plNoneAdded:'Aucun nouvel invité (déjà sur la liste).',
   plRemoved:n=>`${n} invité${n>1?'s':''} retiré${n>1?'s':''} de la liste.`,plRemoveQ:n=>`Retirer ${n} invité${n>1?'s':''} de la liste ?`,
   plAll:'Tous',plInt:'Internes',plExt:'Externes',plMine:'Mes envois',plSearchG:'Filtrer les invités…',
   plSt:{todo:'À inviter',sent:'Invité',acc:'Accepté',dec:'Refusé',tent:'Peut-être',reg:'Inscrit',can:'Désinscrit',open:'Ouvert',click:'Cliqué',bounce:'Erreur d\'envoi',noemail:'Sans e-mail'},
@@ -10016,7 +10077,7 @@ Object.assign(L.fr,{
   plCopied:n=>`${n} adresse${n>1?'s':''} copiée${n>1?'s':''}.`,plTabPt:'Participants',plKAbs:'absents',plMix:'Participants',plTopCos:'Entreprises les plus présentes',plSeeParts:'Voir tous les participants',plProgress:'Avancement des invitations',plNextSteps:'Actions',plDropInv:'Déposer une invitation',plInvites:'Invitations',plNotesRecent:'Notes récentes',plPhotoHint:'Photo d\'illustration, recadrée à l\'ajout',plInvalid:'Fichier illisible.',plStdOwn:'Vous pouvez modifier votre proposition tant qu\'elle n\'est pas validée.'
 });
 Object.assign(L.en,{
-  plNew:'Create an event',plTabOv:'Overview',plTabInv:'Guests and tracking',plTabNd:'Notes and documents',
+  plNew:'Create an event',plTabOv:'Overview',plTabInv:'Guests and tracking',plTabNd:'Notes and documents',plDocsH:'Documents',plNotesAll:'All notes',
   plUpcoming:'Upcoming',plPast:'Past',plToValidate:'To validate',plProposed:'Proposed',plWaitVal:'Waiting for validation by an administrator.',
   plPropBy:(n,d)=>`Proposed by ${n} on ${d}.`,plValidate:'Validate the event',plReject:'Reject',plRejectQ:'Reject and delete this proposed event?',plValidated:'Event validated.',
   plStPrep:'In preparation',plStSent:'Invitations sent',plStPast:'Past',
@@ -10029,7 +10090,7 @@ Object.assign(L.en,{
   plName:'Event name',plDate:'Date',plTime:'Time (optional)',plPlace:'Venue',plType:'Type',plDesc:'Description',plCreate:'Create the event',plSave:'Save',plContinue:'Continue',plBack:'‹ Back',
   plNeedName:'Enter the event name.',plNeedEv:'Choose an event.',plCreated:'Event created.',plCreatedStd:'Event proposed: it will appear in the master file once an administrator validates it.',
   plNoShare:'Shared base not connected: the event stays on this computer until you connect it.',
-  plGuests:'Guests',plAdd:'+ Add guests',plAddT:'Add guests',plAddSearch:'Search for a contact',plAddSearchPh:'Name, company or email…',plAddList:'From a saved list',plAddEv:'From another event',plAddPaste:'Paste email addresses',plAddPastePh:'One address per line, or separated by ; or ,',plAddBtn:'Add',plAdded:n=>`${n} guest${n>1?'s':''} added.`,plNoneAdded:'No new guest (already on the list).',
+  plGuests:'Guests',plAdd:'+ Add guests',plAddT:'Add guests',plAddSearch:'Search for a contact',plAddSearchPh:'Name, company or email…',plAddList:'From a saved list',plSrcS:'One person',plSrcL:'My lists',plSrcE:'Other events',plSrcX:'Excel file',plSrcP:'Paste emails',plAddSearchH:'Type a name, a company or an email, then pick from the list.',plAddListH:'Tick one or more lists, then “Apply”. People found in several lists are added only once.',plNoLists:'You have no saved list yet. Create one in “Create a list”.',plAddEvH:'Tick one or more events, choose who to take, then “Apply”.',plEvFilter:'Filter events…',plWho:'Who to take?',plApply:'Apply',plPickOne:'Tick at least one box.',plNSel:n=>`${n} ticked`,plAddXH:'An Excel or CSV file with at least one email column (name, first name and company are used when present).',plAddXDrop:'Drop the file here or click to choose it',plAddXSum:(n,k,nw)=>`${n} ${n>1?'people':'person'} found · ${k} already in Konex · ${nw} new for this event`,plAddXBtn:n=>`Add ${n} guest${n>1?'s':''}`,plAddEv:'From another event',plAddPaste:'Paste email addresses',plAddPastePh:'One address per line, or separated by ; or ,',plAddBtn:'Add',plAdded:n=>`${n} guest${n>1?'s':''} added.`,plNoneAdded:'No new guest (already on the list).',
   plRemoved:n=>`${n} guest${n>1?'s':''} removed from the list.`,plRemoveQ:n=>`Remove ${n} guest${n>1?'s':''} from the list?`,
   plAll:'All',plInt:'Internals',plExt:'Externals',plMine:'My sends',plSearchG:'Filter guests…',
   plSt:{todo:'To invite',sent:'Invited',acc:'Accepted',dec:'Declined',tent:'Maybe',reg:'Registered',can:'Unsubscribed',open:'Opened',click:'Clicked',bounce:'Delivery error',noemail:'No email'},
@@ -10537,14 +10598,14 @@ function plTrackHTML(P){
   const ap=o.isGroup?'':addPartHTML('event',o);
   const parts=iPart>=0?ap+inner.slice(iPart):ap;
   const fut=evFuture(o,P);
-  const tabs=fut?[['ov',t('plTabOv')],['inv',t('plTabInv')+(P?` <span>${plGuests(P).length}</span>`:'')],['nd',t('plTabNd')]]
-               :[['ov',t('plTabOv')],['pt',t('plTabPt')+` <span>${o.ins}</span>`],['nd',t('plTabNd')]];
+  const tabs=fut?[['ov',t('plTabOv')],['inv',t('plTabInv')+(P?` <span>${plGuests(P).length}</span>`:'')]]
+               :[['ov',t('plTabOv')],['pt',t('plTabPt')+` <span>${o.ins}</span>`]];
   if(!top.tab||!tabs.some(x=>x[0]===top.tab))top.tab='ov';
   const sec=(k,c)=>`<section class="pg-sec"${top.tab===k?'':' hidden'}>${c}</section>`;
   return`<div class="d-body pg-body"><div class="pg-tabs" role="tablist">${tabs.map(([k,l])=>`<button type="button" role="tab" class="${top.tab===k?'on':''}" data-x="pl-tab" data-t="${k}">${l}</button>`).join('')}</div>
     ${sec('ov',evDashHTML(o,P,top,subs))}
-    ${fut?sec('inv',P?plInvPageHTML(o,P,top):plOverviewHTML(o,null)):sec('pt',`<div class="pt-wrap">${parts}</div>`)}
-    ${sec('nd',`<div class="nd-grid"><div class="dcard">${nb}</div><div>${P?plDocsHTML(P,fut?'other':'all'):`<div class="pl-sec"><div class="pl-drop" data-pldrop="__ev:${esc(o.e.id)}" data-kind="autre" role="button" tabindex="0">${plIc(IC_UP,26)}<b>${esc(t('plDrop'))}</b><span>${esc(t('plDropS'))}</span></div></div>`}</div></div>`)}</div>`;
+    ${fut?sec('inv',P?plInvPageHTML(o,P,top,nb):`<div class="inv-grid"><div>${plOverviewHTML(o,null)}</div><div class="inv-side">${notesIB(nb)}</div></div>`)
+         :sec('pt',`<div class="inv-grid"><div class="ib ib-g"><div class="ib-h"><span>1</span>${t('plTabPt')}</div><div class="pt-wrap">${parts}</div></div><div class="inv-side">${notesIB(nb,2)}<div class="ib ib-b"><div class="ib-h"><span>3</span>${t('plDocsH')}</div>${P?plDocsHTML(P,'all'):`<div class="pl-sec"><div class="pl-drop" data-pldrop="__ev:${esc(o.e.id)}" data-kind="autre" role="button" tabindex="0">${plIc(IC_UP,26)}<b>${esc(t('plDrop'))}</b><span>${esc(t('plDropS'))}</span></div></div>`}</div></div></div>`)}</div>`;
 }}
 /* à venir : date future (ou pas de date mais un événement en préparation) */
 function evFuture(o,P){const d=((P&&P.meta.date)||o.e.date||'').slice(0,10);return d?d>=isoDay():!!P}
@@ -10572,7 +10633,7 @@ function evDashHTML(o,P,top,subs){
   const rows=[[t('plDate'),date?numDate(date.slice(0,10))+(o.e.dateEnd?' → '+numDate(o.e.dateEnd):''):'—'],...(time?[[t('plTime'),time]]:[]),[t('plPlace'),lieu?place(lieu):'—'],[t('plType'),type?typeL(type):'—'],...(par?[[t('fParent'),evName(par)]]:[]),
     ...Object.entries((P?m.extra:e.extra)||{}).filter(([,v])=>v)];
   const photo=PHOTOS[e.id];
-  const info=`<div class="dcard dinfo">${photo?`<img class="dphoto" src="${photo}" alt="">`:''}<div><h4>${t('details')}</h4><dl class="dkv">${rows.map(([k,v])=>`<dt>${esc(k)}</dt><dd>${par&&k===t('fParent')?`<button type="button" class="link" data-go="event" data-id="${esc(par.id)}">${esc(v)}</button>`:esc(v)}</dd>`).join('')}</dl>
+  const info=`<div class="dcard dinfo"><div><h4>${t('details')}</h4><dl class="dkv">${rows.map(([k,v])=>`<dt>${esc(k)}</dt><dd>${par&&k===t('fParent')?`<button type="button" class="link" data-go="event" data-id="${esc(par.id)}">${esc(v)}</button>`:esc(v)}</dd>`).join('')}</dl>
     ${desc?`<p class="ddesc">${esc(desc)}</p>`:''}${!top.edit&&(ADMIN||(P&&plCanEdit(P)))?`<button type="button" class="btn-o sm" data-x="ev-edit">${t('plEdit')}</button>`:''}</div></div>`;
   const acts=[];
   if(fut&&P){acts.push(['g','pl-add',t('plAdd'),`data-p="${esc(m.id)}"`],['b','pl-tabinv',t('plDropInv')],['o','pl-send',t('plRecSend'),`data-p="${esc(m.id)}"`])}
@@ -10585,15 +10646,19 @@ function evDashHTML(o,P,top,subs){
     Object.entries(byDay).forEach(([k,n])=>{const[by,d]=k.split('|');act.push([d,t('plGuestsAdd')(by,n,numDate(d))])});plDocs(P).slice(0,4).forEach(d=>act.push([d.at,`${d.by||'—'} · ${t('plKind')[d.kind]||''} « ${d.name} » · ${numDate(String(d.at).slice(0,10))}`]));
     act.sort((a,b)=>String(b[0]).localeCompare(String(a[0])));if(act.length)feed=`<div class="dcard"><h4>${t('plActivity')}</h4><ul class="pl-act">${act.slice(0,7).map(([,x])=>`<li>${esc(x)}</li>`).join('')}</ul></div>`}
   const ns=(NOTES['ev:'+e.id]||[]).slice().sort((a,b)=>String(b.date).localeCompare(String(a.date))).slice(0,3);
-  const notes=ns.length?`<div class="dcard"><h4>${t('plNotesRecent')}</h4>${ns.map(n=>`<p class="dnote"><b>${esc(n.author||'—')}</b> · ${esc(numDate(String(n.date).slice(0,10)))}<br>${esc(String(n.text).slice(0,240))}</p>`).join('')}<button type="button" class="btn-o sm" data-x="pl-tab" data-t="nd">${t('plTabNd')} →</button></div>`:'';
+  const notes=ns.length?`<div class="dcard"><h4>${t('plNotesRecent')}</h4>${ns.map(n=>`<p class="dnote"><b>${esc(n.author||'—')}</b> · ${esc(numDate(String(n.date).slice(0,10)))}<br>${esc(String(n.text).slice(0,240))}</p>`).join('')}<button type="button" class="btn-o sm" data-x="pl-notes">${t('plNotesAll')} →</button></div>`:'';
   return`<div class="dash">${val}<div class="dkpis">${kpis}</div><div class="dgrid">${info}${side}${actH}${feed}${notes}${subs?`<div class="dcard dwide">${subs}</div>`:''}</div></div>`;
 }
 /* Invités et suivi : trois blocs distincts, de couleurs différentes */
-function plInvPageHTML(o,P,top){
+function plInvPageHTML(o,P,top,nb){
   return`<div class="inv-grid"><div class="ib ib-g"><div class="ib-h"><span>1</span>${t('plGuests')}</div>${plGuestsHTML(o,P,top)}</div>
-    <div class="inv-side"><div class="ib ib-b"><div class="ib-h"><span>2</span>${t('plInvites')}</div>${plDocsHTML(P,'inv')}</div>
-    <div class="ib ib-o"><div class="ib-h"><span>3</span>${t('plTrack')}</div>${plTrackHTML(P)}</div></div></div>`;
+    <div class="inv-side"><div class="ib ib-b"><div class="ib-h"><span>2</span>${t('plInvites')}</div>${plDocsHTML(P,'all')}</div>
+    <div class="ib ib-o"><div class="ib-h"><span>3</span>${t('plTrack')}</div>${plTrackHTML(P)}</div>${nb?notesIB(nb,4):''}</div></div>`;
 }
+/* notes : bloc de la page Invités et suivi (ou Participants) */
+const notesIB=(nb,n)=>`<div class="ib ib-p" id="evNotesB"><div class="ib-h">${n?`<span>${n}</span>`:''}${t('notes')}</div>${nb.replace(/^\s*<h3>[^<]*<\/h3>/,'')}</div>`;
+XACT['pl-notes']=()=>{const top=curTop();if(!top)return;const has=k=>$('drawer').querySelector(`.pg-tabs [data-t="${k}"]`);top.tab=has('inv')?'inv':'pt';drawDrawer();
+  setTimeout(()=>{const z=$('evNotesB');if(z){z.scrollIntoView({block:'start'});const i=z.querySelector('textarea');if(i)i.focus({preventScroll:true})}},40)};
 XACT['pl-tabinv']=()=>{const top=curTop();if(top){top.tab='inv';drawDrawer();setTimeout(()=>{const z=$('drawer').querySelector('.ib-b');if(z)z.scrollIntoView({block:'start'})},30)}};
 /* modifier : le formulaire complet d'origine (photo recadrée, événement principal, informations ajoutées) */
 XACT['ev-edit']=()=>{const top=curTop();if(top){top.edit=true;pendingPhoto=undefined;drawDrawer()}};
@@ -10679,22 +10744,64 @@ function plPreviewModal(P,d,pv){
   const fr=m.querySelector('.kx-mail');if(fr)fr.srcdoc=`<!doctype html><meta charset="utf-8"><base target="_blank"><style>body{font-family:Segoe UI,Arial,sans-serif;font-size:14px;margin:12px;color:#222}img{max-width:100%}</style>`+String(pv.html).replace(/<script[\s\S]*?<\/script>/gi,'');
   m.querySelector('[data-kx-dl]').onclick=async()=>{try{await saveBlob(await fileLoad(d),d.name,d.mime)}catch(e){toast(t(e&&e.k||'plInvalid'),true)}};
 }
-function plAddModal(P){
+function plAddModal(P,src){
   askMe().then(()=>{
     const evs=EVSTATS.slice().sort((a,b)=>evCmp.recent(a.e,b.e)).filter(s=>s.e.id!==plEvId(P));
-    kxModal(t('plAddT'),P.meta.name,`
-      <div class="kx-blk"><h4>${t('plAddSearch')}</h4><div class="kx-row"><input id="kxGs" list="kxGsL" placeholder="${esc(t('plAddSearchPh'))}"><datalist id="kxGsL">${PEOPLE.filter(p=>!p.archived).slice(0,6000).map(p=>`<option value="${esc(p.full+(p.societe?' — '+p.societe:'')+(p.email?' <'+p.email+'>':''))}">`).join('')}</datalist><button type="button" class="btn sm" data-kxa="s">${t('plAddBtn')}</button></div></div>
-      ${LISTS.length?`<div class="kx-blk"><h4>${t('plAddList')}</h4><div class="kx-row"><select id="kxGl">${LISTS.map(l=>`<option value="${esc(l.id)}">${esc(l.name)}</option>`).join('')}</select><button type="button" class="btn sm" data-kxa="l">${t('plAddBtn')}</button></div></div>`:''}
-      <div class="kx-blk"><h4>${t('plAddEv')}</h4><div class="kx-row"><select id="kxGe">${evs.map(s=>`<option value="${esc(s.e.id)}">${esc(evName(s.e)+(s.e.date?' · '+numWhen(s.e):''))}</option>`).join('')}</select><select id="kxGh">${['all','present','absent','plan'].map(k=>`<option value="${k}">${esc(t('plCG')[k])}</option>`).join('')}</select><button type="button" class="btn sm" data-kxa="e">${t('plAddBtn')}</button></div></div>
-      <div class="kx-blk"><h4>${t('plAddPaste')}</h4><textarea id="kxGp" rows="3" placeholder="${esc(t('plAddPastePh'))}"></textarea><div class="kx-row"><span class="kx-sp"></span><button type="button" class="btn sm" data-kxa="p">${t('plAddBtn')}</button></div></div>`,null,null);
+    const lsz=l=>{const keep=LQ;try{LQ={...defaultLQ(),...JSON.parse(JSON.stringify(l.q)),mode:'clients'};return listResults([]).length}catch(_){return 0}finally{LQ=keep}};
+    const SRC=[['s',t('plSrcS')],['l',t('plSrcL')],['e',t('plSrcE')],['x',t('plSrcX')],['p',t('plSrcP')]];let cur=src||'s';
+    const panel=(k,h)=>`<div class="kx-pan" data-pan="${k}"${k===cur?'':' hidden'}>${h}</div>`;
+    const m=kxModal(t('plAddT'),P.meta.name,`
+      <div class="kx-srcs" role="tablist">${SRC.map(([k,l])=>`<button type="button" role="tab" data-src="${k}" class="${k===cur?'on':''}">${esc(l)}</button>`).join('')}</div>
+      ${panel('s',`<p class="kx-p">${esc(t('plAddSearchH'))}</p><div class="kx-row"><input id="kxGs" list="kxGsL" placeholder="${esc(t('plAddSearchPh'))}"><datalist id="kxGsL">${PEOPLE.filter(p=>!p.archived).slice(0,6000).map(p=>`<option value="${esc(p.full+(p.societe?' — '+p.societe:'')+(p.email?' <'+p.email+'>':''))}">`).join('')}</datalist><button type="button" class="btn sm" data-kxa="s">${t('plAddBtn')}</button></div>`)}
+      ${panel('l',LISTS.length?`<p class="kx-p">${esc(t('plAddListH'))}</p><div class="kx-checks">${LISTS.map(l=>`<label><input type="checkbox" value="${esc(l.id)}" data-kxl><span>${esc(l.name)}</span><small>${esc(t('contactsN')(lsz(l)))}</small></label>`).join('')}</div><div class="kx-row"><span class="kx-sp" data-kxn="l"></span><button type="button" class="btn sm" data-kxa="l">${t('plApply')}</button></div>`:`<p class="kx-none">${esc(t('plNoLists'))}</p>`)}
+      ${panel('e',`<p class="kx-p">${esc(t('plAddEvH'))}</p><input class="kx-q" id="kxEq" placeholder="${esc(t('plEvFilter'))}"><div class="kx-checks kx-evs">${evs.map(s=>`<label data-h="${esc(strip(evName(s.e)+' '+(s.e.date||'')+' '+(s.e.lieu||'')))}"><input type="checkbox" value="${esc(s.e.id)}" data-kxe><span>${esc(evName(s.e))}</span><small>${esc(s.e.date?numWhen(s.e):'—')} · ${s.ins}</small></label>`).join('')}</div>
+        <div class="kx-row"><span class="kx-lbl">${esc(t('plWho'))}</span><select id="kxGh">${['all','present','absent','plan'].map(k=>`<option value="${k}">${esc(t('plCG')[k])}</option>`).join('')}</select><button type="button" class="btn sm" data-kxa="e">${t('plApply')}</button></div>`)}
+      ${panel('x',`<p class="kx-p">${esc(t('plAddXH'))}</p><div class="pl-drop sm" id="kxXd" role="button" tabindex="0">${plIc(IC_UP,22)}<b>${esc(t('plAddXDrop'))}</b><span>.xlsx · .csv</span></div><div id="kxXr"></div>`)}
+      ${panel('p',`<p class="kx-p">${esc(t('plAddPaste'))}</p><textarea id="kxGp" rows="4" placeholder="${esc(t('plAddPastePh'))}"></textarea><div class="kx-row"><span class="kx-sp"></span><button type="button" class="btn sm" data-kxa="p">${t('plAddBtn')}</button></div>`)}`,null,null);
+    const show=k=>{cur=k;m.querySelectorAll('[data-src]').forEach(b=>b.classList.toggle('on',b.dataset.src===k));m.querySelectorAll('[data-pan]').forEach(x=>x.hidden=x.dataset.pan!==k);const f=m.querySelector(`[data-pan="${k}"] input:not([type=checkbox]),[data-pan="${k}"] textarea`);if(f)f.focus()};
+    m.querySelectorAll('[data-src]').forEach(b=>b.onclick=()=>show(b.dataset.src));
+    const eq=$('kxEq');if(eq)eq.oninput=()=>{const q=strip(eq.value);m.querySelectorAll('.kx-evs label').forEach(l=>l.hidden=!!q&&!l.dataset.h.includes(q))};
     const done=n=>{saveVault();drawDrawer(true);toast(n?t('plAdded')(n):t('plNoneAdded'))};
-    document.querySelectorAll('[data-kxa]').forEach(b=>b.onclick=()=>{const k=b.dataset.kxa;let list=[];
+    /* fichier Excel / CSV */
+    let XL=null;
+    const readX=async f=>{let rows=[];try{const buf=await f.arrayBuffer(),ext=(f.name.split('.').pop()||'').toLowerCase();
+        if(ext==='xlsx'||ext==='xlsm'){const sh=await readXlsx(buf);rows=(sh.find(x=>x.rows.length>1)||{rows:[]}).rows}
+        else{let tx;try{tx=new TextDecoder('utf-8',{fatal:true}).decode(buf)}catch(_){tx=new TextDecoder('windows-1252').decode(buf)}rows=parseCSV(tx)}}catch(_){$('kxXr').innerHTML=`<p class="lock-err">${esc(t('plInvalid'))}</p>`;return}
+      XL=guestsFromRows(rows);const inL=new Set(plGuests(P).map(g=>g.email).filter(Boolean)),nw=XL.filter(g=>!g.email||!inL.has(g.email)).length,kn=XL.filter(g=>g.pid).length;
+      $('kxXr').innerHTML=XL.length?`<div class="kx-xres"><b>${esc(f.name)}</b><span>${esc(t('plAddXSum')(XL.length,kn,nw))}</span><ul>${XL.slice(0,5).map(g=>`<li>${esc(g.name||g.email)}${g.societe?' · '+esc(g.societe):''}</li>`).join('')}${XL.length>5?'<li>…</li>':''}</ul></div><div class="kx-row"><span class="kx-sp"></span><button type="button" class="btn sm" data-kxa="x">${esc(t('plAddXBtn')(nw))}</button></div>`:`<p class="lock-err">${esc(t('plTrkNoEmail'))}</p>`;
+      wire()};
+    const xd=$('kxXd');xd.onclick=()=>{const i=document.createElement('input');i.type='file';i.accept='.xlsx,.xlsm,.csv,.txt';i.onchange=()=>{if(i.files[0])readX(i.files[0])};i.click()};
+    xd.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();xd.click()}};
+    xd.ondragover=e=>{e.preventDefault();xd.classList.add('over')};xd.ondragleave=()=>xd.classList.remove('over');xd.ondrop=e=>{e.preventDefault();xd.classList.remove('over');const f=e.dataTransfer&&e.dataTransfer.files[0];if(f)readX(f)};
+    const upd=()=>{const n=m.querySelectorAll('[data-kxl]:checked').length,sp=m.querySelector('[data-kxn="l"]');if(sp)sp.textContent=n?t('plNSel')(n):''};
+    m.querySelectorAll('[data-kxl]').forEach(c=>c.onchange=upd);
+    function wire(){m.querySelectorAll('[data-kxa]').forEach(b=>b.onclick=()=>{const k=b.dataset.kxa;let list=[];
       if(k==='s'){const v=$('kxGs').value,em=(v.match(/<([^>]+)>/)||[])[1],p=em?PEOPLE.find(x=>x.emails.includes(em.toLowerCase())):PEOPLE.find(x=>normName(x.full+(x.societe?' — '+x.societe:''))===normName(v.replace(/<[^>]*>/,'').trim())||normName(x.full)===normName(v));if(p)list=[personGuest(p)];$('kxGs').value=''}
-      if(k==='l'){const l=LISTS.find(x=>x.id===$('kxGl').value);if(l){const keep=LQ;LQ={...defaultLQ(),...JSON.parse(JSON.stringify(l.q)),mode:'clients'};try{list=listResults([]).map(r=>personGuest(r.p))}finally{LQ=keep}}}
-      if(k==='e'){const s=EMAP[$('kxGe').value];if(s)list=guestsFromEvent(s,$('kxGh').value)}
+      if(k==='l'){const ids=[...m.querySelectorAll('[data-kxl]:checked')].map(c=>c.value);if(!ids.length){$('kxErr').textContent=t('plPickOne');return}
+        const keep=LQ;try{ids.forEach(id=>{const l=LISTS.find(x=>x.id===id);if(!l)return;LQ={...defaultLQ(),...JSON.parse(JSON.stringify(l.q)),mode:'clients'};list.push(...listResults([]).map(r=>personGuest(r.p)))})}finally{LQ=keep}
+        m.querySelectorAll('[data-kxl]').forEach(c=>c.checked=false);upd()}
+      if(k==='e'){const ids=[...m.querySelectorAll('[data-kxe]:checked')].map(c=>c.value);if(!ids.length){$('kxErr').textContent=t('plPickOne');return}
+        ids.forEach(id=>{const s=EMAP[id];if(s)list.push(...guestsFromEvent(s,$('kxGh').value))});m.querySelectorAll('[data-kxe]').forEach(c=>c.checked=false)}
+      if(k==='x'){list=XL||[];XL=null;$('kxXr').innerHTML=''}
       if(k==='p'){const ems=[...new Set((($('kxGp').value||'').match(/[A-Z0-9._%+'-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi)||[]).map(x=>x.toLowerCase()))];list=ems.map(e=>{const p=PEOPLE.find(x=>x.emails.includes(e));return p?personGuest(p):{email:e,name:e,societe:''}});$('kxGp').value=''}
-      done(plAddGuests(P,list,k==='s'?'manual':k==='l'?'list':k==='e'?'copy':'paste',true))});
+      $('kxErr').textContent='';done(plAddGuests(P,list,k==='s'?'manual':k==='l'?'list':k==='e'?'copy':k==='x'?'file':'paste',true))})}
+    wire();
   });
+}
+/* lignes d'un fichier Excel / CSV → invités (e-mail, nom, société ; rapprochés des contacts connus) */
+function guestsFromRows(rows){
+  const EM=/[A-Z0-9._%+'-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i;
+  const hi=Math.max(0,rows.slice(0,10).findIndex(r=>r.some(c=>/mail|nom|name|prenom|societe|company|entreprise/.test(normName(c))))),H=(rows[hi]||[]).map(c=>normName(c)),body=rows.slice(hi+1);
+  let ei=-1,best=0;(rows[hi]||[]).forEach((_,i)=>{const sc=body.slice(0,300).filter(r=>EM.test(String(r[i]||''))).length;if(sc>best){best=sc;ei=i}});
+  const col=re=>H.findIndex(h=>re.test(h));
+  const fi=col(/^(prenom|first ?name|firstname|given)/),li=col(/^(nom|last ?name|lastname|surname|family)( de famille)?$/),ni=col(/^(nom complet|full ?name|name|contact|participant|invite)$/),ci=col(/societe|company|entreprise|organi[sz]ation|employeur|raison sociale/);
+  const seen=new Set(),out=[];
+  body.forEach(r=>{const em=ei>=0?((String(r[ei]||'').match(EM)||[''])[0]).toLowerCase():'';
+    const nm=ni>=0?String(r[ni]||'').trim():[fi>=0?r[fi]:'',li>=0?r[li]:''].map(x=>String(x||'').trim()).filter(Boolean).join(' ');
+    if(!em&&!nm)return;const key=em||normName(nm);if(seen.has(key))return;seen.add(key);
+    const p=em?PEOPLE.find(x=>x.emails.includes(em)):(nm?PEOPLE.find(x=>normName(x.full)===normName(nm)):null);
+    if(p)out.push(personGuest(p));else if(em)out.push({email:em,name:nm||em,societe:ci>=0?String(r[ci]||'').trim():''})});
+  return out;
 }
 
 /* ---------- onglet Événements : bouton de création, sections À valider / À venir / Passés ---------- */
@@ -11713,6 +11820,108 @@ Object.assign(L.en,{kxStoreT:'Domino storage',kxStoreOn:'All data is saved in fi
   kxPickT:'Import the master file',kxPickH:'Files placed in the “master” folder of the Domino dataset.',kxPickNone:'No file in the “master” folder. Put the Excel master file there, or choose a file on this computer.',
   kxPickPc:'From this computer…',kxPickOk:'Import',kxPickSel:'Choose at least one file.',kxSaved:p=>`Also saved in ${p}`,kxSaveErr:'The file could not be stored in the exports folder.',
   kxLockLine:(d,p)=>`Data: ${d}${p?'':' (not persistent)'}`});
+/* =========================================================
+   CRÉER UNE LISTE — parcours guidé, pensé pour quelqu'un qui n'est pas du métier
+   1. Qui voulez-vous contacter ?   2. Comment les choisir ? (questions simples, cochées au besoin)   3. Votre liste
+   Le moteur ne change pas (mêmes critères, mêmes listes enregistrées, mêmes exports).
+   ========================================================= */
+Object.assign(L.fr,{
+  lgSub:'Répondez à quelques questions simples : Konex trouve les bonnes personnes.',
+  lgS1:'Qui voulez-vous contacter ?',lgS2:'Comment les choisir ?',lgS3:'Votre liste',
+  lgWhoC:'Des contacts',lgWhoCS:'Clients, prospects ou collègues de la base. Par exemple pour inviter à un événement.',
+  lgWhoM:'Des CMO',lgWhoMS:'Les chargés de relation, avec le nombre de leurs clients concernés. Par exemple pour les prévenir d’un événement.',
+  lgS2H:n=>`Cochez seulement ce qui compte pour vous. Sans aucun critère, la liste contient toute la base (${n}).`,
+  lgRule:'Chaque critère coché réduit la liste. Dans un même critère, plusieurs choix veulent dire « l’un ou l’autre ».',
+  lgMatch:x=>`${x} pour l’instant`,lgMore:'Plus de critères',lgRm:'Retirer',lgAdd:'Ajouter',
+  lgSaved:'Ou reprenez une liste enregistrée :',lgEvDet:'Ce que l’on sait de ces événements',lgExact:'Un statut précis…',
+  lgQ:{ev:['Elles sont liées à un événement','Par exemple : les personnes venues à la dernière Matinale.'],
+    kind:['Quel type de personnes ?','Contacts externes, collègues internes ou CMO.'],
+    co:['Elles travaillent dans certaines entreprises','Une ou plusieurs entreprises.'],
+    cmo:['Elles sont suivies par certains CMO','Les clients d’un ou de plusieurs chargés de relation.'],
+    reg:['Leur CMO est dans une région','Une ou plusieurs régions.'],
+    ent:['Elles dépendent d’une entité','Une ou plusieurs entités de la banque.'],
+    rk:['Leur entreprise a un classement','Top 500, Top 1000, Strategic…'],
+    poste:['Leur fonction contient un mot','Par exemple : directeur, CFO, trésorier.'],
+    min:['Ce sont des habitués','Venues au moins un certain nombre de fois.'],
+    email:['Seulement celles qu’on peut écrire','Les personnes sans adresse e-mail sont retirées.'],
+    rd:['Une donnée du référentiel','Pays, secteur, couverture…'],
+    cf:['Une information ajoutée','Un champ que votre équipe a ajouté aux fiches.']},
+  lgEvWho:'Lesquelles ?',lgEvSt:{any:'Toutes les personnes invitées',present:'Celles qui sont venues',absent:'Celles qui ne sont pas venues',none:'Celles qui n’ont pas été invitées'},
+  lgEvAll:'Garder seulement celles qui correspondent à tous ces événements (sinon : à au moins un)',
+  lgKind:{all:'Tout le monde',ext:'Externes',int:'Internes',cmo:'CMO'},
+  lgMin:'Venues au moins',lgCoPick:'Choisir des entreprises…',lgTimes:n=>`fois`,lgEmailOn:'Seules les personnes avec une adresse e-mail sont gardées.',
+  lbMail:'Préparer un e-mail',lbExport:'Télécharger (Excel)'});
+Object.assign(L.en,{
+  lgSub:'Answer a few simple questions: Konex finds the right people.',
+  lgS1:'Who do you want to reach?',lgS2:'How should they be chosen?',lgS3:'Your list',
+  lgWhoC:'Contacts',lgWhoCS:'Clients, prospects or colleagues in the base. For example to invite them to an event.',
+  lgWhoM:'CMOs',lgWhoMS:'Relationship managers, with the number of their clients concerned. For example to let them know about an event.',
+  lgS2H:n=>`Tick only what matters to you. With no criteria, the list holds the whole base (${n}).`,
+  lgRule:'Each ticked criterion narrows the list. Within one criterion, several choices mean “one or the other”.',
+  lgMatch:x=>`${x} so far`,lgMore:'More criteria',lgRm:'Remove',lgAdd:'Add',
+  lgSaved:'Or reuse a saved list:',lgEvDet:'What we know about these events',lgExact:'An exact status…',
+  lgQ:{ev:['They are linked to an event','For example: people who came to the last breakfast.'],
+    kind:['What kind of people?','External contacts, internal colleagues or CMOs.'],
+    co:['They work for certain companies','One or more companies.'],
+    cmo:['They are followed by certain CMOs','The clients of one or more relationship managers.'],
+    reg:['Their CMO is in a region','One or more regions.'],
+    ent:['They belong to an entity','One or more entities of the bank.'],
+    rk:['Their company has a ranking','Top 500, Top 1000, Strategic…'],
+    poste:['Their job title contains a word','For example: director, CFO, treasurer.'],
+    min:['They are regulars','Came at least a certain number of times.'],
+    email:['Only people we can email','People without an email address are removed.'],
+    rd:['A referential field','Country, sector, coverage…'],
+    cf:['Added information','A field your team added to the records.']},
+  lgEvWho:'Which ones?',lgEvSt:{any:'Everyone invited',present:'Those who came',absent:'Those who did not come',none:'Those who were not invited'},
+  lgEvAll:'Keep only those matching all these events (otherwise: at least one)',
+  lgKind:{all:'Everyone',ext:'External',int:'Internal',cmo:'CMOs'},
+  lgMin:'Came at least',lgCoPick:'Choose companies…',lgTimes:n=>`times`,lgEmailOn:'Only people with an email address are kept.',
+  lbMail:'Prepare an email',lbExport:'Download (Excel)'});
+const LG_MAIN=['ev','kind','co','cmo','reg','ent','rk','poste','min','email'],LG_MORE=['rd','cf'];
+const lgChips=(key,opts,cur,x)=>`<div class="lg-chips">${opts.map(([v,l])=>`<button type="button" class="lg-chip${cur===v?' on':''}" data-x="${x}" data-v="${esc(v)}">${esc(l)}</button>`).join('')}</div>`;
+const lgCtl={
+  ev:()=>`${lbPicker('ev')}${LQ.ev?`<div class="lg-sub"><span>${esc(t('lgEvWho'))}</span>${lgChips('st',Object.entries(t('lgEvSt')),LQ.evStatus,'lg-st')}
+      ${LQ.ev.length>1&&LQ.evStatus!=='none'?`<label class="lg-chk"><input type="checkbox" data-lq="evAll"${LQ.evAll?' checked':''}> ${esc(t('lgEvAll'))}</label>`:''}
+      <details class="lg-det"${/^(st:|registered)/.test(LQ.evStatus)?' open':''}><summary>${esc(t('lgExact'))}</summary>${evStatusSel()}</details></div>`:''}`,
+  kind:()=>lgChips('kind',Object.entries(t('lgKind')).filter(([k])=>k!=='cmo'||CMOS.length),LQ.kind,'lg-kind'),
+  min:()=>`<div class="lg-step"><span>${esc(t('lgMin'))}</span><button type="button" class="lg-pm" data-x="lg-min" data-d="-1" aria-label="−">−</button><input type="number" min="0" step="1" data-lq="minPres" value="${LQ.minPres||0}"><button type="button" class="lg-pm" data-x="lg-min" data-d="1" aria-label="+">+</button><span>${esc(t('lgTimes')(LQ.minPres))}</span></div>`,
+  email:()=>`<p class="lg-note">${esc(t('lgEmailOn'))}</p>`,
+  /* entreprises : rien de coché au départ (= pas encore de filtre), on coche celles qu'on veut */
+  co:()=>{let h=lbPicker('co');if(LQ.co==null)h=h.replace(/(data-lbp-item="co" value="[^"]*") checked/g,'$1').replace(/<span>[^<]*<\/span> ▾/,`<span>${esc(t('lgCoPick'))}</span> ▾`);return h}
+};
+{const _ls=lbSetSel;lbSetSel=function(k,sel){if(k==='co'&&sel&&!sel.length)sel=null;return _ls(k,sel)}}
+const lgCard=c=>{const q=t('lgQ')[c.k],on=lbxActive().includes(c);
+  return `<div class="lg-q${on?' on':''}" data-k="${c.k}"><button type="button" class="lg-qh" data-x="${on?'lbx-rm':'lbx-add'}" data-k="${c.k}" aria-pressed="${on}">
+    <span class="lg-box">${on?'✓':''}</span><span class="lbx-ic">${lbxIc(c.k)}</span><span class="lg-qt"><b>${esc(q[0])}</b><small>${esc(q[1])}</small></span><span class="lg-act">${esc(on?t('lgRm'):t('lgAdd'))}</span></button>
+    ${on?`<div class="lg-qb">${(lgCtl[c.k]||c.ctl)()}</div>`:''}</div>`};
+lbCritHTML=function(){
+  lqNorm();
+  const av=lbxAvail(),get=k=>av.find(c=>c.k===k),main=LG_MAIN.map(get).filter(Boolean),more=LG_MORE.map(get).filter(Boolean);
+  const moreOn=more.some(c=>lbxActive().includes(c));
+  const total=PEOPLE.filter(p=>!p.archived).length;
+  const saved=LISTS.length?`<div class="lg-saved"><span>${esc(t('lgSaved'))}</span>${LISTS.map(l=>`<span class="lchip"><button type="button" data-lb-load="${esc(l.id)}">${esc(l.name)}</button><button type="button" data-lb-del="${esc(l.id)}" title="${t('del')}">×</button></span>`).join('')}</div>`:'';
+  return `<div class="lg">
+    ${saved}
+    <section class="lg-s"><div class="lg-n">1</div><div class="lg-c"><h3>${esc(t('lgS1'))}</h3>
+      <div class="lg-who">${[['clients','lgWhoC','lgWhoCS'],['cmos','lgWhoM','lgWhoMS']].filter(([v])=>v==='clients'||CMOS.length).map(([v,l,s])=>`<button type="button" class="lg-wc${LQ.mode===v?' on':''}" data-lb-mode="${v}"><span class="lg-dot"></span><b>${esc(t(l))}</b><small>${esc(t(s))}</small></button>`).join('')}</div></div></section>
+    <section class="lg-s"><div class="lg-n">2</div><div class="lg-c"><div class="lg-h2"><h3>${esc(t('lgS2'))}</h3><span class="lg-count" id="lgCount"></span></div>
+      <p class="lg-hint">${esc(t('lgS2H')(total))}</p>
+      <div class="lg-qs">${main.map(lgCard).join('')}</div>
+      ${more.length?`<details class="lg-more"${moreOn?' open':''}><summary>${esc(t('lgMore'))}</summary><div class="lg-qs">${more.map(lgCard).join('')}</div></details>`:''}
+      <p class="lg-rule">${esc(t('lgRule'))}</p></div></section>
+    <section class="lg-s"><div class="lg-n">3</div><div class="lg-c"><h3>${esc(t('lgS3'))}</h3>
+      ${LQ.ev?`<details class="lg-det lg-evdet"><summary>${esc(t('lgEvDet'))}</summary>${lbEvInfo()}</details>`:''}
+      <div class="lb-res" id="lbRes"></div></div></section>
+  </div>`;
+};
+{const _rd=render;render=function(){const r=_rd.apply(this,arguments);document.body.classList.toggle('v-lists',view==='lists');return r}}
+{const _rr=renderLBRes;renderLBRes=function(){_rr();const c=$('lgCount'),b=document.querySelector('#lbRes .lb-bar b');if(c&&b)c.textContent='→ '+t('lgMatch')(b.textContent)}}
+Object.assign(XACT,{
+  'lg-st':b=>{LQ.evStatus=b.dataset.v;if(LQ.evStatus==='none')LQ.evAll=false;render()},
+  'lg-kind':b=>{LQ.kind=b.dataset.v;render()},
+  'lg-min':b=>{LQ.minPres=Math.max(0,(LQ.minPres||0)+(+b.dataset.d));render()}
+});
+
 if(KXD){
   const I=KXD.info,D=I.dirs;
   /* base partagée : le dossier du serveur, sans fenêtre de choix */
