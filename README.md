@@ -104,7 +104,12 @@ En attendant la mise en ligne, Konex fonctionne comme les versions précédentes
 - chaque espace (**utilisateur** / **administrateur**) a **son propre mot de passe, propre à ce poste** ;
 - il est choisi à la première ouverture de l'espace (au moins 8 caractères) et **chiffre les données de cet espace** (AES-GCM 256, PBKDF2-SHA-256) ;
 - **Mon mot de passe** (menu de gauche) permet de le changer : les données sont rechiffrées ;
-- en haut du menu, sous le logo : l'espace actif, **Verrouiller** et **Vue standard / Vue admin**. Ce dernier bouton verrouille et rouvre l'écran de connexion sur l'autre espace, pour passer de l'un à l'autre en saisissant simplement son mot de passe (pratique pour tester ce que voit un utilisateur standard) ;
+- en haut du menu, sous le logo : l'espace actif, **Verrouiller** et **Vue standard / Vue admin** :
+  - depuis l'espace administrateur, **Vue standard** affiche immédiatement l'outil tel que le voit un utilisateur standard, **sans mot de passe** (« Aperçu standard »), sur les données de l'administrateur. Pendant l'aperçu, rien n'est échangé avec la base partagée. **Vue admin** revient à l'espace administrateur, toujours sans mot de passe ; verrouiller pendant l'aperçu rouvre la connexion administrateur ;
+  - depuis un vrai espace utilisateur, **Vue admin** verrouille et demande le mot de passe administrateur ;
+- à chaque connexion, Konex s'ouvre sur l'onglet **Événements**, quel que soit l'endroit où on l'a quitté ;
+- la session se **verrouille automatiquement après 20 minutes** d'inactivité ;
+- dans l'espace administrateur, les sections **Administration** et **Contrôles qualité** du menu se **replient** d'un clic sur leur titre (petite flèche). Repliée, la section affiche le total des points à traiter. L'état est mémorisé ;
 - verrouiller et changer d'espace **ne rechargent pas la page** : les données déchiffrées sont retirées de la mémoire et de l'écran, puis l'écran de connexion réapparaît. Cela fonctionne aussi quand Konex est ouvert dans un aperçu qui interdit le rechargement ;
 - **Mot de passe oublié ?** efface les données de cet espace sur ce poste pour repartir de zéro ;
 - les données des anciennes versions (`Konex-2.html`, `Konex_admin-2.html`…) s'ouvrent directement avec leur mot de passe actuel.
@@ -197,7 +202,7 @@ Konex interprète classement, pays, entreprise, année et statut de présence, e
 ### Construire une liste
 Pensée pour aller vite, sans formulaire à remplir :
 1. **Qui voulez-vous cibler ?** — des **clients** ou des **CMO**.
-2. Au départ, la liste contient **toute la base**. Des **idées pour commencer** (« Les présents d'un événement », « Les absents d'un événement », « Les clients d'un CMO », « Les clients d'une région », « Un classement », « Les contacts d'une entreprise ») posent le premier critère en un clic.
+2. Au départ, la liste contient **toute la base**.
 3. **+ Ajouter un critère** ne propose que les critères utiles : événements (avec le statut : présents, inscrits, absents, statut précis, jamais conviés), entreprises, CMO, **région du CMO**, **entité**, **classement**, donnée du référentiel, type de contact, fonction, présences minimum, champ personnalisé, avec e-mail. Chaque critère accepte **plusieurs valeurs** et se retire d'un clic (×).
 4. Le résultat se met à jour en direct, avec une **phrase récapitulative** (ex. « événements « Dîner annuel », présents · région Est, Nord »).
 5. **Copier les e-mails**, **Aperçu du mail**, **Exporter (Excel)**, ou **Enregistrer** la liste sous un nom (retrouvée dans *Mes listes*, conservée lors du chargement d'une nouvelle édition). Les listes enregistrées avec l'ancienne version sont reprises automatiquement.
@@ -227,7 +232,7 @@ Konex ne fait plus seulement la synthèse du passé : il prépare les prochains 
 
 ### Créer un événement
 Onglet **Événements**, bouton **+ Créer un événement**. Deux possibilités :
-- **Partir de zéro** : nom, date, heure, lieu, type, description.
+- **Partir de zéro** : nom, date, heure, lieu, type, événement principal (pour un side event), description et **photo d'illustration**, recadrée comme sur les autres fiches.
 - **À partir d'un événement existant** : Konex reprend le nom, le lieu et le type, et propose l'**édition suivante** (année +1). On peut aussi reprendre les invités : tous, les présents, les absents et non-venus, ou la liste préparée.
 
 Le bouton **Préparer l'édition suivante** existe aussi sur chaque page d'événement.
@@ -235,11 +240,18 @@ Le bouton **Préparer l'édition suivante** existe aussi sur chaque page d'évé
 Dans l'**espace utilisateur**, l'événement est **proposé** : il est visible avec un bandeau « En attente de validation », puis un administrateur le **valide** ou le **refuse** depuis sa page. Il n'entre dans la master file qu'une fois validé. Il arrive chez les administrateurs par la base partagée, comme les autres compléments.
 
 ### La page d'un événement
-Un clic sur un événement ouvre une **page pleine largeur** avec trois onglets :
-- **Vue d'ensemble** :
-  - étape (en préparation, invitations envoyées, passé) et chiffres clés (sur la liste, invitations envoyées, réponses positives, refus, à inviter) ;
-  - dernières actions, et pour un événement passé, ses participants, filtrables **Internes BNP Paribas / Externes**.
-- **Invités et suivi**, sur une même page :
+Un clic sur un événement ouvre une **page pleine largeur**. Les onglets dépendent de la date :
+- événement **à venir** : *Vue d'ensemble*, *Invités et suivi*, *Notes et documents* ;
+- événement **passé** : *Vue d'ensemble*, *Participants*, *Notes et documents* (pas de suivi d'invitations).
+
+- **Vue d'ensemble** : un tableau de bord qui occupe toute la page, sans charger la liste des participants :
+  - chiffres clés en tuiles de couleur (à venir : sur la liste, invitations envoyées, réponses positives, refus, à inviter ; passé : invitations, présents, taux de présence, absents, entreprises) ;
+  - carte **Informations** : photo, date, heure, lieu, type, événement principal, informations ajoutées, description, et **Modifier l'événement** (formulaire complet avec photo recadrée) ;
+  - à venir : **avancement** des invitations (barre de progression) et répartition Internes / Externes ; passé : répartition Internes / Externes et **entreprises les plus présentes** ;
+  - **Prochaines étapes** : boutons de couleur (ajouter des invités, déposer l'invitation, enregistrer un envoi, préparer l'édition suivante…) ;
+  - dernières actions, notes récentes et side events.
+- **Participants** (événements passés) : la liste telle qu'elle vient de la master file, filtrable **Internes / Externes**.
+- **Invités et suivi** (événements à venir), trois blocs de couleur sur une même page :
   - **Invités** : la liste reste modifiable jusqu'au jour J. On ajoute des contacts par recherche, depuis une liste enregistrée, depuis un autre événement, ou en collant des adresses e-mail. On peut aussi les ajouter depuis *Construire une liste* (bouton « Ajouter à un événement »). Chaque ajout et chaque retrait est daté et signé. Filtres : Internes / Externes, statut, **Mes envois**. Sélection multiple : marquer comme envoyé, copier les e-mails, retirer.
   - **Invitations et documents** : dépôt par **glisser-déposer** des invitations déjà produites par votre outil (`.oft`, `.msg`, `.eml`, `.ics`) ou de tout autre document. Konex affiche un **aperçu** (objet, expéditeur, destinataires, contenu du mail ; date, lieu et participants d'un `.ics`), et le fichier se **télécharge** à tout moment.
   - **Suivi des envois** : qui a envoyé quoi, à qui et quand. Trois façons de l'alimenter :
@@ -371,7 +383,7 @@ En cas d'indisponibilité du réseau, les compléments sont **conservés localem
 - **Politique de sécurité (CSP) intégrée** : `connect-src 'none'`, `default-src 'none'` — toute connexion réseau est **bloquée** par le navigateur ; pas de polices, médias, iframes externes ni envoi de formulaires. `referrer: no-referrer`.
 - **Chiffrement** : AES-GCM 256 bits ; clé dérivée du mot de passe par **PBKDF2-SHA-256, 310 000 itérations** ; IV aléatoire à chaque écriture ; données compressées (gzip) avant chiffrement.
 - **Stockage** : IndexedDB du navigateur, sur ce poste uniquement. La clé n'est **jamais** écrite sur le disque et n'est pas exportable.
-- **Verrouillage automatique** après inactivité (5, 10 [défaut], 15, 30 ou 60 min) : les données sont retirées de la mémoire. Bouton **Verrouiller** disponible à tout moment.
+- **Verrouillage automatique** de Konex après **20 minutes** d'inactivité : les données sont retirées de la mémoire (le module « Importer et contrôler » garde son propre réglage : 5, 10, 15, 30 ou 60 min). Bouton **Verrouiller** disponible à tout moment.
 - **Comptes personnels** : connexion par identifiant et mot de passe, deux espaces (utilisateur / administrateur), fichier des comptes signé et sans mot de passe (voir [Comptes et connexion](#comptes-et-connexion)).
 - **Mot de passe oublié** : un administrateur le réinitialise (mot de passe provisoire à changer à la connexion). Les données locales protégées par l'ancien mot de passe ne peuvent être reprises qu'avec celui-ci.
 - **Sauvegardes et base partagée chiffrées**.

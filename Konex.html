@@ -505,6 +505,71 @@ body.pgmode .overlay{opacity:0!important;pointer-events:none!important}
 .kx-pre{white-space:pre-wrap;font:inherit;font-size:13.5px;background:var(--bg);border-radius:10px;padding:12px;max-height:50vh;overflow:auto}
 .kx-att{display:flex;flex-direction:column;gap:4px}.kx-att>div{display:flex;gap:10px;align-items:center;font-size:13px;border-bottom:1px solid var(--line);padding:4px 0}.kx-att span{flex:1}.kx-att small{color:var(--muted)}
 @media (max-width:700px){.kx-grid,.kx-choice{grid-template-columns:1fr}.drawer.pg .d-body{padding:0 16px 30px}.pg-tabs{margin:0 -16px 14px;padding:8px 16px 0}}
+
+/* ---------- Page événement : tableau de bord clair ---------- */
+.drawer.pg .d-head{background:#fff!important;color:var(--ink);border-bottom:1px solid var(--line);min-height:0!important;padding:22px 32px 16px}
+.drawer.pg .d-head h2{color:var(--ink);font-size:26px}
+.drawer.pg .d-sub,.drawer.pg .d-head .h-chip{color:var(--muted)}
+.drawer.pg .d-head .h-chip{background:var(--bg)}
+.drawer.pg .d-stats{display:none}
+.drawer.pg .d-btn{background:var(--bg);color:var(--ink);border:1px solid var(--line)}
+.drawer.pg .d-btn:hover{background:var(--green-light)}
+.drawer.pg .d-btn.fc{background:var(--green);color:#fff;border-color:var(--green)}
+.dash{display:flex;flex-direction:column;gap:16px}
+.dkpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.dk{border-radius:14px;padding:14px 16px;border:1px solid var(--line);background:#fff;border-top:4px solid var(--muted)}
+.dk b{display:block;font-size:28px;line-height:1.1}.dk span{font-size:12.5px;color:var(--muted)}
+.dk.g{border-top-color:var(--green)}.dk.g b{color:var(--green-dark)}
+.dk.b{border-top-color:#2F6FB5}.dk.b b{color:#2F6FB5}
+.dk.ok{border-top-color:#1E8E5A}.dk.ok b{color:#1E8E5A}
+.dk.r{border-top-color:var(--red)}.dk.r b{color:var(--red)}
+.dk.a{border-top-color:var(--orange)}.dk.a b{color:var(--orange-dark)}
+.dgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;align-items:start}
+.dcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.dcard h4{margin:0 0 12px;font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.dh4b{margin-top:16px!important}
+.dwide{grid-column:1/-1}
+.dinfo{display:flex;gap:16px;align-items:flex-start}
+.dinfo>div{flex:1;min-width:0}
+.dphoto{width:150px;height:110px;object-fit:cover;border-radius:12px;flex:none}
+.dkv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:0 0 10px;font-size:14px}
+.dkv dt{color:var(--muted)}.dkv dd{margin:0;font-weight:600}
+.ddesc{font-size:13.5px;line-height:1.5;margin:0 0 12px;color:var(--ink)}
+.dbar{display:flex;height:14px;border-radius:999px;overflow:hidden;background:var(--bg);margin-bottom:12px}
+.dbar span{display:block;height:100%}
+.dbar .acc,.dleg i.acc{background:#1E8E5A}.dbar .sent,.dleg i.sent{background:#2F6FB5}.dbar .dec,.dleg i.dec{background:var(--red)}.dbar .todo,.dleg i.todo{background:#C9D3CE}
+.dleg{list-style:none;margin:0 0 14px;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;font-size:13px}
+.dleg li{display:flex;align-items:center;gap:8px}.dleg i{width:10px;height:10px;border-radius:3px;flex:none}.dleg b{margin-left:auto}
+.dsplit{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.dsplit div{background:var(--bg);border-radius:10px;padding:10px 12px}.dsplit b{display:block;font-size:22px}.dsplit div:first-child b{color:var(--orange-dark)}.dsplit div:last-child b{color:var(--green-dark)}.dsplit span{font-size:12px;color:var(--muted)}
+.dtop{list-style:none;margin:0 0 12px;padding:0;font-size:13.5px}.dtop li{display:flex;gap:6px;align-items:baseline;padding:5px 0;border-bottom:1px solid var(--line)}.dtop li span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.dtop small{color:var(--muted)}
+.dacts{display:flex;flex-direction:column;gap:8px}
+.dact{border:0;border-radius:10px;padding:11px 14px;font:inherit;font-size:14px;font-weight:650;text-align:left;cursor:pointer;border-left:5px solid}
+.dact.g{background:var(--green-light);color:var(--green-dark);border-left-color:var(--green)}
+.dact.b{background:#E7F0FB;color:#2F6FB5;border-left-color:#2F6FB5}
+.dact.o{background:var(--orange-light);color:var(--orange-dark);border-left-color:var(--orange)}
+.dact.p{background:#F1ECFA;color:#5B3FA3;border-left-color:#7D5BC6}
+.dact.r{background:var(--red-light);color:var(--red);border-left-color:var(--red)}
+.dact:hover{filter:brightness(.97)}
+.dnote{font-size:13px;line-height:1.45;margin:0 0 10px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.inv-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:18px;align-items:start}
+.inv-side{display:flex;flex-direction:column;gap:18px}
+@media (max-width:1250px){.inv-grid{grid-template-columns:1fr}}
+.ib{background:#fff;border:1px solid var(--line);border-radius:14px;padding:0 16px 4px;border-top:5px solid}
+.ib-h{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;padding:12px 0;margin-bottom:6px;border-bottom:1px solid var(--line)}
+.ib-h span{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;color:#fff;font-size:12.5px}
+.ib-g{border-top-color:var(--green)}.ib-g .ib-h span{background:var(--green)}.ib-g .ib-h{color:var(--green-dark)}
+.ib-b{border-top-color:#2F6FB5}.ib-b .ib-h span{background:#2F6FB5}.ib-b .ib-h{color:#2F6FB5}
+.ib-o{border-top-color:var(--orange)}.ib-o .ib-h span{background:var(--orange)}.ib-o .ib-h{color:var(--orange-dark)}
+.ib .pl-sh h3{font-size:13px;color:var(--muted)}
+.ib .pl-sec{margin-bottom:14px}
+.nd-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:1100px){.nd-grid{grid-template-columns:1fr}}
+.pt-wrap{max-width:1100px}
+.kx-photo{display:flex;align-items:center;gap:10px}
+.kx-ph{width:96px;height:60px;border:1.5px dashed #B9C7C0;border-radius:10px;background:#fff;font-size:22px;color:var(--green-dark);cursor:pointer;overflow:hidden;padding:0}
+.kx-ph img{width:100%;height:100%;object-fit:cover}
+.kx-photo small{font-weight:400}
 /* ---------- Petits écrans ---------- */
 @media (max-width:860px){
   .app{flex-direction:column}
@@ -1046,6 +1111,14 @@ details.cq-sec>summary{cursor:pointer;list-style:none}details.cq-sec>summary::-w
 .d-sub .d-mail,.d-sub .d-mail:hover{border-bottom:0!important;text-decoration:none!important}
 .d-sub .d-rm{font-size:12.5px;font-weight:700;letter-spacing:.03em;background:rgba(255,255,255,.18);border-radius:6px;padding:2px 7px}
 .rm-code{font-weight:700;color:var(--green-dark);letter-spacing:.02em}
+.side-label.tg{cursor:pointer;display:flex;align-items:center;gap:6px;user-select:none;border-radius:6px}
+.side-label.tg+.nav[hidden]{display:none!important}
+.pl-t td:nth-child(4){min-width:180px}.pl-t td.pl-by{max-width:160px;font-size:12px}
+.side-label.tg:hover,.side-label.tg:focus-visible{color:rgba(255,255,255,.85);outline:none}
+.side-label.tg .car{display:inline-flex;transition:transform .15s}
+.side-label.tg .sum,.side-label.tg .sum[hidden]+.car{margin-left:auto}
+.side-label.tg.col .car{transform:rotate(-90deg)}
+.side-label.tg .sum{background:var(--amber,#E0A100);color:#1b1b1b;border-radius:999px;font-size:10.5px;padding:1px 7px;letter-spacing:0}
 </style>
 </head>
 <body>
@@ -1071,13 +1144,13 @@ details.cq-sec>summary{cursor:pointer;list-style:none}details.cq-sec>summary::-w
       <button class="nav-item" data-view="help"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6M12 17h.01"/></svg><span class="lbl" data-t="navHelp"></span></button>
     </nav>
     <div class="adm" data-admin="1">
-    <div class="side-label" data-t="adminL"></div>
+    <div class="side-label tg" data-t="adminL" data-sec="adm" role="button" tabindex="0"></div>
     <nav class="nav"><button class="nav-item" data-view="builder">
         <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 17v3h16v-3"/></svg>
         <span class="lbl" data-t="navBuilder"></span></button>
       <button class="nav-item" data-view="contrib"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg><span class="lbl" data-t="navContrib"></span><span class="nav-badge" id="ctBadge" hidden></span></button>
       <button class="nav-item" data-view="users"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg><span class="lbl" data-t="navUsers"></span></button></nav>
-    <div class="side-label" data-t="controlsL"></div>
+    <div class="side-label tg" data-t="controlsL" data-sec="ctl" role="button" tabindex="0"></div>
     <nav class="nav">
       <button class="nav-item" data-view="dups">
         <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="3.5"/><circle cx="16" cy="16" r="3.5"/><path d="M11 5h6a2 2 0 0 1 2 2v5M13 19H7a2 2 0 0 1-2-2v-5"/></svg>
@@ -4564,13 +4637,13 @@ Object.assign(L.fr,{navBuildL:'Construire',navBuilder:'Importer et contrôler',b
   bMigT:'Récupérer les données de votre Master Builder',bMigP:"Ce poste contient les données de l'ancien Master Builder (fichiers importés, correspondances, décisions, corrections). Elles sont chiffrées avec son propre mot de passe : saisissez-le une seule fois pour les reprendre dans Konex. Le Master Builder d'origine n'est pas modifié.",
   bMigPw:'Mot de passe du Master Builder',bMigBtn:'Récupérer',bMigBad:'Mot de passe incorrect.',bMigSkip:'Commencer sans ces données',bMigSkipQ:"Commencer avec un espace « Importer et contrôler » vide ? Les données de l'ancien Master Builder restent intactes dans son propre fichier.",
   bMigDone:'Données du Master Builder récupérées.',bKeyT:'Données de construction chiffrées avec un autre mot de passe',bKeyP:"Les données « Importer et contrôler » de ce poste ont été chiffrées avec un mot de passe différent de celui de Konex (par exemple après une restauration). Saisissez ce mot de passe pour les ouvrir.",
-  pubDone:(c,e)=>`Master file envoyée dans Konex : ${c} contacts, ${e} événements. Elle est consultable dans tous les onglets de recherche.`,idleLocked:"Session verrouillée après 10 minutes d'inactivité. Saisissez votre mot de passe pour reprendre.",
+  pubDone:(c,e)=>`Master file envoyée dans Konex : ${c} contacts, ${e} événements. Elle est consultable dans tous les onglets de recherche.`,idleLocked:"Session verrouillée après 20 minutes d'inactivité. Saisissez votre mot de passe pour reprendre.",
   xlsUnsupported:'ce format se lit dans « Importer et contrôler »'});
 Object.assign(L.en,{navBuildL:'Build',navBuilder:'Import and check',builder:{title:'Import and check',sub:'',ph:'',all:''},
   bMigT:'Recover your Master Builder data',bMigP:'This computer holds the data of the former Master Builder (imported files, mappings, decisions, corrections). It is encrypted with its own password: enter it once to bring it into Konex. The original Master Builder is not modified.',
   bMigPw:'Master Builder password',bMigBtn:'Recover',bMigBad:'Wrong password.',bMigSkip:'Start without this data',bMigSkipQ:'Start with an empty “Import and check” space? The former Master Builder data stays untouched in its own file.',
   bMigDone:'Master Builder data recovered.',bKeyT:'Build data encrypted with another password',bKeyP:'The “Import and check” data on this computer was encrypted with a password different from Konex’s (for example after a restore). Enter that password to open it.',
-  pubDone:(c,e)=>`Master file sent to Konex: ${c} contacts, ${e} events. It is available in every search tab.`,idleLocked:'Session locked after 10 minutes of inactivity. Enter your password to resume.',
+  pubDone:(c,e)=>`Master file sent to Konex: ${c} contacts, ${e} events. It is available in every search tab.`,idleLocked:'Session locked after 20 minutes of inactivity. Enter your password to resume.',
   xlsUnsupported:'this format is read in “Import and check”'});
 Object.assign(L.fr,{notRegistered:'Non inscrit',notRegisteredS:'non inscrit',fUnreg:'Non inscrits à cette partie',syncDone:n=>`${n} décision${n>1?'s':''} de la recherche reprise${n>1?'s':''} dans « Importer et contrôler ».`});
 Object.assign(L.en,{notRegistered:'Not registered',notRegisteredS:'not registered',fUnreg:'Not registered for this part',syncDone:n=>`${n} decision${n>1?'s':''} from search applied in “Import and check”.`});
@@ -6341,7 +6414,7 @@ window.MARCOM_HOST={
 /* ---------- Verrouillage automatique après inactivité ---------- */
 let LAST_ACT=Date.now();
 ['mousemove','keydown','click','scroll','wheel','touchstart'].forEach(ev=>document.addEventListener(ev,()=>{LAST_ACT=Date.now()},{passive:true,capture:true}));
-setInterval(()=>{if(CRYPTO_KEY&&Date.now()-LAST_ACT>10*60000)lockApp(true)},5000);
+setInterval(()=>{if(CRYPTO_KEY&&Date.now()-LAST_ACT>20*60000)lockApp(true)},5000);
 async function lockApp(idle){try{await flushBuilder();await saveChain}catch(_){}try{if(idle)sessionStorage.setItem('marcom-idle','1')}catch(_){}location.reload()}
 
 /* Les longues listes s'affichent par tranches : les cartes suivantes sont ajoutées pendant le défilement */
@@ -9690,7 +9763,7 @@ lbCritHTML=function(){
   const act=lbxActive(),avail=lbxAvail().filter(c=>!act.includes(c)),C=t('lbxC');
   const saved=LISTS.length?`<div class="lbx-saved"><span>${t('lbxSaved')}</span>${LISTS.map(l=>`<span class="lchip"><button type="button" data-lb-load="${esc(l.id)}">${esc(l.name)}</button><button type="button" data-lb-del="${esc(l.id)}" title="${t('del')}">×</button></span>`).join('')}</div>`:'';
   const rows=act.map((c,i)=>`<div class="lbx-c"><div class="lbx-cl">${i?`<span class="lbx-and">${t('lbxAnd')}</span>`:''}<span class="lbx-ic">${lbxIc(c.k)}</span><b>${esc(C[c.k][0])}</b></div><div class="lbx-cv">${c.ctl()}</div><button type="button" class="lbx-x" data-x="lbx-rm" data-k="${c.k}" title="${esc(t('lbxRm'))}" aria-label="${esc(t('lbxRm'))}">×</button></div>`).join('');
-  const qs=!act.length?Object.entries(t('lbxQs')).filter(([k])=>k==='rk'?!!REFDATA:k==='cmo'?CMOS.length>0:k==='reg'?CMOS.some(c=>c.region):true):[];
+  const qs=[]; /* « idées pour commencer » retirées : plus simple */
   return `<div class="lbx">
     <div class="lbx-top"><h3>${t('lbxQ')}</h3><div class="lbx-seg">${[['clients','lbxClients'],['cmos','lbxCmos']].map(([v,l])=>`<button type="button" class="${LQ.mode===v?'on':''}" data-lb-mode="${v}">${t(l)}</button>`).join('')}</div></div>
     ${saved}
@@ -9756,7 +9829,7 @@ Object.assign(L.fr,{
   plNoShare:'Base partagée non connectée : l\'événement reste sur ce poste tant que vous ne l\'avez pas connectée.',
   plGuests:'Invités',plAdd:'+ Ajouter des invités',plAddT:'Ajouter des invités',plAddSearch:'Rechercher un contact',plAddSearchPh:'Nom, société ou e-mail…',plAddList:'Depuis une liste enregistrée',plAddEv:'Depuis un autre événement',plAddPaste:'Coller des adresses e-mail',plAddPastePh:'Une adresse par ligne, ou séparées par ; ou ,',plAddBtn:'Ajouter',plAdded:n=>`${n} invité${n>1?'s':''} ajouté${n>1?'s':''}.`,plNoneAdded:'Aucun nouvel invité (déjà sur la liste).',
   plRemoved:n=>`${n} invité${n>1?'s':''} retiré${n>1?'s':''} de la liste.`,plRemoveQ:n=>`Retirer ${n} invité${n>1?'s':''} de la liste ?`,
-  plAll:'Tous',plInt:'Internes BNP Paribas',plExt:'Externes',plMine:'Mes envois',plSearchG:'Filtrer les invités…',
+  plAll:'Tous',plInt:'Internes',plExt:'Externes',plMine:'Mes envois',plSearchG:'Filtrer les invités…',
   plSt:{todo:'À inviter',sent:'Invité',acc:'Accepté',dec:'Refusé',tent:'Peut-être',reg:'Inscrit',can:'Désinscrit',open:'Ouvert',click:'Cliqué',bounce:'Erreur d\'envoi',noemail:'Sans e-mail'},
   plStF:{all:'Tous les statuts',todo:'À inviter',sent:'Invités sans réponse',acc:'Réponses positives',dec:'Refus',noemail:'Sans e-mail'},
   plSentOn:(d,by)=>`le ${d}${by?' par '+by:''}`,plRelOn:d=>`relancé le ${d}`,plAddedBy:(by,d)=>`ajouté par ${by||'—'} le ${d}`,
@@ -9782,7 +9855,7 @@ Object.assign(L.fr,{
   plMeT:'Votre nom',plMeS:'Il signe vos envois et vos ajouts (« envoyé par… »).',plMePh:'Prénom et nom',
   plToEv:'Ajouter à un événement',plToEvT:'Ajouter ces contacts à un événement',plToEvS:'Choisissez l\'événement à venir : les contacts de la liste rejoignent ses invités.',plNoUpcoming:'Aucun événement à venir. Créez-en un depuis l\'onglet Événements.',
   plUpcomingP:'À venir',plOnList:(n,d)=>`sur la liste d'invités de « ${n} » (${d})`,plActivity:'Dernières actions',plGuestsAdd:(by,n,d)=>`${by||'—'} a ajouté ${n} invité${n>1?'s':''} le ${d}`,
-  plCopied:n=>`${n} adresse${n>1?'s':''} copiée${n>1?'s':''}.`,plInvalid:'Fichier illisible.',plStdOwn:'Vous pouvez modifier votre proposition tant qu\'elle n\'est pas validée.'
+  plCopied:n=>`${n} adresse${n>1?'s':''} copiée${n>1?'s':''}.`,plTabPt:'Participants',plKAbs:'absents',plMix:'Participants',plTopCos:'Entreprises les plus présentes',plSeeParts:'Voir tous les participants',plProgress:'Avancement des invitations',plNextSteps:'Actions',plDropInv:'Déposer une invitation',plInvites:'Invitations',plNotesRecent:'Notes récentes',plPhotoHint:'Photo d\'illustration, recadrée à l\'ajout',plInvalid:'Fichier illisible.',plStdOwn:'Vous pouvez modifier votre proposition tant qu\'elle n\'est pas validée.'
 });
 Object.assign(L.en,{
   plNew:'Create an event',plTabOv:'Overview',plTabInv:'Guests and tracking',plTabNd:'Notes and documents',
@@ -9800,7 +9873,7 @@ Object.assign(L.en,{
   plNoShare:'Shared base not connected: the event stays on this computer until you connect it.',
   plGuests:'Guests',plAdd:'+ Add guests',plAddT:'Add guests',plAddSearch:'Search for a contact',plAddSearchPh:'Name, company or email…',plAddList:'From a saved list',plAddEv:'From another event',plAddPaste:'Paste email addresses',plAddPastePh:'One address per line, or separated by ; or ,',plAddBtn:'Add',plAdded:n=>`${n} guest${n>1?'s':''} added.`,plNoneAdded:'No new guest (already on the list).',
   plRemoved:n=>`${n} guest${n>1?'s':''} removed from the list.`,plRemoveQ:n=>`Remove ${n} guest${n>1?'s':''} from the list?`,
-  plAll:'All',plInt:'BNP Paribas internals',plExt:'Externals',plMine:'My sends',plSearchG:'Filter guests…',
+  plAll:'All',plInt:'Internals',plExt:'Externals',plMine:'My sends',plSearchG:'Filter guests…',
   plSt:{todo:'To invite',sent:'Invited',acc:'Accepted',dec:'Declined',tent:'Maybe',reg:'Registered',can:'Unsubscribed',open:'Opened',click:'Clicked',bounce:'Delivery error',noemail:'No email'},
   plStF:{all:'All statuses',todo:'To invite',sent:'Invited, no answer',acc:'Positive answers',dec:'Declined',noemail:'No email'},
   plSentOn:(d,by)=>`on ${d}${by?' by '+by:''}`,plRelOn:d=>`reminded on ${d}`,plAddedBy:(by,d)=>`added by ${by||'—'} on ${d}`,
@@ -9826,7 +9899,7 @@ Object.assign(L.en,{
   plMeT:'Your name',plMeS:'It signs your sends and additions (“sent by…”).',plMePh:'First and last name',
   plToEv:'Add to an event',plToEvT:'Add these contacts to an event',plToEvS:'Choose the upcoming event: the contacts of the list join its guests.',plNoUpcoming:'No upcoming event. Create one from the Events tab.',
   plUpcomingP:'Upcoming',plOnList:(n,d)=>`on the guest list of “${n}” (${d})`,plActivity:'Latest actions',plGuestsAdd:(by,n,d)=>`${by||'—'} added ${n} guest${n>1?'s':''} on ${d}`,
-  plCopied:n=>`${n} address${n>1?'es':''} copied.`,plInvalid:'Unreadable file.',plStdOwn:'You can edit your proposal until it is validated.'
+  plCopied:n=>`${n} address${n>1?'es':''} copied.`,plTabPt:'Attendees',plKAbs:'absent',plMix:'Attendees',plTopCos:'Most present companies',plSeeParts:'See all attendees',plProgress:'Invitation progress',plNextSteps:'Actions',plDropInv:'Drop an invitation',plInvites:'Invitations',plNotesRecent:'Recent notes',plPhotoHint:'Illustration photo, cropped when added',plInvalid:'Unreadable file.',plStdOwn:'You can edit your proposal until it is validated.'
 });
 
 /* ---------- données ---------- */
@@ -9854,9 +9927,14 @@ let DATA_EVK={ref:null,len:-1,set:null};
 function dataEvKeys(){if(DATA_EVK.ref!==ROWS||DATA_EVK.len!==ROWS.length){const s=new Set();ROWS.forEach(r=>{if(r.event)s.add(normName(r.event)+'|'+(r.date||''))});DATA_EVK={ref:ROWS,len:ROWS.length,set:s}}return DATA_EVK.set}
 {const _bm=buildModel;buildModel=function(){
   const keys=dataEvKeys(),add=[],metaAdd=[];
-  plList().forEach(P=>{const m=P.meta;if(m.bind)return;if(keys.has(normName(m.name)+'|'+(m.date||'')))return;
-    add.push({manual:true,evOnly:true,mid:m.id,event:m.name,evId:m.id,date:m.date||'',lieu:m.lieu||'',created:m.created,__plan:1});
-    if(!EVMETA[m.id]){EVMETA[m.id]={...(m.type?{type:m.type}:{}),...(m.desc?{desc:m.desc}:{})};metaAdd.push(m.id)}});
+  plList().forEach(P=>{const m=P.meta;if(m.bind)return;
+    /* le formulaire de modification écrit dans EVMETA : on le reporte dans l'événement préparé (une seule source, partagée avec l'équipe) */
+    const em=EVMETA[m.id];if(em&&Object.keys(em).length){const up={};['name','date','lieu','type','desc'].forEach(k=>{if(em[k]!=null&&em[k]!==''&&em[k]!==m[k])up[k]=em[k]});
+      if('parent' in em)up.parent=em.parent==='-'?'':em.parent;if(em.extra)up.extra=em.extra;
+      if(Object.keys(up).length)P.meta={...m,...up,upd:nowIsoT(),updBy:meName()};delete EVMETA[m.id]}
+    const M=P.meta;if(keys.has(normName(M.name)+'|'+(M.date||'')))return;
+    add.push({manual:true,evOnly:true,mid:M.id,event:M.name,evId:M.id,date:M.date||'',lieu:M.lieu||'',created:M.created,__plan:1});
+    EVMETA[M.id]={...(M.type?{type:M.type}:{}),...(M.desc?{desc:M.desc}:{}),...(M.parent?{parent:M.parent}:{}),...(M.extra?{extra:M.extra}:{})};metaAdd.push(M.id)});
   if(add.length)MANROWS=MANROWS.concat(add);
   try{_bm()}finally{if(add.length)MANROWS=MANROWS.filter(r=>!r.__plan);metaAdd.forEach(k=>delete EVMETA[k])}
   EVPLAN={};PLANEV={};
@@ -9877,6 +9955,7 @@ function plFlat(){const o={};plList().forEach(P=>{const id=P.meta.id;o[id+PK+'me
 const plKey=k=>{const a=String(k).split(PK);return a.length===2&&a[1]==='meta'?{id:a[0],part:'meta'}:a.length===3&&['g','d','s','r'].includes(a[1])?{id:a[0],part:a[1],item:a[2]}:null};
 {const _ok=shOk;shOk=function(o){if(o&&o.s==='plan'){const x=plKey(o.k);return!!x&&x.id.length<80&&(o.v===null||(!!o.v&&typeof o.v==='object'&&!Array.isArray(o.v)&&JSON.stringify(o.v).length<400000))}return _ok(o)}}
 {const _sa=shApply;shApply=function(o){
+  if(o&&o.s==='photo'&&PLANS[o.k]&&!PLANS[o.k].meta.bind){if(!(o.v===null||(typeof o.v==='string'&&o.v.length<4e6&&/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(o.v))))return undefined;const old=PHOTOS[o.k]||null;if(o.v)PHOTOS[o.k]=o.v;else delete PHOTOS[o.k];return old}
   if(!o||o.s!=='plan')return _sa(o);
   if(!shOk(o))return undefined;const x=plKey(o.k);let P=PLANS[x.id];
   if(x.part==='meta'){const old=P?P.meta:null;
@@ -9915,9 +9994,9 @@ function guestStatusHTML(P,g,I){
 const sendLine=(s,P)=>{const d=P&&P.d&&s.doc&&P.d[s.doc],k=(t('plKind')[s.kind]||t('plKind').invitation),dt=numDate(String(s.at).slice(0,10)),n=(s.to||[]).length;return d?t('plSendLine')(s.by,k,dt,n,d.name):t('plSendLine0')(s.by,k,dt,n)};
 
 /* ---------- création / modification ---------- */
-function plNew(meta,guests){
+function plNew(meta,guests){meta={...meta};if(meta.parent==='')delete meta.parent;
   const id=kxId('pl-'),now=nowIsoT(),by=meName();
-  const P={meta:{id,name:meta.name,date:meta.date||'',time:meta.time||'',lieu:meta.lieu||'',type:meta.type||'',desc:meta.desc||'',from:meta.from||'',mode:meta.mode||'new',bind:meta.bind||'',
+  const P={meta:{id,name:meta.name,date:meta.date||'',time:meta.time||'',lieu:meta.lieu||'',type:meta.type||'',desc:meta.desc||'',...(meta.parent?{parent:meta.parent}:{}),from:meta.from||'',mode:meta.mode||'new',bind:meta.bind||'',
     created:now,by,status:ADMIN||meta.bind?'validated':'proposed',...(ADMIN?{valBy:by,valAt:now}:{})},g:{},d:{},s:{},r:{}};
   PLANS[id]=P;if(guests&&guests.length)plAddGuests(P,guests,'copy',true);return P;
 }
@@ -9946,12 +10025,19 @@ function plFormHTML(m){
     <label class="kx-f"><span>${t('plTime')}</span><input id="plfTime" type="time" value="${esc(m.time||'')}"></label>
     <label class="kx-f"><span>${t('plPlace')}</span><input id="plfLieu" value="${esc(m.lieu||'')}"></label>
     <label class="kx-f"><span>${t('plType')}</span><input id="plfType" list="plTypeL" value="${esc(m.type||'')}"><datalist id="plTypeL">${plTypes().map(x=>`<option value="${esc(x)}">`).join('')}</datalist></label>
+    <label class="kx-f"><span>${t('fParent')}</span><input id="plfParent" list="plParL" value="${esc(m.parent||'')}" placeholder="${esc(t('fParentPh'))}"><datalist id="plParL">${[...new Set([...GROUPS.map(g=>g.keyName),...EVSTATS.filter(s=>!s.e.gid).map(s=>s.e.name)])].map(x=>`<option value="${esc(x)}">`).join('')}</datalist></label>
+    <div class="kx-f"><span>${t('fPhoto')}</span><div class="kx-photo"><button type="button" class="kx-ph" id="plfPh">${W_PHOTO?`<img src="${W_PHOTO.url}" alt="">`:'+'}</button><input type="file" id="plfPhF" accept="image/*" hidden>${W_PHOTO?`<button type="button" class="link" id="plfPhX">${t('del')}</button>`:`<small>${esc(t('plPhotoHint'))}</small>`}</div></div>
     <label class="kx-f kx-wide"><span>${t('plDesc')}</span><textarea id="plfDesc" rows="3">${esc(m.desc||'')}</textarea></label></div>`;
 }
-const plFormVal=()=>({name:($('plfName').value||'').trim(),date:$('plfDate').value||'',time:$('plfTime').value||'',lieu:($('plfLieu').value||'').trim(),type:($('plfType').value||'').trim(),desc:($('plfDesc').value||'').trim()});
+const plFormVal=()=>({name:($('plfName').value||'').trim(),date:$('plfDate').value||'',time:$('plfTime').value||'',lieu:($('plfLieu').value||'').trim(),type:($('plfType').value||'').trim(),desc:($('plfDesc').value||'').trim(),parent:(($('plfParent')||{}).value||'').trim()});
+let W_PHOTO=null; /* photo d'illustration choisie dans l'assistant (recadrée), enregistrée à la création */
+function plPhotoWire(redraw){const b=$('plfPh'),f=$('plfPhF'),x=$('plfPhX');if(!b)return;b.onclick=()=>f.click();
+  f.onchange=async()=>{const file=f.files[0];f.value='';if(!file)return;const keep=plFormVal();const blob=await openCrop(file,FORMS.event.img,false);if(!blob)return;W_PHOTO={blob,url:imgUrl(await blobBytes(blob))};redraw(keep)};
+  if(x)x.onclick=()=>{const keep=plFormVal();W_PHOTO=null;redraw(keep)}}
+async function plSavePhoto(id){if(!W_PHOTO)return;try{const u8=new Uint8Array(await W_PHOTO.blob.arrayBuffer());await KV.set('photo:'+id,await enc(u8));PHOTOS[id]=imgUrl(u8)}catch(_){}W_PHOTO=null}
 async function planWizard(pre){
   await askMe();
-  const W={step:pre?'form':'choose',src:pre||null,next:!!pre,how:'none',q:''};
+  W_PHOTO=null;const W={step:pre?'form':'choose',src:pre||null,next:!!pre,how:'none',q:'',keep:null};
   const draw=()=>{
     if(W.step==='choose'){kxModal(t('plWizT'),'',`<div class="kx-choice"><button type="button" data-kxw="zero"><b>${t('plFromZero')}</b><span>${t('plFromZeroS')}</span></button><button type="button" data-kxw="ex"><b>${t('plFromEx')}</b><span>${t('plFromExS')}</span></button></div>`,null,null);
       document.querySelectorAll('[data-kxw]').forEach(b=>b.onclick=()=>{W.step=b.dataset.kxw==='zero'?'form':'pick';draw()});return}
@@ -9961,17 +10047,18 @@ async function planWizard(pre){
       $('kxEvQ').oninput=()=>{const q=strip($('kxEvQ').value);document.querySelectorAll('#kxEvL .kx-ev').forEach(b=>b.hidden=!!q&&!b.dataset.h.includes(q))};$('kxEvQ').focus();
       document.querySelectorAll('[data-kxev]').forEach(b=>b.onclick=()=>{W.src=EMAP[b.dataset.kxev];W.next=true;W.step='form';draw()});
       document.querySelector('[data-kxw="back"]').onclick=()=>{W.step='choose';draw()};return}
-    const s=W.src,e=s&&s.e,base=e?{name:W.next?nextName(evName(e)):evName(e),date:W.next?nextDate(e.date):'',lieu:e.lieu||'',type:e.type||'',desc:e.desc||''}:{};
+    const s=W.src,e=s&&s.e,base=W.keep||(e?{name:W.next?nextName(evName(e)):evName(e),date:W.next?nextDate(e.date):'',lieu:e.lieu||'',type:e.type||'',desc:e.desc||'',parent:e.gid&&GROUPMAP[e.gid]?GROUPMAP[e.gid].keyName:''}:{});W.keep=null;
     const hasPlan=e&&planFor(e.id);
     const cg=e?`<div class="kx-f kx-wide"><span>${t('plCopyGuests')}</span><div class="kx-seg">${['none','all','present','absent',...(hasPlan?['plan']:[])].map(k=>`<label><input type="radio" name="kxCg" value="${k}"${W.how===k?' checked':''}> ${esc(t('plCG')[k])}</label>`).join('')}</div></div>`:'';
-    kxModal(t('plWizT'),e?`${t('plFromEx')} : ${evName(e)}`:t('plFromZero'),plFormHTML(base)+(e?`<label class="kx-chk"><input type="checkbox" id="kxNext"${W.next?' checked':''}> ${t('plNextEd')}</label>`:'')+cg,t('plCreate'),()=>{
+    kxModal(t('plWizT'),e?`${t('plFromEx')} : ${evName(e)}`:t('plFromZero'),plFormHTML(base)+(e?`<label class="kx-chk"><input type="checkbox" id="kxNext"${W.next?' checked':''}> ${t('plNextEd')}</label>`:'')+cg,t('plCreate'),async()=>{
       const v=plFormVal();if(!v.name)return t('plNeedName');
       const how=(document.querySelector('[name=kxCg]:checked')||{}).value||'none';
       const P=plNew({...v,from:e?e.id:'',mode:e?(W.next?'next':'copy'):'new'},e&&how!=='none'?guestsFromEvent(s,how):[]);
-      saveVault();rebuild();toast(ADMIN?t('plCreated'):t('plCreatedStd'));
+      await plSavePhoto(P.meta.id);saveVault();rebuild();toast(ADMIN?t('plCreated'):t('plCreatedStd'));
       if(!ADMIN&&!SHCFG)setTimeout(()=>toast(t('plNoShare')),2600);
       setTimeout(()=>{openFiche('event',plEvId(P));const top=stack[stack.length-1];if(top){top.tab='inv';drawDrawer()}},0);return true},null,
       pre?'':`<button type="button" class="btn-o" data-kxw="back">${t('plBack')}</button>`);
+    plPhotoWire(keep=>{W.keep=keep;W.how=(document.querySelector('[name=kxCg]:checked')||{}).value||W.how;draw()});
     const nx=$('kxNext');if(nx)nx.onchange=()=>{W.next=nx.checked;const cur=plFormVal();W.how=(document.querySelector('[name=kxCg]:checked')||{}).value||W.how;draw();
       if(!nx.checked){$('plfName').value=evName(e);$('plfDate').value=''}};
     const bk=document.querySelector('[data-kxw="back"]');if(bk)bk.onclick=()=>{W.step=e?'pick':'choose';draw()};
@@ -10259,7 +10346,7 @@ function plGuestsHTML(o,P,top){
       ${L2.length>lim?`<button type="button" class="btn-o sm pl-more" data-x="pl-more">${t('plMore')(Math.min(PL_PAGE,L2.length-lim))}</button>`:''}`:`<div class="empty pl-empty"><b>${t('plNoGuests')}</b>${t('plNoGuestsH')}</div>`}</div>`;
 }
 function plDocsHTML(P,which){
-  const D=plDocs(P).filter(d=>which==='inv'?['invitation','relance','rappel'].includes(d.kind):!['invitation','relance','rappel'].includes(d.kind));
+  const D=plDocs(P).filter(d=>which==='all'?true:which==='inv'?['invitation','relance','rappel'].includes(d.kind):!['invitation','relance','rappel'].includes(d.kind));
   return`<div class="pl-sec"><div class="pl-sh"><h3>${which==='inv'?t('plDocs'):t('plDocsOther')} <span>${D.length}</span></h3></div>
     <div class="pl-drop" data-pldrop="${esc(P.meta.id)}" data-kind="${which==='inv'?'':'autre'}" role="button" tabindex="0">${plIc(IC_UP,26)}<b>${esc(t('plDrop'))}</b><span>${esc(t('plDropS'))}</span></div>
     ${D.length?`<div class="pl-docs">${D.map(d=>{const pv=d.pv||{};return`<div class="pl-doc"><div class="pl-dic">${plIc(IC_FILE,20)}<span>${esc((d.name.split('.').pop()||'').toUpperCase().slice(0,4))}</span></div>
@@ -10286,13 +10373,74 @@ function plTrackHTML(P){
   const P=planFor(o.e.id),nb=notesBlock();let h=_eb(o,top);
   h=h.replace(nb,'');if(P&&!P.meta.bind)h=h.replace(/<div class="manage"><button class="btn-danger" data-man-rm="1">[\s\S]*?<\/button><\/div>/,'');
   const inner=h.slice(h.indexOf('>')+1,h.lastIndexOf('</div>'));
-  top.tab=top.tab||((P&&!o.ins)?'inv':'ov');
-  const tabs=[['ov',t('plTabOv')],['inv',t('plTabInv')+(P?` <span>${plGuests(P).length}</span>`:'')],['nd',t('plTabNd')]];
+  /* découpage du contenu d'origine : sous-événements → tableau de bord, participants → onglet Participants */
+  const iSub=inner.indexOf('<div class="h3row"><h3>'+t('subEvents')),iPart=inner.indexOf('<div class="h3row"><h3>'+t('participants'));
+  const subs=iSub>=0?inner.slice(iSub,iPart>=0?iPart:undefined):'';
+  const ap=o.isGroup?'':addPartHTML('event',o);
+  const parts=iPart>=0?ap+inner.slice(iPart):ap;
+  const fut=evFuture(o,P);
+  const tabs=fut?[['ov',t('plTabOv')],['inv',t('plTabInv')+(P?` <span>${plGuests(P).length}</span>`:'')],['nd',t('plTabNd')]]
+               :[['ov',t('plTabOv')],['pt',t('plTabPt')+` <span>${o.ins}</span>`],['nd',t('plTabNd')]];
+  if(!top.tab||!tabs.some(x=>x[0]===top.tab))top.tab='ov';
+  const sec=(k,c)=>`<section class="pg-sec"${top.tab===k?'':' hidden'}>${c}</section>`;
   return`<div class="d-body pg-body"><div class="pg-tabs" role="tablist">${tabs.map(([k,l])=>`<button type="button" role="tab" class="${top.tab===k?'on':''}" data-x="pl-tab" data-t="${k}">${l}</button>`).join('')}</div>
-    <section class="pg-sec"${top.tab==='ov'?'':' hidden'}>${plOverviewHTML(o,P)}${inner}</section>
-    <section class="pg-sec"${top.tab==='inv'?'':' hidden'}>${P?plGuestsHTML(o,P,top)+plDocsHTML(P,'inv')+plTrackHTML(P):plOverviewHTML(o,null)}</section>
-    <section class="pg-sec"${top.tab==='nd'?'':' hidden'}>${nb}${P?plDocsHTML(P,'other'):`<div class="pl-sec"><div class="pl-drop" data-pldrop="__ev:${esc(o.e.id)}" data-kind="autre" role="button" tabindex="0">${plIc(IC_UP,26)}<b>${esc(t('plDrop'))}</b><span>${esc(t('plDropS'))}</span></div></div>`}</section></div>`;
+    ${sec('ov',evDashHTML(o,P,top,subs))}
+    ${fut?sec('inv',P?plInvPageHTML(o,P,top):plOverviewHTML(o,null)):sec('pt',`<div class="pt-wrap">${parts}</div>`)}
+    ${sec('nd',`<div class="nd-grid"><div class="dcard">${nb}</div><div>${P?plDocsHTML(P,fut?'other':'all'):`<div class="pl-sec"><div class="pl-drop" data-pldrop="__ev:${esc(o.e.id)}" data-kind="autre" role="button" tabindex="0">${plIc(IC_UP,26)}<b>${esc(t('plDrop'))}</b><span>${esc(t('plDropS'))}</span></div></div>`}</div></div>`)}</div>`;
 }}
+/* à venir : date future (ou pas de date mais un événement en préparation) */
+function evFuture(o,P){const d=((P&&P.meta.date)||o.e.date||'').slice(0,10);return d?d>=isoDay():!!P}
+const dashKpi=(n,l,c)=>`<div class="dk ${c||''}"><b>${n}</b><span>${esc(l)}</span></div>`;
+function evDashHTML(o,P,top,subs){
+  const e=o.e,fut=evFuture(o,P),m=P?P.meta:{},prop=P&&m.status==='proposed';
+  const date=m.date||e.date||'',time=m.time||'',lieu=m.lieu||e.lieu||'',type=m.type||e.type||'',desc=m.desc||e.desc||'';
+  const par=e.gid&&GROUPMAP[e.gid];
+  const val=prop?`<div class="pl-val"><div><b>${esc(t('plProposed'))}</b> · ${esc(t('plPropBy')(m.by||'—',numDate(String(m.created).slice(0,10))))}${ADMIN?'':' '+esc(t('plWaitVal'))}</div>${ADMIN?`<div class="pl-acts"><button type="button" class="btn sm" data-x="pl-val" data-p="${esc(m.id)}">${t('plValidate')}</button><button type="button" class="btn-o sm danger" data-x="pl-rej" data-p="${esc(m.id)}">${t('plReject')}</button></div>`:''}</div>`:'';
+  let kpis='',side='';
+  if(fut&&P){const k=plKpis(P);kpis=dashKpi(k[0][0],k[0][1],'g')+dashKpi(k[1][0],k[1][1],'b')+dashKpi(k[2][0],k[2][1],'ok')+dashKpi(k[3][0],k[3][1],'r')+dashKpi(k[4][0],k[4][1],'a');
+    const G=plGuests(P),I=G.map(g=>guestInfo(P,g)),n=G.length||1,c=f=>I.filter(f).length,ni=G.filter(g=>g.int).length;
+    const segs=[['acc',c(x=>x.grp==='acc')],['sent',c(x=>x.grp==='sent')],['dec',c(x=>x.grp==='dec')],['todo',c(x=>x.grp==='todo'||x.st==='noemail')]];
+    side=`<div class="dcard"><h4>${t('plProgress')}</h4><div class="dbar">${segs.filter(s=>s[1]).map(([k,v])=>`<span class="${k}" style="width:${(100*v/n).toFixed(1)}%" title="${esc(t('plStF')[k==='todo'?'todo':k]||'')} : ${v}"></span>`).join('')}</div>
+      <ul class="dleg">${segs.map(([k,v])=>`<li><i class="${k}"></i>${esc({acc:t('plKAcc'),sent:t('plStF').sent,dec:t('plKDec'),todo:t('plKTodo')}[k])}<b>${v}</b></li>`).join('')}</ul>
+      <div class="dsplit"><div><b>${ni}</b><span>${esc(t('plInt'))}</span></div><div><b>${G.length-ni}</b><span>${esc(t('plExt'))}</span></div></div></div>`;
+  }else{
+    const regs=[...o.regs],ni=regs.filter(r=>r.p&&r.p.internal).length,abs=regs.filter(r=>!r.present).length,cos={};regs.forEach(r=>{if(!r.p)return;const k=r.p.coId||'';const x=cos[k]=cos[k]||{n:r.p.societe||t('noCompany'),i:0,p:0};x.i++;if(r.present)x.p++});
+    kpis=dashKpi(o.ins,t('registrations'),'b')+dashKpi(o.pres,t('attendedL'),'ok')+dashKpi(pct(o.pres,o.ins)+' %',t('rate'),'g')+dashKpi(abs,t('plKAbs'),'r')+dashKpi(Object.keys(cos).length,t('companiesL'),'a');
+    const top5=Object.values(cos).sort((a,b)=>b.p-a.p||b.i-a.i).slice(0,6);
+    side=`<div class="dcard"><h4>${t('plMix')}</h4><div class="dsplit"><div><b>${ni}</b><span>${esc(t('plInt'))}</span></div><div><b>${regs.length-ni}</b><span>${esc(t('plExt'))}</span></div></div>
+      ${top5.length?`<h4 class="dh4b">${t('plTopCos')}</h4><ul class="dtop">${top5.map(c=>`<li><span>${esc(c.n)}</span><b>${c.p}</b><small>/ ${c.i}</small></li>`).join('')}</ul>`:''}
+      <button type="button" class="btn-o sm" data-x="pl-tab" data-t="pt">${t('plSeeParts')} →</button></div>`;
+  }
+  const rows=[[t('plDate'),date?numDate(date.slice(0,10))+(o.e.dateEnd?' → '+numDate(o.e.dateEnd):''):'—'],...(time?[[t('plTime'),time]]:[]),[t('plPlace'),lieu?place(lieu):'—'],[t('plType'),type?typeL(type):'—'],...(par?[[t('fParent'),evName(par)]]:[]),
+    ...Object.entries((P?m.extra:e.extra)||{}).filter(([,v])=>v)];
+  const photo=PHOTOS[e.id];
+  const info=`<div class="dcard dinfo">${photo?`<img class="dphoto" src="${photo}" alt="">`:''}<div><h4>${t('details')}</h4><dl class="dkv">${rows.map(([k,v])=>`<dt>${esc(k)}</dt><dd>${par&&k===t('fParent')?`<button type="button" class="link" data-go="event" data-id="${esc(par.id)}">${esc(v)}</button>`:esc(v)}</dd>`).join('')}</dl>
+    ${desc?`<p class="ddesc">${esc(desc)}</p>`:''}${!top.edit&&(ADMIN||(P&&plCanEdit(P)))?`<button type="button" class="btn-o sm" data-x="ev-edit">${t('plEdit')}</button>`:''}</div></div>`;
+  const acts=[];
+  if(fut&&P){acts.push(['g','pl-add',t('plAdd'),`data-p="${esc(m.id)}"`],['b','pl-tabinv',t('plDropInv')],['o','pl-send',t('plRecSend'),`data-p="${esc(m.id)}"`])}
+  else if(fut)acts.push(['g','pl-prep',t('plPrepare'),`data-ev="${esc(e.id)}"`]);
+  acts.push(['p','pl-next',t('plNext'),`data-ev="${esc(e.id)}"`]);
+  if(P&&!m.bind&&(ADMIN||(prop&&m.by===meName())))acts.push(['r','pl-del',t('plDelete'),`data-p="${esc(m.id)}"`]);
+  const actH=`<div class="dcard"><h4>${t('plNextSteps')}</h4><div class="dacts">${acts.map(([c,x,l,a])=>`<button type="button" class="dact ${c}" data-x="${x}" ${a||''}>${esc(l)}</button>`).join('')}</div></div>`;
+  let feed='';
+  if(P){const act=[];plSends(P).slice(0,6).forEach(s=>act.push([s.at,sendLine(s,P)]));const byDay={};plGuests(P).forEach(g=>{const k=(g.by||'')+'|'+String(g.at||'').slice(0,10);byDay[k]=(byDay[k]||0)+1});
+    Object.entries(byDay).forEach(([k,n])=>{const[by,d]=k.split('|');act.push([d,t('plGuestsAdd')(by,n,numDate(d))])});plDocs(P).slice(0,4).forEach(d=>act.push([d.at,`${d.by||'—'} · ${t('plKind')[d.kind]||''} « ${d.name} » · ${numDate(String(d.at).slice(0,10))}`]));
+    act.sort((a,b)=>String(b[0]).localeCompare(String(a[0])));if(act.length)feed=`<div class="dcard"><h4>${t('plActivity')}</h4><ul class="pl-act">${act.slice(0,7).map(([,x])=>`<li>${esc(x)}</li>`).join('')}</ul></div>`}
+  const ns=(NOTES['ev:'+e.id]||[]).slice().sort((a,b)=>String(b.date).localeCompare(String(a.date))).slice(0,3);
+  const notes=ns.length?`<div class="dcard"><h4>${t('plNotesRecent')}</h4>${ns.map(n=>`<p class="dnote"><b>${esc(n.author||'—')}</b> · ${esc(numDate(String(n.date).slice(0,10)))}<br>${esc(String(n.text).slice(0,240))}</p>`).join('')}<button type="button" class="btn-o sm" data-x="pl-tab" data-t="nd">${t('plTabNd')} →</button></div>`:'';
+  return`<div class="dash">${val}<div class="dkpis">${kpis}</div><div class="dgrid">${info}${side}${actH}${feed}${notes}${subs?`<div class="dcard dwide">${subs}</div>`:''}</div></div>`;
+}
+/* Invités et suivi : trois blocs distincts, de couleurs différentes */
+function plInvPageHTML(o,P,top){
+  return`<div class="inv-grid"><div class="ib ib-g"><div class="ib-h"><span>1</span>${t('plGuests')}</div>${plGuestsHTML(o,P,top)}</div>
+    <div class="inv-side"><div class="ib ib-b"><div class="ib-h"><span>2</span>${t('plInvites')}</div>${plDocsHTML(P,'inv')}</div>
+    <div class="ib ib-o"><div class="ib-h"><span>3</span>${t('plTrack')}</div>${plTrackHTML(P)}</div></div></div>`;
+}
+XACT['pl-tabinv']=()=>{const top=curTop();if(top){top.tab='inv';drawDrawer();setTimeout(()=>{const z=$('drawer').querySelector('.ib-b');if(z)z.scrollIntoView({block:'start'})},30)}};
+/* modifier : le formulaire complet d'origine (photo recadrée, événement principal, informations ajoutées) */
+XACT['ev-edit']=()=>{const top=curTop();if(top){top.edit=true;pendingPhoto=undefined;drawDrawer()}};
+XACT['pl-edit']=XACT['ev-edit'];
+
 /* filtre internes (BNP Paribas) / externes sur les participants d'un événement passé */
 {const _cfu=coFilterUI;coFilterUI=function(top,regs){const h=_cfu(top,regs);if(top.type!=='event')return h;
   const n=regs.length,ni=regs.filter(r=>r.p&&r.p.internal).length,ie=top.ie||'all',b=(k,l,c)=>`<button type="button" class="${ie===k?'on':''}" data-x="ev-ie" data-v="${k}">${esc(l)} <span>${c}</span></button>`;
@@ -10307,7 +10455,6 @@ XACT['ev-ie']=b=>{const top=stack[stack.length-1];if(top){top.ie=b.dataset.v;dra
   if(!top)return;
   if(pg){const o=find.event(top.id),P=o&&planFor(o.e.id);
     if(o&&P&&!top.edit&&!o.ins){const st=d.querySelector('.d-stats');if(st)st.innerHTML=plKpis(P).slice(0,3).map(([n,l])=>`<div><b>${n}</b><span>${esc(l)}</span></div>`).join('')}
-    if(o&&P&&!P.meta.bind){const e=$('dEdit');if(e){if(plCanEdit(P))e.onclick=()=>plEditModal(P);else e.remove()}}
     if(P&&P.meta.status==='proposed'){const h=d.querySelector('.h-chips')||d.querySelector('.d-sub');if(h&&!d.querySelector('.pl-prop-chip'))h.insertAdjacentHTML('afterend',`<div class="h-chips"><span class="h-chip pl-prop-chip">${esc(t('plProposed'))}</span></div>`)}
     d.querySelectorAll('[data-pldrop]').forEach(z=>{
       const go=files=>{const v=z.dataset.pldrop;let P2=v.startsWith('__ev:')?plEnsure(find.event(v.slice(5))):PLANS[v];if(P2)plAddFiles(P2,[...files],z.dataset.kind||'')};
@@ -10338,7 +10485,7 @@ Object.assign(XACT,{
   'pl-more':()=>{const top=curTop();if(top){top.plim=(top.plim||PL_PAGE)+PL_PAGE;drawDrawer(true)}},
   'pl-prep':async b=>{await askMe();const P=plEnsure(find.event(b.dataset.ev));if(P){const top=curTop();top.tab='inv';drawDrawer(true)}},
   'pl-next':b=>{const s=EMAP[b.dataset.ev];if(s)planWizard(s)},
-  'pl-edit':b=>{const P=PLANS[b.dataset.p];if(P)plEditModal(P)},
+  'pl-edit':()=>XACT['ev-edit'](),
   'pl-del':b=>{const P=PLANS[b.dataset.p];if(!P||!confirm(t('plDeleteQ')))return;delete PLANS[P.meta.id];saveVault();closeDrawer();rebuild();toast(t('plDeleted'))},
   'pl-val':b=>{const P=PLANS[b.dataset.p];if(!P)return;P.meta={...P.meta,status:'validated',valBy:meName(),valAt:nowIsoT()};saveVault();rebuild();drawDrawer(true);toast(t('plValidated'))},
   'pl-rej':b=>{const P=PLANS[b.dataset.p];if(!P||!confirm(t('plRejectQ')))return;delete PLANS[P.meta.id];saveVault();closeDrawer();rebuild();toast(t('plDeleted'))},
@@ -11343,6 +11490,53 @@ lockApp=async function(idle,toRole){
   else if(toRole&&LK.has[LK.role])$('lockSub').textContent=t('swHint')(t(LK.role==='admin'?'lkAdmin':'lkUser').toLowerCase());
 };
 $('btnSwitch').onclick=()=>lockApp(false,ADMIN?'standard':'admin');
+
+/* =========================================================
+   APERÇU STANDARD DEPUIS L'ESPACE ADMIN (sans mot de passe)
+   - l'administrateur voit l'outil comme un utilisateur standard, sur ses propres données ;
+   - rien n'est échangé avec le dossier partagé pendant l'aperçu (pas de contribution, pas de recalcul de l'édition) ;
+   - « Vue admin » revient sans mot de passe ; un vrai compte standard doit toujours saisir le mot de passe admin.
+   ========================================================= */
+let STD_PREVIEW=false;
+Object.assign(L.fr,{swTitStdP:'Voir l’outil comme un utilisateur standard (sans mot de passe)',swTitBack:'Revenir à l’espace administrateur (sans mot de passe)',prevOn:'Aperçu de la vue standard. « Vue admin » pour revenir.',prevOff:'Retour à l’espace administrateur.',prevTag:'Aperçu standard'});
+Object.assign(L.en,{swTitStdP:'See the tool as a standard user (no password)',swTitBack:'Back to the admin area (no password)',prevOn:'Standard view preview. “Admin view” to go back.',prevOff:'Back to the admin area.',prevTag:'Standard preview'});
+{const _sy=shSync;shSync=async function(f){if(STD_PREVIEW)return;return _sy(f)}}
+{const _tr=shTrack;shTrack=function(){if(STD_PREVIEW)return;return _tr()}}
+function stdPreview(on){
+  try{closeDrawer()}catch(_){}
+  STD_PREVIEW=!!on;applyRole(!on);
+  if(!on)try{shProv()}catch(_){}
+  meLine();buildModel();refreshAll();window.scrollTo(0,0);toast(t(on?'prevOn':'prevOff'));
+}
+sessUI=function(){const b=$('btnSwitch');if(!b)return;$('swLbl').textContent=t(ADMIN?'swToStd':'swToAdm');
+  b.title=t(ADMIN?'swTitStdP':STD_PREVIEW?'swTitBack':'swTitAdm');$('btnLock').title=t('lockNow')};
+{const _ml=meLine;meLine=function(){_ml();const el=$('meLine');if(el&&STD_PREVIEW){const s=el.querySelector('b')||el;s.textContent=t('prevTag')}sessUI()}}
+$('btnSwitch').onclick=()=>{if(ADMIN)stdPreview(true);else if(STD_PREVIEW)stdPreview(false);else lockApp(false,'admin')};
+{const _lk=lockApp;lockApp=async function(idle,toRole){
+  if(STD_PREVIEW&&!LOCKING){toRole=toRole||'admin';STD_PREVIEW=false}
+  return _lk(idle,toRole)}}
+
+/* ---------- page d'accueil : toujours les événements à la connexion ---------- */
+{const _ar=applyRole;applyRole=function(admin){const r=_ar(admin);view='events';setLS('crm-view','events');setLS('crm-stab','events');return r}}
+
+/* ---------- menu admin : sections « Administration » et « Contrôles qualité » repliables ---------- */
+function sideSecs(){
+  let st={};try{st=JSON.parse(lsGet('konex-side')||'{}')}catch(_){}
+  document.querySelectorAll('.side-label.tg').forEach(l=>{
+    const nav=l.nextElementSibling,k=l.dataset.sec,col=!!st[k];
+    l.classList.toggle('col',col);l.setAttribute('aria-expanded',String(!col));if(nav)nav.hidden=col;
+    if(!l.querySelector('.car'))l.insertAdjacentHTML('beforeend','<b class="sum" hidden></b><span class="car" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>');
+    /* replié : total des points à traiter dans la section */
+    const sum=l.querySelector('.sum');let n=0;if(nav)nav.querySelectorAll('.nav-badge').forEach(b=>{if(!b.hidden)n+=parseInt(b.textContent,10)||0});
+    if(sum){sum.textContent=n;sum.hidden=!col||!n}
+  });
+}
+document.querySelectorAll('.side-label.tg').forEach(l=>{
+  const go=()=>{let st={};try{st=JSON.parse(lsGet('konex-side')||'{}')}catch(_){}st[l.dataset.sec]=!st[l.dataset.sec];lsSet('konex-side',JSON.stringify(st));sideSecs()};
+  l.addEventListener('click',go);l.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}});
+});
+{const _ra=refreshAll;refreshAll=function(){const r=_ra.apply(this,arguments);try{sideSecs()}catch(_){}return r}}
+sideSecs();
 async function lkBootLocal(){
   const l=lsGet('konex-lang');if(l==='en'||l==='fr')lang=l;
   try{const last=JSON.parse(lsGet('konex-last')||'{}');LK.role=last.role==='admin'?'admin':'standard'}catch(_){}
