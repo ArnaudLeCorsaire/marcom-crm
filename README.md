@@ -18,7 +18,8 @@ Il tient entièrement dans **un seul fichier HTML** (`Konex.html`), fonctionne *
    - [Déployer sur Domino](#déployer-sur-domino)
 4. [Comptes et connexion](#comptes-et-connexion)
 5. [Fonctionnalités communes](#fonctionnalités-communes)
-6. [Préparer un événement à venir](#préparer-un-événement-à-venir)
+6. [Arno, l'assistant](#arno-lassistant)
+7. [Préparer un événement à venir](#préparer-un-événement-à-venir)
 7. [Fonctionnalités réservées à l'espace administrateur](#fonctionnalités-réservées-à-lespace-administrateur)
 8. [Construction de la master file (Importer et contrôler)](#construction-de-la-master-file-importer-et-contrôler)
 9. [Konex et « Importer et contrôler » en miroir](#konex-et--importer-et-contrôler--en-miroir)
@@ -291,6 +292,22 @@ En mode clients, avec 12 événements ou moins sélectionnés, une **colonne par
 Interface bilingue **français / anglais** : sélecteur FR | EN sur l'écran de connexion et en bas du menu. En anglais, les statuts de présence enregistrés en français dans les données (« Présent », « Refusé », « Sans réponse »…) sont traduits à l'affichage. Seul le module **Importer et contrôler** reste en français pour l'instant (un message le signale en anglais).
 
 ---
+
+## Arno, l'assistant
+
+Une fois connecté, **Arno** attend en bas à droite de l'écran (bulle avec sa photo et une pastille verte « en ligne »). Un clic ouvre la discussion, comme dans une messagerie :
+- Arno commence toujours par « **Posez-moi n'importe quelle question et j'y répondrai.** » (« *Ask me anything and I'll answer.* » en anglais), avec quelques questions toutes prêtes à cliquer ;
+- pendant qu'il cherche, les **trois petits points** s'affichent et l'en-tête indique « est en train d'écrire… » ; ses réponses arrivent en plusieurs bulles, avec l'heure, et vos messages passent à « ✓✓ Vu » ;
+- un clic sur sa photo ouvre son **profil**, le crayon démarre une **nouvelle conversation**, la flèche réduit la fenêtre.
+
+**Ce qu'il sait faire**
+- **Répondre sur vos données**, en français ou en anglais, même avec un nom approximatif : « Qui de chez Coca-Cola a participé à un évent en 2025 ? », « Qui a refusé la Matinale Fintech ? », « Historique de Sophie Bernard », « Quelles entreprises viennent le plus ? », « Combien de contacts ? », « Quels sont les prochains événements ? ». Il montre ce qu'il a compris (entreprise, année, statut…), donne le résultat (noms cliquables qui ouvrent les fiches), puis propose l'outil pour aller plus loin, par exemple **Ouvrir dans « Créer une liste »** avec les critères déjà remplis.
+- **Expliquer l'outil** : créer une liste, ajouter des invités, créer un événement, suivre les invitations, exporter, importer la master file, doublons, mot de passe, verrouillage, base partagée, photos, notes, langue — chaque fois avec un bouton qui y mène.
+- **Discuter simplement** : bonjour, merci, au revoir… Si on lui demande s'il est un robot, il répond honnêtement qu'il est un assistant automatique.
+
+**Il ne cache jamais rien** : fermé, la page garde une marge en bas pour que la bulle ne recouvre aucune information ; ouvert sur un grand écran, il prend sa place à droite et la page (et les fiches) se décalent vers la gauche ; sur un petit écran, il s'ouvre en plein écran et se ferme d'un geste.
+
+**Confidentialité** : Arno fonctionne entièrement sur ce poste, sans intelligence artificielle en ligne ni connexion réseau. La conversation n'est pas enregistrée et s'efface au verrouillage.
 
 ## Préparer un événement à venir
 

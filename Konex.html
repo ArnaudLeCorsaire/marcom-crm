@@ -724,6 +724,78 @@ body.v-lists #stats{display:none!important}
 .lg-evdet{margin-bottom:10px}
 .lg .lb-res{margin-top:0}
 @media (max-width:700px){.lg-s{grid-template-columns:1fr;padding:16px}.lg-qs{grid-template-columns:1fr}.lg-qb{padding-left:14px}}
+/* ---------- Arno : l'assistant ---------- */
+.arno[hidden],.ar-win[hidden],.ar-peek[hidden],.ar-prof[hidden],.ar-badge[hidden]{display:none!important}
+.arno{position:fixed;right:20px;bottom:20px;z-index:60;font-size:14.5px}
+.ar-fab{position:relative;width:62px;height:62px;border-radius:50%;border:0;padding:0;cursor:pointer;background:#fff;box-shadow:0 10px 30px rgba(0,60,35,.28),0 2px 6px rgba(0,0,0,.12);transition:transform .2s}
+.ar-fab:hover{transform:scale(1.06)}.ar-fab .ar-av{display:block;width:62px;height:62px}.ar-fab .ar-av svg{width:100%;height:100%;display:block;border-radius:50%}
+.ar-fab::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid var(--green);opacity:0;animation:arRing 2.4s ease-out 1.2s 2}
+@keyframes arRing{0%{opacity:.7;transform:scale(.85)}100%{opacity:0;transform:scale(1.25)}}
+.arno.open .ar-fab{display:none}
+.ar-on,.ar-dot{display:inline-block;width:12px;height:12px;border-radius:50%;background:#31C46B;border:2.5px solid #fff}
+.ar-fab .ar-on{position:absolute;right:2px;bottom:3px;width:15px;height:15px}
+.ar-dot{width:9px;height:9px;border-width:0;margin-right:5px;vertical-align:0;box-shadow:0 0 0 3px rgba(49,196,107,.2)}
+.ar-badge{position:absolute;top:-4px;right:-4px;min-width:22px;height:22px;border-radius:11px;background:#E5484D;color:#fff;font-size:12px;font-weight:700;display:grid;place-items:center;padding:0 6px;border:2px solid #fff;animation:arPop .3s}
+.ar-peek{position:absolute;right:0;bottom:76px;background:#fff;color:var(--ink);border-radius:16px 16px 4px 16px;box-shadow:0 10px 30px rgba(0,40,25,.2);padding:12px 34px 12px 14px;white-space:nowrap;animation:arUp .35s cubic-bezier(.2,.9,.3,1.2);cursor:pointer;font-weight:600}
+.ar-peek-x{position:absolute;top:6px;right:6px;border:0;background:var(--bg);width:20px;height:20px;border-radius:50%;cursor:pointer;font-size:13px;line-height:1;color:var(--muted)}
+.ar-win{position:fixed;right:16px;bottom:16px;top:16px;width:380px;max-height:760px;margin-top:auto;background:#fff;border-radius:22px;box-shadow:0 24px 70px rgba(0,40,25,.28),0 2px 8px rgba(0,0,0,.08);display:flex;flex-direction:column;overflow:hidden;animation:arOpen .32s cubic-bezier(.2,.9,.3,1.1);transform-origin:bottom right}
+@keyframes arOpen{from{opacity:0;transform:translateY(16px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes arUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes arPop{from{transform:scale(.4)}to{transform:scale(1)}}
+.ar-head{display:flex;align-items:center;gap:4px;padding:12px 10px 12px 14px;background:linear-gradient(135deg,var(--green-deep),var(--green));color:#fff}
+.ar-who{flex:1;display:flex;align-items:center;gap:11px;background:none;border:0;color:inherit;cursor:pointer;text-align:left;padding:2px;font:inherit;border-radius:12px}
+.ar-who .ar-av{position:relative;width:44px;height:44px;flex:none}.ar-who .ar-av svg{width:44px;height:44px;display:block;border-radius:50%;box-shadow:0 0 0 2px rgba(255,255,255,.5)}
+.ar-who .ar-on{position:absolute;right:-1px;bottom:0;border-color:var(--green-deep)}
+.ar-id{display:flex;flex-direction:column;gap:2px}.ar-id b{font-size:16.5px}.ar-id small{font-size:12px;opacity:.92}
+.ar-tw{font-style:italic}
+.ar-hb{width:36px;height:36px;border-radius:50%;border:0;background:rgba(255,255,255,.14);color:#fff;cursor:pointer;display:grid;place-items:center}.ar-hb:hover{background:rgba(255,255,255,.26)}
+.ar-prof{padding:16px 18px;border-bottom:1px solid var(--line);text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px;animation:arUp .25s;background:#FAFCFB}
+.ar-prof .ar-av.big svg{width:72px;height:72px}.ar-prof b{font-size:16px}.ar-prof span{color:var(--muted);font-size:13px}.ar-prof p{margin:6px 0 0;font-size:13px;color:var(--ink)}
+.ar-body{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:14px 12px 8px;background:#F2F5F3;display:flex;flex-direction:column;gap:2px}
+.ar-day{text-align:center;margin:2px 0 10px}.ar-day span{background:rgba(0,0,0,.06);color:var(--muted);font-size:11.5px;padding:3px 10px;border-radius:999px}
+.ar-row{display:flex;align-items:flex-end;gap:7px;max-width:100%}.ar-row.me{justify-content:flex-end}.ar-row.last{margin-bottom:10px}
+.ar-av.sm{width:28px;height:28px;flex:none}.ar-av.sm svg{width:28px;height:28px;display:block;border-radius:50%}
+.ar-col{display:flex;flex-direction:column;max-width:84%;min-width:0}.ar-row.me .ar-col{align-items:flex-end}
+.ar-msg{padding:9px 13px;border-radius:18px;line-height:1.45;word-wrap:break-word;overflow-wrap:anywhere}
+.ar-row.bot .ar-msg{background:#fff;color:var(--ink);border-bottom-left-radius:6px;box-shadow:0 1px 1px rgba(0,0,0,.05)}
+.ar-row.bot:not(.first) .ar-msg{border-top-left-radius:6px}
+.ar-row.me .ar-msg{background:var(--green);color:#fff;border-bottom-right-radius:6px}
+.ar-row.me:not(.first) .ar-msg{border-top-right-radius:6px}
+.ar-msg.pop{animation:arMsg .28s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes arMsg{from{opacity:0;transform:translateY(8px) scale(.97)}to{opacity:1;transform:none}}
+.ar-msg ul,.ar-msg ol{margin:6px 0 2px;padding-left:18px}.ar-msg li{margin:3px 0}
+.ar-list{list-style:none;padding:0!important}.ar-list li{display:flex;flex-direction:column;padding:5px 0;border-bottom:1px solid #EEF2F0}.ar-list li:last-child{border:0}
+ol.ar-list{counter-reset:arn}ol.ar-list li{counter-increment:arn;padding-left:24px;position:relative}ol.ar-list li::before{content:counter(arn);position:absolute;left:0;top:6px;width:18px;height:18px;border-radius:50%;background:var(--green-light);color:var(--green-dark);font-size:11px;font-weight:700;display:grid;place-items:center}
+.ar-list small{color:var(--muted);font-size:12.5px}
+.ar-link,.ar-msg .link{background:none;border:0;padding:0;font:inherit;font-weight:600;color:var(--green-dark);cursor:pointer;text-align:left;text-decoration:underline;text-decoration-color:rgba(0,107,66,.3);text-underline-offset:2px}
+.ar-big{display:flex;flex-direction:column;gap:2px;margin-bottom:4px}.ar-big b{font-size:26px;color:var(--green-dark);line-height:1.1}.ar-big span{font-size:13px;color:var(--muted)}
+.ar-more{margin:6px 0 0;color:var(--muted);font-size:12.5px}
+.ar-und{color:var(--muted);font-size:12.5px}.ar-tag{display:inline-block;background:var(--green-light);color:var(--green-dark);border-radius:999px;padding:2px 9px;font-size:12px;font-weight:600;margin:2px 2px 0 0}
+.ar-msg .tag,.ar-msg [class^="tg"]{font-size:11.5px}
+.ar-meta{font-size:11px;color:var(--muted);margin:3px 6px 0}.ar-seen{color:var(--green)}
+.ar-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+.ar-chip{border:1.5px solid var(--green);background:#fff;color:var(--green-dark);border-radius:999px;padding:6px 12px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;text-align:left;animation:arUp .3s}
+.ar-chip:hover{background:var(--green);color:#fff}
+.ar-typing{display:flex;gap:4px;align-items:center;padding:13px 15px!important}
+.ar-typing i{width:8px;height:8px;border-radius:50%;background:#9AABA3;animation:arDot 1.2s infinite ease-in-out}
+.ar-typing i:nth-child(2){animation-delay:.15s}.ar-typing i:nth-child(3){animation-delay:.3s}
+@keyframes arDot{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-5px);opacity:1}}
+.ar-foot{display:flex;align-items:flex-end;gap:8px;padding:10px 12px 12px;border-top:1px solid var(--line);background:#fff}
+.ar-foot textarea{flex:1;resize:none;border:1.5px solid #D5DED9;border-radius:22px;padding:10px 15px;font:inherit;font-size:14.5px;line-height:1.4;max-height:120px;outline:0;background:#F7F9F8}
+.ar-foot textarea:focus{border-color:var(--green);background:#fff}
+.ar-send{width:42px;height:42px;flex:none;border-radius:50%;border:0;background:#D5DED9;color:#fff;cursor:pointer;display:grid;place-items:center;transition:background .15s,transform .15s}
+.ar-send.on{background:var(--green)}.ar-send.on:hover{transform:scale(1.07)}
+/* ne jamais rien cacher : fermé, une marge en bas ; ouvert, la page se décale vers la gauche */
+body.arno-on main{padding-bottom:110px}
+body.arno-on .drawer .d-body{padding-bottom:100px}
+@media (min-width:1101px){
+  body.arno-open .content{margin-right:412px}
+  body.arno-open .drawer{right:412px}
+  body.arno-open .drawer.pg{right:412px}
+  body.arno-open .toast{left:calc(50% - 206px)}
+}
+@media (max-width:1100px){.ar-win{left:0;right:0;top:0;bottom:0;width:auto;max-height:none;border-radius:0}}
+@media print{.arno{display:none}}
 .ib-p{border-top-color:#7B4FB5}.ib-p .ib-h span{background:#7B4FB5}.ib-p .ib-h{color:#5E3A8F}
 .ib-p .note-form{margin-top:4px}
 .dash{display:flex;flex-direction:column;gap:16px}
@@ -11921,6 +11993,290 @@ Object.assign(XACT,{
   'lg-kind':b=>{LQ.kind=b.dataset.v;render()},
   'lg-min':b=>{LQ.minPres=Math.max(0,(LQ.minPres||0)+(+b.dataset.d));render()}
 });
+
+/* =========================================================
+   ARNO — l'assistant de Konex, en bas à droite de l'écran
+   - fenêtre de discussion façon messagerie : profil, pastille « en ligne », « est en train d'écrire… », accusés de lecture ;
+   - répond aux questions sur les données (moteur « Poser une question », hors ligne), sur l'outil (aide), et à la conversation courante ;
+   - propose toujours l'outil adapté pour aller plus loin (Créer une liste, fiches, Statistiques…) ;
+   - ne cache jamais rien : ouvert, il prend sa place à droite et la page se décale ; fermé, la page garde une marge en bas.
+   Tout reste sur ce poste : aucune donnée ne sort, la conversation s'efface au verrouillage.
+   ========================================================= */
+Object.assign(L.fr,{
+  arName:'Arno',arRole:'Assistant Konex',arOnline:'En ligne',arTyping:'est en train d’écrire…',arReply:'Répond en quelques secondes',
+  arHello:'Posez-moi n’importe quelle question et j’y répondrai.',arHelloName:n=>`Bonjour ${n} 👋`,arHelloAnon:'Bonjour 👋',
+  arPh:'Écrivez votre message…',arSend:'Envoyer',arOpen:'Discuter avec Arno',arClose:'Fermer la discussion',arNew:'Nouvelle conversation',arSeen:'Vu',arToday:'Aujourd’hui',
+  arPeek:'Une question ? Je suis là.',arMin:'Réduire',
+  arProfile:(c,e)=>`Je connais vos ${c} contacts et vos ${e} événements. Je ne partage rien : tout reste sur ce poste.`,arAvail:'Disponible à tout moment',
+  arIntro:['Bonne question ! Je regarde ça…','Je cherche dans la base, une seconde…','Voyons voir…','Je m’en occupe tout de suite.'],
+  arFound:['Voici ce que j’ai trouvé 👇','Et voilà :','J’ai trouvé ceci :'],
+  arUnd:'J’ai compris :',arMore:n=>`… et ${n} autre${n>1?'s':''}.`,arNobody:'Je n’ai trouvé personne qui corresponde exactement. Essayez peut-être une autre année ou un autre statut.',
+  arTipList:'Pour aller plus loin, ouvrez « Créer une liste » : vous pourrez ajouter autant de critères que nécessaire, puis copier les e-mails ou télécharger la liste en Excel.',
+  arTipFiche:'Vous trouverez tout le détail sur sa fiche : cliquez sur son nom.',arTipStats:'Les graphiques complets sont dans « Statistiques ».',
+  arBtnList:'Ouvrir dans « Créer une liste »',arBtnStats:'Voir les statistiques',arBtnEv:'Ouvrir l’événement',arBtnEvents:'Voir les événements',
+  arDontKnow:['Hmm, je ne suis pas sûr d’avoir compris 🤔','Désolé, je n’ai pas bien saisi.'],
+  arDontKnow2:'Essayez avec le nom d’une entreprise, d’un événement ou d’une personne, par exemple :',
+  arThanks:['Avec plaisir ! 😊','Je vous en prie !','Toujours ravi d’aider.'],arBye:['À bientôt ! 👋','Bonne journée, à très vite !'],
+  arHow:['Très bien, merci ! Et vous ? Que puis-je faire pour vous ?','Toujours en forme ! Sur quoi puis-je vous aider ?'],
+  arWho:'Je suis Arno, l’assistant de Konex. Je réponds aux questions sur vos contacts, vos entreprises et vos événements, et je vous guide dans l’outil.',
+  arBot:'Je suis un assistant automatique, pas une personne. Mais je fais de mon mieux pour vous répondre comme un collègue !',
+  arCan:'Je peux par exemple :',arCanL:['retrouver qui est venu à un événement, par entreprise et par année','compter les invités, les présents, les absents, les refus','donner l’historique d’une personne','classer les entreprises ou les CMO qui viennent le plus','lister les prochains événements','vous expliquer comment utiliser chaque partie de Konex'],
+  arTotals:(c,co,e)=>`Il y a ${c} contacts, ${co} entreprises et ${e} événements dans la base.`,
+  arNoUp:'Aucun événement à venir pour l’instant. Vous pouvez en créer un en quelques clics.',arUp:n=>`${n} événement${n>1?'s':''} à venir :`,
+  arLast:(n,d,i,p)=>`Le dernier événement est « ${n} » (${d}) : ${i} invités, ${p} présents.`,
+  arLangQ:'Voulez-vous passer Konex en anglais ?',arLangBtn:'Passer en anglais',
+  arQs:{up:'Quels sont les prochains événements ?',list:'Comment créer une liste ?',rank:'Quelles entreprises viennent le plus ?',help:'Que sais-tu faire ?'},
+  arH:{
+    list:['Pour créer une liste, ouvrez « Créer une liste » dans le menu de gauche. Répondez simplement aux questions : qui voulez-vous contacter, puis cochez les critères utiles (un événement, des entreprises, un type de personnes…). Le nombre de personnes s’affiche en direct.','Ensuite : « Copier les e-mails », « Télécharger (Excel) », « Préparer un e-mail » ou « Ajouter à un événement ». Pensez à « Enregistrer cette liste » pour la retrouver plus tard.','Ouvrir « Créer une liste »','go:lists'],
+    guests:['Pour ajouter des invités : ouvrez l’événement, onglet « Invités et suivi », bouton « + Ajouter des invités ». Vous pouvez ajouter une personne, cocher plusieurs listes ou plusieurs événements puis « Appliquer », déposer un fichier Excel, ou coller des e-mails.','La liste d’invités reste modifiable jusqu’au jour J, et chaque ajout est signé et daté.','Voir les événements','go:events'],
+    newev:['Pour créer un événement : onglet « Événements », bouton « + Créer un événement ». Partez de zéro, ou d’un événement existant pour préparer l’édition suivante (avec ses invités si vous le souhaitez).','Vous pourrez ajouter une photo d’illustration et la recadrer.','Créer un événement','wizard'],
+    track:['Le suivi des invitations se fait sur la page de l’événement, onglet « Invités et suivi ». Déposez l’invitation (.oft, .msg, .eml, .ics), puis « Enregistrer un envoi » : Konex note qui a reçu quoi et quand.','Vous pouvez aussi importer les réponses d’une invitation Outlook (.ics) ou le suivi d’un outil d’emailing (Excel / CSV).','Voir les événements','go:events'],
+    export:['Pour exporter : depuis « Créer une liste », bouton « Télécharger (Excel) ». Depuis un événement, « Exporter » dans le bloc Invités. Depuis « Statistiques », l’export reprend les tableaux.','Les fichiers se téléchargent sur votre ordinateur.','Ouvrir « Créer une liste »','go:lists'],
+    search:['Pour retrouver quelqu’un : « Rechercher » dans le menu, puis tapez un nom, une société ou un e-mail. Les onglets Événements, Personnes, CMO, Entreprises et RMPM changent le type de fiche.','Vous pouvez aussi me demander directement, par exemple « historique de Sophie Bernard ».','Rechercher','go:people'],
+    stats:['Les graphiques et chiffres clés sont dans « Statistiques » : présences, taux, entreprises, CMO, par année.','Vous pouvez filtrer par année, type d’événement, pays…','Voir les statistiques','go:stats'],
+    import:['L’import de la master file se fait dans « Importer et contrôler » (espace administrateur) : déposez le fichier Excel, vérifiez les colonnes, les événements et les contrôles, puis envoyez-la dans Konex.','Les corrections faites dans Konex reviennent automatiquement dans la master file.','Importer et contrôler','go:builder'],
+    dups:['Les contrôles qualité (doublons de contacts, d’entreprises, fautes de frappe, inversions nom/prénom…) sont dans le menu de l’espace administrateur, section « Contrôles qualité ».','Chaque correction peut être annulée.','Doublons de contacts','go:dups'],
+    pw:['Pour changer votre mot de passe : « Mon mot de passe » en bas du menu de gauche. Vos données sont alors rechiffrées avec le nouveau.','Si vous l’oubliez, « Mot de passe oublié ? » sur l’écran de connexion efface les données de cet espace sur ce poste.','',''],
+    lock:['Le bouton « Verrouiller » en haut du menu ferme la session tout de suite. Konex se verrouille aussi tout seul après 20 minutes sans activité.','','',''],
+    share:['La base de l’équipe permet de partager les données : un administrateur publie une édition, les utilisateurs la reçoivent et y ajoutent leurs compléments.','Tout est chiffré avec la clé d’équipe.','Base partagée','go:share'],
+    photo:['Pour ajouter une photo à un événement : ouvrez sa page, « Modifier l’événement », puis « Choisir une image ». Vous pourrez la recadrer. Elle s’affiche ensuite en bandeau en haut de la page.','','Voir les événements','go:events'],
+    note:['Pour ajouter une note sur un événement : page de l’événement, onglet « Invités et suivi » (ou « Participants » pour un événement passé), bloc « Notes ». Sur une personne : sa fiche, en bas.','','',''],
+    lang:['Konex existe en français et en anglais : boutons FR / EN en bas du menu de gauche.','','Passer en anglais','lang:en']}
+});
+Object.assign(L.en,{
+  arName:'Arno',arRole:'Konex assistant',arOnline:'Online',arTyping:'is typing…',arReply:'Replies in a few seconds',
+  arHello:'Ask me anything and I’ll answer.',arHelloName:n=>`Hello ${n} 👋`,arHelloAnon:'Hello 👋',
+  arPh:'Write your message…',arSend:'Send',arOpen:'Chat with Arno',arClose:'Close the chat',arNew:'New conversation',arSeen:'Seen',arToday:'Today',
+  arPeek:'A question? I’m here.',arMin:'Minimise',
+  arProfile:(c,e)=>`I know your ${c} contacts and ${e} events. I share nothing: everything stays on this computer.`,arAvail:'Available any time',
+  arIntro:['Good question! Let me check…','Searching the base, one second…','Let’s see…','On it right away.'],
+  arFound:['Here’s what I found 👇','There you go:','I found this:'],
+  arUnd:'I understood:',arMore:n=>`… and ${n} more.`,arNobody:'I found nobody matching exactly. Maybe try another year or another status.',
+  arTipList:'To go further, open “Create a list”: you can add as many criteria as you need, then copy the emails or download the list as Excel.',
+  arTipFiche:'All the details are on their record: click their name.',arTipStats:'The full charts are in “Statistics”.',
+  arBtnList:'Open in “Create a list”',arBtnStats:'See statistics',arBtnEv:'Open the event',arBtnEvents:'See events',
+  arDontKnow:['Hmm, I’m not sure I understood 🤔','Sorry, I didn’t quite get that.'],
+  arDontKnow2:'Try with the name of a company, an event or a person, for example:',
+  arThanks:['My pleasure! 😊','You’re welcome!','Always happy to help.'],arBye:['See you soon! 👋','Have a nice day!'],
+  arHow:['Very well, thanks! And you? How can I help?','Always in good shape! What can I do for you?'],
+  arWho:'I’m Arno, the Konex assistant. I answer questions about your contacts, companies and events, and I guide you through the tool.',
+  arBot:'I’m an automated assistant, not a person. But I do my best to answer like a colleague!',
+  arCan:'For example, I can:',arCanL:['find who came to an event, by company and by year','count guests, attendees, no-shows, declines','give a person’s history','rank the companies or CMOs who come the most','list the upcoming events','explain how to use each part of Konex'],
+  arTotals:(c,co,e)=>`There are ${c} contacts, ${co} companies and ${e} events in the base.`,
+  arNoUp:'No upcoming event yet. You can create one in a few clicks.',arUp:n=>`${n} upcoming event${n>1?'s':''}:`,
+  arLast:(n,d,i,p)=>`The latest event is “${n}” (${d}): ${i} invited, ${p} attended.`,
+  arLangQ:'Would you like Konex in French?',arLangBtn:'Switch to French',
+  arQs:{up:'What are the upcoming events?',list:'How do I create a list?',rank:'Which companies come the most?',help:'What can you do?'},
+  arH:{
+    list:['To create a list, open “Create a list” in the left menu. Simply answer the questions: who you want to reach, then tick the useful criteria (an event, companies, a type of people…). The number of people updates live.','Then: “Copy emails”, “Download (Excel)”, “Prepare an email” or “Add to an event”. Use “Save this list” to find it again later.','Open “Create a list”','go:lists'],
+    guests:['To add guests: open the event, “Guests and tracking” tab, “+ Add guests” button. Add one person, tick several lists or events then “Apply”, drop an Excel file, or paste emails.','The guest list stays editable until the big day, and every change is signed and dated.','See events','go:events'],
+    newev:['To create an event: “Events” tab, “+ Create an event” button. Start from scratch, or from an existing event to prepare the next edition (with its guests if you like).','You can add an illustration photo and crop it.','Create an event','wizard'],
+    track:['Invitation tracking is on the event page, “Guests and tracking” tab. Drop the invitation (.oft, .msg, .eml, .ics), then “Record a send”: Konex records who received what and when.','You can also import replies from an Outlook invitation (.ics) or tracking from an emailing tool (Excel / CSV).','See events','go:events'],
+    export:['To export: from “Create a list”, “Download (Excel)”. From an event, “Export” in the Guests block. From “Statistics”, the export includes the tables.','Files are downloaded to your computer.','Open “Create a list”','go:lists'],
+    search:['To find someone: “Search” in the menu, then type a name, a company or an email. The Events, People, CMOs, Companies and RMPM tabs change the type of record.','You can also ask me directly, for example “history of Sophie Bernard”.','Search','go:people'],
+    stats:['Charts and key figures are in “Statistics”: attendance, rates, companies, CMOs, by year.','You can filter by year, event type, country…','See statistics','go:stats'],
+    import:['The master file is imported in “Import and check” (admin area): drop the Excel file, check the columns, events and controls, then send it to Konex.','Corrections made in Konex flow back into the master file automatically.','Import and check','go:builder'],
+    dups:['Quality controls (duplicate contacts and companies, typos, swapped names…) are in the admin menu, “Quality controls” section.','Every correction can be undone.','Duplicate contacts','go:dups'],
+    pw:['To change your password: “My password” at the bottom of the left menu. Your data is then re-encrypted with the new one.','If you forget it, “Forgot password?” on the login screen erases this area’s data on this computer.','',''],
+    lock:['The “Lock” button at the top of the menu closes the session at once. Konex also locks itself after 20 minutes without activity.','','',''],
+    share:['The team database shares the data: an administrator publishes an edition, users receive it and add their own information.','Everything is encrypted with the team key.','Team database','go:share'],
+    photo:['To add a photo to an event: open its page, “Edit the event”, then “Choose an image”. You can crop it. It then shows as a banner at the top of the page.','','See events','go:events'],
+    note:['To add a note to an event: event page, “Guests and tracking” tab (or “Participants” for a past event), “Notes” block. For a person: at the bottom of their record.','','',''],
+    lang:['Konex is available in French and English: FR / EN buttons at the bottom of the left menu.','','Switch to French','lang:fr']}
+});
+const ARNO={open:false,msgs:[],busy:false,unread:0,peeked:false,started:false,q:[],seq:0};
+const arPick=a=>a[Math.floor(Math.random()*a.length)];
+const arTime=d=>d.toLocaleTimeString(lang==='fr'?'fr-BE':'en-GB',{hour:'2-digit',minute:'2-digit'});
+const AR_AV=`<svg viewBox="0 0 40 40" aria-hidden="true"><defs><linearGradient id="arG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00A862"/><stop offset="1" stop-color="#00593A"/></linearGradient></defs><circle cx="20" cy="20" r="20" fill="url(#arG)"/><circle cx="20" cy="16" r="7" fill="#FFE3C9"/><path d="M13 14.5c0-5 3.2-7.5 7-7.5s7 2.5 7 7.2c-1.6-1.9-4-2.7-7-2.7s-5.4.8-7 3z" fill="#3B2A20"/><circle cx="17.4" cy="16.6" r=".95" fill="#2A211B"/><circle cx="22.6" cy="16.6" r=".95" fill="#2A211B"/><path d="M17.6 19.4c1.3 1.1 3.5 1.1 4.8 0" stroke="#B0563B" stroke-width="1.1" fill="none" stroke-linecap="round"/><path d="M8.5 36c1.6-6 6-9 11.5-9s9.9 3 11.5 9" fill="#fff"/><path d="M17.5 27.4 20 31l2.5-3.6" fill="none" stroke="#00593A" stroke-width="1.3"/></svg>`;
+function arnoMount(){
+  if($('arno'))return;
+  document.body.insertAdjacentHTML('beforeend',`<div id="arno" class="arno" hidden>
+    <div class="ar-peek" id="arPeek" hidden><button type="button" class="ar-peek-x" data-ar="peekx" aria-label="×">×</button><span></span></div>
+    <button type="button" class="ar-fab" id="arFab" data-ar="toggle"><span class="ar-av">${AR_AV}</span><i class="ar-on"></i><b class="ar-badge" id="arBadge" hidden></b></button>
+    <section class="ar-win" id="arWin" role="dialog" aria-labelledby="arTitle" hidden>
+      <header class="ar-head"><button type="button" class="ar-who" data-ar="profile"><span class="ar-av">${AR_AV}<i class="ar-on"></i></span><span class="ar-id"><b id="arTitle"></b><small id="arStatus"></small></span></button>
+        <button type="button" class="ar-hb" data-ar="new" id="arNewB"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button>
+        <button type="button" class="ar-hb" data-ar="toggle" id="arMinB"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></button></header>
+      <div class="ar-prof" id="arProf" hidden></div>
+      <div class="ar-body" id="arBody" aria-live="polite"></div>
+      <form class="ar-foot" id="arForm" autocomplete="off"><textarea id="arIn" rows="1"></textarea><button type="submit" class="ar-send" id="arSendB"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M3.4 20.4 21 12 3.4 3.6 3.4 10l12.6 2-12.6 2z"/></svg></button></form>
+    </section></div>`);
+  const W=$('arno');
+  W.addEventListener('click',e=>{
+    const a=e.target.closest('[data-ar]');if(a){const k=a.dataset.ar;
+      if(k==='toggle')return arnoToggle();if(k==='new')return arnoReset(true);if(k==='peekx'){$('arPeek').hidden=true;return}
+      if(k==='profile'){const p=$('arProf');p.hidden=!p.hidden;return}
+      if(k==='peek'){return arnoToggle(true)}}
+    const o=e.target.closest('[data-open]');if(o&&W.contains(o)){e.preventDefault();e.stopPropagation();openFiche(o.dataset.open,o.dataset.id);return}
+    const b=e.target.closest('[data-ara]');if(b)arnoAct(b.dataset.ara,b);
+  });
+  $('arPeek').querySelector('span').onclick=()=>arnoToggle(true);
+  const inp=$('arIn');
+  inp.addEventListener('input',()=>{inp.style.height='auto';inp.style.height=Math.min(120,inp.scrollHeight)+'px';$('arSendB').classList.toggle('on',!!inp.value.trim())});
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();$('arForm').requestSubmit()}if(e.key==='Escape'){arnoToggle(false)}});
+  $('arForm').onsubmit=e=>{e.preventDefault();const v=inp.value.trim();if(!v)return;inp.value='';inp.style.height='auto';$('arSendB').classList.remove('on');arnoUser(v)};
+  arnoTexts();
+}
+function arnoTexts(){
+  if(!$('arno'))return;
+  $('arTitle').textContent=t('arName');$('arIn').placeholder=t('arPh');$('arSendB').title=$('arSendB').ariaLabel=t('arSend');
+  $('arFab').title=$('arFab').ariaLabel=t('arOpen');$('arMinB').title=$('arMinB').ariaLabel=t('arMin');$('arNewB').title=$('arNewB').ariaLabel=t('arNew');
+  $('arPeek').querySelector('span').textContent=t('arPeek');
+  $('arProf').innerHTML=`<div class="ar-av big">${AR_AV}</div><b>${esc(t('arName'))}</b><span>${esc(t('arRole'))} · <i class="ar-dot"></i> ${esc(t('arAvail'))} · ${esc(t('arReply'))}</span><p>${esc(t('arProfile')(fmtN(PEOPLE.filter(p=>!p.archived).length),fmtN(EVSTATS.length)))}</p>`;
+  arnoStatus();
+}
+function arnoStatus(){const s=$('arStatus');if(s)s.innerHTML=ARNO.busy?`<span class="ar-tw">${esc(t('arTyping'))}</span>`:`<i class="ar-dot"></i>${esc(t('arOnline'))}`}
+/* affichage : bulles groupées par auteur, avatar sur la dernière bulle, heure et « Vu » */
+function arnoRender(){
+  const B=$('arBody');if(!B)return;let h=`<div class="ar-day"><span>${esc(t('arToday'))}</span></div>`;
+  ARNO.msgs.forEach((m,i)=>{const nx=ARNO.msgs[i+1],last=!nx||nx.who!==m.who,first=i===0||ARNO.msgs[i-1].who!==m.who;
+    h+=`<div class="ar-row ${m.who}${first?' first':''}${last?' last':''}">${m.who==='bot'?`<span class="ar-av sm">${last?AR_AV:''}</span>`:''}<div class="ar-col"><div class="ar-msg${m.anim?' pop':''}">${m.html}</div>${m.chips?`<div class="ar-chips">${m.chips.map(c=>`<button type="button" class="ar-chip" data-ara="${esc(c[1])}">${esc(c[0])}</button>`).join('')}</div>`:''}
+      ${last?`<div class="ar-meta">${arTime(m.at)}${m.who==='me'?` · ${m.seen?`<span class="ar-seen">✓✓ ${esc(t('arSeen'))}</span>`:'✓'}`:''}</div>`:''}</div></div>`;m.anim=false});
+  if(ARNO.busy)h+=`<div class="ar-row bot last"><span class="ar-av sm">${AR_AV}</span><div class="ar-col"><div class="ar-msg ar-typing"><i></i><i></i><i></i></div></div></div>`;
+  B.innerHTML=h;B.scrollTop=B.scrollHeight;
+}
+function arnoPush(who,html,chips){ARNO.msgs.push({who,html,chips,at:new Date(),anim:true,id:++ARNO.seq});if(!ARNO.open&&who==='bot'){ARNO.unread++;arnoBadge()}arnoRender()}
+function arnoBadge(){const b=$('arBadge');if(!b)return;b.hidden=!ARNO.unread;b.textContent=ARNO.unread}
+const arWait=ms=>new Promise(r=>setTimeout(r,ms));
+/* Arno « tape » : délai selon la longueur, comme quelqu'un qui écrit */
+async function arnoSay(list){
+  for(const m of list){if(!m)continue;ARNO.busy=true;arnoStatus();arnoRender();
+    const txt=String(m.html||'').replace(/<[^>]+>/g,'');await arWait(Math.min(1900,550+txt.length*9)*(ARNO.fast?0.05:1));
+    ARNO.busy=false;arnoStatus();arnoPush('bot',m.html,m.chips);await arWait(ARNO.fast?5:250)}
+}
+function arnoGreetChips(){
+  const ev=TOPS.slice().sort((a,b)=>(b.e.date||'').localeCompare(a.e.date||'')).find(s=>s.pres>0),co=ev&&ev.regs.find(r=>r.present&&r.p.societe&&!r.p.internal),Q=t('arQs'),E=t('askEx');
+  const c=[];if(ev&&co)c.push([E.who(co.p.societe,evName(ev.e)),'ask:'+E.who(co.p.societe,evName(ev.e))]);
+  c.push([Q.up,'ask:'+Q.up],[Q.rank,'ask:'+Q.rank],[Q.list,'ask:'+Q.list],[Q.help,'ask:'+Q.help]);return c;
+}
+async function arnoStart(){
+  if(ARNO.started)return;ARNO.started=true;const n=(meName()||'').split(' ')[0];
+  await arnoSay([{html:esc(n?t('arHelloName')(n):t('arHelloAnon'))},{html:`<b>${esc(t('arHello'))}</b>`,chips:arnoGreetChips()}]);
+}
+function arnoToggle(force){
+  const o=typeof force==='boolean'?force:!ARNO.open;ARNO.open=o;
+  $('arWin').hidden=!o;$('arno').classList.toggle('open',o);document.body.classList.toggle('arno-open',o);$('arPeek').hidden=true;
+  if(o){ARNO.unread=0;arnoBadge();ARNO.msgs.forEach(m=>{if(m.who==='me')m.seen=true});arnoRender();arnoStart();setTimeout(()=>{const i=$('arIn');if(i&&innerWidth>700)i.focus()},60)}
+  else $('arFab').focus({preventScroll:true});
+}
+function arnoReset(restart){ARNO.msgs=[];ARNO.started=false;ARNO.busy=false;ARNO.unread=0;arnoBadge();arnoRender();if(restart)arnoStart()}
+async function arnoUser(text){
+  arnoPush('me',esc(text).replace(/\n/g,'<br>'));ARNO.q.push(text);if(ARNO.q.length>1)return;
+  while(ARNO.q.length){const q=ARNO.q[0];await arWait(ARNO.fast?5:450);ARNO.msgs.forEach(m=>{if(m.who==='me')m.seen=true});arnoRender();
+    let out;try{out=arnoBrain(q)}catch(e){console.warn(e);out=[{html:esc(arPick(t('arDontKnow')))}]}
+    await arnoSay(out);ARNO.q.shift()}
+}
+function arnoAct(a){
+  const i=a.indexOf(':'),k=i<0?a:a.slice(0,i),v=i<0?'':a.slice(i+1);
+  if(k==='ask')return arnoUser(v);
+  if(k==='go'){closeDrawer();goView(v);return}
+  if(k==='wizard'){closeDrawer();goView('events');planWizard();return}
+  if(k==='ev'){openFiche('event',v);return}
+  if(k==='list'){const m=ARNO.ctx[v];if(m){ASK_LAST=m;closeDrawer();askToList()}return}
+  if(k==='lang'){const b=document.querySelector(`[data-lang="${v}"]`);if(b)b.click();arnoTexts();arnoRender();return}
+}
+ARNO.ctx={};
+/* --- le cerveau d'Arno --- */
+const AR_HELP=[
+  ['guests',/\b(ajout\w*|invit\w*|mettre)\b.*\b(invite\w*|evenement\w*|event\w*|guest\w*)\b|\bliste d invites\b|\badd guests?\b/],
+  ['newev',/\b(cree\w*|creer|nouvel\w*|organis\w*|create|new)\b.*\b(evenement\w*|event\w*)\b/],
+  ['track',/\b(suivi|envoi\w*|outlook|ics|oft|msg|relanc\w*|tracking|send)\b/],
+  ['list',/\b(cree\w*|creer|faire|construi\w*|prepar\w*|make|build|create)\b.*\bliste?s?\b|\bliste de diffusion\b|\bmailing\b|\bcibl\w*/],
+  ['export',/\b(export\w*|excel|telecharg\w*|download|csv)\b/],
+  ['import',/\b(import\w*|master ?file|fichier source|charger)\b/],
+  ['dups',/\b(doublon\w*|duplicat\w*|faute\w*|typo\w*|qualite|quality)\b/],
+  ['stats',/\b(statisti\w*|graph\w*|tableau de bord|dashboard|chart\w*)\b/],
+  ['pw',/\b(mot de passe|password|mdp)\b/],
+  ['lock',/\b(verrouill\w*|lock\w*|deconnect\w*|logout|log out)\b/],
+  ['share',/\b(base partagee|partag\w*|synchro\w*|equipe|team)\b/],
+  ['photo',/\b(photo\w*|image\w*|illustration)\b/],
+  ['note',/\bnotes?\b/],
+  ['lang',/\b(anglais|english|francais|french|langue|language|traduire|translate)\b/],
+  ['search',/\b(cherch\w*|trouv\w*|recherch\w*|find|search)\b.*\b(personne|contact|entreprise|societe|fiche|someone|company|record)\b/]
+];
+function arnoBrain(q){
+  const n=' '+normName(q)+' ',has=re=>re.test(n);
+  const howQ=/^\s*(comment|how|ou |where|est ce que je peux|puis je|peut on|can i|je voudrais|je veux|je souhaite|j aimerais|i want|i d like|aide moi|help me)/.test(normName(q));
+  const intro=()=>({html:esc(arPick(t('arIntro')))});
+  /* conversation courante */
+  if(has(/^\s*(bonjour|salut|hello|hi|hey|coucou|bonsoir|good (morning|afternoon|evening)|yo)\s*$/)){const nm=(meName()||'').split(' ')[0];return[{html:esc((nm?t('arHelloName')(nm):t('arHelloAnon'))+' '),chips:arnoGreetChips()}]}
+  if(has(/\b(merci|thanks?|thank you|super|parfait|top|genial|great|perfect)\b/)&&n.trim().split(' ').length<=5)return[{html:esc(arPick(t('arThanks')))}];
+  if(has(/\b(au revoir|bye|a bientot|a plus|see you|ciao|bonne journee|bonne soiree)\b/))return[{html:esc(arPick(t('arBye')))}];
+  if(has(/\b(ca va|comment vas tu|comment allez vous|how are you|how s it going)\b/))return[{html:esc(arPick(t('arHow')))}];
+  if(has(/\b(robot|humain|human|bot|vraie personne|real person|ia|ai|intelligence artificielle)\b/))return[{html:esc(t('arBot'))}];
+  if(has(/\b(qui es tu|qui etes vous|tu es qui|t es qui|who are you|ton nom|your name|presente toi)\b/))return[{html:esc(t('arWho'))},arnoCan()];
+  if(has(/\b(que sais tu faire|que peux tu|tu sais faire quoi|what can you do|what do you do|aide|help|a quoi tu sers|fonctionnalites|features)\b/)&&!has(/\b(liste|list|invite|event|evenement)\b/))return[{html:esc(t('arWho'))},arnoCan()];
+  /* comment faire… */
+  if(howQ||!arnoHasEntity(q)){const h=AR_HELP.find(([,re])=>re.test(n));if(h){const H=t('arH')[h[0]];const adm=['import','dups'].includes(h[0])&&!ADMIN;
+    const ch=H[2]&&!adm?[[H[2],H[3]]]:null;return H[1]?[{html:esc(H[0])},{html:esc(H[1]),chips:ch}]:[{html:esc(H[0]),chips:ch}]}}
+  /* chiffres généraux, prochains et dernier événements */
+  if(has(/\b(prochain\w*|a venir|upcoming|next|futur\w*|prevu\w*|planned)\b/)&&has(/\b(evenement\w*|event\w*|rendez vous)\b/))return arnoUpcoming();
+  if(has(/\b(dernier|derniere|last|latest|recent)\b/)&&has(/\b(evenement\w*|event\w*)\b/)&&!arnoHasEntity(q)){const s=TOPS.slice().filter(s=>s.e.date&&s.e.date.slice(0,10)<=isoDay()).sort((a,b)=>b.e.date.localeCompare(a.e.date))[0];
+    if(s){const wq=lang==='fr'?`Qui était présent à « ${evName(s.e)} » ?`:`Who attended ${evName(s.e)}?`;return[intro(),{html:esc(t('arLast')(evName(s.e),numWhen(s.e),s.ins,s.pres)),chips:[[t('arBtnEv'),'ev:'+s.e.id],[wq,'ask:'+wq]]}]}}
+  if(has(/\b(combien|how many|nombre|total)\b/)&&!arnoHasEntity(q)&&!has(/\b(19|20)\d{2}\b/)){
+    return[{html:esc(t('arTotals')(fmtN(PEOPLE.filter(p=>!p.archived).length),fmtN(COMPANIES.length),fmtN(EVSTATS.length))),chips:[[t('arBtnStats'),'go:stats']]}]}
+  /* questions sur les données : moteur « Poser une question » */
+  const D=arnoData(arnoExpand(q));if(D)return D;
+  const h=AR_HELP.find(([,re])=>re.test(n));if(h){const H=t('arH')[h[0]];const ch=H[2]?[[H[2],H[3]]]:null;return H[1]?[{html:esc(H[0])},{html:esc(H[1]),chips:ch}]:[{html:esc(H[0]),chips:ch}]}
+  if(has(/\blangue|english|anglais\b/))return[{html:esc(t('arLangQ')),chips:[[t('arLangBtn'),'lang:'+(lang==='fr'?'en':'fr')]]}];
+  return[{html:esc(arPick(t('arDontKnow')))},{html:esc(t('arDontKnow2')),chips:arnoGreetChips()}];
+}
+function arnoCan(){return{html:`${esc(t('arCan'))}<ul>${t('arCanL').map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`,chips:arnoGreetChips()}}
+/* noms approchés : « la Matinale Fintech » → l'édition la plus récente (ou celle de l'année citée), « Coca cola » → « The Coca-Cola Company » */
+const AR_GEN=new Set(['groupe','group','banque','bank','capital','conseil','societe','company','compagnie','international','services','holding','partners','consulting','les','des','the','and','et','de','du','la','le','evenement','event','events','evenements','annuel','annual','diner','dinner','forum','soiree']);
+function arnoExpand(q){
+  const n=' '+normName(q)+' ';let P;try{P=askParse(q)}catch(_){return q}
+  const add=[];const years=P.years;
+  if(!P.evs.length){const cand=[];
+    TOPS.forEach(s=>{const hit=[evName(s.e),s.e.name].some(nm=>{const tk=normName(nm).split(' ').filter(w=>w&&!/^(19|20)\d{2}$/.test(w));
+      for(let i=0;i<tk.length-1;i++){const seq=tk.slice(i,i+2);if(seq.every(w=>AR_GEN.has(w)||w.length<3))continue;if(n.includes(' '+seq.join(' ')+' '))return true}return false});if(hit)cand.push(s)});
+    if(cand.length){const inY=years.length?cand.filter(s=>years.includes(yearOf(s.e))):[];const pick=(inY.length?inY:cand).slice().sort((a,b)=>(b.e.date||'').localeCompare(a.e.date||''));
+      if(pick[0]&&!years.length)add.push(evName(pick[0].e));else pick.forEach(s=>add.push(evName(s.e)))}}
+  if(!P.co.length){COMPANIES.forEach(c=>{const tk=normName(c.name).split(' ').filter(w=>w&&w!=='the'&&w!=='les'&&w!=='le'&&w!=='la');if(!tk.length||AR_GEN.has(tk[0])||tk[0].length<3)return;
+    for(let k=Math.min(3,tk.length);k>=1;k--){const s=tk.slice(0,k).join(' ');if(s.length>=5&&n.includes(' '+s+' ')){add.push(c.name);break}}})}
+  return add.length?q+' · '+add.join(' · '):q;
+}
+function arnoHasEntity(q){try{const P=askParse(arnoExpand(q));return!!(P.evs.length||P.co.length||P.pe.length||P.cm.length||P.years.length||P.rk||P.ctry)}catch(_){return false}}
+function arnoUpcoming(){
+  const td=isoDay(),L=[];const seen=new Set();
+  (typeof plList==='function'?plList():[]).forEach(P=>{const d=(P.meta.date||'').slice(0,10);if(d&&d>=td){const id=plEvId(P);seen.add(id);L.push({id,name:P.meta.name,d,n:plGuests(P).length})}});
+  EVSTATS.forEach(s=>{const d=(s.e.date||'').slice(0,10);if(d&&d>=td&&!seen.has(s.e.id)&&!s.e.gid)L.push({id:s.e.id,name:evName(s.e),d,n:s.ins})});
+  L.sort((a,b)=>a.d.localeCompare(b.d));
+  if(!L.length)return[{html:esc(t('arNoUp')),chips:[[t('arH').newev[2],'wizard']]}];
+  return[{html:esc(arPick(t('arFound')))},{html:`${esc(t('arUp')(L.length))}<ul class="ar-list">${L.slice(0,8).map(x=>`<li><button type="button" class="ar-link" data-open="event" data-id="${esc(x.id)}">${esc(x.name)}</button><small>${esc(numDate(x.d))}${x.n?` · ${x.n} ${lang==='fr'?'invités':'guests'}`:''}</small></li>`).join('')}</ul>`,chips:[[t('arBtnEvents'),'go:events']]}];
+}
+/* réponse calculée par le moteur existant, résumée façon conversation */
+function arnoData(q){
+  const P=askParse(q);const und0=P.evs.length||P.co.length||P.pe.length||P.cm.length||P.years.length||P.rk||P.ctry||(P.intent==='rank'&&P.dim);if(!und0)return null;
+  const d=document.createElement('div');d.innerHTML=askAnswer(q);const AP=ASK_LAST;const key='q'+(++ARNO.seq);ARNO.ctx[key]=AP;
+  const und=[...d.querySelectorAll('.ask-und .k')].map(x=>x.textContent.trim());
+  const out=[{html:esc(arPick(t('arIntro')))}];
+  if(und.length)out.push({html:`<span class="ar-und">${esc(t('arUnd'))}</span> ${und.map(u=>`<span class="ar-tag">${esc(u)}</span>`).join(' ')}`});
+  const big=(d.querySelector('.big')||{}).textContent||'',head=(d.querySelector('.head')||{}).textContent||'';
+  const rows=[...d.querySelectorAll('tr[data-open="person"]')],lines=[...d.querySelectorAll('.ask-lines li')];
+  const total=rows.length?(parseInt(String(big).replace(/\D/g,''),10)||rows.length):0;
+  let body='';
+  if(P.intent==='rank'&&lines.length){body=`<ol class="ar-list">${lines.slice(0,8).map(li=>`<li>${li.innerHTML.replace(/class="link"/g,'class="ar-link"')}</li>`).join('')}</ol>`}
+  else if(P.pe.length&&!P.co.length&&!P.cm.length){body=`${d.querySelector('.head')?d.querySelector('.head').innerHTML.replace(/class="link"/g,'class="ar-link"'):''}${lines.length?`<ul class="ar-list">${lines.slice(0,8).map(li=>`<li>${li.innerHTML}</li>`).join('')}</ul>${lines.length>8?`<p class="ar-more">${esc(t('arMore')(lines.length-8))}</p>`:''}`:''}`}
+  else if(rows.length){const shown=rows.slice(0,8);
+    body=`${big?`<div class="ar-big"><b>${esc(big)}</b><span>${esc(head.replace(new RegExp('^\\s*'+big.replace(/[^0-9]/g,'')+'\\s*'),''))}</span></div>`:''}<ul class="ar-list">${shown.map(tr=>{const c=tr.querySelectorAll('td');return`<li><button type="button" class="ar-link" data-open="person" data-id="${esc(tr.dataset.id)}">${esc((c[0]?c[0].textContent:'')+' '+(c[1]?c[1].textContent.trim():''))}</button>${c[2]&&c[2].textContent?`<small>${esc(c[2].textContent)}</small>`:''}</li>`}).join('')}</ul>${total>shown.length?`<p class="ar-more">${esc(t('arMore')(total-shown.length))}</p>`:''}`}
+  else if(big){body=`<div class="ar-big"><b>${esc(big)}</b><span>${esc(head)}</span></div>`}
+  else{const h=(d.querySelector('.head')||{}).textContent;body=esc(h||t('arNobody'))}
+  if(!rows.length&&!lines.length&&(!big||big.trim()==='0')&&(P.status||P.intent==='who'))body=`${esc(t('arNobody'))}${head?`<p class="ar-more">${esc(head.replace(/^\s*0\s*\S+\s*·\s*/,''))}</p>`:''}`;
+  out.push({html:esc(arPick(t('arFound')))},{html:body});
+  /* conseil : l'outil adapté */
+  if(P.pe.length&&!P.co.length)out.push({html:esc(t('arTipFiche'))});
+  else if(P.intent==='rank'||P.intent==='rate')out.push({html:esc(t('arTipStats')),chips:[[t('arBtnStats'),'go:stats']]});
+  else out.push({html:esc(t('arTipList')),chips:[[t('arBtnList'),'list:'+key]]});
+  return out;
+}
+/* présence : après connexion seulement ; la conversation disparaît au verrouillage */
+function arnoShow(on){arnoMount();$('arno').hidden=!on;document.body.classList.toggle('arno-on',on);if(!on){arnoToggle(false);arnoReset(false);$('arPeek').hidden=true}
+  else{arnoTexts();if(!ARNO.peeked){ARNO.peeked=true;setTimeout(()=>{if(!ARNO.open&&!$('arno').hidden){$('arPeek').hidden=false;setTimeout(()=>{$('arPeek').hidden=true},7000)}},2500)}}}
+{const _ml3=meLine;meLine=function(){const r=_ml3.apply(this,arguments);try{arnoShow(!!CRYPTO_KEY&&$('lock').hidden)}catch(_){}return r}}
+{const _lk3=lockApp;lockApp=async function(){try{arnoShow(false);ARNO.peeked=false}catch(_){}return _lk3.apply(this,arguments)}}
+document.querySelectorAll('[data-lang]').forEach(b=>b.addEventListener('click',()=>{try{arnoTexts();arnoRender()}catch(_){}}));
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&ARNO.open&&document.activeElement&&document.activeElement.closest&&document.activeElement.closest('#arno'))arnoToggle(false)});
 
 if(KXD){
   const I=KXD.info,D=I.dirs;
