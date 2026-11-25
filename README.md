@@ -301,11 +301,17 @@ Une fois connecté, **Arno** attend en bas à droite de l'écran (bulle avec sa 
 - un clic sur sa photo ouvre son **profil**, le crayon démarre une **nouvelle conversation**, la flèche réduit la fenêtre.
 
 **Ce qu'il sait faire**
-- **Répondre sur vos données**, en français ou en anglais, même avec un nom approximatif : « Qui de chez Coca-Cola a participé à un évent en 2025 ? », « Qui a refusé la Matinale Fintech ? », « Historique de Sophie Bernard », « Quelles entreprises viennent le plus ? », « Combien de contacts ? », « Quels sont les prochains événements ? ». Il montre ce qu'il a compris (entreprise, année, statut…), donne le résultat (noms cliquables qui ouvrent les fiches), puis propose l'outil pour aller plus loin, par exemple **Ouvrir dans « Créer une liste »** avec les critères déjà remplis.
+- **Répondre sur vos données**, en français ou en anglais : « Qui de chez Coca-Cola a participé à un évent en 2025 ? », « Qui a refusé la Matinale Fintech ? », « Historique de Sophie Bernard », « Quelles entreprises viennent le plus ? », « Quels sont les prochains événements ? ». Il répond par une phrase (« 2 personnes de chez Bernard Avocats sont venues à un événement en 2026 : »), avec les noms cliquables, puis propose l'outil pour aller plus loin (**Ouvrir dans « Créer une liste »** avec les critères déjà remplis, Statistiques…).
+- **Demander plutôt que deviner** :
+  - nom mal écrit ou incomplet → « Vouliez-vous dire « Bernard Avocats » ou plutôt « Sophie Bernard » ? » (fautes de frappe, lettres inversées, écriture phonétique comme « fintek ») ; s'il est presque sûr, il le dit : « Je pense que vous parlez de « Ixor Conseil » » ;
+  - événement qui revient chaque année → « Il y a plusieurs éditions… Laquelle vous intéresse ? » ;
+  - un nom seul (« Ixor », « 2025 ») → « Que voulez-vous savoir sur Ixor Conseil ? » avec les questions possibles ;
+  - rien de reconnu → « Vous cherchez plutôt : une personne, une entreprise, un événement, de l'aide ? », puis « Quel est son nom ? Même approximatif ».
+- **Suivre la conversation** : après une réponse, « et en 2025 ? », « et les absents ? », « et chez Ixor ? » reprennent la question précédente.
 - **Expliquer l'outil** : créer une liste, ajouter des invités, créer un événement, suivre les invitations, exporter, importer la master file, doublons, mot de passe, verrouillage, base partagée, photos, notes, langue — chaque fois avec un bouton qui y mène.
 - **Discuter simplement** : bonjour, merci, au revoir… Si on lui demande s'il est un robot, il répond honnêtement qu'il est un assistant automatique.
 
-**Il ne cache jamais rien** : fermé, la page garde une marge en bas pour que la bulle ne recouvre aucune information ; ouvert sur un grand écran, il prend sa place à droite et la page (et les fiches) se décalent vers la gauche ; sur un petit écran, il s'ouvre en plein écran et se ferme d'un geste.
+**Il ne gêne pas la navigation** : la fenêtre flotte en bas à droite sans décaler la page (la page garde une marge en bas pour que la bulle ne recouvre rien). Ouvrir une fiche ou une page depuis Arno réduit la fenêtre en bulle (« Je reste là… ») et la fiche passe au premier plan ; la conversation est conservée. Rouvert pendant qu'une fiche est affichée, Arno se place à côté de la fiche quand l'écran est assez large. Sur téléphone, il s'ouvre en plein écran.
 
 **Confidentialité** : Arno fonctionne entièrement sur ce poste, sans intelligence artificielle en ligne ni connexion réseau. La conversation n'est pas enregistrée et s'efface au verrouillage.
 
