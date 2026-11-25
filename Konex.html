@@ -768,6 +768,7 @@ body.v-lists #stats{display:none!important}
 .ar-list{list-style:none;padding:0!important}.ar-list li{display:flex;flex-direction:column;padding:5px 0;border-bottom:1px solid #EEF2F0}.ar-list li:last-child{border:0}
 ol.ar-list{counter-reset:arn}ol.ar-list li{counter-increment:arn;padding-left:24px;position:relative}ol.ar-list li::before{content:counter(arn);position:absolute;left:0;top:6px;width:18px;height:18px;border-radius:50%;background:var(--green-light);color:var(--green-dark);font-size:11px;font-weight:700;display:grid;place-items:center}
 .ar-list small{color:var(--muted);font-size:12.5px}
+.ar-list li{display:block}.ar-list li small{display:block}.ar-list li>span,.ar-list li>b{display:inline}.ar-list li [class*="tag"],.ar-list li .st{display:inline-block;width:auto;margin-left:4px;padding:1px 8px}
 .ar-link,.ar-msg .link{background:none;border:0;padding:0;font:inherit;font-weight:600;color:var(--green-dark);cursor:pointer;text-align:left;text-decoration:underline;text-decoration-color:rgba(0,107,66,.3);text-underline-offset:2px}
 .ar-big{display:flex;flex-direction:column;gap:2px;margin-bottom:4px}.ar-big b{font-size:26px;color:var(--green-dark);line-height:1.1}.ar-big span{font-size:13px;color:var(--muted)}
 .ar-more{margin:6px 0 0;color:var(--muted);font-size:12.5px}
@@ -786,22 +787,14 @@ ol.ar-list{counter-reset:arn}ol.ar-list li{counter-increment:arn;padding-left:24
 .ar-foot textarea:focus{border-color:var(--green);background:#fff}
 .ar-send{width:42px;height:42px;flex:none;border-radius:50%;border:0;background:#D5DED9;color:#fff;cursor:pointer;display:grid;place-items:center;transition:background .15s,transform .15s}
 .ar-send.on{background:var(--green)}.ar-send.on:hover{transform:scale(1.07)}
-/* ne jamais rien cacher : fermé, une marge en bas ; ouvert, la page se décale vers la gauche */
+/* ne jamais rien cacher : la page garde une marge en bas pour la bulle ; la fenêtre flotte sans décaler la page */
 body.arno-on main{padding-bottom:110px}
 body.arno-on .drawer .d-body{padding-bottom:100px}
-@media (min-width:1101px){
-  body.arno-open .content{margin-right:412px}
-  body.arno-open .drawer{right:412px}
-  body.arno-open .drawer.pg{right:412px}
-  body.arno-open .toast{left:calc(50% - 206px)}
-}
-@media (min-width:701px) and (max-width:1100px){
-  .ar-win{width:350px;right:10px;top:10px;bottom:10px;max-height:none}
-  body.arno-open .content{margin-right:370px}
-  body.arno-open .drawer,body.arno-open .drawer.pg{right:370px;left:auto;width:min(580px,calc(100vw - 380px))}
-  body.arno-open .toast{left:calc(50% - 185px)}
-}
-@media (max-width:700px){.ar-win{left:0;right:0;top:0;bottom:0;width:auto;max-height:none;border-radius:0}}
+.ar-win{top:auto;height:min(640px,calc(100vh - 40px));max-height:none;right:20px;bottom:20px}
+/* une fiche est ouverte : la fenêtre se place à côté de la fiche quand l'écran le permet */
+@media (min-width:1320px){body.drawer-on:not(.pgmode) .ar-win{right:calc(min(580px,100vw) + 20px)}}
+@media (max-width:700px){.ar-win{left:0;right:0;top:0;bottom:0;width:auto;height:auto;border-radius:0}}
+.ar-sent{margin:0 0 6px;font-weight:600}
 @media print{.arno{display:none}}
 .ib-p{border-top-color:#7B4FB5}.ib-p .ib-h span{background:#7B4FB5}.ib-p .ib-h{color:#5E3A8F}
 .ib-p .note-form{margin-top:4px}
@@ -6502,7 +6495,7 @@ function askAnswer(q){
   }
   // une personne
   if(P.pe.length&&!P.co.length&&!P.cm.length){
-    return wrap(P.pe.map(p=>{const evIds=P.evs.map(s=>s.e.id),units=[...p.units,...p.niUnits].filter(u=>(!evIds.length||evIds.includes(u.ev.id)||(u.ev.gid&&evIds.includes(u.ev.gid)))&&yOk(u));
+    return wrap(P.pe.map(p=>{const evIds=P.evs.map(s=>s.e.id),units=[...p.units,...p.niUnits].filter(u=>(!evIds.length||evIds.includes(u.ev.id)||(u.ev.gid&&evIds.includes(u.ev.gid)))&&yOk({e:u.ev}));
       const missing=P.evs.filter(s=>!units.some(u=>u.ev.id===s.e.id));
       return `<div class="head"><button class="link" data-open="person" data-id="${esc(p.id)}"><b>${esc(p.full)}</b></button>${p.societe?' · '+esc(p.societe):''} — ${t('presOf')(p.pres,p.nReg)} (${pct(p.pres,p.nReg)} %)</div>
         <ul class="ask-lines">${units.sort(byEvDate).map(u=>`<li>${numWhen(u.ev)} — <b>${esc(evName(u.ev))}</b> : ${tagH(u)}${u.subs&&u.subs.length&&u.cat!=='none'?subsLine(u.subs):''}</li>`).join('')}${missing.map(s=>`<li>${numWhen(s.e)} — <b>${esc(evName(s.e))}</b> : ${tagH({cat:'none'})}</li>`).join('')}</ul>`}).join(''));
@@ -12289,6 +12282,260 @@ function arnoShow(on){arnoMount();$('arno').hidden=!on;document.body.classList.t
 document.querySelectorAll('[data-lang]').forEach(b=>b.addEventListener('click',()=>{try{arnoTexts();arnoRender()}catch(_){}}));
 {const _of=openFiche;openFiche=function(){if(ARNO.open&&innerWidth<=700)arnoToggle(false);return _of.apply(this,arguments)}}
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&ARNO.open&&document.activeElement&&document.activeElement.closest&&document.activeElement.closest('#arno'))arnoToggle(false)});
+
+/* =========================================================
+   ARNO 2 — un vrai dialogue : il précise avant de chercher
+   - « Vouliez-vous dire « A » ou plutôt « B » ? » quand un nom est mal écrit ou approximatif ;
+   - « Quelle édition ? » quand un événement revient chaque année ;
+   - « Que voulez-vous savoir sur … ? » quand on ne donne qu'un nom ;
+   - suite de conversation : « et en 2025 ? », « et les absents ? », « et chez Ixor ? » ;
+   - réponses en phrases ; ouvrir une fiche réduit la fenêtre (la fiche passe toujours devant).
+   ========================================================= */
+Object.assign(L.fr,{
+  arDid:xs=>xs.length===1?`Vouliez-vous dire « ${xs[0]} » ?`:`Vouliez-vous dire ${xs.slice(0,-1).map(x=>`« ${x} »`).join(', ')} ou plutôt « ${xs[xs.length-1]} » ?`,
+  arNoneOf:'Aucun de ceux-là',arAssume:x=>`Je pense que vous parlez de « ${x} ».`,
+  arEdQ:f=>`Il y a plusieurs éditions de « ${f} ». Laquelle vous intéresse ?`,arEdAll:'Toutes les éditions',
+  arWhat:n=>`Que voulez-vous savoir sur ${n} ?`,arWhatY:y=>`Que voulez-vous savoir sur ${y} ?`,
+  arOpenCo:'Ouvrir sa fiche',arOpenEv:'Ouvrir l’événement',
+  arCoQ:(n,y)=>[`Qui de chez ${n} est venu à un événement ?`,`Qui de chez ${n} a été invité en ${y} ?`,`Qui de chez ${n} n’est jamais venu ?`,`Quel est le taux de présence de ${n} ?`],
+  arEvQ:n=>[`Qui était présent à « ${n} » ?`,`Qui était absent à « ${n} » ?`,`Qui a refusé « ${n} » ?`,`Combien d’invités à « ${n} » ?`],
+  arYQ:y=>[`Qui est venu à un événement en ${y} ?`,`Quelles entreprises sont venues le plus en ${y} ?`,`Quels événements ont eu le plus de présents en ${y} ?`,`Quel est le taux de présence en ${y} ?`],
+  arCmQ:n=>[`Quels clients de ${n} sont venus à un événement ?`,`Quels clients de ${n} sont absents ?`],
+  arSeekQ:'Je ne suis pas sûr de bien comprendre. Pour vous aider, vous cherchez plutôt :',
+  arSeek:{pe:'Une personne',co:'Une entreprise',ev:'Un événement',help:'De l’aide sur l’outil'},
+  arAskName:{pe:'Quel est son nom ? Même approximatif, je m’en charge.',co:'Quelle entreprise ? Un morceau du nom suffit.',ev:'Quel événement ? Un mot du nom suffit.'},
+  arNotFound:{pe:x=>`Je ne trouve personne qui ressemble à « ${x} ». Vérifiez l’orthographe, ou essayez seulement le nom de famille.`,co:x=>`Je ne trouve pas d’entreprise qui ressemble à « ${x} ». Essayez une partie du nom.`,ev:x=>`Je ne trouve pas d’événement qui ressemble à « ${x} ». Essayez un autre mot du nom.`},
+  arCancel:'Laisser tomber',arCancelled:'Pas de souci. Posez-moi une autre question quand vous voulez.',
+  arBack:'Je reste là. Cliquez sur moi pour reprendre la conversation.',
+  arFollow:'Je reprends votre question précédente.',
+  arRankH:'Voici le classement (présences / invitations) :',arSee:'Voir le détail',
+  arP:(n)=>n===0?'Personne':n===1?'1 personne':`${n} personnes`,
+  arV:{present:['est venue','sont venues'],registered:['était inscrite','étaient inscrites'],absent:['n’est pas venue','ne sont pas venues'],noshow:['n’est pas venue','ne sont pas venues'],refus:['a refusé','ont refusé'],noresp:['n’a pas répondu','n’ont pas répondu'],none:['n’a pas été invitée','n’ont pas été invitées'],never:['n’est jamais venue','ne sont jamais venues'],'':['a été invitée','ont été invitées']},
+  arFrom:c=>` de chez ${c}`,arByCmo:c=>` suivie(s) par ${c}`,arAtEv:e=>` à ${e}`,arAtAny:' à un événement',arIn:y=>` en ${y}`,arAnd:' ou ',arEvN:n=>`${n} événements`,
+  arStW:{present:'présents',registered:'inscrits',absent:'absents',noshow:'pas venus',refus:'refusé',noresp:'sans réponse',none:'pas invités',never:'jamais venus'}
+});
+Object.assign(L.en,{
+  arDid:xs=>xs.length===1?`Did you mean “${xs[0]}”?`:`Did you mean ${xs.slice(0,-1).map(x=>`“${x}”`).join(', ')} or rather “${xs[xs.length-1]}”?`,
+  arNoneOf:'None of these',arAssume:x=>`I think you mean “${x}”.`,
+  arEdQ:f=>`There are several editions of “${f}”. Which one?`,arEdAll:'All editions',
+  arWhat:n=>`What would you like to know about ${n}?`,arWhatY:y=>`What would you like to know about ${y}?`,
+  arOpenCo:'Open its record',arOpenEv:'Open the event',
+  arCoQ:(n,y)=>[`Who from ${n} attended an event?`,`Who from ${n} was invited in ${y}?`,`Who from ${n} never attended?`,`What is the attendance rate of ${n}?`],
+  arEvQ:n=>[`Who attended ${n}?`,`Who was absent at ${n}?`,`Who declined ${n}?`,`How many invited to ${n}?`],
+  arYQ:y=>[`Who attended an event in ${y}?`,`Which companies attended the most in ${y}?`,`Which events had the most attendees in ${y}?`,`What is the attendance rate in ${y}?`],
+  arCmQ:n=>[`Which clients of ${n} attended an event?`,`Which clients of ${n} were absent?`],
+  arSeekQ:'I’m not sure I understand. To help you, are you looking for:',
+  arSeek:{pe:'A person',co:'A company',ev:'An event',help:'Help with the tool'},
+  arAskName:{pe:'What is their name? Even roughly, I’ll handle it.',co:'Which company? Part of the name is enough.',ev:'Which event? One word of the name is enough.'},
+  arNotFound:{pe:x=>`I can’t find anyone like “${x}”. Check the spelling, or try the last name only.`,co:x=>`I can’t find a company like “${x}”. Try part of the name.`,ev:x=>`I can’t find an event like “${x}”. Try another word of the name.`},
+  arCancel:'Never mind',arCancelled:'No problem. Ask me anything else whenever you like.',
+  arBack:'I’m still here. Click me to pick up the conversation.',
+  arFollow:'I’m building on your previous question.',
+  arRankH:'Here is the ranking (attended / invited):',arSee:'See details',
+  arP:(n)=>n===0?'Nobody':n===1?'1 person':`${n} people`,
+  arV:{present:['came','came'],registered:['was registered','were registered'],absent:['did not come','did not come'],noshow:['did not come','did not come'],refus:['declined','declined'],noresp:['did not answer','did not answer'],none:['was not invited','were not invited'],never:['never came','never came'],'':['was invited','were invited']},
+  arFrom:c=>` from ${c}`,arByCmo:c=>` followed by ${c}`,arAtEv:e=>` to ${e}`,arAtAny:' to an event',arIn:y=>` in ${y}`,arAnd:' or ',arEvN:n=>`${n} events`,
+  arStW:{present:'attended',registered:'registered',absent:'absent',noshow:'did not attend',refus:'declined',noresp:'no answer',none:'not invited',never:'never attended'}
+});
+/* --- index des noms connus (événements, entreprises, personnes, CMO) --- */
+let AR_IDX=null,AR_IDXK='';
+const arKey=s=>normName(s).replace(/^(the|les|le|la|l|de|du|des)\s+/,'');
+function arIdx(){
+  const k=[PEOPLE.length,EVSTATS.length,COMPANIES.length,CMOS.length,lang].join('|');if(AR_IDX&&AR_IDXK===k)return AR_IDX;
+  const L=[],add=(cat,name,id,x)=>{const key=arKey(name);if(key.length>=3)L.push({cat,name,id,key,tk:key.split(' '),...(x||{})})};
+  EVSTATS.forEach(s=>{const x={fam:famKey(s.e.name),y:yearOf(s.e),d:s.e.date||'',show:evName(s.e)};add('ev',evName(s.e),s.e.id,x);if(s.e.name!==evName(s.e))add('ev',s.e.name,s.e.id,x)});
+  COMPANIES.forEach(c=>add('co',c.name,c.id,{show:c.name}));
+  PEOPLE.forEach(p=>{if(p.archived||!p.nom)return;const show=p.full||(p.prenom+' '+p.nom);if(p.prenom){add('pe',p.prenom+' '+p.nom,p.id,{show});add('pe',p.nom+' '+p.prenom,p.id,{show})}else add('pe',p.nom,p.id,{show})});
+  CMOS.forEach(c=>add('cm',c.name,c.id,{show:c.name}));
+  AR_IDX=L;AR_IDXK=k;return L;
+}
+/* mots de la question qui ne sont ni des mots courants ni un nom déjà reconnu */
+const AR_STOP=new Set(('qui que quoi quel quelle quels quelles lequel laquelle de du des la le les l d a au aux en et ou un une chez pour par sur dans avec sans est sont etait etaient ete ont avait avaient il elle ils elles on nous vous je tu me moi mon ma mes ton ta tes son sa ses leur leurs ce cet cette ces y se si ne pas plus moins tres bien aussi encore deja jamais toujours tout tous toute toutes '+
+  'the of to in at from for who what which how many much did does do is are was were has have had been be and or with without all any some me my our your their this that these those there please '+
+  'svp stp merci bonjour hello montre montrer donne donner affiche afficher trouve trouver cherche chercher liste lister show give find list tell dis dire voir peux pouvez peut veux voudrais aimerais '+
+  'personne personnes people contact contacts client clients entreprise entreprises societe societes company companies evenement evenements event events evenment evenements edition editions '+
+  'annee annees year years mois month fois times combien nombre total taux rate pourcentage classement ranking top historique history dernier derniere last prochain prochaine next '+
+  'cmo cmos interne internes externe externes internal external vip present presents presente presentes absent absents absente absentes venu venus venue venues venir came come attended attend attendees '+
+  'participe participes participer participants participant participation assiste assister invite invites invitee invitees inviter invited inscrit inscrits inscrite inscrites registered '+
+  'refuse refuses refusee refusees refus declined decline reponse repondu answer answered most plus le meilleurs meilleures best ete etre fait faire').split(' '));
+function arTokens(q){ /* jetons normalisés, avec la position du mot d'origine */
+  const words=String(q).split(/\s+/).filter(Boolean),out=[];
+  words.forEach((w,wi)=>normName(w).split(' ').filter(Boolean).forEach(tk=>out.push({tk,wi})));return{words,toks:out};
+}
+function arRuns(q,P){
+  const {toks}=arTokens(q),known=new Set();
+  [...P.evs.flatMap(s=>[evName(s.e),s.e.name]),...P.co.map(c=>c.name),...P.pe.map(p=>p.full),...P.cm.map(c=>c.name)].forEach(x=>normName(x).split(' ').forEach(w=>known.add(w)));
+  const runs=[];let cur=[];
+  toks.forEach(o=>{const w=o.tk,unk=w.length>=3&&!AR_STOP.has(w)&&!known.has(w)&&!/^\d+$/.test(w);if(unk)cur.push(o);else{if(cur.length)runs.push(cur);cur=[]}});
+  if(cur.length)runs.push(cur);return runs;
+}
+function arLev(a,b){if(a===b)return 0;const m=a.length,n=b.length;if(!m)return n;if(!n)return m;const v=new Array(n+1);for(let j=0;j<=n;j++)v[j]=j;
+  for(let i=1;i<=m;i++){let p=v[0];v[0]=i;for(let j=1;j<=n;j++){const tm=v[j];v[j]=Math.min(v[j]+1,v[j-1]+1,p+(a[i-1]===b[j-1]?0:1));p=tm}}return v[n]}
+function arOsa(a,b){const m=a.length,n=b.length,d=[];for(let i=0;i<=m;i++){d[i]=[i]}for(let j=0;j<=n;j++)d[0][j]=j;
+  for(let i=1;i<=m;i++)for(let j=1;j<=n;j++){const c=a[i-1]===b[j-1]?0:1;d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+c);if(i>1&&j>1&&a[i-1]===b[j-2]&&a[i-2]===b[j-1])d[i][j]=Math.min(d[i][j],d[i-2][j-2]+1)}return d[m][n]}
+const arPho=s=>s.replace(/ph/g,'f').replace(/qu|ck|ch|c(?=[aou ]|$)|q/g,'k').replace(/c/g,'s').replace(/y/g,'i').replace(/h/g,'').replace(/([a-z])\1+/g,'$1').replace(/(e|s|x|t)(?= |$)/g,'');
+const arSim=(a,b)=>{const s1=1-arOsa(a,b)/Math.max(a.length,b.length),pa=arPho(a),pb=arPho(b);return Math.max(s1,pa&&pb?(1-arOsa(pa,pb)/Math.max(pa.length,pb.length))*.97:0)};
+/* noms qui ressemblent aux mots inconnus (fautes de frappe, nom partiel, ordre prénom/nom) */
+function arFuzzy(runs,cats){
+  const idx=arIdx().filter(e=>!cats||cats.includes(e.cat)),best=new Map();
+  runs.forEach(run=>{for(let i=0;i<run.length;i++)for(let k=1;k<=Math.min(4,run.length-i);k++){
+    const part=run.slice(i,i+k),g=part.map(o=>o.tk).join(' ');if(g.length<4)continue;
+    idx.forEach(e=>{if(Math.abs(e.key.length-g.length)>Math.max(g.length,e.key.length)*.6&&e.tk.length<=k)return;
+      let s=arSim(g,e.key);
+      if(e.tk.length>k){const pre=e.tk.slice(0,k).join(' ');if(!e.tk.slice(0,k).every(w=>AR_GEN.has(w)))s=Math.max(s,arSim(g,pre)*.94)}
+      if((e.cat==='ev'||e.cat==='co'||e.cat==='pe')&&e.tk.length>k)for(let j=1;j+k<=e.tk.length;j++){const sub=e.tk.slice(j,j+k);if(sub.every(w=>AR_GEN.has(w)||w.length<3))continue;s=Math.max(s,arSim(g,sub.join(' '))*(e.cat==='pe'?.9:.92))}
+      const min=g.length<=5?.8:g.length<=8?.74:.68;
+      if(s>=min){s=Math.min(1,s+.05*(k-1));const id=e.cat+':'+e.id,o=best.get(id);if(!o||s>o.s)best.set(id,{...e,s,k,from:part[0].wi,to:part[part.length-1].wi,g})}})}});
+  let L=[...best.values()].sort((a,b)=>b.s-a.s||b.k-a.k||(b.d||'').localeCompare(a.d||''));
+  /* un nom qui couvre plus de mots l'emporte sur ceux qui n'en reprennent qu'un morceau */
+  if(L.length&&L[0].k>1){const T=L[0];L=L.filter(c=>c===T||!(c.from>=T.from&&c.to<=T.to&&c.k<T.k&&c.s<T.s+.05))}
+  return L;
+}
+/* remplace les mots approximatifs par le nom choisi, dans la phrase d'origine */
+function arReplace(q,c,name){const {words}=arTokens(q);return[...words.slice(0,c.from),name,...words.slice(c.to+1)].join(' ')}
+const arHasEnt=P=>!!(P.evs.length||P.co.length||P.pe.length||P.cm.length);
+const AR_QW=/\b(qui|combien|quel\w*|liste\w*|lister|montre\w*|donne\w*|affiche\w*|who|how|which|what|list|show|give|taux|rate|pourcentage|historique|history|venu\w*|present\w*|absent\w*|invit\w*|inscri\w*|refus\w*|particip\w*|attend\w*|declin\w*|classement|ranking|plus|most|jamais|never)\b/;
+const arEvGroups=cands=>{const g={};cands.filter(c=>c.cat==='ev').forEach(c=>{(g[c.fam]=g[c.fam]||[]).push(c)});return g};
+function arEditions(fam,years){const L=TOPS.filter(s=>famKey(s.e.name)===fam);return years&&years.length?L.filter(s=>years.includes(yearOf(s.e))):L}
+const arChipsQ=qs=>qs.map(x=>[x,'ask:'+x]);
+function arWhatCo(c){const y=new Date().getFullYear();return[{html:esc(t('arWhat')(c.name)),chips:[...arChipsQ(t('arCoQ')(c.name,y)),[t('arOpenCo'),'open:company:'+c.id]]}]}
+function arWhatEv(s){const n=evName(s.e);return[{html:esc(t('arWhat')(`« ${n} »`)),chips:[...arChipsQ(t('arEvQ')(n)),[t('arOpenEv'),'ev:'+s.e.id]]}]}
+function arAskEditions(q,fam,list,gramCand){
+  const L=list.slice().sort((a,b)=>(b.e.date||'').localeCompare(a.e.date||'')),nm=evName(L[0].e).replace(/\s*[–-]?\s*\b(19|20)\d{2}\b.*$/,'').trim()||evName(L[0].e);
+  const mk=name=>gramCand?arReplace(q,gramCand,name):q+' · '+name;
+  return[{html:esc(t('arEdQ')(nm)),chips:[...L.slice(0,6).map(s=>[`${evName(s.e)}${s.e.date?' · '+numWhen(s.e):''}`,'ask:'+mk(evName(s.e))]),[t('arEdAll'),'ask:'+(gramCand?arReplace(q,gramCand,L.map(s=>evName(s.e)).join(' · ')):q+' · '+L.map(s=>evName(s.e)).join(' · '))]]}];
+}
+function arSeek(){return[{html:esc(t('arSeekQ')),chips:[[t('arSeek').pe,'seek:pe'],[t('arSeek').co,'seek:co'],[t('arSeek').ev,'seek:ev'],[t('arSeek').help,'ask:'+t('arQs').help]]}]}
+/* réponse à « Quel est son nom ? » : on cherche seulement dans la bonne catégorie */
+function arSlot(cat,q){
+  const P=askParse(q),catOf={pe:'pe',co:'co',ev:'ev'}[cat];
+  const direct=cat==='pe'?P.pe:cat==='co'?P.co:P.evs.map(s=>s);
+  const tk0=arTokens(q).toks.filter(o=>o.tk.length>=2&&!AR_STOP.has(o.tk)),runs=tk0.length?[tk0]:[];
+  const C=direct.length?[]:arFuzzy(runs,[catOf]);
+  const ok=direct.length?direct.map(o=>cat==='ev'?{id:o.e.id,show:evName(o.e),fam:famKey(o.e.name)}:{id:o.id,show:o.full||o.name}):C.map(c=>({id:c.id,show:c.show,fam:c.fam,s:c.s}));
+  const uniq=[];ok.forEach(o=>{if(!uniq.some(u=>u.id===o.id))uniq.push(o)});
+  if(!uniq.length){ARNO.expect=cat;return[{html:esc(t('arNotFound')[cat](q)),chips:[[t('arCancel'),'cancel']]}]}
+  const go=o=>cat==='pe'?(lang==='fr'?`Historique de ${o.show}`:`History of ${o.show}`):o.show;
+  if(cat==='ev'){const fams=[...new Set(uniq.map(o=>o.fam))];if(fams.length===1){const eds=arEditions(fams[0],[]);if(eds.length>1)return arAskEditions(q,fams[0],eds,null).map(m=>({...m,chips:m.chips.map(([l,a])=>[l,'ask:'+a.slice(4).replace(/^.*? · /,'')])}))}}
+  if(uniq.length===1||(uniq[0].s&&uniq[1]&&uniq[0].s-uniq[1].s>.12))return arnoBrain(go(uniq[0]));
+  return[{html:esc(t('arDid')(uniq.slice(0,3).map(o=>o.show))),chips:[...uniq.slice(0,3).map(o=>[o.show,'ask:'+go(o)]),[t('arNoneOf'),'seek:'+cat]]}];
+}
+/* suite de conversation : « et en 2025 ? », « et les absents ? », « et chez Ixor ? » */
+function arFollowQ(q,P,L){
+  const keep=[],nq=q.replace(/^\s*(et|and|puis|also|aussi|maintenant|now)\b[\s,]*/i,'');
+  let evs=P.evs.length?[]:L.evs;
+  if(P.years.length&&evs.length){const fam=famKey(evs[0].e.name),eds=arEditions(fam,P.years);evs=eds.length?eds:[]}
+  evs.forEach(s=>keep.push(evName(s.e)));
+  if(!P.co.length)L.co.forEach(c=>keep.push(c.name));if(!P.pe.length)L.pe.forEach(p=>keep.push(p.full));if(!P.cm.length)L.cm.forEach(c=>keep.push(c.name));
+  if(!P.years.length&&!evs.length)L.years.forEach(y=>keep.push(y));
+  const st=!P.status&&L.status?(t('arStW')[L.status]||''):'';
+  const qw=AR_QW.test(' '+normName(nq)+' ')?'':(lang==='fr'?'qui':'who');
+  return[qw,nq,st,...keep].filter(Boolean).join(' · ');
+}
+/* phrase de réponse, comme le dirait un collègue */
+function arSentence(P,n){
+  const V=t('arV')[P.status||'']||t('arV')[''],co=P.co.map(c=>c.name).join(t('arAnd')),cm=P.cm.map(c=>c.name).join(t('arAnd'));
+  const ev=P.evs.length?(P.evs.length>2?t('arEvN')(P.evs.length):P.evs.map(s=>lang==='fr'?`« ${evName(s.e)} »`:`“${evName(s.e)}”`).join(t('arAnd'))):'';
+  let s=t('arP')(n)+(co?t('arFrom')(co):'')+(cm?t('arByCmo')(cm):'')+' '+V[n>1?1:0];
+  s+=ev?(P.status==='refus'?' '+ev:t('arAtEv')(ev)):(P.status==='refus'?'':t('arAtAny'));
+  if(P.years.length&&!P.evs.length)s+=t('arIn')(P.years.join(t('arAnd')));
+  return s+(n?' :':'.');
+}
+arnoData=function(q){
+  const P=askParse(q);if(!(arHasEnt(P)||P.years.length||P.rk||P.ctry||(P.intent==='rank'&&P.dim)))return null;
+  const d=document.createElement('div');d.innerHTML=askAnswer(q);const key='q'+(++ARNO.seq);ARNO.ctx[key]=ASK_LAST;ARNO.last={P,q};
+  const und=[...d.querySelectorAll('.ask-und .k')].map(x=>x.textContent.trim());
+  const big=((d.querySelector('.big')||{}).textContent||'').trim(),headEl=d.querySelector('.head'),head=headEl?headEl.textContent.trim():'';
+  const rows=[...d.querySelectorAll('tr[data-open="person"]')],lines=[...d.querySelectorAll('.ask-lines li')];
+  const out=[{html:esc(arPick(t('arIntro')))}];
+  if(und.length)out.push({html:`<span class="ar-und">${esc(t('arUnd'))}</span> ${und.map(u=>`<span class="ar-tag">${esc(u)}</span>`).join(' ')}`});
+  const stats=head.replace(/^\s*\d[\d\s ]*\S*\s*·\s*/,'');
+  let body;
+  if(P.intent==='rank'&&lines.length)body=`${esc(t('arRankH'))}<ol class="ar-list">${lines.slice(0,8).map(li=>`<li>${li.innerHTML.replace(/class="link"/g,'class="ar-link"')}</li>`).join('')}</ol>`;
+  else if(P.pe.length&&!P.co.length&&!P.cm.length)body=`${headEl?headEl.innerHTML.replace(/class="link"/g,'class="ar-link"'):''}${lines.length?`<ul class="ar-list">${lines.slice(0,8).map(li=>`<li>${li.innerHTML.replace(/class="link"/g,'class="ar-link"')}</li>`).join('')}</ul>${lines.length>8?`<p class="ar-more">${esc(t('arMore')(lines.length-8))}</p>`:''}`:''}`;
+  else if(P.intent==='rate'||P.intent==='count')body=`<div class="ar-big"><b>${esc(big)}</b><span>${esc(head)}</span></div>`;
+  else{const n=rows.length?(parseInt(big.replace(/\D/g,''),10)||rows.length):0;
+    body=n===0?`<p class="ar-sent">${esc(t('arNobody'))}</p>${stats?`<p class="ar-more">${esc(stats)}</p>`:''}`:`<p class="ar-sent">${esc(arSentence(P,n))}</p>${rows.length?`<ul class="ar-list">${rows.slice(0,8).map(tr=>{const c=tr.querySelectorAll('td');return`<li><button type="button" class="ar-link" data-open="person" data-id="${esc(tr.dataset.id)}">${esc((c[0]?c[0].textContent:'')+' '+(c[1]?c[1].textContent.trim():''))}</button>${c[2]&&c[2].textContent?`<small>${esc(c[2].textContent)}</small>`:''}</li>`}).join('')}</ul>${n>8?`<p class="ar-more">${esc(t('arMore')(n-8))}</p>`:''}`:''}${stats?`<p class="ar-more">${esc(stats)}</p>`:''}`}
+  out.push({html:body});
+  if(P.pe.length&&!P.co.length)out.push({html:esc(t('arTipFiche'))});
+  else if(P.intent==='rank'||P.intent==='rate')out.push({html:esc(t('arTipStats')),chips:[[t('arBtnStats'),'go:stats']]});
+  else out.push({html:esc(t('arTipList')),chips:[[t('arBtnList'),'list:'+key]]});
+  return out;
+};
+/* --- le nouveau cerveau --- */
+arnoBrain=function(q,depth){
+  depth=depth||0;const nn=normName(q),n=' '+nn+' ',has=re=>re.test(n);
+  if(ARNO.expect&&!depth){const k=ARNO.expect;ARNO.expect=null;if(!has(/^\s*(bonjour|salut|hello|hi|merci|thanks?|annule\w*|cancel|laisse\w* tomber|stop)\s*$/))return arSlot(k,q)}
+  /* conversation courante, aide sur l'outil, prochains événements, totaux */
+  if(has(/^\s*(bonjour|salut|hello|hi|hey|coucou|bonsoir|good (morning|afternoon|evening)|yo)\s*$/)){const nm=(meName()||'').split(' ')[0];return[{html:esc(nm?t('arHelloName')(nm):t('arHelloAnon')),chips:arnoGreetChips()}]}
+  if(has(/^\s*(annule\w*|cancel|laisse\w* tomber|stop|non merci|no thanks)\s*$/))return[{html:esc(t('arCancelled'))}];
+  if(has(/\b(merci|thanks?|thank you|super|parfait|genial|great|perfect)\b/)&&nn.split(' ').length<=5)return[{html:esc(arPick(t('arThanks')))}];
+  if(has(/\b(au revoir|bye|a bientot|see you|ciao|bonne journee|bonne soiree)\b/))return[{html:esc(arPick(t('arBye')))}];
+  if(has(/\b(ca va|comment vas tu|comment allez vous|how are you)\b/))return[{html:esc(arPick(t('arHow')))}];
+  if(has(/\b(robot|humain|human|bot|vraie personne|real person|intelligence artificielle)\b/))return[{html:esc(t('arBot'))}];
+  if(has(/\b(qui es tu|qui etes vous|tu es qui|who are you|ton nom|your name|presente toi)\b/))return[{html:esc(t('arWho'))},arnoCan()];
+  if(has(/\b(que sais tu faire|que peux tu|tu sais faire quoi|what can you do|a quoi tu sers|fonctionnalites|features)\b/)||has(/^\s*(aide|help)\s*$/))return[{html:esc(t('arWho'))},arnoCan()];
+  const P0=askParse(q),howQ=/^\s*(comment|how|ou |where|est ce que je peux|puis je|peut on|can i|je voudrais|je veux|je souhaite|j aimerais|i want|i d like|aide moi|help me)/.test(nn);
+  if(howQ||!arHasEnt(P0)){const h=AR_HELP.find(([,re])=>re.test(n));if(h&&(howQ||!AR_QW.test(n)||/^(list|export|newev|guests|track)$/.test(h[0])&&!arHasEnt(P0))){const H=t('arH')[h[0]],adm=['import','dups'].includes(h[0])&&!ADMIN,ch=H[2]&&!adm?[[H[2],H[3]]]:null;
+    return H[1]?[{html:esc(H[0])},{html:esc(H[1]),chips:ch}]:[{html:esc(H[0]),chips:ch}]}}
+  if(has(/\b(prochain\w*|a venir|upcoming|next|futur\w*|prevu\w*|planned)\b/)&&has(/\b(evenement\w*|event\w*|evenment\w*|rendez vous)\b/))return arnoUpcoming();
+  if(has(/\b(dernier|derniere|last|latest|recent)\b/)&&has(/\b(evenement\w*|event\w*)\b/)&&!arHasEnt(P0)){const s=TOPS.slice().filter(s=>s.e.date&&s.e.date.slice(0,10)<=isoDay()).sort((a,b)=>b.e.date.localeCompare(a.e.date))[0];
+    if(s)return[{html:esc(t('arLast')(evName(s.e),numWhen(s.e),s.ins,s.pres)),chips:[...arChipsQ(t('arEvQ')(evName(s.e)).slice(0,3)),[t('arOpenEv'),'ev:'+s.e.id]]}]}
+  if(has(/\b(combien|how many|nombre|total)\b/)&&has(/\b(contacts?|personnes?|people|entreprises?|compan\w*|evenements?|events?|cmo)\b/)&&!arHasEnt(P0)&&!P0.years.length)
+    return[{html:esc(t('arTotals')(fmtN(PEOPLE.filter(p=>!p.archived).length),fmtN(COMPANIES.length),fmtN(EVSTATS.length))),chips:[[t('arBtnStats'),'go:stats']]}];
+  /* suite de la conversation précédente */
+  const L0=ARNO.last&&ARNO.last.P;
+  if(L0&&!depth&&(/^\s*(et|and|puis|also|aussi|maintenant|now)\b/.test(nn)||(!arHasEnt(P0)&&(P0.years.length||P0.status||P0.kind)&&nn.split(' ').length<=4&&!arRuns(q,P0).length))){
+    const fq=arFollowQ(q,P0,L0);const r=arnoBrain(fq,depth+1);return[{html:esc(t('arFollow'))},...r]}
+  /* noms approximatifs : on demande plutôt que de chercher au hasard */
+  const runs=arRuns(q,P0),C=arFuzzy(runs);
+  if(C.length&&depth<3){
+    const top=C[0],G=arEvGroups(C);
+    const strongEnough=!arHasEnt(P0)||top.s>=.8;
+    if(strongEnough){
+      /* un événement qui revient chaque année */
+      const rival=C.find(c=>c.id!==top.id&&!(c.cat==='ev'&&top.cat==='ev'&&c.fam===top.fam)&&c.s>=top.s-.08);
+      if(top.cat==='ev'&&!rival){const eds=arEditions(top.fam,P0.years);const all=arEditions(top.fam,[]);
+        if(eds.length===1&&(top.s>=.85||all.length===1)){const r=arnoBrain(arReplace(q,top,evName(eds[0].e)),depth+1);return top.s<.97?[{html:esc(t('arAssume')(evName(eds[0].e)))},...r]:r}
+        if(all.length>1&&!P0.years.length&&top.s>=.85&&Object.keys(G).length===1)return arAskEditions(q,top.fam,all,top)}
+      const second=C.find(c=>c.id!==top.id&&!(c.cat==='ev'&&c.fam===top.fam));
+      if(top.s>=.9&&(!second||second.s<top.s-.08)){const r=arnoBrain(arReplace(q,top,top.show),depth+1);return top.s<.99?[{html:esc(t('arAssume')(top.show))},...r]:r}
+      const opts=[];C.forEach(c=>{if(opts.length<3&&!opts.some(o=>o.show===c.show||(o.cat==='ev'&&c.cat==='ev'&&o.fam===c.fam)))opts.push(c)});
+      return[{html:esc(t('arDid')(opts.map(o=>o.show))),chips:[...opts.map(o=>[o.show,'ask:'+arReplace(q,o,o.show)]),[t('arNoneOf'),'seekq']]}];
+    }
+  }
+  /* plusieurs éditions trouvées sans année : laquelle ? */
+  if(P0.evs.length>1&&!P0.years.length){const fams=[...new Set(P0.evs.map(s=>famKey(s.e.name)))];const explicit=P0.evs.every(s=>n.includes(' '+normName(evName(s.e))+' ')||n.includes(' '+normName(s.e.name)+' '));
+    if(fams.length===1&&!explicit)return arAskEditions(q,fams[0],arEditions(fams[0],[]),null)}
+  /* un nom seul : que voulez-vous savoir ? */
+  if(!AR_QW.test(n)&&!P0.status&&P0.intent==='who'&&!P0.rk&&!P0.ctry){
+    if(P0.co.length===1&&!P0.evs.length&&!P0.pe.length)return arWhatCo(P0.co[0]);
+    if(P0.evs.length===1&&!P0.co.length&&!P0.pe.length)return arWhatEv(P0.evs[0]);
+    if(P0.cm.length===1&&!P0.co.length&&!P0.evs.length)return[{html:esc(t('arWhat')(P0.cm[0].name)),chips:arChipsQ(t('arCmQ')(P0.cm[0].name))}];
+    if(!arHasEnt(P0)&&P0.years.length===1)return[{html:esc(t('arWhatY')(P0.years[0])),chips:arChipsQ(t('arYQ')(P0.years[0]))}];
+  }
+  const D=arnoData(q);if(D)return D;
+  const h=AR_HELP.find(([,re])=>re.test(n));if(h){const H=t('arH')[h[0]],ch=H[2]?[[H[2],H[3]]]:null;return H[1]?[{html:esc(H[0])},{html:esc(H[1]),chips:ch}]:[{html:esc(H[0]),chips:ch}]}
+  return[{html:esc(arPick(t('arDontKnow')))},...arSeek()];
+};
+/* actions : demander un nom, ouvrir une fiche (la fenêtre se réduit pour laisser la fiche au premier plan) */
+function arnoMin(){if(!ARNO.open)return;arnoToggle(false,true);const pk=$('arPeek');if(pk){pk.querySelector('span').textContent=t('arBack');pk.hidden=false;clearTimeout(ARNO.pkT);ARNO.pkT=setTimeout(()=>{pk.hidden=true;pk.querySelector('span').textContent=t('arPeek')},4500)}}
+{const _act=arnoAct;arnoAct=function(a,b){
+  const i=a.indexOf(':'),k=i<0?a:a.slice(0,i),v=i<0?'':a.slice(i+1);
+  if(k==='seek'){arnoPush('me',esc(t('arSeek')[v]||v));ARNO.expect=v;arnoSay([{html:esc(t('arAskName')[v]),chips:[[t('arCancel'),'cancel']]}]);return}
+  if(k==='seekq'){arnoPush('me',esc(t('arNoneOf')));arnoSay(arSeek());return}
+  if(k==='cancel'){ARNO.expect=null;arnoPush('me',esc(t('arCancel')));arnoSay([{html:esc(t('arCancelled'))}]);return}
+  if(k==='open'){const j=v.indexOf(':');arnoMin();openFiche(v.slice(0,j),v.slice(j+1));return}
+  if(k==='go'||k==='wizard'||k==='list'||k==='ev')arnoMin();
+  return _act(a,b)}}
+/* la fenêtre ne décale plus la page : elle flotte ; une fiche ouverte passe toujours devant */
+{const _tg=arnoToggle;arnoToggle=function(force,silent){
+  const o=typeof force==='boolean'?force:!ARNO.open;
+  if(!o&&silent){ARNO.open=false;$('arWin').hidden=true;$('arno').classList.remove('open');document.body.classList.remove('arno-open');return}
+  return _tg(force)}}
+{const _of2=openFiche;openFiche=function(){if(ARNO.open)arnoMin();const r=_of2.apply(this,arguments);document.body.classList.toggle('drawer-on',$('drawer').classList.contains('open'));return r}}
+{const _cd3=closeDrawer;closeDrawer=function(){const r=_cd3.apply(this,arguments);document.body.classList.remove('drawer-on');return r}}
+document.addEventListener('click',e=>{const o=e.target.closest&&e.target.closest('#arno [data-open]');if(o&&ARNO.open)arnoMin()},true);
 
 if(KXD){
   const I=KXD.info,D=I.dirs;
