@@ -295,7 +295,7 @@ Interface bilingue **français / anglais** : sélecteur FR | EN sur l'écran de 
 
 ## Arno, l'assistant
 
-Une fois connecté, **Arno** attend en bas à droite de l'écran (bulle avec sa photo et une pastille verte « en ligne »). Un clic ouvre la discussion, comme dans une messagerie :
+Une fois connecté, **Arno** attend en bas à droite de l'écran (bulle avec sa photo — celle de la fiche d'Arnaud Tolon si elle existe dans Konex, sinon une illustration — et une pastille verte « en ligne »). Un clic ouvre la discussion, comme dans une messagerie :
 - Arno commence toujours par « **Posez-moi n'importe quelle question et j'y répondrai.** » (« *Ask me anything and I'll answer.* » en anglais), avec quelques questions toutes prêtes à cliquer ;
 - pendant qu'il cherche, les **trois petits points** s'affichent et l'en-tête indique « est en train d'écrire… » ; ses réponses arrivent en plusieurs bulles, avec l'heure, et vos messages passent à « ✓✓ Vu » ;
 - un clic sur sa photo ouvre son **profil**, le crayon démarre une **nouvelle conversation**, la flèche réduit la fenêtre.
