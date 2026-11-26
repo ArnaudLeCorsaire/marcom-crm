@@ -18,7 +18,8 @@ Il tient entièrement dans **un seul fichier HTML** (`Konex.html`), fonctionne *
    - [Déployer sur Domino](#déployer-sur-domino)
 4. [Comptes et connexion](#comptes-et-connexion)
 5. [Fonctionnalités communes](#fonctionnalités-communes)
-6. [Arno, l'assistant](#arno-lassistant)
+6. [My Konex](#my-konex--la-base-de-chaque-commercial)
+7. [Arno, l'assistant](#arno-lassistant)
 7. [Préparer un événement à venir](#préparer-un-événement-à-venir)
 7. [Fonctionnalités réservées à l'espace administrateur](#fonctionnalités-réservées-à-lespace-administrateur)
 8. [Construction de la master file (Importer et contrôler)](#construction-de-la-master-file-importer-et-contrôler)
@@ -292,6 +293,17 @@ En mode clients, avec 12 événements ou moins sélectionnés, une **colonne par
 Interface bilingue **français / anglais** : sélecteur FR | EN sur l'écran de connexion et en bas du menu. En anglais, les statuts de présence enregistrés en français dans les données (« Présent », « Refusé », « Sans réponse »…) sont traduits à l'affichage. Seul le module **Importer et contrôler** reste en français pour l'instant (un message le signale en anglais).
 
 ---
+
+## My Konex : la base de chaque commercial
+
+Le bouton **My Konex**, en haut à droite, ouvre l'espace personnel de la personne connectée.
+- **Qui êtes-vous ?** La première fois, on choisit son nom : un CMO, ou un collaborateur interne (sur Domino, Konex propose le nom qui correspond à l'identifiant de connexion). Le choix est mémorisé et modifiable (« Changer »).
+- **Mes clients** cumule quatre sources, signalées par un badge : **CMO principal** (référentiel), **CMO du client** (master file), **Invité par moi** (listes d'invités que j'ai créées ou alimentées) et **Suivi** (étoile sur la fiche d'une personne ou d'une entreprise). Une entreprise suivie par plusieurs CMO apparaît chez chacun.
+- **Onglets** : Mes clients (avec leur taux de participation quand il existe), Mes entreprises, Mes événements (à venir : combien de mes clients sont invités ; passés : combien sont venus), Mes rappels, Mes envois, Mes modifications, Mes listes.
+- **Limiter tout Konex à mes clients** : un interrupteur qui restreint la recherche (personnes, entreprises, événements), « Créer une liste », les listes des fiches entreprises et des participants, et les exports. Le bouton My Konex affiche alors le nombre de clients et une croix pour revenir à toute la base. Les statistiques restent calculées sur toute la base.
+- Pas de statistiques de portefeuille pour l'instant (données pas encore fiables) : seulement le taux de participation d'un client.
+
+Sur chaque fiche personne et entreprise : **Suivre** (étoile), **Inviter à un événement** (choix de l'événement à venir ; pour une entreprise, choix des contacts) et **Ajouter un rappel** (une date et ce qu'il faut faire). Le rappel apparaît dans les notes de la fiche et dans « Mes rappels », en rouge une fois la date passée, avec un bouton « Fait ».
 
 ## Arno, l'assistant
 

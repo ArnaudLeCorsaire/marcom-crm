@@ -860,6 +860,47 @@ body.arno-on .drawer .d-body{padding-bottom:100px}
 .cfb-exp{display:inline-flex;align-items:center;gap:6px;border:0;background:#fff;border-radius:12px;padding:8px 12px;font:inherit;font-size:13.5px;font-weight:600;color:var(--green-dark);cursor:pointer;box-shadow:0 0 0 1px var(--line)}
 .cfb-exp:hover{box-shadow:0 0 0 1.5px var(--green)}.cfb-exp:disabled{opacity:.45;cursor:default}
 .cfb-bar .cfb-chip{min-height:30px}
+/* ---------- My Konex ---------- */
+.mk-pill{position:fixed;top:16px;right:22px;z-index:19;display:flex;align-items:center;gap:2px;background:rgba(255,255,255,.96);border-radius:999px;padding:4px;box-shadow:0 6px 20px rgba(0,40,25,.18)}
+.mk-main{display:inline-flex;align-items:center;gap:9px;border:0;background:none;border-radius:999px;padding:3px 12px 3px 3px;cursor:pointer;font:inherit;color:var(--ink)}
+.mk-main.cur{background:var(--green-light)}
+.mk-av{width:30px;height:30px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:700;flex:none}
+.mk-av.big{width:52px;height:52px;font-size:18px}
+.mk-t{display:flex;flex-direction:column;line-height:1.15;text-align:left}.mk-t b{font-size:14px}.mk-t small{font-size:11.5px;color:var(--green-dark);font-weight:600}
+.mk-x{border:0;background:var(--green);color:#fff;width:24px;height:24px;border-radius:50%;cursor:pointer;font-size:14px;line-height:1;margin-right:4px}
+body.myk-on .mk-pill{box-shadow:0 0 0 2px var(--green),0 6px 20px rgba(0,40,25,.18)}
+.mk-wrap{grid-column:1/-1;display:flex;flex-direction:column;gap:14px}
+.mk-card{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:18px 20px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.mk-hello{align-items:flex-start}.mk-hello h3{margin:0}.mk-hello p{margin:0;color:var(--muted)}
+.mk-top{display:grid;grid-template-columns:auto 1fr;gap:14px 24px;align-items:center}
+.mk-id{display:flex;align-items:center;gap:12px}.mk-id b{display:block;font-size:18px}.mk-id small{color:var(--muted);font-size:13px}
+.mk-nums{display:flex;gap:22px;flex-wrap:wrap;justify-self:end}.mk-nums span{font-size:13px;color:var(--muted)}.mk-nums b{font-size:20px;color:var(--green-dark);margin-right:4px}
+.mk-lens{grid-column:1/-1;display:flex;align-items:center;gap:16px;justify-content:space-between;background:#F2F2F7;border-radius:12px;padding:12px 14px;cursor:pointer}
+.mk-lens b{display:block;font-size:14.5px}.mk-lens small{color:var(--muted);font-size:12.5px}
+.mk-srcs{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px;align-items:center}.mk-srcs small{color:var(--muted);font-size:12.5px;margin-right:2px}
+.mk-b{display:inline-block;border-radius:999px;padding:2px 9px;font-size:11.5px;font-weight:600;white-space:nowrap}
+.mk-b-ref{background:#E7F0FB;color:#2F6FB5}.mk-b-cmo{background:#EFEDFF;color:#5E3A8F}.mk-b-inv{background:#FFF1E3;color:#B4600E}.mk-b-star{background:#FDF6D8;color:#8A6D00}
+.mk-tabs{display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:8px}
+.mk-tabs button{border:0;background:none;padding:7px 12px;border-radius:9px;font:inherit;font-size:14px;font-weight:600;color:var(--muted);cursor:pointer}
+.mk-tabs button.on{background:var(--green-light);color:var(--green-dark)}.mk-tabs button span{background:var(--green);color:#fff;border-radius:999px;font-size:11px;padding:0 6px;margin-left:3px}
+.mk-q{border:1px solid #CBD5D0;border-radius:10px;padding:9px 12px;font:inherit;font-size:14px;max-width:420px}
+.mk-list{display:flex;flex-direction:column}
+.mk-row{display:flex;align-items:center;gap:12px;padding:9px 4px;border-bottom:1px solid var(--line)}.mk-row:last-child{border-bottom:0}
+.mk-row.late .mk-due{color:var(--red)}
+.mk-rm{flex:1;min-width:0;display:flex;flex-direction:column}.mk-rm .link{text-align:left;font-weight:600;align-self:flex-start}.mk-rm small{color:var(--muted);font-size:12.5px}
+.mk-bs{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.mk-rate{font-size:12.5px;color:var(--muted);white-space:nowrap;min-width:110px;text-align:right}
+.mk-star{border:0;background:none;font-size:17px;color:#D5D9D7;cursor:pointer;padding:2px 4px;line-height:1}.mk-star.on{color:#E0A100}
+.mk-due{display:flex;flex-direction:column;font-weight:700;font-size:13px;min-width:86px}.mk-due small{font-weight:600;font-size:11px}
+.mk-h4{margin:6px 0 0;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.mk-empty{color:var(--muted);margin:6px 0}.mk-more{color:var(--muted);font-size:12.5px}
+.mk-wl{display:flex;flex-direction:column;gap:2px;max-height:46vh;overflow:auto;margin-top:8px}
+.mk-wo{display:flex;gap:10px;align-items:center;padding:8px;border-radius:9px;cursor:pointer}.mk-wo:hover{background:var(--bg)}.mk-wo b{display:block;font-size:14px}.mk-wo small{color:var(--muted);font-size:12px}.mk-wo[hidden]{display:none}
+.mk-acts{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
+.mk-a{display:inline-flex;align-items:center;gap:7px;border:0;background:#fff;border-radius:11px;padding:8px 13px;font:inherit;font-size:13.5px;font-weight:600;color:var(--ink);cursor:pointer;box-shadow:0 0 0 1px var(--line)}
+.mk-a:hover{box-shadow:0 0 0 1.5px var(--green)}.mk-a span{color:#C9CECB;font-size:15px}.mk-a.on{background:#FDF6D8;box-shadow:0 0 0 1px #EAD58A}.mk-a.on span{color:#E0A100}
+.mk-nb{display:inline-block;margin:4px 0 2px;background:#FFF1E3;color:#B4600E;border-radius:999px;padding:2px 9px;font-size:12px;font-weight:600}.mk-nb.done{background:var(--bg);color:var(--muted);text-decoration:line-through}
+@media (max-width:760px){.mk-top{grid-template-columns:1fr}.mk-nums{justify-self:start}.mk-pill{top:10px;right:10px}.mk-t small{display:none}.mk-rate{min-width:0}}
 .ib-p{border-top-color:#7B4FB5}.ib-p .ib-h span{background:#7B4FB5}.ib-p .ib-h{color:#5E3A8F}
 .ib-p .note-form{margin-top:4px}
 .dash{display:flex;flex-direction:column;gap:16px}
@@ -13212,6 +13253,173 @@ L.fr.hints={...L.fr.hints,fiche:'Copier la fiche : à coller dans Teams ou un e-
 Object.assign(L.en,{complete:'Edit',footerDemo:'Sample data, encrypted on this computer.',
   shHowL:['Administrators publish an edition (the reference database), encrypted in the folder.','Your changes are written to your own encrypted file in the folder: the whole team sees them at the next sync.','They apply at once, with no approval step; administrators find them in the change log and they enter the Excel master file at the next edition.']});
 L.en.hints={...L.en.hints,fiche:'Copy record: paste into Teams or an email · Email: message ready with the history · Edit: correct or complete the record.'};
+
+/* =========================================================
+   MY KONEX — la base de chaque commercial
+   - « Qui êtes-vous ? » une fois (proposé d'après l'identifiant Domino quand il existe) : un CMO ou un collaborateur ;
+   - « mes clients » = 4 sources, signalées par un badge : CMO principal (référentiel), CMO du client (master file),
+     invités par moi (listes d'invités), suivis (étoile sur la fiche d'une personne ou d'une entreprise) ;
+   - bouton « My Konex » en haut à droite : la page personnelle (clients, entreprises, événements, rappels, envois,
+     modifications, listes) et un interrupteur qui limite tout Konex à mes clients (recherche, Créer une liste,
+     fiches entreprises, participants, exports) ;
+   - pas de statistiques de portefeuille (données pas encore fiables) : seulement le taux de participation d'un client.
+   Sur les fiches : « Suivre », « Inviter à un événement », « Ajouter un rappel ».
+   ========================================================= */
+Object.assign(L.fr,{
+  myk:{title:'My Konex',sub:'Vos clients, vos entreprises, vos événements et vos rappels.',ph:'Chercher dans mes clients…',all:''},
+  mkBtn:'My Konex',mkOnN:n=>`${n} client${n>1?'s':''}`,mkOff:'Revenir à toute la base',mkWhoT:'Qui êtes-vous ?',mkWhoH:'Konex vous reconnaît pour afficher vos clients. Choisissez votre nom : un CMO, ou un collaborateur interne.',
+  mkWhoPh:'Votre nom…',mkWhoSug:'Proposé d’après votre identifiant',mkWhoNone:'Je ne suis pas dans la liste',mkWhoOk:'C’est moi',mkWhoChange:'Changer',mkCmo:'CMO',mkColl:'Collaborateur',mkGuest:'Sans portefeuille attitré',
+  mkLens:'Limiter tout Konex à mes clients',mkLensH:'Recherche, Créer une liste, fiches entreprises, participants des événements et exports n’afficheront que vos clients.',
+  mkTabs:{cl:'Mes clients',co:'Mes entreprises',ev:'Mes événements',rp:'Mes rappels',se:'Mes envois',md:'Mes modifications',li:'Mes listes'},
+  mkSrc:{ref:'CMO principal',cmo:'CMO du client',inv:'Invité par moi',star:'Suivi'},mkSrcH:'Pourquoi ce client est à vous',
+  mkNClients:n=>`${n} client${n>1?'s':''}`,mkNCos:n=>`${n} entreprise${n>1?'s':''}`,mkNRem:n=>`${n} rappel${n>1?'s':''} à venir`,
+  mkRate:'participation',mkNoCl:'Aucun client pour l’instant. Suivez un client avec l’étoile de sa fiche, ou invitez-le à un événement.',mkMore:n=>`… et ${n} autres. Affinez avec la recherche.`,
+  mkUp:'À venir',mkPast:'Passés',mkMineInv:n=>`${n} de vos clients invités`,mkMinePres:(p,i)=>`${p} de vos clients présents sur ${i} invités`,mkNoEv:'Aucun événement avec vos clients.',
+  mkRpNone:'Aucun rappel. Ajoutez-en un depuis la fiche d’un client.',mkLate:'En retard',mkToday:'Aujourd’hui',mkDone:'Fait',mkSeNone:'Aucun envoi enregistré à votre nom.',mkMdNone:'Aucune modification à votre nom pour l’instant.',mkLiNone:'Aucune liste enregistrée.',
+  mkFollow:'Suivre',mkFollowing:'Suivi',mkInvite:'Inviter à un événement',mkRemind:'Ajouter un rappel',
+  mkInvT:'Inviter à un événement',mkInvPick:'Événement',mkInvWho:'Contacts à inviter',mkInvNone:'Aucun événement à venir. Créez-en un dans l’onglet Événements.',mkInvOk:'Inviter',mkInvDone:(n,e)=>n?`${n} invité${n>1?'s':''} ajouté${n>1?'s':''} à « ${e} ».`:`Déjà sur la liste de « ${e} ».`,mkInvNeed:'Cochez au moins un contact.',
+  mkRmT:'Ajouter un rappel',mkRmDate:'Me le rappeler le',mkRmText:'À faire',mkRmPh:'Ex. : rappeler pour le dîner de printemps',mkRmOk:'Enregistrer',mkRmNeed:'Indiquez ce qu’il faut faire.',mkRmDone:d=>`Rappel enregistré pour le ${d}.`,mkRmBadge:d=>`Rappel le ${d}`,
+  mkStatsNote:'Les statistiques restent sur toute la base.'});
+Object.assign(L.en,{
+  myk:{title:'My Konex',sub:'Your clients, companies, events and reminders.',ph:'Search my clients…',all:''},
+  mkBtn:'My Konex',mkOnN:n=>`${n} client${n>1?'s':''}`,mkOff:'Back to the whole base',mkWhoT:'Who are you?',mkWhoH:'Konex recognises you to show your clients. Choose your name: a CMO, or an internal colleague.',
+  mkWhoPh:'Your name…',mkWhoSug:'Suggested from your login',mkWhoNone:'I am not in the list',mkWhoOk:'That’s me',mkWhoChange:'Change',mkCmo:'CMO',mkColl:'Colleague',mkGuest:'No assigned portfolio',
+  mkLens:'Limit all of Konex to my clients',mkLensH:'Search, Create a list, company records, event participants and exports will only show your clients.',
+  mkTabs:{cl:'My clients',co:'My companies',ev:'My events',rp:'My reminders',se:'My sends',md:'My changes',li:'My lists'},
+  mkSrc:{ref:'Lead CMO',cmo:'Client’s CMO',inv:'Invited by me',star:'Followed'},mkSrcH:'Why this client is yours',
+  mkNClients:n=>`${n} client${n>1?'s':''}`,mkNCos:n=>`${n} compan${n>1?'ies':'y'}`,mkNRem:n=>`${n} upcoming reminder${n>1?'s':''}`,
+  mkRate:'attendance',mkNoCl:'No client yet. Follow a client with the star on their record, or invite them to an event.',mkMore:n=>`… and ${n} more. Narrow down with the search.`,
+  mkUp:'Upcoming',mkPast:'Past',mkMineInv:n=>`${n} of your clients invited`,mkMinePres:(p,i)=>`${p} of your clients attended out of ${i} invited`,mkNoEv:'No event with your clients.',
+  mkRpNone:'No reminder. Add one from a client’s record.',mkLate:'Overdue',mkToday:'Today',mkDone:'Done',mkSeNone:'No send recorded under your name.',mkMdNone:'No change under your name yet.',mkLiNone:'No saved list.',
+  mkFollow:'Follow',mkFollowing:'Following',mkInvite:'Invite to an event',mkRemind:'Add a reminder',
+  mkInvT:'Invite to an event',mkInvPick:'Event',mkInvWho:'Contacts to invite',mkInvNone:'No upcoming event. Create one in the Events tab.',mkInvOk:'Invite',mkInvDone:(n,e)=>n?`${n} guest${n>1?'s':''} added to “${e}”.`:`Already on the “${e}” list.`,mkInvNeed:'Tick at least one contact.',
+  mkRmT:'Add a reminder',mkRmDate:'Remind me on',mkRmText:'To do',mkRmPh:'E.g. call about the spring dinner',mkRmOk:'Save',mkRmNeed:'Say what needs doing.',mkRmDone:d=>`Reminder saved for ${d}.`,mkRmBadge:d=>`Reminder on ${d}`,
+  mkStatsNote:'Statistics stay on the whole base.'});
+VIEWS.push('myk');STD_VIEWS.push('myk');
+{const _rs=renderStats;renderStats=function(){if(view==='myk'){const s=$('stats');if(s)s.innerHTML='';return}return _rs.apply(this,arguments)}}
+let MYK={who:null,sp:{},sc:{},on:false,v:0};
+{const _vs=vaultState;vaultState=function(){const s=_vs.apply(this,arguments);s.myk={who:MYK.who,sp:MYK.sp,sc:MYK.sc,on:MYK.on};return s}}
+{const _as=applyState;applyState=function(s){const r=_as.apply(this,arguments);const m=(s&&s.myk)||{};MYK={who:m.who||null,sp:m.sp||{},sc:m.sc||{},on:!!m.on,v:MYK.v+1};return r}}
+SH_PERSONAL.push('myk');
+{const _sp=shPersonal;shPersonal=function(){return{..._sp(),myk:{who:MYK.who,sp:MYK.sp,sc:MYK.sc,on:MYK.on}}}}
+const mkSave=()=>{MYK.v++;saveVault()};
+const mkMe=()=>(MYK.who&&MYK.who.name)||meName()||'';
+/* qui est connecté : CMO(s) de la personne */
+function mkCmoIds(){const w=MYK.who,ids=new Set();if(!w)return ids;if(w.type==='cmo'&&CMOMAP[w.id])ids.add(w.id);
+  if(w.type==='person'){const p=PMAP[w.id];if(p&&p.cmoId)ids.add(p.cmoId)}
+  if(w.type!=='cmo'&&w.name){const n=normName(w.name);CMOS.forEach(c=>{if(normName(c.name)===n)ids.add(c.id)})}return ids}
+/* mes clients et pourquoi */
+let MYSET=null,MYSETK=null;
+function mkSet(){
+  const key=[PEOPLE,MYK.v,typeof PLANS!=='undefined'?Object.keys(PLANS).length:0];
+  if(MYSET&&MYSETK&&MYSETK[0]===key[0]&&MYSETK[1]===key[1]&&MYSETK[2]===key[2])return MYSET;
+  const ids=mkCmoIds(),me=normName(mkMe()),M=new Map(),add=(p,s)=>{if(!p||p.archived)return;const a=M.get(p.id)||new Set();a.add(s);M.set(p.id,a)};
+  if(MYK.who)PEOPLE.forEach(p=>{
+    if(ids.size&&p.pilotCmoId&&ids.has(p.pilotCmoId))add(p,'ref');
+    if(ids.size&&p.hist.some(h=>(h.cmoKeys||[]).some(k=>ids.has('cmo:'+k))))add(p,'cmo');
+    if(MYK.sp[p.id]||(p.coId&&MYK.sc[p.coId]))add(p,'star')});
+  if(MYK.who&&me&&typeof plList==='function')plList().forEach(P=>{const mine=normName(P.meta.by||'')===me;plGuests(P).forEach(g=>{if(g.pid&&(mine||normName(g.by||'')===me))add(PMAP[g.pid],'inv')})});
+  MYSET=M;MYSETK=key;return M;
+}
+const mkHas=p=>!!p&&mkSet().has(p.id);
+const mkCoHas=c=>!!c&&(!!MYK.sc[c.id]||(c.people||[]).some(mkHas));
+const mkLensOn=()=>MYK.on&&!!MYK.who;
+/* la lentille : toutes les listes se limitent à mes clients */
+{const _pf=pfOk;pfOk=function(p){return _pf(p)&&(!mkLensOn()||mkHas(p))}}
+{const _lr=listResults;listResults=function(tk){const r=_lr(tk);return mkLensOn()?r.filter(x=>mkHas(x.p)):r}}
+{const _ca=cfxApply;cfxApply=function(top,kind,list){const r=_ca(top,kind,list);if(!mkLensOn())return r;return r.filter(x=>mkHas(kind==='contacts'?x:x.p))}}
+{const _rc=renderCore;renderCore=function(){
+  if(view==='myk'){const r=mkRender();return r}
+  if(!mkLensOn()||!['companies','events'].includes(view))return _rc.apply(this,arguments);
+  const kc=COMPANIES,kt=TOPS;try{COMPANIES=COMPANIES.filter(mkCoHas);TOPS=TOPS.filter(s=>(s.regs||[]).some(r=>mkHas(r.p))||(s.children||[]).some(c=>(c.regs||[]).some(r=>mkHas(r.p))));return _rc.apply(this,arguments)}finally{COMPANIES=kc;TOPS=kt}}}
+/* bouton « My Konex » en haut à droite */
+function mkPill(){let b=$('mkPill');if(!b){document.body.insertAdjacentHTML('beforeend','<div id="mkPill" class="mk-pill" hidden></div>');b=$('mkPill')}
+  const ok=!!CRYPTO_KEY&&$('lock').hidden;b.hidden=!ok;if(!ok)return;const w=MYK.who,n=w?mkSet().size:0,on=mkLensOn();
+  document.body.classList.toggle('myk-on',on);
+  b.innerHTML=`<button type="button" class="mk-main${view==='myk'?' cur':''}" data-x="mk-open"><span class="mk-av">${esc(w?ini(w.name):'?')}</span><span class="mk-t"><b>${esc(t('mkBtn'))}</b>${on?`<small>${esc(t('mkOnN')(n))}</small>`:''}</span></button>${on?`<button type="button" class="mk-x" data-x="mk-lens" title="${esc(t('mkOff'))}" aria-label="${esc(t('mkOff'))}">×</button>`:''}`;
+}
+{const _ra=refreshAll;refreshAll=function(){const r=_ra.apply(this,arguments);try{mkPill()}catch(_){}return r}}
+{const _ml=meLine;meLine=function(){const r=_ml.apply(this,arguments);try{mkPill()}catch(_){}return r}}
+{const _lk=lockApp;lockApp=async function(){try{const b=$('mkPill');if(b)b.hidden=true;document.body.classList.remove('myk-on')}catch(_){}return _lk.apply(this,arguments)}}
+/* « Qui êtes-vous ? » */
+function mkWho(then){
+  const user=(window.KXDOM&&KXDOM.info&&KXDOM.info.user)||'',un=normName(user.replace(/[._@-]+/g,' ').replace(/\b(bnpparibas|com|be|fr)\b/g,''));
+  const opts=[...CMOS.filter(c=>!c.archived).map(c=>({type:'cmo',id:c.id,name:c.name,sub:[t('mkCmo'),c.region].filter(Boolean).join(' · ')})),
+    ...PEOPLE.filter(p=>p.internal&&!p.archived&&!p.cmoId).map(p=>({type:'person',id:p.id,name:p.full,sub:[t('mkColl'),p.poste].filter(Boolean).join(' · ')}))];
+  const sug=un?opts.filter(o=>{const n=normName(o.name);return n===un||(un.split(' ').length>1&&un.split(' ').every(w=>n.includes(w)))}):[];
+  const row=(o,i)=>`<label class="mk-wo" data-h="${esc(strip(o.name+' '+o.sub))}"><input type="radio" name="mkw" value="${i}"${sug[0]===o?' checked':''}><span><b>${esc(o.name)}</b><small>${esc(o.sub)}</small></span></label>`;
+  const all=[...sug,...opts.filter(o=>!sug.includes(o))];
+  const m=kxModal(t('mkWhoT'),t('mkWhoH'),`<input class="kx-q" id="mkwq" placeholder="${esc(t('mkWhoPh'))}">${sug.length?`<p class="kx-p">${esc(t('mkWhoSug'))}${user?` (${esc(user)})`:''}</p>`:''}<div class="mk-wl">${all.map(row).join('')}<label class="mk-wo"><input type="radio" name="mkw" value="none"><span><b>${esc(t('mkWhoNone'))}</b><small>${esc(t('mkGuest'))}</small></span></label></div>`,t('mkWhoOk'),async()=>{
+    const v=(m.querySelector('[name=mkw]:checked')||{}).value;if(v==null)return t('mkWhoPh');
+    if(v==='none'){await askMe();MYK.who={type:'none',id:'',name:meName()||''}}else{const o=all[+v];MYK.who={type:o.type,id:o.id,name:o.name};if(!getLS('me-name'))setLS('me-name',o.name)}
+    mkSave();mkPill();if(then)then();return true});
+  const q=$('mkwq');q.oninput=()=>{const s=strip(q.value);m.querySelectorAll('.mk-wo[data-h]').forEach(l=>l.hidden=!!s&&!l.dataset.h.includes(s))};
+}
+/* la page My Konex */
+let MKT='cl',MKQ='';
+const mkBadges=srcs=>[...srcs].map(s=>`<span class="mk-b mk-b-${s}">${esc(t('mkSrc')[s])}</span>`).join('');
+const mkRateTxt=p=>p.nReg?`${Math.round(100*p.pres/p.nReg)} % ${t('mkRate')}`:'';
+function mkReminders(){const me=normName(mkMe()),out=[];Object.entries(NOTES).forEach(([k,l])=>(l||[]).forEach(n=>{if(n&&n.due&&!n.done&&(!me||normName(n.author||'')===me))out.push({k,n})}));return out.sort((a,b)=>a.n.due.localeCompare(b.n.due))}
+function mkTarget(k){if(PMAP[k])return['person',k,PMAP[k].full];if(CMAP[k])return['company',k,CMAP[k].name];if(k.startsWith('ev:')&&EMAP[k.slice(3)])return['event',k.slice(3),evName(EMAP[k.slice(3)].e)];return[null,null,k]}
+function mkRender(){
+  $('listTitle').textContent='';const sw=$('searchWrap');if(sw)sw.hidden=true;$('content').classList.add('no-search');{const ab=$('addBtn');if(ab)ab.hidden=true}
+  if(!MYK.who){grid.innerHTML=`<div class="mk-wrap"><div class="mk-card mk-hello"><h3>${esc(t('mkWhoT'))}</h3><p>${esc(t('mkWhoH'))}</p><button type="button" class="btn" data-x="mk-who">${esc(t('mkWhoT'))}</button></div></div>`;return}
+  const S=mkSet(),w=MYK.who,ppl=[...S.keys()].map(id=>PMAP[id]).filter(Boolean),cos=COMPANIES.filter(mkCoHas),rem=mkReminders(),srcN={};S.forEach(v=>v.forEach(s=>srcN[s]=(srcN[s]||0)+1));
+  const tabs=Object.entries(t('mkTabs')).map(([k,l])=>`<button type="button" class="${MKT===k?'on':''}" data-x="mk-tab" data-t="${k}">${esc(l)}${k==='rp'&&rem.length?` <span>${rem.length}</span>`:''}</button>`).join('');
+  const role=w.type==='cmo'?t('mkCmo'):w.type==='person'?t('mkColl'):t('mkGuest');
+  const q=strip(MKQ);let body='';
+  if(MKT==='cl'){const L=ppl.filter(p=>!q||p.hay.includes(q)).sort(byPerson);
+    body=L.length?`<div class="mk-list">${L.slice(0,200).map(p=>`<div class="mk-row"><button type="button" class="mk-star${MYK.sp[p.id]?' on':''}" data-x="mk-star" data-p="${esc(p.id)}" title="${esc(MYK.sp[p.id]?t('mkFollowing'):t('mkFollow'))}" aria-pressed="${!!MYK.sp[p.id]}">★</button><div class="mk-rm"><button type="button" class="link" data-open="person" data-id="${esc(p.id)}">${esc(p.full)}</button><small>${esc([p.societe,p.poste].filter(Boolean).join(' · '))}</small></div><div class="mk-bs">${mkBadges(S.get(p.id))}</div><span class="mk-rate">${esc(mkRateTxt(p))}</span></div>`).join('')}</div>${L.length>200?`<p class="mk-more">${esc(t('mkMore')(L.length-200))}</p>`:''}`:`<p class="mk-empty">${esc(t('mkNoCl'))}</p>`}
+  else if(MKT==='co'){const L=cos.filter(c=>!q||c.hay.includes(q)).sort((a,b)=>cmp(a.name,b.name));
+    body=L.length?`<div class="mk-list">${L.slice(0,200).map(c=>{const mine=c.people.filter(mkHas);return`<div class="mk-row"><button type="button" class="mk-star${MYK.sc[c.id]?' on':''}" data-x="mk-starc" data-c="${esc(c.id)}" aria-pressed="${!!MYK.sc[c.id]}">★</button><div class="mk-rm"><button type="button" class="link" data-open="company" data-id="${esc(c.id)}">${esc(c.name)}</button><small>${esc(t('mkNClients')(mine.length))}</small></div><span class="mk-rate">${c.ins?esc(`${Math.round(100*c.pres/c.ins)} % ${t('mkRate')}`):''}</span></div>`}).join('')}</div>`:`<p class="mk-empty">${esc(t('mkNoCl'))}</p>`}
+  else if(MKT==='ev'){const up=(typeof plList==='function'?plList():[]).filter(P=>(P.meta.date||'').slice(0,10)>=isoDay()).map(P=>({P,n:plGuests(P).filter(g=>g.pid&&S.has(g.pid)).length})).sort((a,b)=>(a.P.meta.date||'').localeCompare(b.P.meta.date||''));
+    const past=EVSTATS.filter(s=>!s.e.gid&&(s.e.date||'').slice(0,10)<isoDay()).map(s=>{const m=s.regs.filter(r=>mkHas(r.p));return{s,i:m.length,p:m.filter(r=>r.present).length}}).filter(x=>x.i).sort((a,b)=>(b.s.e.date||'').localeCompare(a.s.e.date||''));
+    body=up.length||past.length?`${up.length?`<h4 class="mk-h4">${esc(t('mkUp'))}</h4><div class="mk-list">${up.map(x=>`<div class="mk-row"><div class="mk-rm"><button type="button" class="link" data-open="event" data-id="${esc(plEvId(x.P))}">${esc(x.P.meta.name)}</button><small>${esc(numDate(x.P.meta.date))}${x.P.meta.lieu?' · '+esc(x.P.meta.lieu):''}</small></div><span class="mk-rate">${esc(t('mkMineInv')(x.n))}</span></div>`).join('')}</div>`:''}
+      ${past.length?`<h4 class="mk-h4">${esc(t('mkPast'))}</h4><div class="mk-list">${past.slice(0,60).map(x=>`<div class="mk-row"><div class="mk-rm"><button type="button" class="link" data-open="event" data-id="${esc(x.s.e.id)}">${esc(evName(x.s.e))}</button><small>${esc(numWhen(x.s.e))}</small></div><span class="mk-rate">${esc(t('mkMinePres')(x.p,x.i))}</span></div>`).join('')}</div>`:''}`:`<p class="mk-empty">${esc(t('mkNoEv'))}</p>`}
+  else if(MKT==='rp'){const td=isoDay();body=rem.length?`<div class="mk-list">${rem.map(({k,n})=>{const[ty,id,lbl]=mkTarget(k),late=n.due<td,today=n.due===td;return`<div class="mk-row${late?' late':''}"><span class="mk-due">${esc(numDate(n.due))}${late?`<small>${esc(t('mkLate'))}</small>`:today?`<small>${esc(t('mkToday'))}</small>`:''}</span><div class="mk-rm">${ty?`<button type="button" class="link" data-open="${ty}" data-id="${esc(id)}">${esc(lbl)}</button>`:esc(lbl)}<small>${esc(n.text)}</small></div><button type="button" class="btn-o sm" data-x="mk-done" data-k="${esc(k)}" data-n="${esc(n.id)}">${esc(t('mkDone'))}</button></div>`}).join('')}</div>`:`<p class="mk-empty">${esc(t('mkRpNone'))}</p>`}
+  else if(MKT==='se'){const me=normName(mkMe()),L=[];(typeof plList==='function'?plList():[]).forEach(P=>plSends(P).forEach(s=>{if(normName(s.by||'')===me)L.push({P,s})}));L.sort((a,b)=>String(b.s.at).localeCompare(String(a.s.at)));
+    body=L.length?`<div class="mk-list">${L.map(({P,s})=>`<div class="mk-row"><div class="mk-rm"><button type="button" class="link" data-open="event" data-id="${esc(plEvId(P))}">${esc(P.meta.name)}</button><small>${esc(sendLine(s,P))}</small></div></div>`).join('')}</div>`:`<p class="mk-empty">${esc(t('mkSeNone'))}</p>`}
+  else if(MKT==='md'){const L=((typeof SHCFG!=='undefined'&&SHCFG&&SHCFG.mine)||[]).slice(-80).reverse();
+    body=L.length?`<div class="mk-list">${L.map(o=>{const[ty,id,lbl]=ctTarget(o);return`<div class="mk-row"><div class="mk-rm">${ty?`<button type="button" class="link" data-open="${ty}" data-id="${esc(id)}">${esc(lbl)}</button>`:esc(lbl||'')}<small>${fmtDT(o.at)} · ${ctDesc({op:o})}</small></div></div>`}).join('')}</div>`:`<p class="mk-empty">${esc(t('mkMdNone'))}</p>`}
+  else{body=LISTS.length?`<div class="mk-list">${LISTS.map(l=>`<div class="mk-row"><div class="mk-rm"><button type="button" class="link" data-x="mk-list" data-l="${esc(l.id)}">${esc(l.name)}</button><small>${l.date?esc(numDate(String(l.date).slice(0,10))):''}</small></div></div>`).join('')}</div>`:`<p class="mk-empty">${esc(t('mkLiNone'))}</p>`}
+  grid.innerHTML=`<div class="mk-wrap"><div class="mk-card mk-top"><div class="mk-id"><span class="mk-av big">${esc(ini(w.name||'?'))}</span><div><b>${esc(w.name||'—')}</b><small>${esc(role)} · <button type="button" class="link" data-x="mk-who">${esc(t('mkWhoChange'))}</button></small></div></div>
+      <div class="mk-nums"><span><b>${ppl.length}</b> ${esc(t('mkNClients')(ppl.length).replace(/^\d+\s/,''))}</span><span><b>${cos.length}</b> ${esc(t('mkNCos')(cos.length).replace(/^\d+\s/,''))}</span><span><b>${rem.length}</b> ${esc(t('mkNRem')(rem.length).replace(/^\d+\s/,''))}</span></div>
+      <label class="mk-lens"><span><b>${esc(t('mkLens'))}</b><small>${esc(t('mkLensH'))} ${esc(t('mkStatsNote'))}</small></span><button type="button" class="cfb-sw" role="switch" aria-checked="${MYK.on}" data-x="mk-lens" aria-label="${esc(t('mkLens'))}"></button></label>
+      <div class="mk-srcs"><small>${esc(t('mkSrcH'))} :</small>${['ref','cmo','inv','star'].map(s=>`<span class="mk-b mk-b-${s}">${esc(t('mkSrc')[s])} · ${srcN[s]||0}</span>`).join('')}</div></div>
+    <div class="mk-card"><div class="mk-tabs" role="tablist">${tabs}</div>${['cl','co'].includes(MKT)?`<input type="search" class="mk-q" id="mkq" placeholder="${esc(t('myk').ph)}" value="${esc(MKQ)}">`:''}${body}</div></div>`;
+  const qi=$('mkq');if(qi){qi.oninput=()=>{MKQ=qi.value;const pos=qi.selectionStart;mkRender();const n=$('mkq');if(n){n.focus();try{n.setSelectionRange(pos,pos)}catch(_){}}}}
+}
+Object.assign(XACT,{
+  'mk-open':()=>{if(!MYK.who){mkWho(()=>{goView('myk')});return}goView('myk')},
+  'mk-who':()=>mkWho(()=>{render();mkPill()}),
+  'mk-lens':()=>{if(!MYK.who){mkWho(()=>{MYK.on=true;mkSave();refreshAll()});return}MYK.on=!MYK.on;mkSave();closeDrawer();refreshAll()},
+  'mk-tab':b=>{MKT=b.dataset.t;render()},
+  'mk-star':b=>{const id=b.dataset.p;if(MYK.sp[id])delete MYK.sp[id];else MYK.sp[id]=isoDay();mkSave();render();mkPill()},
+  'mk-starc':b=>{const id=b.dataset.c;if(MYK.sc[id])delete MYK.sc[id];else MYK.sc[id]=isoDay();mkSave();render();mkPill()},
+  'mk-done':b=>{const l=NOTES[b.dataset.k]||[];const n=l.find(x=>x.id===b.dataset.n);if(n){NOTES[b.dataset.k]=l.map(x=>x===n?{...x,done:isoDay()}:x);saveVault();render()}},
+  'mk-list':b=>{lbLoad(b.dataset.l);goView('lists')}
+});
+/* sur les fiches personne et entreprise : Suivre · Inviter à un événement · Ajouter un rappel */
+{const _dd8=drawDrawer;drawDrawer=function(keep){_dd8(keep);const top=curTop(),d=$('drawer');if(!top||top.edit||(top.type!=='person'&&top.type!=='company'))return;
+  const isP=top.type==='person',id=top.id,st=isP?!!MYK.sp[id]:!!MYK.sc[id],b=d.querySelector('.d-body');if(!b||d.querySelector('.mk-acts'))return;
+  b.insertAdjacentHTML('afterbegin',`<div class="mk-acts"><button type="button" class="mk-a${st?' on':''}" data-x="mk-fol" aria-pressed="${st}"><span>★</span>${esc(st?t('mkFollowing'):t('mkFollow'))}</button><button type="button" class="mk-a" data-x="mk-inv"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M12 13v5M9.5 15.5h5"/></svg>${esc(t('mkInvite'))}</button><button type="button" class="mk-a" data-x="mk-rem"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M5 3 2 6M19 3l3 3"/></svg>${esc(t('mkRemind'))}</button></div>`)}}
+Object.assign(XACT,{
+  'mk-fol':()=>{const top=curTop();if(!top)return;const M=top.type==='person'?MYK.sp:MYK.sc;if(M[top.id])delete M[top.id];else M[top.id]=isoDay();mkSave();drawDrawer(true);mkPill()},
+  'mk-inv':()=>{const top=curTop();if(!top)return;const ups=a3Upcoming();if(!ups.length){toast(t('mkInvNone'),true);return}
+    const ppl=top.type==='person'?[PMAP[top.id]].filter(Boolean):(find.company(top.id)||{people:[]}).people.filter(p=>!p.archived);
+    const body=`<div class="kx-f"><span>${esc(t('mkInvPick'))}</span><select id="mkie">${ups.map(u=>`<option value="${esc(u.pid)}">${esc(u.name)}${u.date?' · '+esc(numDate(u.date)):''}</option>`).join('')}</select></div>
+      ${top.type==='company'?`<div class="kx-f"><span>${esc(t('mkInvWho'))}</span><div class="kx-checks">${ppl.map(p=>`<label><input type="checkbox" value="${esc(p.id)}" data-mki${p.email?' checked':''}><span>${esc(p.full)}</span><small>${esc(p.poste||p.email||'')}</small></label>`).join('')}</div></div>`:''}`;
+    const m=kxModal(t('mkInvT'),top.type==='person'?ppl[0].full:(find.company(top.id)||{}).name,body,t('mkInvOk'),async()=>{
+      const P=PLANS[$('mkie').value];if(!P)return'';const sel=top.type==='person'?ppl:[...m.querySelectorAll('[data-mki]:checked')].map(c=>PMAP[c.value]).filter(Boolean);if(!sel.length)return t('mkInvNeed');
+      await askMe();const n=plAddGuests(P,sel.map(personGuest),'manual',true);saveVault();MYK.v++;toast(t('mkInvDone')(n,P.meta.name));return true})},
+  'mk-rem':()=>{const top=curTop();if(!top)return;const d=new Date(Date.now()+7*864e5),def=isoDay(d),key=top.id,lbl=top.type==='person'?(PMAP[key]||{}).full:(find.company(key)||{}).name;
+    const m=kxModal(t('mkRmT'),lbl,`<div class="kx-f"><span>${esc(t('mkRmDate'))}</span><input type="date" id="mkrd" value="${def}" min="${isoDay()}"></div><div class="kx-f"><span>${esc(t('mkRmText'))}</span><textarea id="mkrt" rows="3" placeholder="${esc(t('mkRmPh'))}"></textarea></div>`,t('mkRmOk'),async()=>{
+      const tx=$('mkrt').value.trim(),due=$('mkrd').value||def;if(!tx)return t('mkRmNeed');await askMe();
+      NOTES[key]=[...(NOTES[key]||[]),{id:'n'+Date.now().toString(36),author:meName()||mkMe()||'—',date:new Date().toISOString(),text:tx,due}];saveVault();drawDrawer(true);mkPill();toast(t('mkRmDone')(numDate(due)));return true})}
+});
+/* les rappels se voient dans les notes de la fiche */
+{const _rn=renderNotes;renderNotes=function(key){_rn(key);const el=$('notes');if(!el)return;const l=(NOTES[key]||[]).slice().sort((a,b)=>b.date.localeCompare(a.date));
+  el.querySelectorAll('.note').forEach((nd,i)=>{const n=l[i];if(n&&n.due&&!nd.querySelector('.mk-nb'))nd.querySelector('.note-meta').insertAdjacentHTML('afterend',`<span class="mk-nb${n.done?' done':''}">⏰ ${esc(t('mkRmBadge')(numDate(n.due)))}${n.done?' ✓':''}</span>`)})}}
 
 if(KXD){
   const I=KXD.info,D=I.dirs;
