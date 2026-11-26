@@ -796,6 +796,8 @@ body.arno-on .drawer .d-body{padding-bottom:100px}
 @media (max-width:700px){.ar-win{left:0;right:0;top:0;bottom:0;width:auto;height:auto;border-radius:0}}
 .ar-sent{margin:0 0 6px;font-weight:600}
 @media print{.arno{display:none}}
+.ar-und2{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
+.ar-miss{margin-top:10px;text-align:left;width:100%;font-size:12.5px}.ar-miss summary{cursor:pointer;font-weight:700;color:var(--green-dark)}.ar-miss ol{max-height:180px;overflow:auto;padding-left:18px}.ar-miss-b{display:flex;gap:6px}
 .ib-p{border-top-color:#7B4FB5}.ib-p .ib-h span{background:#7B4FB5}.ib-p .ib-h{color:#5E3A8F}
 .ib-p .note-form{margin-top:4px}
 .dash{display:flex;flex-direction:column;gap:16px}
@@ -12227,7 +12229,7 @@ function arnoBrain(q){
 }
 function arnoCan(){return{html:`${esc(t('arCan'))}<ul>${t('arCanL').map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`,chips:arnoGreetChips()}}
 /* noms approchés : « la Matinale Fintech » → l'édition la plus récente (ou celle de l'année citée), « Coca cola » → « The Coca-Cola Company » */
-const AR_GEN=new Set(['groupe','group','banque','bank','capital','conseil','societe','company','compagnie','international','services','holding','partners','consulting','les','des','the','and','et','de','du','la','le','evenement','event','events','evenements','annuel','annual','diner','dinner','forum','soiree']);
+const AR_GEN=new Set(['groupe','group','banque','bank','capital','conseil','societe','company','compagnie','international','services','holding','partners','consulting','les','des','the','and','et','de','du','la','le','evenement','event','events','evenements','annuel','annual']);
 function arnoExpand(q){
   const n=' '+normName(q)+' ';let P;try{P=askParse(q)}catch(_){return q}
   const add=[];const years=P.years;
@@ -12357,7 +12359,7 @@ const AR_STOP=new Set(('qui que quoi quel quelle quels quelles lequel laquelle d
   'annee annees year years mois month fois times combien nombre total taux rate pourcentage classement ranking top historique history dernier derniere last prochain prochaine next '+
   'cmo cmos interne internes externe externes internal external vip present presents presente presentes absent absents absente absentes venu venus venue venues venir came come attended attend attendees '+
   'participe participes participer participants participant participation assiste assister invite invites invitee invitees inviter invited inscrit inscrits inscrite inscrites registered '+
-  'refuse refuses refusee refusees refus declined decline reponse repondu answer answered most plus le meilleurs meilleures best ete etre fait faire').split(' '));
+  'refuse refuses refusee refusees refus declined decline reponse repondu answer answered most plus le meilleurs meilleures best ete etre fait faire avons avez ont eu organise organises organisee organisees organiser organized held had did deja already encore toujours combien quelle quelles').split(' '));
 function arTokens(q){ /* jetons normalisés, avec la position du mot d'origine */
   const words=String(q).split(/\s+/).filter(Boolean),out=[];
   words.forEach((w,wi)=>normName(w).split(' ').filter(Boolean).forEach(tk=>out.push({tk,wi})));return{words,toks:out};
@@ -12379,7 +12381,8 @@ const arSim=(a,b)=>{const s1=1-arOsa(a,b)/Math.max(a.length,b.length),pa=arPho(a
 function arFuzzy(runs,cats){
   const idx=arIdx().filter(e=>!cats||cats.includes(e.cat)),best=new Map();
   runs.forEach(run=>{for(let i=0;i<run.length;i++)for(let k=1;k<=Math.min(4,run.length-i);k++){
-    const part=run.slice(i,i+k),g=part.map(o=>o.tk).join(' ');if(g.length<4)continue;
+    const part=run.slice(i,i+k),g=part.map(o=>o.tk).join(' ');
+    if(g.length<4){if(k===1&&g.length===3)idx.forEach(e=>{if((e.cat==='co'||e.cat==='cm')&&e.tk[0]===g){const id=e.cat+':'+e.id,o=best.get(id),s=.9;if(!o||s>o.s)best.set(id,{...e,s,k,from:part[0].wi,to:part[0].wi,g})}});continue}
     idx.forEach(e=>{if(Math.abs(e.key.length-g.length)>Math.max(g.length,e.key.length)*.6&&e.tk.length<=k)return;
       let s=arSim(g,e.key);
       if(e.tk.length>k){const pre=e.tk.slice(0,k).join(' ');if(!e.tk.slice(0,k).every(w=>AR_GEN.has(w)))s=Math.max(s,arSim(g,pre)*.94)}
@@ -12481,7 +12484,7 @@ arnoBrain=function(q,depth){
   if(has(/\b(prochain\w*|a venir|upcoming|next|futur\w*|prevu\w*|planned)\b/)&&has(/\b(evenement\w*|event\w*|evenment\w*|rendez vous)\b/))return arnoUpcoming();
   if(has(/\b(dernier|derniere|last|latest|recent)\b/)&&has(/\b(evenement\w*|event\w*)\b/)&&!arHasEnt(P0)){const s=TOPS.slice().filter(s=>s.e.date&&s.e.date.slice(0,10)<=isoDay()).sort((a,b)=>b.e.date.localeCompare(a.e.date))[0];
     if(s)return[{html:esc(t('arLast')(evName(s.e),numWhen(s.e),s.ins,s.pres)),chips:[...arChipsQ(t('arEvQ')(evName(s.e)).slice(0,3)),[t('arOpenEv'),'ev:'+s.e.id]]}]}
-  if(has(/\b(combien|how many|nombre|total)\b/)&&has(/\b(contacts?|personnes?|people|entreprises?|compan\w*|evenements?|events?|cmo)\b/)&&!arHasEnt(P0)&&!P0.years.length)
+  if(has(/\b(combien|how many|nombre|total)\b/)&&has(/\b(contacts?|personnes?|people|entreprises?|compan\w*|evenements?|events?|cmo)\b/)&&!arHasEnt(P0)&&!P0.years.length&&!arRuns(q,P0).some(r=>r.some(o=>!/^(attended|came|venus?|present\w*|invit\w*)$/.test(o.tk))))
     return[{html:esc(t('arTotals')(fmtN(PEOPLE.filter(p=>!p.archived).length),fmtN(COMPANIES.length),fmtN(EVSTATS.length))),chips:[[t('arBtnStats'),'go:stats']]}];
   /* suite de la conversation précédente */
   const L0=ARNO.last&&ARNO.last.P;
@@ -12536,6 +12539,338 @@ function arnoMin(){if(!ARNO.open)return;arnoToggle(false,true);const pk=$('arPee
 {const _of2=openFiche;openFiche=function(){if(ARNO.open)arnoMin();const r=_of2.apply(this,arguments);document.body.classList.toggle('drawer-on',$('drawer').classList.contains('open'));return r}}
 {const _cd3=closeDrawer;closeDrawer=function(){const r=_cd3.apply(this,arguments);document.body.classList.remove('drawer-on');return r}}
 document.addEventListener('click',e=>{const o=e.target.closest&&e.target.closest('#arno [data-open]');if(o&&ARNO.open)arnoMin()},true);
+
+/* =========================================================
+   ARNO 3 — moteur d'intentions : comprend la question entière, calcule directement, agit
+   - intentions : coordonnées, CMO d'une entreprise, dernière venue, « était-il à… », jamais venus, fidèles,
+     nouveaux contacts, changements d'entreprise, liste d'événements, ensemble de personnes filtré,
+     actions (ajouter à un événement, exporter, copier les e-mails, ouvrir une fiche) avec confirmation ;
+   - détails compris : dates relatives (cette année, l'an dernier, depuis septembre, 6 derniers mois),
+     fonction (directeurs, CFO…), ville, type d'événement (dîner, petit-déjeuner…), nombre de présences ;
+   - plus rapide : une seule pause « en train d'écrire », puis les bulles s'enchaînent ;
+   - les questions restées sans réponse sont notées sur ce poste pour enrichir Arno.
+   ========================================================= */
+Object.assign(L.fr,{
+  a3Field:{email:'E-mail',phone:'Téléphone',linkedin:'LinkedIn',poste:'Fonction',societe:'Entreprise'},
+  a3FieldOf:(f,n,v)=>`${f} de ${n} : ${v}`,a3NoField:(f,n)=>`Je n’ai pas de ${f.toLowerCase()} pour ${n} dans la base.`,a3Copy:'Copier',a3Copied:'Copié !',
+  a3CmoOf:(c,l)=>l.length===1?`${c} est suivie par ${l[0]}.`:`${c} est suivie par ${l.length} CMO :`,a3NoCmo:c=>`Je ne trouve aucun CMO rattaché à ${c}.`,
+  a3PCmo:(p,l)=>l.length===1?`${p} est suivi(e) par ${l[0]}.`:`${p} est suivi(e) par :`,
+  a3Last:(p,e,d)=>`La dernière venue de ${p} : « ${e} », le ${d}.`,a3LastNever:p=>`${p} n’est encore jamais venu(e) à un événement.`,a3LastInv:(e,d)=>`Sa dernière invitation : « ${e} » (${d}).`,
+  a3At:{yes:(p,e,s)=>`Oui, ${p} était à « ${e} » (${s}).`,no:(p,e,s)=>`Non, ${p} n’est pas venu(e) à « ${e} » (${s}).`,none:(p,e)=>`${p} n’était pas invité(e) à « ${e} ».`},
+  a3Never:n=>n===0?'Bonne nouvelle : toutes les personnes invitées sont venues au moins une fois.':n===1?'1 personne invitée n’est encore jamais venue :':`${n} personnes invitées ne sont encore jamais venues :`,a3NeverInv:n=>n===0?'Tous les contacts ont déjà été invités au moins une fois.':n===1?'1 contact n’a jamais été invité :':`${n} contacts n’ont jamais été invités :`,
+  a3NeverCo:n=>n===0?'Bonne nouvelle : toutes les entreprises invitées sont venues au moins une fois.':n===1?'1 entreprise n’est jamais venue :':`${n} entreprises ne sont jamais venues :`,
+  a3Loyal:(n,k)=>`${n} personne${n>1?'s sont venues':' est venue'} au moins ${k} fois :`,
+  a3New:(n,d)=>`${n} nouveau${n>1?'x':''} contact${n>1?'s':''} depuis le ${d} (première participation) :`,
+  a3Changed:n=>n?`${n} personne${n>1?'s ont':' a'} quitté ou changé d’entreprise :`:'Je ne vois aucun départ ni changement d’entreprise enregistré.',
+  a3Evs:n=>n?`${n} événement${n>1?'s':''} :`:'Aucun événement ne correspond.',
+  a3Set:(n,what)=>`${n===1?'1 personne':`${n} personnes`}${what} :`,a3SetNone:what=>`Je n’ai trouvé personne${what}.`,
+  a3Q:{present:[' est venue',' sont venues'],registered:[' était inscrite',' étaient inscrites'],absent:[' n’est pas venue',' ne sont pas venues'],noshow:[' n’est pas venue',' ne sont pas venues'],refus:[' a refusé',' ont refusé'],noresp:[' n’a pas répondu',' n’ont pas répondu'],none:[' n’a pas été invitée',' n’ont pas été invitées'],never:[' n’est jamais venue',' ne sont jamais venues'],'':[' a été invitée',' ont été invitées'],contacts:['','']},
+  a3Ctx:{co:c=>` de chez ${c}`,cm:c=>` suivie(s) par ${c}`,poste:x=>` (fonction : ${x})`,kind:{int:' (internes)',ext:' (externes)',cmo:' (CMO)',vip:' (VIP)'},ev:e=>` à ${e}`,evAny:' à un événement',type:x=>` à un événement « ${x} »`,city:x=>` à ${x}`,year:y=>` en ${y}`,from:d=>` depuis le ${d}`,min:k=>`, au moins ${k} fois`,email:' (avec e-mail)'},
+  a3AddQ:(n,e)=>`J’ajoute ${n} invité${n>1?'s':''} à « ${e} » ?`,a3AddYes:n=>`Oui, ajouter ${n}`,a3Added:(n,e)=>n?`C’est fait : ${n} invité${n>1?'s':''} ajouté${n>1?'s':''} à « ${e} ».`:`Ils étaient déjà tous sur la liste de « ${e} ».`,
+  a3NoTarget:'Je ne trouve pas d’événement à venir correspondant. Voulez-vous en créer un ?',a3NoWho:'Qui voulez-vous ajouter ? Donnez-moi une personne, une entreprise ou une liste.',
+  a3ExpQ:n=>`Je télécharge la liste de ${n} personne${n>1?'s':''} en Excel ?`,a3ExpYes:'Oui, télécharger',a3CopyQ:n=>`${n} adresse${n>1?'s':''} e-mail prête${n>1?'s':''} à copier.`,a3CopyYes:'Copier les e-mails',
+  a3No:'Non merci',a3Ok:'D’accord, je ne fais rien.',a3OpenFiche:'Ouvrir la fiche',a3SeeEv:'Ouvrir l’événement',
+  a3Miss:n=>`Questions sans réponse (${n})`,a3MissH:'Ces questions n’ont pas trouvé de réponse sur ce poste. Transmettez-les pour enrichir Arno.',a3MissCopy:'Copier la liste',a3MissClear:'Effacer'
+});
+Object.assign(L.en,{
+  a3Field:{email:'Email',phone:'Phone',linkedin:'LinkedIn',poste:'Job title',societe:'Company'},
+  a3FieldOf:(f,n,v)=>`${f} of ${n}: ${v}`,a3NoField:(f,n)=>`I have no ${f.toLowerCase()} for ${n} in the base.`,a3Copy:'Copy',a3Copied:'Copied!',
+  a3CmoOf:(c,l)=>l.length===1?`${c} is followed by ${l[0]}.`:`${c} is followed by ${l.length} CMOs:`,a3NoCmo:c=>`I can’t find any CMO linked to ${c}.`,
+  a3PCmo:(p,l)=>l.length===1?`${p} is followed by ${l[0]}.`:`${p} is followed by:`,
+  a3Last:(p,e,d)=>`${p} last came to “${e}” on ${d}.`,a3LastNever:p=>`${p} has never attended an event yet.`,a3LastInv:(e,d)=>`Last invitation: “${e}” (${d}).`,
+  a3At:{yes:(p,e,s)=>`Yes, ${p} was at “${e}” (${s}).`,no:(p,e,s)=>`No, ${p} did not attend “${e}” (${s}).`,none:(p,e)=>`${p} was not invited to “${e}”.`},
+  a3Never:n=>n===0?'Good news: everyone invited has come at least once.':`${n} invited ${n>1?'people have':'person has'} never come yet:`,a3NeverInv:n=>n===0?'Every contact has been invited at least once.':`${n} contact${n>1?'s have':' has'} never been invited:`,a3NeverCo:n=>n===0?'Good news: every invited company has come at least once.':`${n} compan${n>1?'ies have':'y has'} never come:`,
+  a3Loyal:(n,k)=>`${n} ${n>1?'people':'person'} came at least ${k} times:`,
+  a3New:(n,d)=>`${n} new contact${n>1?'s':''} since ${d} (first attendance):`,
+  a3Changed:n=>n?`${n} ${n>1?'people':'person'} left or changed company:`:'I see no recorded departure or company change.',
+  a3Evs:n=>n?`${n} event${n>1?'s':''}:`:'No event matches.',
+  a3Set:(n,what)=>`${n} ${n===1?'person':'people'}${what}:`,a3SetNone:what=>`I found nobody${what}.`,
+  a3Q:{present:[' came',' came'],registered:[' was registered',' were registered'],absent:[' did not come',' did not come'],noshow:[' did not come',' did not come'],refus:[' declined',' declined'],noresp:[' did not answer',' did not answer'],none:[' was not invited',' were not invited'],never:[' never came',' never came'],'':[' was invited',' were invited'],contacts:['','']},
+  a3Ctx:{co:c=>` from ${c}`,cm:c=>` followed by ${c}`,poste:x=>` (job: ${x})`,kind:{int:' (internal)',ext:' (external)',cmo:' (CMOs)',vip:' (VIP)'},ev:e=>` to ${e}`,evAny:' to an event',type:x=>` to a “${x}” event`,city:x=>` in ${x}`,year:y=>` in ${y}`,from:d=>` since ${d}`,min:k=>`, at least ${k} times`,email:' (with email)'},
+  a3AddQ:(n,e)=>`Shall I add ${n} guest${n>1?'s':''} to “${e}”?`,a3AddYes:n=>`Yes, add ${n}`,a3Added:(n,e)=>n?`Done: ${n} guest${n>1?'s':''} added to “${e}”.`:`They were all already on the “${e}” list.`,
+  a3NoTarget:'I can’t find a matching upcoming event. Would you like to create one?',a3NoWho:'Who should I add? Give me a person, a company or a list.',
+  a3ExpQ:n=>`Shall I download the list of ${n} ${n>1?'people':'person'} as Excel?`,a3ExpYes:'Yes, download',a3CopyQ:n=>`${n} email address${n>1?'es':''} ready to copy.`,a3CopyYes:'Copy emails',
+  a3No:'No thanks',a3Ok:'Fine, I won’t do anything.',a3OpenFiche:'Open the record',a3SeeEv:'Open the event',
+  a3Miss:n=>`Unanswered questions (${n})`,a3MissH:'These questions found no answer on this computer. Pass them on to improve Arno.',a3MissCopy:'Copy the list',a3MissClear:'Clear'
+});
+/* --- vocabulaire tiré des données : fonctions, villes, types d'événements --- */
+let A3V=null,A3VK='';
+const a3Stem=w=>w.replace(/(rices|trices|eurs|euses|ices|aux|s|x)$/,'').replace(/(rice|euse)$/,'eur');
+const A3_TYPE_SYN={dinner:'diner',dinners:'diner',diners:'diner',breakfast:'petit dejeuner','petit dej':'petit dejeuner',dej:'dejeuner',lunch:'dejeuner',conf:'conference',conferences:'conference',seminar:'seminaire',seminars:'seminaire',seminaires:'seminaire',soirees:'soiree',evening:'soiree',webinaire:'webinar',webinars:'webinar',forums:'forum',matinales:'matinale',cocktails:'cocktail'};
+const A3_CITY_SYN={brussels:'bruxelles',brussel:'bruxelles',ghent:'gand',gent:'gand',antwerp:'anvers',antwerpen:'anvers',liege:'liege',luik:'liege',namen:'namur',bruges:'bruges',brugge:'bruges',louvain:'louvain',leuven:'louvain',paris:'paris',luxembourg:'luxembourg'};
+const A3_POSTE_SYN={cfo:'financ',daf:'financ',finance:'financ',financier:'financ',financiers:'financ',ceo:'general',dg:'general',pdg:'general',boss:'general',patron:'general',patrons:'general',tresorier:'tresor',tresoriers:'tresor',treasurer:'tresor',juriste:'jurid',juristes:'jurid',avocat:'avoca',avocats:'avoca',associes:'associ',associe:'associ',partner:'partner',partners:'partner',directeur:'direct',directeurs:'direct',directrice:'direct',directrices:'direct',director:'direct',directors:'direct',manager:'manag',managers:'manag',analyste:'analys',analystes:'analys',analyst:'analys',comptable:'compta',comptables:'compta',rh:'ressources humaines',hr:'ressources humaines',marketing:'marketing',commercial:'commerc',commerciaux:'commerc',sales:'commerc',gerant:'gerant',gerants:'gerant',fondateur:'fond',fondateurs:'fond',founder:'fond',founders:'fond',architecte:'architect',architectes:'architect',responsable:'responsable',responsables:'responsable',chef:'chef',chefs:'chef',consultant:'consult',consultants:'consult'};
+function a3Vocab(){
+  const k=[PEOPLE.length,EVSTATS.length,lang].join('|');if(A3V&&A3VK===k)return A3V;
+  const types=new Map(),cities=new Map(),postes=new Set();
+  EVSTATS.forEach(s=>{const ty=normName(s.e.type||'');if(ty){types.set(ty,s.e.type);if(ty.includes(' '))types.set(ty.split(' ').pop(),s.e.type)}const c=normName(s.e.lieu||'');if(c)cities.set(c,s.e.lieu)});
+  PEOPLE.forEach(p=>normName(p.poste||'').split(' ').forEach(w=>{if(w.length>=4&&!AR_STOP.has(w))postes.add(a3Stem(w))}));
+  A3V={types,cities,postes};A3VK=k;return A3V;
+}
+/* --- dates relatives --- */
+const A3_MONTHS={janvier:1,january:1,jan:1,fevrier:2,february:2,feb:2,fev:2,mars:3,march:3,mar:3,avril:4,april:4,apr:4,avr:4,mai:5,may:5,juin:6,june:6,jun:6,juillet:7,july:7,jul:7,aout:8,august:8,aug:8,septembre:9,september:9,sept:9,sep:9,octobre:10,october:10,oct:10,novembre:11,november:11,nov:11,decembre:12,december:12,dec:12};
+function a3Time(n){
+  const now=new Date(),Y=now.getFullYear(),M=now.getMonth()+1,pad=x=>String(x).padStart(2,'0'),T={years:[],from:'',to:'',words:[]};
+  const yrs=[...n.matchAll(/\b(19|20)\d{2}\b/g)].map(m=>m[0]);
+  if(/\b(cette annee|cette annee ci|this year|annee en cours|current year)\b/.test(n)){T.years.push(String(Y));T.words.push('cette','annee','this','year')}
+  if(/\b(l an dernier|l annee derniere|annee derniere|l annee passee|annee passee|last year|previous year)\b/.test(n)){T.years.push(String(Y-1));T.words.push('dernier','derniere','passee','last','year','annee','previous')}
+  if(/\b(l an prochain|l annee prochaine|next year)\b/.test(n)){T.years.push(String(Y+1));T.words.push('prochain','prochaine','next','year','annee')}
+  let m=n.match(/\b(depuis|since|apres|after|a partir de|from)\s+(le\s+)?(\d{1,2}\s+)?([a-z]+)(\s+((19|20)\d{2}))?\b/);
+  if(m&&A3_MONTHS[m[4]]){const mo=A3_MONTHS[m[4]],y=m[6]?+m[6]:(mo<=M?Y:Y-1);T.from=`${y}-${pad(mo)}-${pad(m[3]?+m[3]:1)}`;T.words.push(m[4])}
+  else if(m&&/^(19|20)\d{2}$/.test(m[4]))T.from=m[4]+'-01-01';
+  m=n.match(/\b(les\s+|the\s+|past\s+|last\s+)?(\d{1,2})\s+(derniers?\s+mois|mois|last\s+months?|months?)\b/);
+  if(m&&/dernier|last|past|depuis/.test(n)){const d=new Date(now);d.setMonth(d.getMonth()-(+m[2]));T.from=isoDay(d);T.words.push('mois','months','derniers')}
+  if(/\b(ce mois|ce mois ci|this month)\b/.test(n)){T.from=`${Y}-${pad(M)}-01`;T.words.push('mois','month')}
+  if(/\b(depuis un an|un an|12 derniers mois|past year|last 12 months)\b/.test(n)&&!T.from){const d=new Date(now);d.setFullYear(d.getFullYear()-1);T.from=isoDay(d)}
+  m=n.match(/\b(en|in)\s+([a-z]+)(\s+((19|20)\d{2}))?\b/);if(m&&A3_MONTHS[m[2]]&&m[2].length>3){const mo=A3_MONTHS[m[2]],y=m[4]?+m[4]:(mo<=M?Y:Y-1);T.from=`${y}-${pad(mo)}-01`;T.to=`${y}-${pad(mo)}-31`;T.words.push(m[2])}
+  if(!T.from&&!T.years.length)T.years=yrs;else if(yrs.length&&!T.years.length&&!T.from)T.years=yrs;
+  return T;
+}
+/* --- détails de la question --- */
+function a3Slots(q,P){
+  const n=' '+normName(q)+' ',V=a3Vocab(),T=a3Time(n),toks=n.trim().split(' ');
+  const entTok=new Set();[...P.evs.flatMap(s=>[evName(s.e),s.e.name]),...P.co.map(c=>c.name),...P.pe.map(p=>p.full),...P.cm.map(c=>c.name)].forEach(x=>normName(x).split(' ').forEach(w=>entTok.add(w)));
+  const free=toks.filter(w=>!entTok.has(w));
+  /* type d'événement et ville */
+  let type='',typeL0='',city='',cityL='';
+  const sg=w=>w.replace(/(s|x)$/,'');
+  if(/\bpetits? dejeuners?\b/.test(n)&&V.types.has('petit dejeuner')){type='petit dejeuner';typeL0=V.types.get('petit dejeuner')}
+  if(!type)for(const w of free){const s=A3_TYPE_SYN[w]||A3_TYPE_SYN[sg(w)]||(V.types.has(w)?w:sg(w));if(V.types.has(s)){type=s;typeL0=V.types.get(s);break}}
+  if(!type){const two=free.join(' ');for(const [k,l] of V.types)if(k.includes(' ')&&(' '+two+' ').includes(' '+k+' ')){type=k;typeL0=l;break}if(!type&&/\bpetit dej(euner)?\b/.test(n)){type='petit dejeuner';typeL0='Petit-déjeuner'}}
+  for(const w of free){const s=A3_CITY_SYN[w]||w;if(V.cities.has(s)){city=s;cityL=V.cities.get(s);break}}
+  /* fonction */
+  let poste='',posteL='';
+  for(const w of free){if(AR_STOP.has(w)&&!A3_POSTE_SYN[w])continue;const syn=A3_POSTE_SYN[w];const st=syn||a3Stem(w);if(st.length<4)continue;
+    if(syn||[...V.postes].some(x=>x.startsWith(st)||st.startsWith(x)&&x.length>=5)){poste=st;posteL=w;break}}
+  /* nombre de présences */
+  let min=0;const mm=n.match(/\b(au moins|minimum|plus de|at least|more than|min)\s+(\d+)\s*(fois|times|x)?\b/)||n.match(/\b(\d+)\s*(fois|times)\s*(ou plus|et plus|or more|minimum|au moins)?\b/);
+  if(mm){min=+(mm[2]&&/^\d+$/.test(mm[2])?mm[2]:mm[1]);if(/plus de|more than/.test(mm[0]))min++}
+  const email=/\b(avec (un )?e ?mail|qu on peut (ecrire|contacter)|joignables?|with (an )?email|reachable)\b/.test(n);
+  const kind=P.kind||(/\b(vip)\b/.test(n)?'vip':'');
+  return{n,T,type,typeL:typeL0,city,cityL,poste,posteL,min,email,kind,free};
+}
+/* --- ensemble de personnes, calculé directement --- */
+function a3EvOk(e,S,evIds){
+  if(evIds&&evIds.size&&!evIds.has(e.id)&&!(e.gid&&evIds.has(e.gid)))return false;
+  if(S.type&&!normName(e.type||'').includes(S.type)&&!normName(e.name||'').includes(S.type))return false;
+  if(S.city&&normName(e.lieu||'')!==S.city)return false;
+  const d=(e.date||'').slice(0,10);
+  if(S.T.years.length&&!S.T.years.includes(d.slice(0,4)))return false;
+  if(S.T.from&&(!d||d<S.T.from))return false;if(S.T.to&&(!d||d>S.T.to))return false;
+  return true;
+}
+const a3HasEvC=(S,P)=>!!(P.evs.length||S.type||S.city||S.T.years.length||S.T.from);
+function a3People(P,S,status){
+  const evIds=P.evs.length?new Set(P.evs.map(s=>s.e.id)):null,coIds=P.co.length?new Set(P.co.map(c=>c.id)):null,cm=P.cm.length?new Set(P.cm.map(c=>c.id)):null;
+  const evC=a3HasEvC(S,P),st=status||'',out=[];
+  PEOPLE.forEach(p=>{
+    if(p.archived)return;if(coIds&&!coIds.has(p.coId||''))return;
+    if(S.kind==='int'&&!p.internal)return;if(S.kind==='ext'&&p.internal)return;if(S.kind==='cmo'&&!p.cmoId)return;if(S.kind==='vip'&&!p.vip)return;
+    if(S.poste&&!strip(p.poste||'').includes(S.poste))return;if(S.email&&!p.email)return;
+    let H=p.hist.filter(h=>a3EvOk(h.ev,S,evIds));
+    if(cm&&!(p.pilotCmoId&&cm.has(p.pilotCmoId))){H=H.filter(h=>(h.cmoKeys||[]).some(k=>cm.has('cmo:'+k)));if(!H.length)return}
+    if(st==='none'){if(evC?H.length:p.hist.length)return;out.push({p,n:0,pres:0});return}
+    if(st==='never'){if(H.some(h=>h.present)||!H.length)return;out.push({p,n:H.length,pres:0});return}
+    if(!evC&&!st&&!S.min&&!cm){out.push({p,n:p.hist.length,pres:p.pres});return} /* les contacts, invités ou non */
+    const M=st?H.filter(h=>askMatch({status:st},h)):H;
+    const pres=H.filter(h=>h.present).length;
+    if(S.min){if(pres<S.min)return;out.push({p,n:H.length,pres});return}
+    if(!M.length)return;out.push({p,n:M.length,pres});
+  });
+  return out.sort((a,b)=>b.pres-a.pres||byPerson(a.p,b.p));
+}
+/* phrase qui décrit ce qui a été compris */
+function a3What(P,S,st,sing){
+  const C=t('a3Ctx'),parts=[];
+  if(P.co.length)parts.push(C.co(P.co.map(c=>c.name).join(t('arAnd'))));
+  if(P.cm.length)parts.push(C.cm(P.cm.map(c=>c.name).join(t('arAnd'))));
+  if(S.kind&&C.kind[S.kind])parts.push(C.kind[S.kind]);
+  if(S.poste)parts.push(C.poste(S.posteL));
+  const V=(t('a3Q')[st]||t('a3Q')[''])[sing?0:1];const verb=st==='contacts'?'':V;
+  let scope='';
+  if(P.evs.length)scope=C.ev(P.evs.length>2?t('arEvN')(P.evs.length):P.evs.map(s=>lang==='fr'?`« ${evName(s.e)} »`:`“${evName(s.e)}”`).join(t('arAnd')));
+  else if(S.type)scope=C.type(typeL(S.typeL));
+  else if(st!=='contacts'&&(S.city||S.T.years.length||S.T.from||st))scope=C.evAny;
+  if(S.city)scope+=C.city(place(S.cityL));
+  if(S.T.years.length&&!P.evs.length)scope+=C.year(S.T.years.join(t('arAnd')));
+  if(S.T.from&&!S.T.to)scope+=C.from(numDate(S.T.from));
+  if(S.T.from&&S.T.to)scope+=C.year(new Date(S.T.from).toLocaleDateString(lang==='fr'?'fr-BE':'en-GB',{month:'long',year:'numeric'}));
+  return parts.join('')+(st==='refus'&&scope.startsWith(C.ev(''))?verb+scope.replace(C.ev(''),' '):verb+scope)+(S.min?C.min(S.min):'')+(S.email?C.email:'');
+}
+const a3Li=r=>`<li><button type="button" class="ar-link" data-open="person" data-id="${esc(r.p.id)}">${esc(r.p.full)}</button><small>${esc([r.p.societe,r.p.poste].filter(Boolean).join(' · '))}${r.pres?` · ${r.pres} ${lang==='fr'?'présence':'attendance'}${r.pres>1&&lang==='fr'?'s':''}`:''}</small></li>`;
+function a3List(rows,max){max=max||8;return rows.length?`<ul class="ar-list">${rows.slice(0,max).map(a3Li).join('')}</ul>${rows.length>max?`<p class="ar-more">${esc(t('arMore')(rows.length-max))}</p>`:''}`:''}
+/* « Ouvrir dans Créer une liste » avec les mêmes critères */
+function a3LQ(P,S,st,rows){
+  const evIds=a3HasEvC(S,P)?EVSTATS.filter(s=>!s.e.gid&&a3EvOk(s.e,S,P.evs.length?new Set(P.evs.map(x=>x.e.id)):null)).map(s=>s.e.id):null;
+  return{...defaultLQ(),ev:evIds&&evIds.length?evIds:null,co:P.co.length?P.co.map(c=>c.id):null,cmo:P.cm.length?P.cm.map(c=>c.id):null,
+    kind:['int','ext','cmo'].includes(S.kind)?S.kind:'all',vip:S.kind==='vip',poste:S.posteL||'',minPres:S.min||0,hasEmail:!!S.email,
+    evStatus:{present:'present',registered:'registered',absent:'absent',refus:'absent',noresp:'absent',noshow:'absent',none:'none'}[st]||'any'};
+}
+function a3Tip(P,S,st,rows,extra){
+  const key='l'+(++ARNO.seq);ARNO.ctx[key]={lq:a3LQ(P,S,st,rows),ids:rows.map(r=>r.p.id)};
+  const ch=[[t('arBtnList'),'list:'+key]];if(rows.some(r=>r.p.email))ch.push([t('a3CopyYes'),'copy:'+key]);
+  const up=a3Upcoming();if(up.length&&rows.length)ch.push([lang==='fr'?`Inviter à « ${up[0].name} »`:`Invite to “${up[0].name}”`,'addq:'+key+':'+up[0].pid]);
+  return{html:esc(t('arTipList')),chips:[...(extra||[]),...ch]};
+}
+function a3Upcoming(){const td=isoDay();return(typeof plList==='function'?plList():[]).filter(P=>(P.meta.date||'').slice(0,10)>=td).sort((a,b)=>(a.meta.date||'').localeCompare(b.meta.date||'')).map(P=>({pid:P.meta.id,name:P.meta.name,date:P.meta.date}))}
+const a3Und=(P,S)=>{const tags=[];P.evs.forEach(s=>tags.push(evName(s.e)));P.co.forEach(c=>tags.push(c.name));P.pe.forEach(p=>tags.push(p.full));P.cm.forEach(c=>tags.push('CMO '+c.name));
+  if(S.T.years.length)tags.push(S.T.years.join(', '));if(S.T.from)tags.push((lang==='fr'?'depuis ':'since ')+numDate(S.T.from));if(S.type)tags.push(typeL(S.typeL));if(S.city)tags.push(place(S.cityL));if(S.posteL)tags.push(S.posteL);if(S.min)tags.push('≥ '+S.min);
+  return tags.length?`<div class="ar-und2">${tags.map(x=>`<span class="ar-tag">${esc(x)}</span>`).join('')}</div>`:''};
+/* « Je n'ai trouvé personne de chez X qui a refusé « Y » » */
+function a3NoneWhat(P,S,st){const w=a3What(P,S,st,true),V=(t('a3Q')[st]||t('a3Q')[''])[0];if(st==='contacts'||!V)return w;const i=w.indexOf(V);return i<0?w:w.slice(0,i)+(lang==='fr'?' qui':' who')+w.slice(i)}
+/* --- le moteur --- */
+function arV3(q){
+  const P=askParse(q),S=a3Slots(q,P),n=S.n,has=re=>re.test(n);
+  if(!P.status&&has(/\b(decline\w*|declined|n a pas pu venir|excuse\w*)\b/))P.status='refus';
+  const one=(arr)=>arr.length===1?arr[0]:null,pe=one(P.pe),co=one(P.co),ev=one(P.evs);
+  const peopleWord=has(/\b(qui|personnes?|gens|contacts?|clients?|participants?|invites?|collaborateurs?|people|who|attendees|guests|folks|ceux|celles)\b/);
+  /* actions */
+  const passive=has(/\b(ete|etait|etaient|sont|est|was|were|been) (invite\w*|inscri\w*|added|invited)\b/)||/^\s*(qui|who)\b/.test(n);
+  const addW=!passive&&(has(/\b(ajoute\w*|ajouter|mets|mettre|inscri[st]\w*|add|put)\b/)||has(/\b(inviter|invite)\b.*\b(au|a la|a l|aux|to)\b.*\b(prochain\w*|evenement\w*|event\w*|forum|diner|matinale|seminaire|conference)\b/));
+  if(addW){
+    const ups=a3Upcoming();let target=null;
+    if(P.evs.length){const id=P.evs[0].e.id;const pl=typeof planFor==='function'&&planFor(id);if(pl)target={pid:pl.meta.id,name:pl.meta.name}}
+    if(!target){const words=S.free.filter(w=>w.length>=4&&!AR_STOP.has(w));target=ups.find(u=>words.some(w=>normName(u.name).includes(w)))||(has(/\b(prochain\w*|next)\b/)?ups[0]:null)}
+    if(!target)return[{html:esc(t('a3NoTarget')),chips:[[t('arH').newev[2],'wizard']]}];
+    const P2={...P,evs:[]};let rows=pe?[{p:pe}]:P.co.length?a3People(P2,{...S,T:{years:[],from:'',to:''},type:'',city:''},'').filter(r=>r.p):[];
+    if(!rows.length)return[{html:esc(t('a3NoWho'))}];
+    const key='a'+(++ARNO.seq);ARNO.ctx[key]={ids:rows.map(r=>r.p.id)};
+    return[{html:`${esc(t('a3AddQ')(rows.length,target.name))}${a3List(rows,5)}`,chips:[[t('a3AddYes')(rows.length),'add:'+key+':'+target.pid],[t('a3No'),'nop']]}];
+  }
+  /* exporter ou copier les e-mails d'un ensemble de personnes */
+  const expW=has(/\b(export\w*|telecharg\w*|download|extrai\w*|sors? (moi )?(un )?(fichier|excel))\b/),cpW=has(/\b(copie\w*|copy)\b/)&&has(/\b(e ?mails?|mails?|adresses?)\b/);
+  if((expW||cpW)&&(P.co.length||P.cm.length||P.evs.length||P.status||S.kind||S.poste||S.type||S.city||S.T.years.length||S.T.from||S.min)){
+    let st=P.status||'';if(!st&&has(/\b(venu\w*|particip\w*|presents?|attend\w*|came)\b/))st='present';
+    const rows=a3People(P,S,st),key='l'+(++ARNO.seq);ARNO.ctx[key]={lq:a3LQ(P,S,st,rows),ids:rows.map(r=>r.p.id)};
+    if(!rows.length)return[{html:esc(t('a3SetNone')(a3NoneWhat(P,S,st||'')))}];
+    if(cpW){const ne=rows.filter(r=>r.p.email).length;return[{html:`${a3Und(P,S)}${esc(t('a3CopyQ')(ne))}`,chips:[[t('a3CopyYes'),'copy:'+key],[t('arBtnList'),'list:'+key]]}]}
+    return[{html:`${a3Und(P,S)}${esc(t('a3ExpQ')(rows.length))}${a3List(rows,5)}`,chips:[[t('a3ExpYes'),'exp:'+key],[t('arBtnList'),'list:'+key],[t('a3No'),'nop']]}];
+  }
+  /* coordonnées d'une personne */
+  const fld=has(/\b(e ?mail|mail|courriel|adresse e ?mail|email address)\b/)?'email':has(/\b(telephone|tel|gsm|portable|numero|phone|mobile)\b/)?'phone':has(/\blinkedin\b/)?'linkedin':has(/\b(fonction|poste|job|titre|role|que fait)\b/)?'poste':has(/\b(ou travaille|quelle entreprise|which company|works? (at|for))\b/)?'societe':'';
+  if(fld&&pe&&!has(/\b(copie\w*|copy|export\w*)\b/)){const v=fld==='email'?(pe.emails||[]).join(', ')||pe.email:pe[fld];const F=t('a3Field')[fld];
+    return v?[{html:`${esc(t('a3FieldOf')(F,pe.full,''))}<b>${esc(v)}</b>`,chips:[[t('a3Copy'),'cp:'+v],[t('a3OpenFiche'),'open:person:'+pe.id]]}]:[{html:esc(t('a3NoField')(F,pe.full)),chips:[[t('a3OpenFiche'),'open:person:'+pe.id]]}]}
+  /* qui suit… (CMO) */
+  if(has(/\b(cmo|charge\w* de (la )?relation|suit|suivie?s?|s occupe|gere|responsable|relationship manager|account manager|covers?|covered|follows?|followed)\b/)&&(co||pe)&&!P.status&&!has(/\b(venu\w*|present\w*|invit\w*)\b/)){
+    const cnt={};const add=k=>{const c=CMOMAP[k];if(c)cnt[c.name]=(cnt[c.name]||0)+1};
+    const ppl=co?PEOPLE.filter(p=>p.coId===co.id):[pe];ppl.forEach(p=>{if(p.pilotCmoId)add(p.pilotCmoId);p.hist.forEach(h=>(h.cmoKeys||[]).forEach(k=>add('cmo:'+k)));const r=refVal(p.cref,'cmo');if(r)r.split(' / ').forEach(x=>{cnt[x]=(cnt[x]||0)+1})});
+    const L=Object.entries(cnt).sort((a,b)=>b[1]-a[1]).map(x=>x[0]);const nm=co?co.name:pe.full;
+    if(!L.length)return[{html:esc(t('a3NoCmo')(nm))}];
+    return[{html:`${esc(co?t('a3CmoOf')(nm,L):t('a3PCmo')(nm,L))}${L.length>1?`<ul class="ar-list">${L.slice(0,8).map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}`}];
+  }
+  /* une personne à un événement précis */
+  if(pe&&P.evs.length&&!P.co.length){const out=P.evs.map(s=>{const r=pe.hist.find(h=>h.ev.id===s.e.id||h.ev.gid===s.e.id)||s.regs.find(x=>x.p===pe);const nm=evName(s.e);
+      if(!r)return esc(t('a3At').none(pe.full,nm));return esc(r.present?t('a3At').yes(pe.full,nm,numWhen(s.e)):t('a3At').no(pe.full,nm,askCatLbl(r).toLowerCase()))});
+    return[{html:out.join('<br>'),chips:[[t('a3OpenFiche'),'open:person:'+pe.id]]}]}
+  /* une personne à un type d'événement, dans une ville ou une période */
+  if(pe&&!P.evs.length&&!P.co.length&&(S.type||S.city||S.T.years.length||S.T.from)&&!has(/\b(derniere fois|last time|quand|when)\b/)){
+    const H=pe.hist.filter(h=>a3EvOk(h.ev,S,null)).sort((a,b)=>(b.ev.date||'').localeCompare(a.ev.date||''));const pr=H.filter(h=>h.present);
+    const ctx=(S.type?t('a3Ctx').type(typeL(S.typeL)):t('a3Ctx').evAny)+(S.city?t('a3Ctx').city(place(S.cityL)):'')+(S.T.years.length?t('a3Ctx').year(S.T.years.join(t('arAnd'))):'')+(S.T.from?t('a3Ctx').from(numDate(S.T.from)):'');
+    const head=pr.length?(lang==='fr'?`Oui, ${pe.full} est venu(e) ${pr.length} fois${ctx} :`:`Yes, ${pe.full} came ${pr.length} time${pr.length>1?'s':''}${ctx}:`):H.length?(lang==='fr'?`Non, ${pe.full} a été invité(e)${ctx} mais n’est pas venu(e) :`:`No, ${pe.full} was invited${ctx} but did not come:`):(lang==='fr'?`Non, ${pe.full} n’a jamais été invité(e)${ctx}.`:`No, ${pe.full} was never invited${ctx}.`);
+    return[{html:`${esc(head)}${H.length?`<ul class="ar-list">${H.slice(0,8).map(h=>`<li><b>${esc(evName(h.ev))}</b><small>${esc(numDate((h.ev.date||'').slice(0,10)))} · ${esc(askCatLbl(h))}</small></li>`).join('')}</ul>`:''}`,chips:[[t('a3OpenFiche'),'open:person:'+pe.id]]}]}
+  /* dernière venue */
+  if(pe&&has(/\b(derniere fois|dernier passage|derniere venue|derniere participation|last time|last came|last attended|quand|when)\b/)){
+    const H=pe.hist.filter(h=>a3EvOk(h.ev,S,null)).sort((a,b)=>(b.ev.date||'').localeCompare(a.ev.date||''));const lp=H.find(h=>h.present),li=H[0];
+    return[{html:esc(lp?t('a3Last')(pe.full,evName(lp.ev),numDate((lp.ev.date||'').slice(0,10))):t('a3LastNever')(pe.full))+(li&&li!==lp?`<br><small>${esc(t('a3LastInv')(evName(li.ev),numDate((li.ev.date||'').slice(0,10))))}</small>`:''),chips:[[t('a3OpenFiche'),'open:person:'+pe.id]]}]}
+  /* départs et changements d'entreprise */
+  if(has(/\b(change\w* d entreprise|change\w* de societe|change\w* de boite|quitte\w*|parti\w* de|depart\w*|left|changed (company|job|employer)|moved)\b/)){
+    const L=PEOPLE.filter(p=>p.archived&&/depart|change|left|moved/i.test(normName((p.archived.reason||p.archived.r||'')+' '+(p.archived.note||'')))).map(p=>({p,pres:p.pres}));
+    PEOPLE.forEach(p=>{if(L.some(x=>x.p===p))return;const cos=new Set((p.rows||[]).map(r=>normName(r.societe||'')).filter(Boolean));if(cos.size>1)L.push({p,pres:p.pres})});
+    return[{html:esc(t('a3Changed')(L.length))+a3List(L)}];
+  }
+  /* nouveaux contacts */
+  if(has(/\b(nouveaux?|nouvelles?|recents?|recemment|new|newly|premiere fois|first time)\b/)&&(peopleWord||has(/\bvenu\w*|participant\w*\b/))&&!P.pe.length){
+    const from=S.T.from||(S.T.years.length?S.T.years[0]+'-01-01':isoDay(new Date(Date.now()-180*864e5)));
+    const rows=PEOPLE.filter(p=>!p.archived&&(!P.co.length||P.co.some(c=>c.id===p.coId))&&p.hist.length).map(p=>({p,first:p.hist.map(h=>(h.ev.date||'').slice(0,10)).filter(Boolean).sort()[0]||'',pres:p.pres})).filter(r=>r.first&&r.first>=from).sort((a,b)=>b.first.localeCompare(a.first));
+    return[{html:esc(t('a3New')(rows.length,numDate(from)))+a3List(rows)}];
+  }
+  /* jamais venus */
+  if(has(/\b(jamais|never|aucune fois|pas une seule fois)\b/)){
+    if(has(/\b(entreprises?|societes?|compan\w*|boites?)\b/)&&!co){const L=COMPANIES.filter(c=>c.ins>0&&!c.pres).sort((a,b)=>b.ins-a.ins);
+      return[{html:esc(t('a3NeverCo')(L.length))+`<ul class="ar-list">${L.slice(0,8).map(c=>`<li><button type="button" class="ar-link" data-open="company" data-id="${esc(c.id)}">${esc(c.name)}</button><small>${c.ins} ${lang==='fr'?'invitation(s)':'invitation(s)'}</small></li>`).join('')}</ul>${L.length>8?`<p class="ar-more">${esc(t('arMore')(L.length-8))}</p>`:''}`}]}
+    const st=has(/\binvit\w*|convi\w*\b/)&&!has(/\bvenu\w*|particip\w*|attend\w*|came\b/)?'none':'never';
+    const rows=a3People(P,S,st);
+    return[{html:`${a3Und(P,S)}${esc(st==='none'?t('a3NeverInv')(rows.length):t('a3Never')(rows.length))}${a3List(rows)}`},a3Tip(P,S,st,rows)];
+  }
+  /* fidèles */
+  if(has(/\b(fidele\w*|habitue\w*|regulier\w*|loyal\w*|regulars?|assidu\w*|souvent|often|frequently)\b/)||(S.min&&!P.pe.length)){
+    const k=S.min||3,rows=a3People(P,{...S,min:k},'');
+    return[{html:`${a3Und(P,{...S,min:k})}${esc(t('a3Loyal')(rows.length,k))}${a3List(rows)}`},a3Tip(P,{...S,min:k},'',rows)];
+  }
+  /* liste d'événements */
+  if(has(/\b(evenements?|events?|evenment\w*|editions?)\b/)&&!peopleWord&&!P.status&&P.intent!=='rank'&&P.intent!=='rate'&&P.intent!=='count'&&!P.evs.length&&!P.co.length&&!P.pe.length){
+    if(has(/\b(prochain\w*|a venir|upcoming|next|futur\w*|bientot|soon)\b/))return arnoUpcoming();
+    const L=EVSTATS.filter(s=>!s.e.gid&&a3EvOk(s.e,S,null)).sort((a,b)=>(b.e.date||'').localeCompare(a.e.date||''));
+    return[{html:`${a3Und(P,S)}${esc(t('a3Evs')(L.length))}<ul class="ar-list">${L.slice(0,10).map(s=>`<li><button type="button" class="ar-link" data-open="event" data-id="${esc(s.e.id)}">${esc(evName(s.e))}</button><small>${esc([s.e.date?numWhen(s.e):'',s.e.lieu?place(s.e.lieu):'',`${s.pres}/${s.ins} ${lang==='fr'?'présents':'attended'}`].filter(Boolean).join(' · '))}</small></li>`).join('')}</ul>${L.length>10?`<p class="ar-more">${esc(t('arMore')(L.length-10))}</p>`:''}`,chips:[[t('arBtnEvents'),'go:events']]}];
+  }
+  if(P.rk&&!REFDATA)return[{html:esc(lang==='fr'?'Le classement (Top 500, Top 1000…) vient du référentiel, qui n’est pas encore chargé dans Konex. Un administrateur peut l’importer dans « Importer et contrôler ».':'Rankings (Top 500, Top 1000…) come from the referential, which is not loaded in Konex yet. An administrator can import it in “Import and check”.')}];
+  /* classements, taux et totaux d'un événement : moteur existant (déjà juste) */
+  if(P.intent==='rank'||P.intent==='rate'||(P.intent==='count'&&P.evs.length&&!S.poste&&!S.kind))return null;
+  if(has(/\b(meilleur\w*|best|top)\b/)&&has(/\b(entreprises?|clients?|societes?|compan\w*)\b/))return arnoBrain(lang==='fr'?`Quelles entreprises viennent le plus ${S.T.years.length?'en '+S.T.years.join(' '):''}`:`Which companies attended the most ${S.T.years.length?'in '+S.T.years.join(' '):''}`,1);
+  /* une personne seule : son historique (moteur existant) */
+  if(pe&&!P.co.length&&!S.type&&!S.city)return null;
+  /* ensemble de personnes filtré */
+  const anyFilter=P.co.length||P.cm.length||P.evs.length||P.status||S.kind||S.poste||S.type||S.city||S.T.years.length||S.T.from||S.min||S.email;
+  if(!anyFilter)return null;
+  if(!peopleWord&&!P.status&&n.trim().split(' ').length<=2&&!S.T.years.length)return null;
+  if(!peopleWord&&!P.status&&!S.poste&&!S.type&&!S.city&&!S.T.from&&!S.kind&&P.intent!=='count')return null; /* un nom seul : Arno demande ce qu'on veut savoir */
+  let st=P.status||'';if(!st&&has(/\b(venu\w*|particip\w*|assiste\w*|attend\w*|came|present\w*)\b/))st='present';
+  if(!st&&!a3HasEvC(S,P)&&!P.cm.length)st='contacts';
+  const rows=a3People(P,S,st==='contacts'?'':st);
+  const head=rows.length?esc(t('a3Set')(rows.length,a3What(P,S,st,rows.length===1))):esc(t('a3SetNone')(a3NoneWhat(P,S,st)));
+  return[{html:`${a3Und(P,S)}${head}${a3List(rows)}`},rows.length?a3Tip(P,S,st,rows):null];
+}
+/* branchement dans le cerveau : après la conversation courante et les clarifications de noms */
+{const _b2=arnoBrain;arnoBrain=function(q,depth){
+  const nn=normName(q),n=' '+nn+' ';
+  const chat=/^\s*(bonjour|salut|hello|hi|hey|coucou|bonsoir|merci|thanks?|thank you|super|parfait|au revoir|bye|annule\w*|cancel|stop|aide|help)\b/.test(nn)||/\b(robot|qui es tu|who are you|que sais tu faire|what can you do|ca va|how are you)\b/.test(n);
+  const howQ=/^\s*(comment|how do|how can|how to|ou (est|se trouve|trouver)|where|est ce que je peux|puis je|peut on|can i|aide moi|help me)\b/.test(nn);
+  const follow=/^\s*(et|and|puis|also|aussi|maintenant|now)\b/.test(nn)&&ARNO.last;
+  if(ARNO.expect||chat||howQ||follow)return _b2(q,depth);
+  let P0;try{P0=askParse(q)}catch(_){return _b2(q,depth)}
+  /* mots inconnus qui ne sont pas des détails (fonction, ville, type, mois…) : clarification d'abord */
+  const S0=a3Slots(q,P0),V=a3Vocab(),slotW=new Set([S0.type,S0.city,S0.posteL,...S0.T.words,'fois','times','au','moins','plus','fideles','fidele','habitues','nouveaux','nouvelles','recents','jamais','never','mail','email','courriel','telephone','tel','gsm','portable','linkedin','fonction','poste','cmo','suit','suivi','suivie','gere','responsable','ajoute','ajouter','mets','inviter','invite','exporte','exporter','telecharge','copie','copier','quand','derniere','dernier','prochain','prochaine','bientot','organise','decline','meilleure','meilleur','changement','change','quitte','depart','partis','regulier','reguliers','souvent','numero']);
+  const upW=new Set();if(/\b(ajoute\w*|ajouter|mets|mettre|inviter?|invite|add|put)\b/.test(n))a3Upcoming().forEach(u=>normName(u.name).split(' ').forEach(w=>upW.add(w)));
+  const sgl=w=>w.replace(/(s|x)$/,'');
+  const noType=r=>{const out=[];for(let i=0;i<r.length;i++){const two=i+1<r.length?sgl(r[i].tk)+' '+sgl(r[i+1].tk):'';if(two&&V.types.has(two)){i++;continue}out.push(r[i])}return out};
+  const runs=arRuns(q,P0).map(r=>noType(r.filter(o=>!upW.has(o.tk)))).filter(r=>r.length).map(r=>r.length>1?r:r.filter(o=>!slotW.has(o.tk)&&!slotW.has(o.tk.replace(/(s|x)$/,''))&&!V.types.has(o.tk.replace(/(s|x)$/,''))&&!A3_TYPE_SYN[o.tk]&&!A3_CITY_SYN[o.tk]&&!A3_POSTE_SYN[o.tk]&&!A3_MONTHS[o.tk]&&!V.types.has(o.tk)&&!V.cities.has(o.tk)&&!(S0.poste&&a3Stem(o.tk).startsWith(S0.poste)))).filter(r=>r.length);
+  if(runs.length&&arFuzzy(runs).length)return _b2(q,depth);
+  if(/\b(prochain\w*|a venir|upcoming|next|bientot|soon|agenda|planning|calendrier)\b/.test(n)&&/\b(evenements?|events?|evenment\w*|organise\w*|agenda|planning|calendrier|prevu\w*|bientot)\b/.test(n)&&!/\b(ajoute\w*|inviter|add)\b/.test(n))return arnoUpcoming();
+  let r=null;try{r=arV3(q)}catch(e){console.warn(e);r=null}
+  if(r){if(!/\b(prochain|upcoming)\b/.test(n))ARNO.last={P:P0,q};return r}
+  return _b2(q,depth);
+}}
+/* actions des boutons d'Arno */
+{const _a3=arnoAct;arnoAct=function(a,b){
+  const i=a.indexOf(':'),k=i<0?a:a.slice(0,i),v=i<0?'':a.slice(i+1);
+  if(k==='list'&&ARNO.ctx[v]&&ARNO.ctx[v].lq){arnoMin();LQ={...ARNO.ctx[v].lq};LUI.add=[];closeDrawer();goView('lists');return}
+  if(k==='copy'){const c=ARNO.ctx[v];if(!c)return;const ems=[...new Set(c.ids.map(id=>PMAP[id]&&PMAP[id].email).filter(Boolean))];copyText(ems.join('; ')).then(ok=>toast(ok?t('emailsCopied')(ems.length):t('copyFail'),!ok));return}
+  if(k==='exp'){const c=ARNO.ctx[v];if(!c)return;arnoPush('me',esc(b?b.textContent:''));const keep=LQ;LQ={...c.lq};try{lbExport()}finally{LQ=keep}arnoSay([{html:esc(lang==='fr'?'C’est parti, le fichier se télécharge.':'Here you go, the file is downloading.')}]);return}
+  if(k==='cp'){copyText(v).then(ok=>{if(b){b.textContent=t('a3Copied')}});return}
+  if(k==='nop'){arnoPush('me',esc(t('a3No')));arnoSay([{html:esc(t('a3Ok'))}]);return}
+  if(k==='addq'){const [key,pid]=v.split(':');const c=ARNO.ctx[key],P=PLANS[pid];if(!c||!P)return;arnoPush('me',esc(b?b.textContent:''));
+    arnoSay([{html:esc(t('a3AddQ')(c.ids.length,P.meta.name)),chips:[[t('a3AddYes')(c.ids.length),'add:'+key+':'+pid],[t('a3No'),'nop']]}]);return}
+  if(k==='add'){const [key,pid]=v.split(':');const c=ARNO.ctx[key],P=PLANS[pid];if(!c||!P)return;arnoPush('me',esc(b?b.textContent:''));
+    askMe().then(()=>{const n=plAddGuests(P,c.ids.map(id=>PMAP[id]).filter(Boolean).map(personGuest),'manual',true);saveVault();try{if(curTop())drawDrawer(true)}catch(_){}
+      arnoSay([{html:esc(t('a3Added')(n,P.meta.name)),chips:[[t('a3SeeEv'),'ev:'+plEvId(P)]]}])});return}
+  return _a3(a,b)}}
+/* plus rapide : une pause « en train d'écrire » courte, puis les bulles s'enchaînent */
+arnoSay=async function(list){
+  list=list.filter(Boolean);if(!list.length)return;ARNO.busy=true;arnoStatus();arnoRender();
+  const first=String(list[0].html||'').replace(/<[^>]+>/g,'');await arWait(ARNO.fast?5:Math.min(900,380+first.length*4));
+  for(let i=0;i<list.length;i++){if(i){ARNO.busy=true;arnoRender();await arWait(ARNO.fast?2:160)}ARNO.busy=false;arnoStatus();arnoPush('bot',list[i].html,list[i].chips)}
+};
+/* questions sans réponse : notées sur ce poste, visibles par l'administrateur dans le profil d'Arno */
+const A3_MISS='konex-arno-miss';
+function a3MissGet(){try{return JSON.parse(lsGet(A3_MISS)||'[]')}catch(_){return[]}}
+function a3MissAdd(q){const L=a3MissGet();if(!L.some(x=>x.q===q)){L.push({q,at:isoDay()});lsSet(A3_MISS,JSON.stringify(L.slice(-200)))}}
+/* Arno répond dans la langue de la question (français ou anglais), quelle que soit la langue de l'outil */
+const AR_EN=/\b(who|what|which|how|when|where|the|from|did|does|show|give|list|never|came|attended|people|companies|events?|email|phone|last|this|year|since|at|of|is|are|was|were|me|my|add|to|for|with|and|please|in|works?|our|we)\b/g,AR_FR=/\b(qui|quoi|quel\w*|comment|quand|le|la|les|de|du|des|chez|est|sont|ete|venu\w*|personnes?|entreprises?|evenements?|annee|depuis|mon|mes|moi|je|un|une|et|en|au|aux|nous|vous|avons|ont|pour|sur|avec|ajoute\w*|donne|montre|liste|combien)\b/g;
+function arLangOf(q){const n=' '+normName(q)+' ',e=(n.match(AR_EN)||[]).length,f=(n.match(AR_FR)||[]).length;return e>=2&&e>f?'en':f>=2&&f>e?'fr':''}
+{const _b3=arnoBrain;arnoBrain=function(q,depth){const ql=!depth&&arLangOf(q),keep=lang;let r;if(ql&&ql!==lang){lang=ql;try{r=_b3(q,depth)}finally{lang=keep}return r}
+  r=_b3(q,depth);try{if(!depth&&r&&r.some(m=>m&&m.chips&&m.chips.some(c=>/^seek:/.test(c[1]))))a3MissAdd(q)}catch(_){}return r}}
+{const _tx=arnoTexts;arnoTexts=function(){_tx();if(!ADMIN)return;const L=a3MissGet(),pf=$('arProf');if(!pf||!L.length)return;
+  pf.insertAdjacentHTML('beforeend',`<details class="ar-miss"><summary>${esc(t('a3Miss')(L.length))}</summary><p>${esc(t('a3MissH'))}</p><ol>${L.slice(-30).reverse().map(x=>`<li>${esc(x.q)}</li>`).join('')}</ol><div class="ar-miss-b"><button type="button" class="btn-o sm" data-ara="misscp">${esc(t('a3MissCopy'))}</button><button type="button" class="btn-o sm" data-ara="missclr">${esc(t('a3MissClear'))}</button></div></details>`)}}
+{const _a4=arnoAct;arnoAct=function(a,b){if(a==='misscp'){copyText(a3MissGet().map(x=>x.q).join('\n')).then(ok=>toast(ok?t('a3Copied'):t('copyFail'),!ok));return}if(a==='missclr'){lsSet(A3_MISS,'[]');arnoTexts();return}return _a4(a,b)}}
 
 if(KXD){
   const I=KXD.info,D=I.dirs;
