@@ -13057,6 +13057,34 @@ L.en.contrib={...L.en.contrib,title:'Change log',sub:'Everything the team change
   if(o&&o.s==='note'&&typeof o.k==='string'&&o.k.startsWith('ev:')){const s=EMAP[o.k.slice(3)];return s?['event',s.e.id,evName(s.e)]:[null,null,o.k.slice(3)]}
   if(o&&o.s==='photo'&&EMAP[o.k])return['event',o.k,evName(EMAP[o.k].e)];return _ct2(o)}}
 
+/* =========================================================
+   FORMAT D'ÉCHANGE « konex-echange » (v1) — prêt pour de futurs branchements (CRM, Outlook, outil d'emailing…)
+   Un fichier JSON lisible par n'importe quel outil, avec des identifiants stables :
+     personnes, entreprises, événements, participations, événements à venir et leurs invités.
+   Comme la master file, il ne contient jamais les statuts d'invitation.
+   Brancher un nouvel outil = écrire un « connecteur » qui lit ou produit ce format (voir KX_CONNECTORS et le README).
+   ========================================================= */
+Object.assign(L.fr,{exT:'Échange avec d’autres outils',exH:'Exportez toute la base dans un format standard (JSON) que d’autres outils pourront lire : CRM, Outlook, outil d’emailing… Les statuts d’invitation n’y figurent pas.',exBtn:'Exporter au format d’échange',exDone:n=>`Export prêt : ${n} contacts.`});
+Object.assign(L.en,{exT:'Exchange with other tools',exH:'Export the whole base in a standard format (JSON) that other tools can read: CRM, Outlook, emailing tool… Invitation statuses are not included.',exBtn:'Export in exchange format',exDone:n=>`Export ready: ${n} contacts.`});
+function kxExchange(){
+  const P=PEOPLE.map(p=>({id:p.id,prenom:p.prenom||'',nom:p.nom||'',email:p.email||'',emails:p.emails||[],telephone:p.phone||'',linkedin:p.linkedin||'',fonction:p.poste||'',
+    entreprise:p.coId?{id:p.coId,nom:p.societe||''}:null,interne:!!p.internal,vip:!!p.vip,archive:p.archived?{motif:p.archived.reason||'',date:p.archived.date||''}:null,
+    entreprisesPrecedentes:((PMETA[p.id]||{}).prevCos||[]),cmo:p.pilotCmoId&&CMOMAP[p.pilotCmoId]?CMOMAP[p.pilotCmoId].name:'',infos:p.ext||{}}));
+  const C=COMPANIES.map(c=>({id:c.id,nom:c.name,secteur:c.sector||'',site:c.website||'',adresse:c.address||'',rmpm:c.rmpm||'',infos:c.extra||{}}));
+  const E=EVSTATS.map(s=>({id:s.e.id,nom:s.e.name,date:s.e.date||'',lieu:s.e.lieu||'',type:s.e.type||'',parent:s.e.gid||null}));
+  const R=[];PEOPLE.forEach(p=>p.hist.forEach(h=>R.push({personne:p.id,evenement:h.ev.id,statut:h.cat||'',present:!!h.present})));
+  const U=(typeof plList==='function'?plList():[]).map(Pl=>({id:Pl.meta.id,nom:Pl.meta.name,date:Pl.meta.date||'',lieu:Pl.meta.lieu||'',type:Pl.meta.type||'',
+    invites:plGuests(Pl).map(g=>({personne:g.pid||null,email:g.email||'',nom:g.name||'',entreprise:g.societe||''}))}));
+  return{format:'konex-echange',version:1,genere:new Date().toISOString(),source:'Konex',personnes:P,entreprises:C,evenements:E,participations:R,aVenir:U};
+}
+/* connecteurs : un registre simple pour brancher plus tard d'autres outils sans toucher au reste de Konex */
+const KX_CONNECTORS={
+  'konex-echange':{nom:'Format d’échange Konex (JSON)',exporter:()=>JSON.stringify(kxExchange(),null,1),extension:'json'}
+  /* exemples à venir : 'crm':{nom:'CRM',exporter:()=>…,importer:fichier=>…}, 'outlook':{…} */
+};
+XACT['kx-exch']=()=>{const c=KX_CONNECTORS['konex-echange'],d=kxExchange();download(JSON.stringify(d,null,1),`konex-echange-${isoDay()}.json`).then(ok=>{if(ok)toast(t('exDone')(d.personnes.length))})};
+{const _sh2=shareHTML;shareHTML=function(){const h=_sh2();return ADMIN?h+`<div class="sh-how"><b>${esc(t('exT'))}</b><p>${esc(t('exH'))}</p><button type="button" class="btn-o sm" data-x="kx-exch">${esc(t('exBtn'))}</button></div>`:h}}
+
 if(KXD){
   const I=KXD.info,D=I.dirs;
   /* base partagée : le dossier du serveur, sans fenêtre de choix */

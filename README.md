@@ -63,14 +63,14 @@ L'espace choisi à la connexion décide de ce qui est disponible :
 | Consulter et copier une fiche, préparer un e-mail | ✅ | ✅ |
 | Construire et exporter des listes | ✅ | ✅ |
 | Statistiques et tableau de bord | ✅ | ✅ |
-| Compléter un client ou une entreprise, ajouter une note, créer un contact | ✅ (journalisé, partagé) | ✅ |
+| Modifier toutes les fiches (personnes, entreprises, CMO, événements, participants), notes, photos, créer un contact ou un événement | ✅ (appliqué tout de suite, journalisé) | ✅ |
 | Signaler une erreur ou un doublon | ✅ | — |
 | Changer son mot de passe | ✅ | ✅ |
-| Modifier un événement ou une participation | ❌ (lecture seule) | ✅ |
-| Fusionner, supprimer ou archiver une fiche | ❌ (utiliser « Signaler ») | ✅ |
+| Archiver une fiche, changement d'entreprise | ✅ | ✅ |
+| Fusionner des doublons, supprimer | ❌ (utiliser « Signaler ») | ✅ |
 | Importer des données / construire la master file | ❌ | ✅ |
 | Contrôles qualité (doublons, inversions, fautes…) | ❌ | ✅ |
-| Revoir les contributions de l'équipe | ❌ | ✅ |
+| Journal des modifications (voir, annuler au cas par cas) | ❌ | ✅ |
 | Publier l'édition pour l'équipe | ❌ | ✅ |
 | **Gérer les comptes (Utilisateurs)** | ❌ | ✅ |
 | Sauvegarder / restaurer | ❌ | ✅ |
@@ -301,12 +301,21 @@ Une fois connecté, **Arno** attend en bas à droite de l'écran (bulle avec sa 
 - un clic sur sa photo ouvre son **profil**, le crayon démarre une **nouvelle conversation**, la flèche réduit la fenêtre.
 
 **Ce qu'il sait faire**
-- **Répondre sur vos données**, en français ou en anglais : « Qui de chez Coca-Cola a participé à un évent en 2025 ? », « Qui a refusé la Matinale Fintech ? », « Historique de Sophie Bernard », « Quelles entreprises viennent le plus ? », « Quels sont les prochains événements ? ». Il répond par une phrase (« 2 personnes de chez Bernard Avocats sont venues à un événement en 2026 : »), avec les noms cliquables, puis propose l'outil pour aller plus loin (**Ouvrir dans « Créer une liste »** avec les critères déjà remplis, Statistiques…).
+- **Comprendre la question entière**, en français ou en anglais (il répond dans la langue de la question) :
+  - coordonnées : « le mail de Claire Dumont », « téléphone d'Éric Lambert », « que fait Sophie Bernard ? » ;
+  - qui suit une entreprise : « qui est le CMO d'Ixor Conseil ? » ;
+  - venues : « quand est-ce que Sophie Bernard est venue pour la dernière fois ? », « Jérôme Martin était-il au Forum ? », « Sophie est-elle déjà venue à un dîner ? » ;
+  - listes de personnes avec autant de détails que nécessaire : entreprise, CMO, fonction (« les directeurs », « les CFO »), type d'événement (« dîner », « petit-déjeuner »), ville, statut (venus, absents, refus, sans réponse), et dates relatives (« cette année », « l'an dernier », « depuis septembre », « les 6 derniers mois ») ;
+  - « qui n'est jamais venu ? », « les fidèles », « venus au moins 3 fois », « nouveaux contacts depuis septembre », « qui a changé d'entreprise ? » ;
+  - événements : « quels événements en 2025 / à Bruxelles ? », prochains événements, classements, taux de présence ;
+- **Agir, avec confirmation** : « Ajoute Sophie Bernard au Forum 2027 », « invite les clients de Bernard Avocats au prochain événement », « exporte les présents de la Matinale », « copie les mails de Lambert Capital ». Chaque réponse propose aussi **Ouvrir dans « Créer une liste »** avec les mêmes critères, **Copier les e-mails** et **Inviter au prochain événement**.
 - **Demander plutôt que deviner** :
   - nom mal écrit ou incomplet → « Vouliez-vous dire « Bernard Avocats » ou plutôt « Sophie Bernard » ? » (fautes de frappe, lettres inversées, écriture phonétique comme « fintek ») ; s'il est presque sûr, il le dit : « Je pense que vous parlez de « Ixor Conseil » » ;
   - événement qui revient chaque année → « Il y a plusieurs éditions… Laquelle vous intéresse ? » ;
   - un nom seul (« Ixor », « 2025 ») → « Que voulez-vous savoir sur Ixor Conseil ? » avec les questions possibles ;
   - rien de reconnu → « Vous cherchez plutôt : une personne, une entreprise, un événement, de l'aide ? », puis « Quel est son nom ? Même approximatif ».
+- **Questions sans réponse** : elles sont notées sur le poste ; un administrateur les retrouve dans le profil d'Arno (clic sur sa photo) pour les transmettre et enrichir Arno.
+- **Fiabilité mesurée** : `tests/arno-test.js` pose automatiquement plus de 110 questions avec la réponse attendue (voir « Tests »).
 - **Suivre la conversation** : après une réponse, « et en 2025 ? », « et les absents ? », « et chez Ixor ? » reprennent la question précédente.
 - **Expliquer l'outil** : créer une liste, ajouter des invités, créer un événement, suivre les invitations, exporter, importer la master file, doublons, mot de passe, verrouillage, base partagée, photos, notes, langue — chaque fois avec un bouton qui y mène.
 - **Discuter simplement** : bonjour, merci, au revoir… Si on lui demande s'il est un robot, il répond honnêtement qu'il est un assistant automatique.
@@ -326,7 +335,7 @@ Onglet **Événements**, bouton **+ Créer un événement**. Deux possibilités 
 
 Le bouton **Préparer l'édition suivante** existe aussi sur chaque page d'événement.
 
-Dans l'**espace utilisateur**, l'événement est **proposé** : il est visible avec un bandeau « En attente de validation », puis un administrateur le **valide** ou le **refuse** depuis sa page. Il n'entre dans la master file qu'une fois validé. Il arrive chez les administrateurs par la base partagée, comme les autres compléments.
+Un événement créé, depuis l'espace utilisateur comme administrateur, est **valable tout de suite** (plus d'étape « proposé / à valider »). Il arrive chez toute l'équipe par la base partagée.
 
 ### La page d'un événement
 Un clic sur un événement ouvre une **page pleine largeur**. Les onglets dépendent de la date :
@@ -383,8 +392,8 @@ Les **statuts d'invitation** (envoyé, relancé, accepté…) n'y figurent **pas
 | **Suggestions** | Propositions de correction issues des données. |
 | **Champs incohérents** | E-mail dans le champ fonction, autre chose qu'une adresse dans le champ e-mail… |
 
-### Contributions de l'équipe
-Liste de ce que les utilisateurs ont complété ou signalé (nouveau contact, photo, note, champ modifié, signalement), filtrable par auteur, fiche ou champ. Chaque contribution peut être **ouverte**, **marquée traitée** ou **annulée** ; l'annulation s'applique à toute l'équipe à la publication suivante.
+### Journal des modifications
+Il n'y a **plus d'étape de validation** : ce qu'un utilisateur modifie s'applique tout de suite pour toute l'équipe. Le journal liste chaque modification (fiche, champ, note, photo, archivage, événement, participant, signalement) avec **son auteur et sa date**, filtrable par auteur, fiche ou champ. L'administrateur peut **ouvrir la fiche** pour corriger, ou **annuler** une modification au cas par cas ; l'annulation s'applique à toute l'équipe à la publication suivante.
 
 ### Sauvegarder / Restaurer
 Export de tout le travail dans **un fichier chiffré** avec le mot de passe en cours, et restauration ultérieure. Un rappel apparaît si aucune sauvegarde récente n'existe.
@@ -446,6 +455,19 @@ L'espace administrateur et le module de construction de la master file partagent
 - En **quittant** « Importer et contrôler », la master file est **renvoyée automatiquement** dans Konex si elle a changé (une fois le premier envoi fait et toutes les feuilles validées). Le bouton « Envoyer dans Konex » reste disponible.
 - Les contrôles des deux outils sont complémentaires : le module vérifie les fichiers bruts (e-mails invalides, statuts inconnus, statuts contradictoires, événements, référentiel, lignes non reprises), Konex vérifie la base consolidée (doublons, inversions, fautes de frappe, champs incohérents, CMO). Une question tranchée d'un côté n'est plus reposée de l'autre.
 
+## Fiche entreprise : filtrer les contacts et les inscriptions
+
+Au-dessus des listes **Contacts** et **Inscriptions des collaborateurs**, une barre **Filtrer** propose des pastilles, avec les critères de « Créer une liste » : participation (déjà venu, jamais venu, jamais invité), type de contact, fonction, pays / ville / région (colonnes ajoutées), référentiel, CMO, région du CMO, entité, classement, e-mail, informations ajoutées ; et pour les inscriptions : année, événement, type d'événement, lieu, statut.
+- **Seuls les critères utiles apparaissent** : il faut qu'au moins une personne de la liste ait une valeur, et qu'il y ait un vrai choix à faire. Si aucun client n'est classé Top 500, le filtre « Classement » n'apparaît pas.
+- Un clic sur une pastille ouvre la liste des valeurs, avec **le nombre de personnes** pour chacune (compte tenu des autres filtres) ; on coche puis **Appliquer**. La pastille devient « Fonction : Directeur » avec une croix pour la retirer.
+- Une ligne indique « 7 sur 12 inscriptions · Effacer les filtres ». Les cinq premiers critères sont visibles, les autres derrière « + autres filtres ».
+
+## Archivage et changement d'entreprise
+
+Dans « Gestion de la fiche » d'une personne, quatre motifs : **Départ de l'entreprise**, **Changement d'entreprise**, **Ne plus inviter**, **Autre**. Archiver retire la personne des listes et des recherches, sans rien effacer.
+
+**Changement d'entreprise** n'archive pas : Konex demande la nouvelle entreprise (et, si besoin, la nouvelle fonction et le nouvel e-mail). La fiche, son historique et ses notes suivent la personne ; l'ancienne entreprise reste affichée sur la fiche (« Entreprises précédentes ») et une note datée est ajoutée.
+
 ## Base partagée et travail en équipe
 
 Konex n'utilise **aucun serveur ni connexion internet**. Le partage passe par un **dossier réseau** fourni par l'IT, dans lequel tout est chiffré avec une **clé d'équipe**.
@@ -462,7 +484,7 @@ Dossier réseau (fourni par l'IT)
 2. Les administrateurs **publient une édition** numérotée (n° 1, 2, 3…).
 3. Les utilisateurs **rejoignent** la base avec la clé et leur nom ; une bannière signale chaque nouvelle édition à charger.
 4. Les compléments de chaque utilisateur sont écrits dans **son propre fichier** : visibles par toute l'équipe à la synchronisation suivante.
-5. Un administrateur **revoit** les contributions ; elles entrent dans la master file à l'édition suivante.
+5. Les modifications s'appliquent sans validation ; l'administrateur les retrouve dans le **journal des modifications** et peut en annuler au cas par cas. Elles entrent dans la master file à l'édition suivante.
 
 En cas d'indisponibilité du réseau, les compléments sont **conservés localement** et envoyés plus tard. Si un autre admin a publié une édition plus récente, Konex demande confirmation avant de l'écraser.
 
@@ -567,6 +589,17 @@ Enregistrez-le en `.xlsx` depuis Excel puis réimportez-le.
 Oui : chaque espace a son propre stockage chiffré. Un administrateur peut se connecter dans les deux.
 
 ---
+
+## Échanges avec d'autres outils (CRM, Outlook…)
+
+Konex est prêt à être branché un jour à d'autres outils :
+- **Format d'échange `konex-echange` (JSON, version 1)** : personnes, entreprises, événements, participations, événements à venir et leurs invités, avec des **identifiants stables**. Comme la master file, il ne contient jamais les statuts d'invitation. Un administrateur l'exporte depuis **Base partagée → Échange avec d'autres outils** (sur Domino, une copie est rangée dans `exports/`).
+- **Registre de connecteurs** (`KX_CONNECTORS` dans `Konex.html`) : brancher un nouvel outil revient à ajouter un connecteur qui lit ou produit ce format, sans toucher au reste de l'outil.
+- Sur Domino, le serveur (`konex_server.py`) range déjà les fichiers dans des dossiers clairs (`master/`, `exports/`) : un outil externe pourra y déposer ou y lire des fichiers.
+
+## Tests
+
+Le dossier `tests/` contient le test d'Arno : `node tests/arno-test.js` pose les questions de `tests/arno-corpus.js` (84 questions) et affiche le taux de bonnes réponses ; `C=./arno-corpus-2.js node tests/arno-test.js` pose 30 formulations différentes. Il faut Playwright et Chromium. À enrichir avec les questions réelles des utilisateurs (voir « Questions sans réponse » dans le profil d'Arno).
 
 ## Architecture technique
 
