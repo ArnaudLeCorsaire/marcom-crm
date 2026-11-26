@@ -13205,6 +13205,14 @@ document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;const top=cur
 /* « Tout effacer » remet aussi les interrupteurs à zéro ; le clic hors de la feuille ne la ferme pas (comme dans Réglages) */
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-cfx-reset]');if(!b)return;const top=curTop();if(top&&top.cfx)top.cfx[b.dataset.cfxReset]={}},true);
 
+/* textes mis à jour : plus d'étape de validation, l'espace utilisateur peut tout modifier */
+Object.assign(L.fr,{complete:'Modifier',footerDemo:'Données d’exemple, chiffrées sur ce poste.',
+  shHowL:['Les administrateurs publient une édition (la base de référence), chiffrée dans le dossier.','Vos modifications sont écrites dans votre propre fichier du dossier, chiffré : toute l’équipe les voit à la synchronisation suivante.','Elles s’appliquent tout de suite, sans validation ; les administrateurs les retrouvent dans le journal des modifications et elles entrent dans la master file Excel à la prochaine édition.']});
+L.fr.hints={...L.fr.hints,fiche:'Copier la fiche : à coller dans Teams ou un e-mail · E-mail : message prêt avec l’historique · Modifier : corrigez ou complétez la fiche.'};
+Object.assign(L.en,{complete:'Edit',footerDemo:'Sample data, encrypted on this computer.',
+  shHowL:['Administrators publish an edition (the reference database), encrypted in the folder.','Your changes are written to your own encrypted file in the folder: the whole team sees them at the next sync.','They apply at once, with no approval step; administrators find them in the change log and they enter the Excel master file at the next edition.']});
+L.en.hints={...L.en.hints,fiche:'Copy record: paste into Teams or an email · Email: message ready with the history · Edit: correct or complete the record.'};
+
 if(KXD){
   const I=KXD.info,D=I.dirs;
   /* base partagée : le dossier du serveur, sans fenêtre de choix */
