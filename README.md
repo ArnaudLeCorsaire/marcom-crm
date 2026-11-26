@@ -304,7 +304,7 @@ Le bouton **My Konex**, en haut à droite, ouvre l'espace personnel de la person
 - **Onglets** : Mes clients, Mes entreprises, Mes événements (à venir : combien de mes clients sont invités ; passés : combien sont venus), Mes rappels, Mes envois, Mes modifications, Mes listes.
 - **Limiter tout Konex à mes clients** : un interrupteur qui restreint la recherche (personnes, entreprises, événements), « Créer une liste », les listes des fiches entreprises et des participants, et les exports. Le bouton My Konex affiche alors le nombre de clients et une croix pour revenir à toute la base. Les statistiques restent calculées sur toute la base.
 - Pas de statistiques de portefeuille ni de taux de participation pour l'instant (données pas encore fiables) : l'historique en tableau les remplace.
-- **Menu du compte** (clic sur My Konex) : ouvrir My Konex, limiter Konex à mes clients, changer d'identité, **Paramètres**, verrouiller.
+- **Menu du compte** (clic sur My Konex) : Mes infos, limiter Konex à mes clients, changer d'identité, **Paramètres**, verrouiller.
 - **Paramètres** : apparence **Clair / Sombre / Automatique** (suit le réglage de l'ordinateur), langue, identité. Le thème est mémorisé sur l'ordinateur. L'outil « Importer et contrôler » reste en clair.
 
 Sur chaque fiche personne et entreprise : **Suivre** (étoile), **Inviter à un événement** (choix de l'événement à venir ; pour une entreprise, choix des contacts) et **Ajouter un rappel** (une date et ce qu'il faut faire). Le rappel apparaît dans les notes de la fiche et dans « Mes rappels », en rouge une fois la date passée, avec un bouton « Fait ».
