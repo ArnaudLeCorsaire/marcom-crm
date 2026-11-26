@@ -12900,15 +12900,15 @@ function arLangOf(q){const n=' '+normName(q)+' ',e=(n.match(AR_EN)||[]).length,f
    - pastilles claires : « Fonction ▾ » ; une fois choisi : « Fonction : Directeur ×» ; compteurs à côté de chaque choix.
    ========================================================= */
 Object.assign(L.fr,{cfxF:'Filtrer',cfxMore:n=>`+ ${n} autre${n>1?'s':''} filtre${n>1?'s':''}`,cfxLess:'Moins de filtres',cfxNone:'Non renseigné',cfxApply:'Appliquer',cfxClear:'Tout décocher',cfxReset:'Effacer les filtres',
-  cfxOf:(n,m,w)=>`${n} sur ${m} ${w}`,cfxW:{contacts:'contacts',regs:'inscriptions'},cfxSearch:'Rechercher…',cfxHint:'Cochez une ou plusieurs valeurs : la liste garde celles qui correspondent à l’une d’elles.',
+  cfxOf:(n,m,w)=>`${n} sur ${m} ${w}`,cfxW:{contacts:'contacts',regs:'inscriptions',parts:'participants'},cfxSearch:'Rechercher…',cfxHint:'Cochez une ou plusieurs valeurs : la liste garde celles qui correspondent à l’une d’elles.',
   cfxD:{att:'Participation',kind:'Type de contact',poste:'Fonction',geo:'Pays',city:'Ville',reg:'Région',cmo:'CMO',cmoReg:'Région du CMO',ent:'Entité',rk:'Classement',email:'E-mail',year:'Année',ev:'Événement',type:'Type d’événement',lieu:'Lieu de l’événement',st:'Statut'},
   cfxV:{came:'Déjà venu(e)',inv:'Invité(e), jamais venu(e)',never:'Jamais invité(e)',ext:'Externe',int:'Interne',cmo:'CMO',vip:'VIP',withE:'Avec e-mail',noE:'Sans e-mail'}});
 Object.assign(L.en,{cfxF:'Filter',cfxMore:n=>`+ ${n} more filter${n>1?'s':''}`,cfxLess:'Fewer filters',cfxNone:'Not filled in',cfxApply:'Apply',cfxClear:'Uncheck all',cfxReset:'Clear filters',
-  cfxOf:(n,m,w)=>`${n} of ${m} ${w}`,cfxW:{contacts:'contacts',regs:'registrations'},cfxSearch:'Search…',cfxHint:'Tick one or more values: the list keeps items matching any of them.',
+  cfxOf:(n,m,w)=>`${n} of ${m} ${w}`,cfxW:{contacts:'contacts',regs:'registrations',parts:'participants'},cfxSearch:'Search…',cfxHint:'Tick one or more values: the list keeps items matching any of them.',
   cfxD:{att:'Attendance',kind:'Contact type',poste:'Job title',geo:'Country',city:'City',reg:'Region',cmo:'CMO',cmoReg:'CMO region',ent:'Entity',rk:'Ranking',email:'Email',year:'Year',ev:'Event',type:'Event type',lieu:'Event venue',st:'Status'},
   cfxV:{came:'Has attended',inv:'Invited, never came',never:'Never invited',ext:'External',int:'Internal',cmo:'CMO',vip:'VIP',withE:'With email',noE:'Without email'}});
 const CFX_GEO=[['geo',/^(pays|country|land|pays de residence|nationalite)$/],['city',/^(ville|city|localite|commune|stad)$/],['reg',/^(region|province|zone|territoire|territory)$/]];
-function cfxDims(kind){
+function cfxDims(kind){if(kind==='parts')kind='regs';
   const V=t('cfxV'),pp=x=>kind==='regs'?x.p:x,cmoOf=p=>{const s=new Set();if(p.pilotCmoId&&CMOMAP[p.pilotCmoId])s.add(CMOMAP[p.pilotCmoId]);p.hist.forEach(h=>(h.cmoKeys||[]).forEach(k=>{const c=CMOMAP['cmo:'+k];if(c)s.add(c)}));return[...s]};
   const D=[
     ['att',x=>{const p=pp(x);return[p.pres>0?V.came:p.nReg?V.inv:V.never]},'p'],
@@ -12960,16 +12960,16 @@ function cfxPop(top,kind,d,full){
 }
 /* branchement : on filtre les deux listes avant le tri, et on place la barre sous leur titre */
 {const _sl=sortList;sortList=function(top,name,group,list){
-  if(top&&top.type==='company'&&(name==='contacts'||name==='regs')){const r=_sl(top,name,group,cfxApply(top,name,list));r.bar=`<span class="cfx-anchor" data-cfx-anchor="${name}" hidden></span>`+r.bar;return r}
+  if(top&&((top.type==='company'&&(name==='contacts'||name==='regs'))||(top.type==='event'&&name==='parts'))){const r=_sl(top,name,group,cfxApply(top,name,list));r.bar=`<span class="cfx-anchor" data-cfx-anchor="${name}" hidden></span>`+r.bar;return r}
   return _sl(top,name,group,list)}}
-{const _dd5=drawDrawer;drawDrawer=function(keep){_dd5(keep);const top=curTop(),d=$('drawer');if(!top||top.type!=='company'||top.edit)return;const o=find.company(top.id);if(!o)return;
-  const lists={contacts:o.people,regs:applyFilt(top,companyRegs(o))};
+{const _dd5=drawDrawer;drawDrawer=function(keep){_dd5(keep);const top=curTop(),d=$('drawer');if(!top||(top.type!=='company'&&top.type!=='event')||top.edit)return;const o=find[top.type](top.id);if(!o)return;
+  const lists=top.type==='company'?{contacts:o.people,regs:applyFilt(top,companyRegs(o))}:{parts:applyFilt(top,ieFilt(top,coFiltered(top,[...(o.regs||[]),...(o.unreg||[])])))};
   d.querySelectorAll('[data-cfx-anchor]').forEach(a=>{const k=a.dataset.cfxAnchor,row=a.closest('.h3row');let html='';try{html=cfxBar(top,k,lists[k])}catch(e){console.warn('Konex filtres',e)}if(row&&html)row.insertAdjacentHTML('afterend',html);
     if(!cfxApply(top,k,lists[k]).length&&lists[k].length){const rows=row&&row.nextElementSibling&&row.nextElementSibling.nextElementSibling;if(rows&&rows.classList.contains('rows')&&!rows.children.length)rows.outerHTML=noneFx()}});
   d.querySelectorAll('.cfx-pop').forEach(pp=>{const r=pp.getBoundingClientRect(),dr=d.getBoundingClientRect();if(r.right>dr.right-12){pp.style.left='auto';pp.style.right='0'}pp.scrollIntoView({block:'nearest'})});
   const q=d.querySelector('[data-cfx-q]');if(q){q.focus();q.oninput=()=>{const s=strip(q.value);d.querySelectorAll('.cfx-o').forEach(l=>l.hidden=!!s&&!l.dataset.h.includes(s))}}}}
 document.addEventListener('click',e=>{
-  const d=$('drawer'),top=curTop();if(!top||top.type!=='company')return;const el=e.target.closest&&e.target.closest('[data-cfx-open],[data-cfx-apply],[data-cfx-rm],[data-cfx-reset],[data-cfx-more],[data-cfx-clear]');
+  const d=$('drawer'),top=curTop();if(!top||(top.type!=='company'&&top.type!=='event'))return;const el=e.target.closest&&e.target.closest('[data-cfx-open],[data-cfx-apply],[data-cfx-rm],[data-cfx-reset],[data-cfx-more],[data-cfx-clear]');
   if(!el){if(top.cfxOpen&&!(e.target.closest&&e.target.closest('.cfx-pop'))&&d.contains(e.target)){top.cfxOpen=null;drawDrawer(true)}return}
   e.preventDefault();e.stopPropagation();
   if(el.dataset.cfxOpen){top.cfxOpen=top.cfxOpen===el.dataset.cfxOpen?null:el.dataset.cfxOpen;drawDrawer(true);return}

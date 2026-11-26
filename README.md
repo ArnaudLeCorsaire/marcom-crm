@@ -455,7 +455,10 @@ L'espace administrateur et le module de construction de la master file partagent
 - En **quittant** « Importer et contrôler », la master file est **renvoyée automatiquement** dans Konex si elle a changé (une fois le premier envoi fait et toutes les feuilles validées). Le bouton « Envoyer dans Konex » reste disponible.
 - Les contrôles des deux outils sont complémentaires : le module vérifie les fichiers bruts (e-mails invalides, statuts inconnus, statuts contradictoires, événements, référentiel, lignes non reprises), Konex vérifie la base consolidée (doublons, inversions, fautes de frappe, champs incohérents, CMO). Une question tranchée d'un côté n'est plus reposée de l'autre.
 
-## Fiche entreprise : filtrer les contacts et les inscriptions
+## Filtrer les participants : fiches entreprises et pages événements
+
+La même barre **Filtrer** existe dans l'onglet **Participants** de la page d'un événement (type de contact, fonction, statut, e-mail, CMO, région du CMO, entité, pays, référentiel… selon ce que contient la liste).
+
 
 Au-dessus des listes **Contacts** et **Inscriptions des collaborateurs**, une barre **Filtrer** propose des pastilles, avec les critères de « Créer une liste » : participation (déjà venu, jamais venu, jamais invité), type de contact, fonction, pays / ville / région (colonnes ajoutées), référentiel, CMO, région du CMO, entité, classement, e-mail, informations ajoutées ; et pour les inscriptions : année, événement, type d'événement, lieu, statut.
 - **Seuls les critères utiles apparaissent** : il faut qu'au moins une personne de la liste ait une valeur, et qu'il y ait un vrai choix à faire. Si aucun client n'est classé Top 500, le filtre « Classement » n'apparaît pas.
