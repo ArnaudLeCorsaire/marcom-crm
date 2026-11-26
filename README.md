@@ -299,9 +299,13 @@ Interface bilingue **français / anglais** : sélecteur FR | EN sur l'écran de 
 Le bouton **My Konex**, en haut à droite, ouvre l'espace personnel de la personne connectée.
 - **Qui êtes-vous ?** La première fois, on choisit son nom : un CMO, ou un collaborateur interne (sur Domino, Konex propose le nom qui correspond à l'identifiant de connexion). Le choix est mémorisé et modifiable (« Changer »).
 - **Mes clients** cumule quatre sources, signalées par un badge : **CMO principal** (référentiel), **CMO du client** (master file), **Invité par moi** (listes d'invités que j'ai créées ou alimentées) et **Suivi** (étoile sur la fiche d'une personne ou d'une entreprise). Une entreprise suivie par plusieurs CMO apparaît chez chacun.
-- **Onglets** : Mes clients (avec leur taux de participation quand il existe), Mes entreprises, Mes événements (à venir : combien de mes clients sont invités ; passés : combien sont venus), Mes rappels, Mes envois, Mes modifications, Mes listes.
+- **Accueil** : un bandeau « Bonjour », quatre tuiles (clients, entreprises, rappels à venir, prochains événements) et, sur le côté, les prochains rappels et événements.
+- **Mes clients** : la barre de filtres habituelle (dont « Pourquoi ce client »), le bouton **Exporter** (Excel : feuille « Mes clients » et feuille « Historique ») et l'**historique de participation** en tableau : un client par ligne, les 12 derniers événements passés en colonnes (✓ présent, ✕ invité absent, · non invité).
+- **Onglets** : Mes clients, Mes entreprises, Mes événements (à venir : combien de mes clients sont invités ; passés : combien sont venus), Mes rappels, Mes envois, Mes modifications, Mes listes.
 - **Limiter tout Konex à mes clients** : un interrupteur qui restreint la recherche (personnes, entreprises, événements), « Créer une liste », les listes des fiches entreprises et des participants, et les exports. Le bouton My Konex affiche alors le nombre de clients et une croix pour revenir à toute la base. Les statistiques restent calculées sur toute la base.
-- Pas de statistiques de portefeuille pour l'instant (données pas encore fiables) : seulement le taux de participation d'un client.
+- Pas de statistiques de portefeuille ni de taux de participation pour l'instant (données pas encore fiables) : l'historique en tableau les remplace.
+- **Menu du compte** (clic sur My Konex) : ouvrir My Konex, limiter Konex à mes clients, changer d'identité, **Paramètres**, verrouiller.
+- **Paramètres** : apparence **Clair / Sombre / Automatique** (suit le réglage de l'ordinateur), langue, identité. Le thème est mémorisé sur l'ordinateur. L'outil « Importer et contrôler » reste en clair.
 
 Sur chaque fiche personne et entreprise : **Suivre** (étoile), **Inviter à un événement** (choix de l'événement à venir ; pour une entreprise, choix des contacts) et **Ajouter un rappel** (une date et ce qu'il faut faire). Le rappel apparaît dans les notes de la fiche et dans « Mes rappels », en rouge une fois la date passée, avec un bouton « Fait ».
 
