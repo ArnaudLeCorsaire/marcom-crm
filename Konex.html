@@ -790,6 +790,8 @@ ol.ar-list{counter-reset:arn}ol.ar-list li{counter-increment:arn;padding-left:24
 /* ne jamais rien cacher : la page garde une marge en bas pour la bulle ; la fenêtre flotte sans décaler la page */
 body.arno-on main{padding-bottom:110px}
 body.arno-on .drawer .d-body{padding-bottom:100px}
+/* une fiche est ouverte : la bulle se range à gauche de la fiche, pour ne rien recouvrir */
+@media (min-width:1100px){body.drawer-on:not(.pgmode) .arno:not(.open){right:calc(min(580px,100vw) + 16px)}}
 .ar-win{top:auto;height:min(640px,calc(100vh - 40px));max-height:none;right:20px;bottom:20px}
 /* une fiche est ouverte : la fenêtre se place à côté de la fiche quand l'écran le permet */
 @media (min-width:1320px){body.drawer-on:not(.pgmode) .ar-win{right:calc(min(580px,100vw) + 20px)}}
@@ -798,6 +800,24 @@ body.arno-on .drawer .d-body{padding-bottom:100px}
 @media print{.arno{display:none}}
 .ar-und2{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
 .ar-miss{margin-top:10px;text-align:left;width:100%;font-size:12.5px}.ar-miss summary{cursor:pointer;font-weight:700;color:var(--green-dark)}.ar-miss ol{max-height:180px;overflow:auto;padding-left:18px}.ar-miss-b{display:flex;gap:6px}
+.cfx{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:-4px 0 12px;padding:10px 12px;background:var(--bg);border-radius:12px}
+.cfx-l{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-right:2px}
+.cfx-p{position:relative;display:inline-flex;align-items:center;background:#fff;border:1.5px solid var(--line);border-radius:999px;transition:border-color .15s}
+.cfx-p:hover{border-color:var(--green)}.cfx-p.on{background:var(--green-light);border-color:var(--green)}
+.cfx-pb{border:0;background:none;font:inherit;font-size:13px;font-weight:600;color:var(--ink);padding:6px 10px 6px 12px;cursor:pointer;display:inline-flex;gap:6px;align-items:center;max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cfx-p.on .cfx-pb{color:var(--green-dark)}.cfx-pb i{font-style:normal;font-size:10px;opacity:.6}
+.cfx-x{border:0;background:var(--green);color:#fff;width:18px;height:18px;border-radius:50%;margin-right:6px;cursor:pointer;font-size:12px;line-height:1;display:grid;place-items:center}
+.cfx-more{border:1.5px dashed #B8C6BF;background:none;border-radius:999px;padding:6px 12px;font:inherit;font-size:12.5px;font-weight:600;color:var(--green-dark);cursor:pointer}
+.cfx-sum{font-size:12.5px;color:var(--muted);margin-left:auto}
+.cfx-pop{position:absolute;top:calc(100% + 6px);left:0;z-index:30;width:300px;max-width:80vw;background:#fff;border-radius:14px;box-shadow:0 16px 40px rgba(0,40,25,.22);border:1px solid var(--line);padding:12px;display:flex;flex-direction:column;gap:8px;animation:arUp .18s}
+.cfx-ph b{display:block;font-size:14px}.cfx-ph small{color:var(--muted);font-size:12px;line-height:1.35}
+.cfx-q{border:1px solid #CBD5D0;border-radius:8px;padding:7px 10px;font:inherit;font-size:13px}
+.cfx-list{max-height:240px;overflow:auto;display:flex;flex-direction:column;gap:1px}
+.cfx-o{display:flex;align-items:center;gap:9px;padding:6px 6px;border-radius:7px;cursor:pointer;font-size:13.5px}.cfx-o:hover{background:var(--bg)}
+.cfx-o span{flex:1}.cfx-o em{font-style:normal;font-size:12px;color:var(--muted);background:var(--bg);border-radius:999px;padding:0 7px}.cfx-o.zero{opacity:.5}.cfx-o[hidden]{display:none}
+.cfx-pf{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding-top:8px}
+.prev-cos{font-size:13px;background:var(--bg);border-radius:10px;padding:8px 12px;margin:12px 0}.prev-cos small{color:var(--muted)}
+.arch-hint{display:block;width:100%;color:var(--muted);font-size:12px;margin-top:6px}
 .ib-p{border-top-color:#7B4FB5}.ib-p .ib-h span{background:#7B4FB5}.ib-p .ib-h{color:#5E3A8F}
 .ib-p .note-form{margin-top:4px}
 .dash{display:flex;flex-direction:column;gap:16px}
@@ -12774,7 +12794,7 @@ function arV3(q){
   /* départs et changements d'entreprise */
   if(has(/\b(change\w* d entreprise|change\w* de societe|change\w* de boite|quitte\w*|parti\w* de|depart\w*|left|changed (company|job|employer)|moved)\b/)){
     const L=PEOPLE.filter(p=>p.archived&&/depart|change|left|moved/i.test(normName((p.archived.reason||p.archived.r||'')+' '+(p.archived.note||'')))).map(p=>({p,pres:p.pres}));
-    PEOPLE.forEach(p=>{if(L.some(x=>x.p===p))return;const cos=new Set((p.rows||[]).map(r=>normName(r.societe||'')).filter(Boolean));if(cos.size>1)L.push({p,pres:p.pres})});
+    PEOPLE.forEach(p=>{if(L.some(x=>x.p===p))return;const cos=new Set((p.rows||[]).map(r=>normName(r.societe||'')).filter(Boolean));if(cos.size>1||((PMETA[p.id]||{}).prevCos||[]).length)L.push({p,pres:p.pres})});
     return[{html:esc(t('a3Changed')(L.length))+a3List(L)}];
   }
   /* nouveaux contacts */
@@ -12871,6 +12891,127 @@ function arLangOf(q){const n=' '+normName(q)+' ',e=(n.match(AR_EN)||[]).length,f
 {const _tx=arnoTexts;arnoTexts=function(){_tx();if(!ADMIN)return;const L=a3MissGet(),pf=$('arProf');if(!pf||!L.length)return;
   pf.insertAdjacentHTML('beforeend',`<details class="ar-miss"><summary>${esc(t('a3Miss')(L.length))}</summary><p>${esc(t('a3MissH'))}</p><ol>${L.slice(-30).reverse().map(x=>`<li>${esc(x.q)}</li>`).join('')}</ol><div class="ar-miss-b"><button type="button" class="btn-o sm" data-ara="misscp">${esc(t('a3MissCopy'))}</button><button type="button" class="btn-o sm" data-ara="missclr">${esc(t('a3MissClear'))}</button></div></details>`)}}
 {const _a4=arnoAct;arnoAct=function(a,b){if(a==='misscp'){copyText(a3MissGet().map(x=>x.q).join('\n')).then(ok=>toast(ok?t('a3Copied'):t('copyFail'),!ok));return}if(a==='missclr'){lsSet(A3_MISS,'[]');arnoTexts();return}return _a4(a,b)}}
+
+/* =========================================================
+   FICHE ENTREPRISE — FILTRES SUR « CONTACTS » ET « INSCRIPTIONS DES COLLABORATEURS »
+   - mêmes critères que « Créer une liste » (participation, type, fonction, géographie, CMO, région du CMO, entité,
+     classement, référentiel, informations ajoutées ; et pour les inscriptions : année, événement, type, lieu, statut) ;
+   - seuls les critères utiles apparaissent : il faut au moins une valeur dans la liste, et un vrai choix à faire ;
+   - pastilles claires : « Fonction ▾ » ; une fois choisi : « Fonction : Directeur ×» ; compteurs à côté de chaque choix.
+   ========================================================= */
+Object.assign(L.fr,{cfxF:'Filtrer',cfxMore:n=>`+ ${n} autre${n>1?'s':''} filtre${n>1?'s':''}`,cfxLess:'Moins de filtres',cfxNone:'Non renseigné',cfxApply:'Appliquer',cfxClear:'Tout décocher',cfxReset:'Effacer les filtres',
+  cfxOf:(n,m,w)=>`${n} sur ${m} ${w}`,cfxW:{contacts:'contacts',regs:'inscriptions'},cfxSearch:'Rechercher…',cfxHint:'Cochez une ou plusieurs valeurs : la liste garde celles qui correspondent à l’une d’elles.',
+  cfxD:{att:'Participation',kind:'Type de contact',poste:'Fonction',geo:'Pays',city:'Ville',reg:'Région',cmo:'CMO',cmoReg:'Région du CMO',ent:'Entité',rk:'Classement',email:'E-mail',year:'Année',ev:'Événement',type:'Type d’événement',lieu:'Lieu de l’événement',st:'Statut'},
+  cfxV:{came:'Déjà venu(e)',inv:'Invité(e), jamais venu(e)',never:'Jamais invité(e)',ext:'Externe',int:'Interne',cmo:'CMO',vip:'VIP',withE:'Avec e-mail',noE:'Sans e-mail'}});
+Object.assign(L.en,{cfxF:'Filter',cfxMore:n=>`+ ${n} more filter${n>1?'s':''}`,cfxLess:'Fewer filters',cfxNone:'Not filled in',cfxApply:'Apply',cfxClear:'Uncheck all',cfxReset:'Clear filters',
+  cfxOf:(n,m,w)=>`${n} of ${m} ${w}`,cfxW:{contacts:'contacts',regs:'registrations'},cfxSearch:'Search…',cfxHint:'Tick one or more values: the list keeps items matching any of them.',
+  cfxD:{att:'Attendance',kind:'Contact type',poste:'Job title',geo:'Country',city:'City',reg:'Region',cmo:'CMO',cmoReg:'CMO region',ent:'Entity',rk:'Ranking',email:'Email',year:'Year',ev:'Event',type:'Event type',lieu:'Event venue',st:'Status'},
+  cfxV:{came:'Has attended',inv:'Invited, never came',never:'Never invited',ext:'External',int:'Internal',cmo:'CMO',vip:'VIP',withE:'With email',noE:'Without email'}});
+const CFX_GEO=[['geo',/^(pays|country|land|pays de residence|nationalite)$/],['city',/^(ville|city|localite|commune|stad)$/],['reg',/^(region|province|zone|territoire|territory)$/]];
+function cfxDims(kind){
+  const V=t('cfxV'),pp=x=>kind==='regs'?x.p:x,cmoOf=p=>{const s=new Set();if(p.pilotCmoId&&CMOMAP[p.pilotCmoId])s.add(CMOMAP[p.pilotCmoId]);p.hist.forEach(h=>(h.cmoKeys||[]).forEach(k=>{const c=CMOMAP['cmo:'+k];if(c)s.add(c)}));return[...s]};
+  const D=[
+    ['att',x=>{const p=pp(x);return[p.pres>0?V.came:p.nReg?V.inv:V.never]},'p'],
+    ['kind',x=>{const p=pp(x),a=[p.internal?V.int:V.ext];if(p.cmoId)a.push(V.cmo);if(p.vip)a.push(V.vip);return a},'p'],
+    ['poste',x=>[pp(x).poste||''],'p']
+  ];
+  /* géographie : colonnes ajoutées (Pays, Ville, Région) et référentiel */
+  const extK=[...new Set(PEOPLE.flatMap(p=>Object.keys(p.ext||{})))].filter(k=>!/^fichiers? sources?$|^source files?$/i.test(k));
+  CFX_GEO.forEach(([k,re])=>{const ek=extK.find(x=>re.test(normName(x)));if(ek)D.push([k,x=>[(pp(x).ext||{})[ek]||''],'p'])});
+  if(typeof REFDATA!=='undefined'&&REFDATA)RD.forEach(([k,l])=>{if(k!=='cmo')D.push(['rd:'+k,x=>[refVal(pp(x).cref,k)],'p',t(l)])});
+  if(kind==='regs')D.push(['lieu',x=>[x.ev&&x.ev.lieu?place(x.ev.lieu):''],'e']);
+  D.push(['cmo',x=>cmoOf(pp(x)).map(c=>c.name),'p'],['cmoReg',x=>cmoOf(pp(x)).map(c=>cmoReg(c)),'p'],['ent',x=>[...new Set((kind==='regs'?[x]:pp(x).hist).flatMap(h=>h.ents||[]))],'p']);
+  if(typeof REFDATA!=='undefined'&&REFDATA)D.push(['rk',x=>RK.filter(r=>pp(x).cref&&r[2](pp(x).cref)).map(rkLabel),'p']);
+  if(kind==='regs')D.push(['year',x=>[x.ev?yearOf(x.ev):''],'e'],['ev',x=>[x.ev?evName(x.ev):''],'e'],['type',x=>[x.ev&&x.ev.type?typeL(x.ev.type):''],'e'],['st',x=>[askCatLbl(x)],'e']);
+  D.push(['email',x=>[pp(x).email?V.withE:V.noE],'p']);
+  extK.filter(k=>!CFX_GEO.some(([,re])=>re.test(normName(k)))).forEach(k=>D.push(['x:'+k,x=>[(pp(x).ext||{})[k]||''],'p',k]));
+  return D.map(([k,get,,lbl])=>({k,get:x=>{const v=(get(x)||[]).map(s=>String(s||'').trim());return v.length?v.map(s=>s||'__none'):['__none']},label:lbl||(t('cfxD')[k]||k)}));
+}
+/* un critère n'apparaît que s'il aide à trier : au moins une valeur renseignée et au moins deux choix */
+function cfxUseful(dims,list){
+  return dims.map(d=>{const cnt=new Map();list.forEach(x=>new Set(d.get(x)).forEach(v=>cnt.set(v,(cnt.get(v)||0)+1)));
+    const vals=[...cnt.entries()],filled=vals.filter(([v])=>v!=='__none');
+    return{...d,vals:vals.sort((a,b)=>a[0]==='__none'?1:b[0]==='__none'?-1:b[1]-a[1]||cmp(a[0],b[0]))}}).filter(d=>{const f=d.vals.filter(([v])=>v!=='__none');return f.length&&(d.vals.length>=2)});
+}
+const cfxState=(top,kind)=>{top.cfx=top.cfx||{};return top.cfx[kind]=top.cfx[kind]||{}};
+function cfxApply(top,kind,list){const S=cfxState(top,kind),act=Object.entries(S).filter(([,v])=>v&&v.length);if(!act.length)return list;
+  const dims=cfxDims(kind);return list.filter(x=>act.every(([k,sel])=>{const d=dims.find(z=>z.k===k);return!d||d.get(x).some(v=>sel.includes(v))}))}
+const cfxVL=v=>v==='__none'?t('cfxNone'):v;
+function cfxBar(top,kind,full){
+  const S=cfxState(top,kind),dims=cfxUseful(cfxDims(kind),full);if(!dims.length)return'';
+  const shown=cfxApply(top,kind,full).length,act=dims.filter(d=>(S[d.k]||[]).length),open=top.cfxOpen&&top.cfxOpen.startsWith(kind+'|')?top.cfxOpen.slice(kind.length+1):'';
+  const more=top.cfxMore&&top.cfxMore[kind],LIM=5,base=dims.filter((d,i)=>i<LIM||(S[d.k]||[]).length),rest=dims.filter(d=>!base.includes(d)),vis=more?dims:base;
+  const pill=d=>{const sel=S[d.k]||[],on=sel.length;const lab=on?`${d.label} : ${cfxVL(sel[0])}${sel.length>1?` +${sel.length-1}`:''}`:d.label;
+    return`<span class="cfx-p${on?' on':''}${open===d.k?' open':''}"><button type="button" class="cfx-pb" data-cfx-open="${kind}|${esc(d.k)}" aria-expanded="${open===d.k}">${esc(lab)}<i>▾</i></button>${on?`<button type="button" class="cfx-x" data-cfx-rm="${kind}|${esc(d.k)}" title="${esc(t('cfxReset'))}" aria-label="×">×</button>`:''}
+      ${open===d.k?cfxPop(top,kind,d,full):''}</span>`};
+  return`<div class="cfx" data-cfx-kind="${kind}"><span class="cfx-l"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18l-7 8.5V20l-4-2v-4.5z"/></svg>${esc(t('cfxF'))}</span>
+    ${vis.map(pill).join('')}${rest.length?`<button type="button" class="cfx-more" data-cfx-more="${kind}">${esc(more?t('cfxLess'):t('cfxMore')(rest.length))}</button>`:''}
+    ${act.length?`<span class="cfx-sum">${esc(t('cfxOf')(shown,full.length,t('cfxW')[kind]))} · <button type="button" class="link" data-cfx-reset="${kind}">${esc(t('cfxReset'))}</button></span>`:''}</div>`;
+}
+function cfxPop(top,kind,d,full){
+  /* compteurs calculés avec les autres filtres déjà appliqués */
+  const S=cfxState(top,kind),others={...S};delete others[d.k];const tmp={cfx:{[kind]:others}};const base=cfxApply(tmp,kind,full);
+  const cnt=new Map();base.forEach(x=>new Set(d.get(x)).forEach(v=>cnt.set(v,(cnt.get(v)||0)+1)));const sel=top.cfxDraft||S[d.k]||[];
+  const vals=d.vals.map(([v])=>[v,cnt.get(v)||0]);
+  return`<div class="cfx-pop" role="dialog" aria-label="${esc(d.label)}"><div class="cfx-ph"><b>${esc(d.label)}</b><small>${esc(t('cfxHint'))}</small></div>
+    ${vals.length>8?`<input type="search" class="cfx-q" placeholder="${esc(t('cfxSearch'))}" data-cfx-q="1">`:''}
+    <div class="cfx-list">${vals.map(([v,n],i)=>`<label class="cfx-o${n?'':' zero'}" data-h="${esc(strip(cfxVL(v)))}"><input type="checkbox" value="${esc(v)}"${sel.includes(v)?' checked':''}><span>${esc(cfxVL(v))}</span><em>${n}</em></label>`).join('')}</div>
+    <div class="cfx-pf"><button type="button" class="link" data-cfx-clear="1">${esc(t('cfxClear'))}</button><button type="button" class="btn sm" data-cfx-apply="${kind}|${esc(d.k)}">${esc(t('cfxApply'))}</button></div></div>`;
+}
+/* branchement : on filtre les deux listes avant le tri, et on place la barre sous leur titre */
+{const _sl=sortList;sortList=function(top,name,group,list){
+  if(top&&top.type==='company'&&(name==='contacts'||name==='regs')){const r=_sl(top,name,group,cfxApply(top,name,list));r.bar=`<span class="cfx-anchor" data-cfx-anchor="${name}" hidden></span>`+r.bar;return r}
+  return _sl(top,name,group,list)}}
+{const _dd5=drawDrawer;drawDrawer=function(keep){_dd5(keep);const top=curTop(),d=$('drawer');if(!top||top.type!=='company'||top.edit)return;const o=find.company(top.id);if(!o)return;
+  const lists={contacts:o.people,regs:applyFilt(top,companyRegs(o))};
+  d.querySelectorAll('[data-cfx-anchor]').forEach(a=>{const k=a.dataset.cfxAnchor,row=a.closest('.h3row');const html=cfxBar(top,k,lists[k]);if(row&&html)row.insertAdjacentHTML('afterend',html);
+    if(!cfxApply(top,k,lists[k]).length&&lists[k].length){const rows=row&&row.nextElementSibling&&row.nextElementSibling.nextElementSibling;if(rows&&rows.classList.contains('rows')&&!rows.children.length)rows.outerHTML=noneFx()}});
+  d.querySelectorAll('.cfx-pop').forEach(pp=>{const r=pp.getBoundingClientRect(),dr=d.getBoundingClientRect();if(r.right>dr.right-12){pp.style.left='auto';pp.style.right='0'}pp.scrollIntoView({block:'nearest'})});
+  const q=d.querySelector('[data-cfx-q]');if(q){q.focus();q.oninput=()=>{const s=strip(q.value);d.querySelectorAll('.cfx-o').forEach(l=>l.hidden=!!s&&!l.dataset.h.includes(s))}}}}
+document.addEventListener('click',e=>{
+  const d=$('drawer'),top=curTop();if(!top||top.type!=='company')return;const el=e.target.closest&&e.target.closest('[data-cfx-open],[data-cfx-apply],[data-cfx-rm],[data-cfx-reset],[data-cfx-more],[data-cfx-clear]');
+  if(!el){if(top.cfxOpen&&!(e.target.closest&&e.target.closest('.cfx-pop'))&&d.contains(e.target)){top.cfxOpen=null;drawDrawer(true)}return}
+  e.preventDefault();e.stopPropagation();
+  if(el.dataset.cfxOpen){top.cfxOpen=top.cfxOpen===el.dataset.cfxOpen?null:el.dataset.cfxOpen;drawDrawer(true);return}
+  if(el.dataset.cfxApply){const[k,dim]=el.dataset.cfxApply.split('|');const S=cfxState(top,k);S[dim]=[...el.closest('.cfx-pop').querySelectorAll('input[type=checkbox]:checked')].map(c=>c.value);top.cfxOpen=null;drawDrawer(true);return}
+  if(el.dataset.cfxRm){const[k,dim]=el.dataset.cfxRm.split('|');delete cfxState(top,k)[dim];drawDrawer(true);return}
+  if(el.dataset.cfxReset){top.cfx[el.dataset.cfxReset]={};drawDrawer(true);return}
+  if(el.dataset.cfxMore){top.cfxMore=top.cfxMore||{};top.cfxMore[el.dataset.cfxMore]=!top.cfxMore[el.dataset.cfxMore];drawDrawer(true);return}
+  if(el.dataset.cfxClear!=null){el.closest('.cfx-pop').querySelectorAll('input[type=checkbox]').forEach(c=>c.checked=false);return}
+},true);
+document.addEventListener('keydown',e=>{const top=curTop();if(!top||!top.cfxOpen)return;if(e.key==='Escape'){e.stopPropagation();top.cfxOpen=null;drawDrawer(true)}
+  if(e.key==='Enter'&&e.target.closest&&e.target.closest('.cfx-pop')){e.preventDefault();const b=e.target.closest('.cfx-pop').querySelector('[data-cfx-apply]');if(b)b.click()}},true);
+
+/* =========================================================
+   ARCHIVAGE : « Départ de l'entreprise », « Changement d'entreprise », « Ne plus inviter », « Autre »
+   Changement d'entreprise : la fiche suit la personne dans sa nouvelle entreprise (historique conservé,
+   ancienne entreprise notée sur la fiche) ; elle n'est pas archivée.
+   ========================================================= */
+L.fr.archReasons=['Départ de l’entreprise','Changement d’entreprise','Ne plus inviter','Autre'];
+L.en.archReasons=['Left the company','Changed company','Do not invite','Other'];
+Object.assign(L.fr,{chgT:'Changement d’entreprise',chgH:n=>`${n} rejoint une autre entreprise. Sa fiche, son historique et ses notes la suivent.`,chgCo:'Nouvelle entreprise',chgPoste:'Nouvelle fonction (facultatif)',chgEmail:'Nouvel e-mail (facultatif)',chgOk:'Enregistrer le changement',chgReq:'Indiquez la nouvelle entreprise.',
+  chgDone:(n,c)=>`${n} est maintenant chez ${c}.`,chgNote:(a,b)=>`A quitté ${a} pour ${b}.`,prevCos:'Entreprises précédentes',archHint:'Archiver retire la personne des listes et des recherches, sans rien effacer.'});
+Object.assign(L.en,{chgT:'Company change',chgH:n=>`${n} joins another company. Their record, history and notes follow them.`,chgCo:'New company',chgPoste:'New job title (optional)',chgEmail:'New email (optional)',chgOk:'Save the change',chgReq:'Enter the new company.',
+  chgDone:(n,c)=>`${n} is now at ${c}.`,chgNote:(a,b)=>`Left ${a} for ${b}.`,prevCos:'Previous companies',archHint:'Archiving removes the person from lists and searches, without deleting anything.'});
+function chgCompany(p){
+  const body=`<div class="kx-f"><span>${esc(t('chgCo'))}</span><input id="chgCo" list="chgCoL" autocomplete="off"><datalist id="chgCoL">${COMPANIES.filter(c=>c.id!==p.coId).map(c=>`<option value="${esc(c.name)}">`).join('')}</datalist></div>
+    <div class="kx-f"><span>${esc(t('chgPoste'))}</span><input id="chgPo" value="${esc(p.poste||'')}"></div><div class="kx-f"><span>${esc(t('chgEmail'))}</span><input id="chgEm" type="email" value=""></div>`;
+  kxModal(t('chgT'),t('chgH')(p.full),body,t('chgOk'),async()=>{
+    const nc=$('chgCo').value.trim();if(!nc)return t('chgReq');const em=$('chgEm').value.trim();if(em&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em))return t('badEmail');
+    const pm={...(PMETA[p.id]||{})},old=p.societe||'',c=COMPANIES.find(x=>normName(x.name)===normName(nc));
+    pm.prevCos=[...(pm.prevCos||[]),{name:old,until:isoDay()}].filter(x=>x.name);
+    if(c){pm.coRef=c.id;pm.coName=c.name;delete pm.societe}else{pm.societe=nc;delete pm.coRef;delete pm.coName}
+    const po=$('chgPo').value.trim();if(po!==(p.poste||''))pm.poste=po;if(em)pm.email=em;delete pm.archived;PMETA[p.id]=pm;
+    const k=p.id;NOTES[k]=[...(NOTES[k]||[]),{id:'n'+Date.now().toString(36),author:meName()||'Konex',date:new Date().toISOString(),text:t('chgNote')(old||'—',c?c.name:nc)}];
+    saveVault();rebuild();drawDrawer(true);toast(t('chgDone')(p.full,c?c.name:nc));return true});
+}
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('#drawer [data-arch]');if(!b)return;const top=curTop();if(!top||top.type!=='person')return;
+  const sel=$('archReason');if(sel&&sel.selectedIndex===1){e.preventDefault();e.stopImmediatePropagation();const p=PMAP[top.id];if(p)chgCompany(p)}},true);
+/* sur la fiche : entreprises précédentes et explication de l'archivage */
+{const _dd6=drawDrawer;drawDrawer=function(keep){_dd6(keep);const top=curTop(),d=$('drawer');if(!top||top.type!=='person'||top.edit)return;
+  const pm=PMETA[top.id]||{},m=d.querySelector('.manage');
+  if(pm.prevCos&&pm.prevCos.length&&!d.querySelector('.prev-cos')){const b=d.querySelector('.d-body');if(b)b.insertAdjacentHTML('afterbegin',`<div class="prev-cos"><b>${esc(t('prevCos'))}</b> ${pm.prevCos.map(x=>`${esc(x.name)} <small>(${esc(lang==='fr'?'jusqu’au':'until')} ${esc(numDate(x.until))})</small>`).join(' · ')}</div>`)}
+  if(m&&$('archReason')&&!m.querySelector('.arch-hint'))m.insertAdjacentHTML('beforeend',`<small class="arch-hint">${esc(t('archHint'))}</small>`)}}
 
 if(KXD){
   const I=KXD.info,D=I.dirs;
