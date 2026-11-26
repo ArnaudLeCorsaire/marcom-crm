@@ -8191,7 +8191,7 @@ function listMailHTML(){
 const csvCell=v=>{v=String(v??'');return /[;"\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
 function lbExport(){
   if(TUTO){tutoFlag('list');toast(t('tutoNoSave'));return}
-  const res=sortRes(lbRows(curTokens())),C=lcols(),cl=LQ.mode==='clients';
+  const res=sortRes(lbRows(curTokens())),C=lcols().filter(c=>c[0]!=='ins'&&c[0]!=='pres'),cl=LQ.mode==='clients'; /* pas de totaux tous événements confondus dans l'export */
   const head=[...C.map(colLabel),...(cl?[t('thInt'),'CMO']:[])];
   const lines=res.map(r=>[...C.map(c=>c[2](r)),...(cl?[r.p.internal?t('yes'):t('no'),r.p.cmoId?t('yes'):t('no')]:[])].map(csvCell).join(';'));
   download('﻿'+[head.map(csvCell).join(';'),...lines].join('\r\n')+'\r\n',`${lang==='fr'?'liste':'list'}-${new Date().toISOString().slice(0,10)}.csv`).then(ok=>{if(ok)toast(t('lbExported')(res.length))});
@@ -13187,9 +13187,9 @@ document.addEventListener('click',e=>{
 function cfbExport(kind){const top=curTop();if(!top)return;const o=find[top.type](top.id);if(!o)return;
   const full=top.type==='company'?(kind==='contacts'?o.people:applyFilt(top,companyRegs(o))):applyFilt(top,ieFilt(top,coFiltered(top,[...(o.regs||[]),...(o.unreg||[])])));
   const L=cfxApply(top,kind,full),fr=lang==='fr',pp=x=>kind==='contacts'?x:x.p;
-  const head=fr?['Prénom','Nom','Entreprise','Fonction','E-mail','Téléphone','Interne','Présences','Invitations']:['First name','Last name','Company','Job title','Email','Phone','Internal','Attended','Invited'];
+  const head=fr?['Prénom','Nom','Entreprise','Fonction','E-mail','Téléphone','Interne']:['First name','Last name','Company','Job title','Email','Phone','Internal'];
   const ev=kind!=='contacts';if(ev)head.push(...(fr?['Événement','Date','Statut']:['Event','Date','Status']));
-  const rows=[head,...L.map(x=>{const p=pp(x)||{};const r=[p.prenom||'',p.nom||'',p.societe||'',p.poste||'',p.email||'',p.phone||'',p.internal?(fr?'Oui':'Yes'):'',p.pres||0,p.nReg||0];if(ev)r.push(x.ev?evName(x.ev):'',x.ev&&x.ev.date?numDate(x.ev.date.slice(0,10)):'',askCatLbl(x));return r})];
+  const rows=[head,...L.map(x=>{const p=pp(x)||{};const r=[p.prenom||'',p.nom||'',p.societe||'',p.poste||'',p.email||'',p.phone||'',p.internal?(fr?'Oui':'Yes'):''];if(ev)r.push(x.ev?evName(x.ev):'',x.ev&&x.ev.date?numDate(x.ev.date.slice(0,10)):'',askCatLbl(x));return r})];
   const title=top.type==='company'?o.name:evName(o.e),w=t('cfxW')[kind];
   download(xlsxBook([{name:(w.charAt(0).toUpperCase()+w.slice(1)).slice(0,30),freeze:1,rows,styles:{0:1}}]),`${title} - ${w}.xlsx`.replace(/[\\/:*?"<>|]/g,'-')).then(ok=>{if(ok)toast(t('lbExported')(L.length))});
 }
