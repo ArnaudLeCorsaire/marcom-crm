@@ -12901,11 +12901,11 @@ function arLangOf(q){const n=' '+normName(q)+' ',e=(n.match(AR_EN)||[]).length,f
    ========================================================= */
 Object.assign(L.fr,{cfxF:'Filtrer',cfxMore:n=>`+ ${n} autre${n>1?'s':''} filtre${n>1?'s':''}`,cfxLess:'Moins de filtres',cfxNone:'Non renseigné',cfxApply:'Appliquer',cfxClear:'Tout décocher',cfxReset:'Effacer les filtres',
   cfxOf:(n,m,w)=>`${n} sur ${m} ${w}`,cfxW:{contacts:'contacts',regs:'inscriptions',parts:'participants'},cfxSearch:'Rechercher…',cfxHint:'Cochez une ou plusieurs valeurs : la liste garde celles qui correspondent à l’une d’elles.',
-  cfxD:{att:'Participation',kind:'Type de contact',poste:'Fonction',geo:'Pays',city:'Ville',reg:'Région',cmo:'CMO',cmoReg:'Région du CMO',ent:'Entité',rk:'Classement',email:'E-mail',year:'Année',ev:'Événement',type:'Type d’événement',lieu:'Lieu de l’événement',st:'Statut'},
+  cfxD:{co:'Entreprise',att:'Participation',kind:'Type de contact',poste:'Fonction',geo:'Pays',city:'Ville',reg:'Région',cmo:'CMO',cmoReg:'Région du CMO',ent:'Entité',rk:'Classement',email:'E-mail',year:'Année',ev:'Événement',type:'Type d’événement',lieu:'Lieu de l’événement',st:'Statut'},
   cfxV:{came:'Déjà venu(e)',inv:'Invité(e), jamais venu(e)',never:'Jamais invité(e)',ext:'Externe',int:'Interne',cmo:'CMO',vip:'VIP',withE:'Avec e-mail',noE:'Sans e-mail'}});
 Object.assign(L.en,{cfxF:'Filter',cfxMore:n=>`+ ${n} more filter${n>1?'s':''}`,cfxLess:'Fewer filters',cfxNone:'Not filled in',cfxApply:'Apply',cfxClear:'Uncheck all',cfxReset:'Clear filters',
   cfxOf:(n,m,w)=>`${n} of ${m} ${w}`,cfxW:{contacts:'contacts',regs:'registrations',parts:'participants'},cfxSearch:'Search…',cfxHint:'Tick one or more values: the list keeps items matching any of them.',
-  cfxD:{att:'Attendance',kind:'Contact type',poste:'Job title',geo:'Country',city:'City',reg:'Region',cmo:'CMO',cmoReg:'CMO region',ent:'Entity',rk:'Ranking',email:'Email',year:'Year',ev:'Event',type:'Event type',lieu:'Event venue',st:'Status'},
+  cfxD:{co:'Company',att:'Attendance',kind:'Contact type',poste:'Job title',geo:'Country',city:'City',reg:'Region',cmo:'CMO',cmoReg:'CMO region',ent:'Entity',rk:'Ranking',email:'Email',year:'Year',ev:'Event',type:'Event type',lieu:'Event venue',st:'Status'},
   cfxV:{came:'Has attended',inv:'Invited, never came',never:'Never invited',ext:'External',int:'Internal',cmo:'CMO',vip:'VIP',withE:'With email',noE:'Without email'}});
 const CFX_GEO=[['geo',/^(pays|country|land|pays de residence|nationalite)$/],['city',/^(ville|city|localite|commune|stad)$/],['reg',/^(region|province|zone|territoire|territory)$/]];
 function cfxDims(kind){if(kind==='parts')kind='regs';
@@ -12923,7 +12923,9 @@ function cfxDims(kind){if(kind==='parts')kind='regs';
   D.push(['cmo',x=>cmoOf(pp(x)).map(c=>c.name),'p'],['cmoReg',x=>cmoOf(pp(x)).map(c=>cmoReg(c)),'p'],['ent',x=>[...new Set((kind==='regs'?[x]:pp(x).hist).flatMap(h=>h.ents||[]))],'p']);
   if(typeof REFDATA!=='undefined'&&REFDATA)D.push(['rk',x=>RK.filter(r=>pp(x).cref&&r[2](pp(x).cref)).map(rkLabel),'p']);
   if(kind==='regs')D.push(['year',x=>[x.ev?yearOf(x.ev):''],'e'],['ev',x=>[x.ev?evName(x.ev):''],'e'],['type',x=>[x.ev&&x.ev.type?typeL(x.ev.type):''],'e'],['st',x=>[askCatLbl(x)],'e']);
+  if(kind==='regs')D.push(['co',x=>[pp(x).societe||''],'p']);
   D.push(['email',x=>[pp(x).email?V.withE:V.noE],'p']);
+  if(kind==='regs'){const pr=['st','kind','co','poste','att','cmo'];D.sort((a,b)=>{const ia=pr.indexOf(a[0]),ib=pr.indexOf(b[0]);return(ia<0?99:ia)-(ib<0?99:ib)})}
   extK.filter(k=>!CFX_GEO.some(([,re])=>re.test(normName(k)))).forEach(k=>D.push(['x:'+k,x=>[(pp(x).ext||{})[k]||''],'p',k]));
   return D.map(([k,get,,lbl])=>({k,get:x=>{let v;try{v=(get(x)||[]).map(s=>String(s==null?'':s).trim())}catch(_){v=[]}return v.length?v.map(s=>s||'__none'):['__none']},label:lbl||(t('cfxD')[k]||k)}));
 }
@@ -12958,6 +12960,10 @@ function cfxPop(top,kind,d,full){
     <div class="cfx-list">${vals.map(([v,n],i)=>`<label class="cfx-o${n?'':' zero'}" data-h="${esc(strip(cfxVL(v)))}"><input type="checkbox" value="${esc(v)}"${sel.includes(v)?' checked':''}><span>${esc(cfxVL(v))}</span><em>${n}</em></label>`).join('')}</div>
     <div class="cfx-pf"><button type="button" class="link" data-cfx-clear="1">${esc(t('cfxClear'))}</button><button type="button" class="btn sm" data-cfx-apply="${kind}|${esc(d.k)}">${esc(t('cfxApply'))}</button></div></div>`;
 }
+/* une seule barre : les anciens filtres (présents / absents, internes / externes, entreprises) passent dans les pastilles */
+const cfxHere=top=>top&&(top.type==='event'||top.type==='company');
+{const _fb=filtBar;filtBar=function(top,list){if(cfxHere(top)){top.filt={present:true,registered:true,absent:true,none:true,unreg:true};return''}return _fb(top,list)}}
+{const _cu=coFilterUI;coFilterUI=function(top,regs){if(cfxHere(top)){top.cof=null;top.ie='all';top.coOpen=false;return''}return _cu(top,regs)}}
 /* branchement : on filtre les deux listes avant le tri, et on place la barre sous leur titre */
 {const _sl=sortList;sortList=function(top,name,group,list){
   if(top&&((top.type==='company'&&(name==='contacts'||name==='regs'))||(top.type==='event'&&name==='parts'))){const r=_sl(top,name,group,cfxApply(top,name,list));r.bar=`<span class="cfx-anchor" data-cfx-anchor="${name}" hidden></span>`+r.bar;return r}
