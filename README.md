@@ -309,6 +309,12 @@ Le bouton **My Konex**, en haut à droite, ouvre l'espace personnel de la person
 
 Sur chaque fiche personne et entreprise : **Suivre** (étoile), **Inviter à un événement** (choix de l'événement à venir ; pour une entreprise, choix des contacts) et **Ajouter un rappel** (une date et ce qu'il faut faire). Le rappel apparaît dans les notes de la fiche et dans « Mes rappels », en rouge une fois la date passée, avec un bouton « Fait ».
 
+## CMO d'une entreprise, Presse & partenaires, fusion de fiches
+
+- **CMO d'une entreprise** : sur la fiche entreprise, la ligne **CMO** affiche le ou les CMO (référentiel RMPM par défaut) et le bouton **Modifier le CMO**. On coche un ou plusieurs CMO ; le premier coché est le CMO principal, et les contacts de l'entreprise deviennent ses clients (My Konex, filtre CMO, fiche du CMO). « Revenir au référentiel » annule la modification. Fonctionne aussi pour une entreprise sans code RMPM. La modification est partagée avec l'équipe et visible dans le journal.
+- **Presse & partenaires** : sur la fiche d'une personne, le choix **Aucune / Presse / Partenaire**. Un onglet dédié dans Rechercher (**Presse & partenaires**) liste ces personnes, avec Tous / Presse / Partenaire, la barre de filtres (dont « Catégorie »), l'export Excel et le bouton **Ajouter une personne**. Une pastille Presse ou Partenaire apparaît sur les cartes.
+- **Fusion de fiches** (admin et vue standard) : en bas de chaque fiche personne, entreprise, CMO et événement, **Fusionner avec une autre fiche…**. On cherche le doublon, on choisit la fiche à garder ; l'autre disparaît et son historique, ses notes et sa photo passent sur la fiche gardée. Pour les entreprises, la fenêtre habituelle demande aussi le nom et le RMPM à garder. Les fusions sont partagées avec l'équipe (contribution « mrg »), annulables juste après (« Annuler ») et visibles dans le journal de l'admin. Les fusions d'événements sont enregistrées dans `evMerges` ; les doublons détectés automatiquement restent dans les onglets de contrôle de l'admin.
+
 ## Arno, l'assistant
 
 Une fois connecté, **Arno** attend en bas à droite de l'écran (bulle avec sa photo — celle de la fiche d'Arnaud Tolon si elle existe dans Konex, sinon une illustration — et une pastille verte « en ligne »). Un clic ouvre la discussion, comme dans une messagerie :

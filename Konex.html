@@ -962,6 +962,29 @@ body.myk-on .mk-pill{box-shadow:0 0 0 2px var(--green),0 6px 20px rgba(0,40,25,.
 .st-prev.pa{background:linear-gradient(90deg,#F3F6F4 50%,#0F1613 50%)}.st-prev.pa i{background:linear-gradient(90deg,#fff 50%,#25302B 50%)}.st-prev.pa i:first-child{background:#00915A;width:50%}
 .st-id{display:flex;align-items:center;gap:10px}.st-id b{flex:1}
 @media (max-width:1100px){.mk2-grid{grid-template-columns:1fr}.mk2-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.co-cmo,.pp-set{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:0 0 14px;font-size:14px}
+.co-cmo-l{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.co-cmo-v{flex:1;min-width:160px}.co-cmo-src{color:var(--muted)}
+.pp-seg{display:inline-flex;background:var(--fill);border-radius:10px;padding:3px;gap:2px}
+.pp-seg button,.pp-seg label{border:0;background:none;font:inherit;font-size:13px;font-weight:600;color:var(--muted);padding:6px 12px;border-radius:8px;cursor:pointer}
+.pp-seg button.on,.pp-seg label.on{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.pp-seg button span{color:var(--muted);font-weight:500;margin-left:3px}
+.pp-chip{display:inline-flex;align-items:center;font-size:11.5px;font-weight:700;border-radius:999px;padding:3px 8px;white-space:nowrap;vertical-align:middle;margin-left:4px}
+.pp-chip.sm{font-size:10.5px;padding:2px 6px}
+.pp-press{color:#9C1F4F;background:#FCE4EE}.pp-partner{color:#1D4E9E;background:#E2ECFB}
+html[data-theme="dark"] .pp-press{color:#F7A8C6;background:#3D1828}html[data-theme="dark"] .pp-partner{color:#A9C7F5;background:#172A47}
+.pp-top{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.pp-bar{grid-column:1/-1}
+.mg-foot{margin-top:22px;padding-top:14px;border-top:1px solid var(--line);display:flex;justify-content:flex-end}
+.mg-foot .btn-o{display:inline-flex;align-items:center;gap:6px}
+.mg-me{display:flex;flex-direction:column;background:var(--fill);border-radius:10px;padding:10px 12px;margin-bottom:10px}
+.mg-me small,.mg-keep small{color:var(--muted);font-weight:500}
+.mg-keep{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mg-keep label{display:flex;gap:8px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:10px;cursor:pointer;color:var(--ink);font-size:14px}
+.mg-keep label span{display:flex;flex-direction:column}
+.mg-keep label{justify-content:flex-start;text-align:left}.kx-f .mg-keep input{width:auto;flex:none;margin:3px 0 0}
+.mg-keep label:has(input:checked){border-color:var(--green);background:var(--green-light)}
+@media (max-width:560px){.mg-keep{grid-template-columns:1fr}}
 .ib-p{border-top-color:#7B4FB5}.ib-p .ib-h span{background:#7B4FB5}.ib-p .ib-h{color:#5E3A8F}
 .ib-p .note-form{margin-top:4px}
 .dash{display:flex;flex-direction:column;gap:16px}
@@ -1652,7 +1675,7 @@ details.cq-sec>summary{cursor:pointer;list-style:none}details.cq-sec>summary::-w
   </aside>
 
   <div class="content" id="content">
-    <section class="hero"><div class="hero-inner"><h1 id="heroTitle"></h1><p id="heroSub"></p><div class="s-tabs" id="sTabs" role="tablist" hidden><button type="button" data-view="people"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/></svg><span data-t="tabPeople"></span></button><button type="button" data-view="cmos"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><path d="M17 4.5l1.1 2.2 2.4.4-1.7 1.7.4 2.4-2.2-1.2-2.1 1.2.4-2.4-1.8-1.7 2.5-.4z"/></svg><span data-t="tabCmos"></span></button><button type="button" data-view="companies"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 7h1M14 7h1M9 11h1M14 11h1M9 15h1M14 15h1M10 21v-3h4v3"/></svg><span data-t="tabCos"></span></button><button type="button" data-view="rmpm"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"/></svg><span data-t="tabRmpm"></span></button><button type="button" data-view="events"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span data-t="tabEvents"></span></button></div></div></section>
+    <section class="hero"><div class="hero-inner"><h1 id="heroTitle"></h1><p id="heroSub"></p><div class="s-tabs" id="sTabs" role="tablist" hidden><button type="button" data-view="people"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/></svg><span data-t="tabPeople"></span></button><button type="button" data-view="cmos"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><path d="M17 4.5l1.1 2.2 2.4.4-1.7 1.7.4 2.4-2.2-1.2-2.1 1.2.4-2.4-1.8-1.7 2.5-.4z"/></svg><span data-t="tabCmos"></span></button><button type="button" data-view="companies"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 7h1M14 7h1M9 11h1M14 11h1M9 15h1M14 15h1M10 21v-3h4v3"/></svg><span data-t="tabCos"></span></button><button type="button" data-view="pp"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11v2a1 1 0 0 0 1 1h2l5 4V6L7 10H5a1 1 0 0 0-1 1z"/><path d="M16 9a3 3 0 0 1 0 6M19 6a7 7 0 0 1 0 12"/></svg><span data-t="tabPp"></span></button><button type="button" data-view="rmpm"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"/></svg><span data-t="tabRmpm"></span></button><button type="button" data-view="events"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span data-t="tabEvents"></span></button></div></div></section>
     <div class="search-wrap" id="searchWrap">
       <label class="search">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
@@ -5595,12 +5618,13 @@ function refPersonRows(){
 /* chaque entreprise du référentiel a une fiche ; le CMO est celui de l'entreprise (Pilot CMO), plus celui d'un événement */
 function refCompanies(){
   const R=(REFDATA&&REFDATA.rows)||[];COMPANIES.forEach(c=>{c.ref=null;c.rmpm=''});PEOPLE.forEach(p=>{p.cref=null;p.pilotCmoId=''});
-  if(!R.length)return;
+  if(!R.length&&!COMPANIES.some(c=>Array.isArray((CMETA[c.id]||{}).cmos)))return;
   const used=new Set();
   COMPANIES.forEach(c=>{const m=CMETA[c.id]||{};const cnt={};c.people.forEach(p=>{if(p.rmpm)cnt[p.rmpm]=(cnt[p.rmpm]||0)+1});
     c.rmpm=m.rmpm||mode(cnt)||'';c.ref=REFMAP[c.rmpm]||null;if(c.ref)used.add(c.rmpm)});
   R.forEach(r=>{if(used.has(String(r.rmpm)))return;const id='ref:'+r.rmpm;if(CMERGES[id])return;const m=CMETA[id]||{};
     COMPANIES.push({id,name:m.name||r.group,people:[],refOnly:true,manual:false,extra:m.extra||{},internal:false,sector:m.sector||'',website:m.website||'',address:m.address||'',desc:m.desc||'',ins:0,pres:0,hay:'',core:coCore(r.group),spell:[],rmpm:String(r.rmpm),ref:r})});
+  COMPANIES.forEach(c=>{const o=(CMETA[c.id]||{}).cmos;if(c.ref&&Array.isArray(o))c.ref={...c.ref,cmoL:o.join(' / '),cmo:o.join(' / ')}});
   COMPANIES.forEach(c=>{const r=c.ref;if(!r)return;if(!c.sector)c.sector=r.sector||'';c.sectorRef=!(CMETA[c.id]||{}).sector&&!!r.sector;
     c.hay=strip(`${c.name} ${r.group} ${c.sector} ${r.covCountry} ${r.cmCountry} ${refCmoNames(r).join(' ')} ${r.rcmSales} ${r.pole} ${refTop(r)} ${r.strat?'strat strategique strategic':''} ${r.core75} ${r.gsc?'gsc':''} ${r.gnpc?'gnpc':''}`);
     c.people.forEach(p=>{p.cref=r;p.hay+=' '+strip(`${refTop(r)} ${r.strat?'strat':''} ${r.core75} ${refCmoNames(r).join(' ')}`)})});
@@ -5608,7 +5632,7 @@ function refCompanies(){
   // CMO : entreprises pilotées, clients, pays, pôles
   const touched=new Set();
   const mk=(k,l)=>{let c=CMOMAP['cmo:'+k];if(!c){const m=CMOMETA[k]||{};c={id:'cmo:'+k,key:k,name:m.name||l,rawName:l,meta:m,variants:{[l]:0},regs:[],people:[],evs:new Set(),email:m.email||'',phone:m.phone||'',team:entOk(m.team)?entCanon(m.team):'',manual:false,extra:m.extra||{},ins:0,pres:0,seen:{},region:'',hay:''};CMOS.push(c);CMOMAP[c.id]=c}return c};
-  COMPANIES.forEach(co=>{const r=co.ref;if(!r)return;refCmoNames(r).forEach((l,ix)=>{const k=resolveCmo(normName(l));if(!k||(CMOMETA[k]||{}).deleted)return;const c=mk(k,l);
+  COMPANIES.forEach(co=>{const r=co.ref||{},nm=coCmoNames(co);if(!nm.length)return;nm.forEach((l,ix)=>{const k=resolveCmo(normName(l));if(!k||(CMOMETA[k]||{}).deleted)return;const c=mk(k,l);
     if(!touched.has(c)){touched.add(c);c.histPeople=c.people;c.people=[];c._pp=new Set();c.cos=[];c.countries={};c.poles={}}
     c.cos.push(co);if(r.cmCountry)c.countries[r.cmCountry]=(c.countries[r.cmCountry]||0)+1;if(r.pole)c.poles[r.pole]=(c.poles[r.pole]||0)+1;
     co.people.forEach(p=>{if(!c._pp.has(p)){c._pp.add(p);c.people.push(p)}if(!ix)p.pilotCmoId=c.id});if(!ix)co.pilotCmoId=c.id})});
@@ -5621,12 +5645,13 @@ function refCompanies(){
 }
 function buildModel(){
   const P={},E={},coSpell={};
-  const inMaster=new Set();ROWS.forEach(r=>{if(r.evId||r.event)inMaster.add(resolve(personKey(r))+'|'+(r.evId||normName(r.event)))});
+  const inMaster=new Set();ROWS.forEach(r=>{if(r.evId||r.event)inMaster.add(resolve(personKey(r))+'|'+resolveEv(r.evId||normName(r.event)))});
   const known=new Set(ROWS.map(r=>resolve(personKey(r))));
   REFMAP=Object.fromEntries(((REFDATA&&REFDATA.rows)||[]).map(r=>[String(r.rmpm),r]));
-  [...ROWS,...refPersonRows(),...MANROWS.filter(r=>r.evOnly||!(r.evId?inMaster.has(resolve(r.pid||personKey(r))+'|'+r.evId):(r.pid?false:known.has(resolve(personKey(r))))))].forEach(r=>{
-    const ek=r.evId||normName(r.event||''); if(!ek&&!r.manual)return;
-    const ev=ek?(E[ek]=E[ek]||{id:ek,raw:r.event,dates:{},lieux:{},ends:{},manual:!!r.evOnly}):null;
+  [...ROWS,...refPersonRows(),...MANROWS.filter(r=>r.evOnly||!(r.evId?inMaster.has(resolve(r.pid||personKey(r))+'|'+resolveEv(r.evId)):(r.pid?false:known.has(resolve(personKey(r))))))].forEach(r=>{
+    const ek0=r.evId||normName(r.event||''),ek=resolveEv(ek0); if(!ek&&!r.manual)return;
+    const ev=ek?(E[ek]=E[ek]||{id:ek,raw:r.event,alias:ek0!==ek,dates:{},lieux:{},ends:{},manual:!!r.evOnly}):null;
+    if(ev&&ev.alias&&ek0===ek&&r.event){ev.raw=r.event;ev.alias=false}
     if(ev&&r.date)ev.dates[r.date]=(ev.dates[r.date]||0)+(r.evOnly?1000:1);
     if(ev&&r.date&&r.dateEnd)ev.ends[r.date]=r.dateEnd;
     if(ev&&r.lieu)ev.lieux[r.lieu]=(ev.lieux[r.lieu]||0)+(r.evOnly?1000:1);
@@ -6146,7 +6171,7 @@ const ICON_UP='<svg width="26" height="26" viewBox="0 0 24 24" fill="none" strok
 const CHEV='<svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg>';
 const ICON_INT='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><circle cx="12" cy="10" r="3"/><path d="M8 17c.8-1.8 2.2-2.7 4-2.7s3.2.9 4 2.7"/></svg>';
 const cmoChip=sm=>`<span class="cmo-chip${sm?' sm':''}" title="${t('cmoTitle')}">CMO</span>`;
-const flagChips=(p,sm)=>`${p.archived?`<span class="arch-chip${sm?' sm':''}">${t('archivedChip')}</span>`:''}${p.cmoId?cmoChip(sm):''}${p.vip?`<span class="vip-chip${sm?' sm':''}">★${sm?'':' VIP'}</span>`:''}${p.internal?`<span class="int-chip${sm?' sm':''}" title="${t('internal')}">${ICON_INT}${sm?'':' '+t('internal')}</span>`:''}`;
+const flagChips=(p,sm)=>`${p.archived?`<span class="arch-chip${sm?' sm':''}">${t('archivedChip')}</span>`:''}${p.cmoId?cmoChip(sm):''}${p.vip?`<span class="vip-chip${sm?' sm':''}">★${sm?'':' VIP'}</span>`:''}${p.internal?`<span class="int-chip${sm?' sm':''}" title="${t('internal')}">${ICON_INT}${sm?'':' '+t('internal')}</span>`:''}${ppChip(p,sm)}`;
 const badges=(notes,dup,check,extra='')=>(notes||dup||check||extra)?`<div class="badges">${extra}${dup?`<span class="nb warn">${t('dupBadge')}</span>`:''}${check?`<span class="nb warn">${t('checkBadge')}</span>`:''}${notes?`<span class="nb">${ICON_NOTE}${notes}</span>`:''}</div>`:'';
 const delay=i=>`animation-delay:${Math.min(i,12)*25}ms`;
 const avatar=(id,txt,cls='')=>PHOTOS[id]?`<div class="avatar ${cls} img" style="background-image:url('${PHOTOS[id]}')"></div>`:`<div class="avatar ${cls}">${txt}</div>`;
@@ -9677,7 +9702,7 @@ function coMergeOpen(A,B){
   m.hidden=false;
 }
 XACT['co-merge-cancel']=()=>{const m=$('coMergeModal');if(m)m.hidden=true;COMG=null};
-XACT['co-merge-ok']=()=>{if(!COMG||!ADMIN)return;const m=$('coMergeModal'),A=CMAP[COMG.from],B=CMAP[COMG.to];if(!A||!B){if(m)m.hidden=true;return}
+XACT['co-merge-ok']=()=>{if(!COMG)return;const m=$('coMergeModal'),A=CMAP[COMG.from],B=CMAP[COMG.to];if(!A||!B){if(m)m.hidden=true;return}
   const nm=(m.querySelector('[name=cmName]:checked')||{}).value||B.name,rm=(m.querySelector('[name=cmRmpm]:checked')||{}).value||COMG.rm[0]||'';
   CMERGES[A.id]={to:B.id,from:A.name,into:B.name,date:new Date().toISOString()};
   if(NOTES[A.id]){NOTES[B.id]=(NOTES[B.id]||[]).concat(NOTES[A.id]);delete NOTES[A.id]}
@@ -9685,7 +9710,7 @@ XACT['co-merge-ok']=()=>{if(!COMG||!ADMIN)return;const m=$('coMergeModal'),A=CMA
   if(rm)mb.rmpm=rm;if(nm!==B.name)mb.name=nm;CMETA[B.id]=mb;
   m.hidden=true;COMG=null;saveVault();rebuild();toast(t('coMergeDone')(A.name,nm));if(stack.length){const top=stack[stack.length-1];if(top.type==='company'&&top.id===A.id){top.id=B.id}drawDrawer()}};
 /* fusion proposée par le contrôle des doublons : même boîte de dialogue (choix du RMPM) */
-mergeCo=function(fromId,toId){if(!ADMIN)return;const A=CMAP[fromId],B=CMAP[toId];if(!A||!B||fromId===toId||resolveC(toId)===fromId)return;coMergeOpen(A,B)};
+mergeCo=function(fromId,toId){const A=CMAP[fromId],B=CMAP[toId];if(!A||!B||fromId===toId||resolveC(toId)===fromId)return;coMergeOpen(A,B)};
 
 /* =========================================================
    STATISTIQUES SANS PRÉSENCES — volumes : événements, contacts, entreprises, CMO, couverture du référentiel
@@ -13245,7 +13270,8 @@ XACT['kx-exch']=()=>{const c=KX_CONNECTORS['konex-echange'],d=kxExchange();downl
 Object.assign(L.fr,{cfbOk:'OK',cfbTot:(n,w)=>`${n} ${w}`,cfbExp:'Exporter',cfbExpT:'Télécharger la liste affichée en Excel',cfbBtn:'Filtres',cfbPres:'Présents seulement',cfbPresC:'Déjà venus seulement',cfbInt:'Internes',cfbExt:'Externes',cfbEm:'Avec e-mail',cfbAll:'Tous',cfbN:n=>`${n} choisis`,cfbSheetH:'Affiner la liste',cfbClear:'Tout effacer'});
 Object.assign(L.en,{cfbOk:'Done',cfbTot:(n,w)=>`${n} ${w}`,cfbExp:'Export',cfbExpT:'Download the list shown as Excel',cfbBtn:'Filters',cfbPres:'Attended only',cfbPresC:'Has attended only',cfbInt:'Internal',cfbExt:'External',cfbEm:'With email',cfbAll:'All',cfbN:n=>`${n} selected`,cfbSheetH:'Refine the list',cfbClear:'Clear all'});
 let MKTOP={cfx:{}};
-const cfbTop=()=>curTop()||(view==='myk'?MKTOP:null);
+let PPTOP={cfx:{}};
+const cfbTop=()=>curTop()||(view==='myk'?MKTOP:view==='pp'?PPTOP:null);
 const cfbRedraw=()=>{if(curTop())drawDrawer(true);else render()};
 const CFB_ICON={st:['#34A853','<path d="M20 6 9 17l-5-5"/>'],att:['#14A3A3','<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>'],kind:['#F28C28','<circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/>'],
   co:['#0A84FF','<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 8h2M13 8h2M9 12h2M13 12h2M10 21v-4h4v4"/>'],poste:['#8E5BD9','<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>'],
@@ -13257,8 +13283,8 @@ const cfbIc=k=>{const[c,s]=CFB_ICON[k]||CFB_ICON[k.split(':')[0]]||['#8E8E93','<
 const CFB_CHEV='<svg class="cfb-chev" width="8" height="13" viewBox="0 0 9 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 2 5 5-5 5"/></svg>';
 const CFB_CHK='<svg class="cfb-chk" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
 /* interrupteurs : propriétés oui / non des éléments de la liste */
-const cfbP=(kind,x)=>kind==='contacts'||kind==='myk'?x:x.p;
-const CFB_SW={pres:(kind,x)=>kind==='contacts'||kind==='myk'?(x.pres||0)>0:!!x.present,int:(kind,x)=>!!(cfbP(kind,x)&&cfbP(kind,x).internal),ext:(kind,x)=>!!(cfbP(kind,x)&&!cfbP(kind,x).internal),em:(kind,x)=>!!(cfbP(kind,x)&&cfbP(kind,x).email)};
+const cfbP=(kind,x)=>(kind==='contacts'||kind==='myk'||kind==='pp')?x:x.p;
+const CFB_SW={pres:(kind,x)=>(kind==='contacts'||kind==='myk'||kind==='pp')?(x.pres||0)>0:!!x.present,int:(kind,x)=>!!(cfbP(kind,x)&&cfbP(kind,x).internal),ext:(kind,x)=>!!(cfbP(kind,x)&&!cfbP(kind,x).internal),em:(kind,x)=>!!(cfbP(kind,x)&&cfbP(kind,x).email)};
 {const _ap=cfxApply;cfxApply=function(top,kind,list){let L=_ap(top,kind,list);const S=cfxState(top,kind);
   Object.keys(CFB_SW).forEach(k=>{if(S['__'+k])L=L.filter(x=>{try{return CFB_SW[k](kind,x)}catch(_){return true}})});return L}}
 function cfbSwitches(kind,full){return Object.keys(CFB_SW).filter(k=>{let y=0,n=0;full.forEach(x=>{try{CFB_SW[k](kind,x)?y++:n++}catch(_){}});return y&&n})}
@@ -13268,7 +13294,7 @@ cfxBar=function(top,kind,full){
   if(!full.length)return'';
   const shown=cfxApply(top,kind,full).length,actV=dims.flatMap(d=>(S[d.k]||[]).map(v=>[d,v])),nAct=actV.length+sw.filter(k=>S['__'+k]).length;
   top.cfbSheet=top.cfbSheet||{};const sheet=!!top.cfbSheet[kind],open=top.cfbOpen&&top.cfbOpen.startsWith(kind+'|')?top.cfbOpen.slice(kind.length+1):'';
-  const lab={pres:kind==='contacts'||kind==='myk'?t('cfbPresC'):t('cfbPres'),int:t('cfbInt'),ext:t('cfbExt'),em:t('cfbEm')};
+  const lab={pres:(kind==='contacts'||kind==='myk'||kind==='pp')?t('cfbPresC'):t('cfbPres'),int:t('cfbInt'),ext:t('cfbExt'),em:t('cfbEm')};
   const swH=sw.map(k=>`<label class="cfb-tog">${esc(lab[k])}<button type="button" class="cfb-sw" role="switch" aria-checked="${!!S['__'+k]}" aria-label="${esc(lab[k])}" data-cfb-sw="${kind}|${k}"></button></label>`).join('');
   const valTxt=d=>{const s=S[d.k]||[];return!s.length?t('cfbAll'):s.length===1?cfxVL(s[0]):t('cfbN')(s.length)};
   const rowVals=d=>{const others={...S};delete others[d.k];const base=cfxApply({cfx:{[kind]:others}},kind,full),cnt=new Map();base.forEach(x=>new Set(d.get(x)).forEach(v=>cnt.set(v,(cnt.get(v)||0)+1)));const sel=S[d.k]||[];
@@ -13289,7 +13315,7 @@ document.addEventListener('click',e=>{
     const S=cfxState(top,k),s=new Set(S[dm]||[]);s.has(v)?s.delete(v):s.add(v);if(s.size)S[dm]=[...s];else delete S[dm];cfbRedraw();return}
 },true);
 /* exporter la liste affichée (avec les filtres) en Excel */
-function cfbExport(kind){if(kind==='myk')return mkExport();const top=cfbTop();if(!top)return;const o=find[top.type](top.id);if(!o)return;
+function cfbExport(kind){if(kind==='myk')return mkExport();if(kind==='pp')return ppExport();const top=cfbTop();if(!top)return;const o=find[top.type](top.id);if(!o)return;
   const full=top.type==='company'?(kind==='contacts'?o.people:applyFilt(top,companyRegs(o))):applyFilt(top,ieFilt(top,coFiltered(top,[...(o.regs||[]),...(o.unreg||[])])));
   const L=cfxApply(top,kind,full),fr=lang==='fr',pp=x=>kind==='contacts'?x:x.p;
   const head=fr?['Prénom','Nom','Entreprise','Fonction','E-mail','Téléphone','Interne']:['First name','Last name','Company','Job title','Email','Phone','Internal'];
@@ -13308,7 +13334,7 @@ document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;const top=cfb
 /* la recherche garde son filtrage après chaque coche */
 {const _dd7=drawDrawer;drawDrawer=function(k){_dd7(k);const q=$('drawer').querySelector('[data-cfb-q]');if(q&&q.value){const s=strip(q.value);q.parentNode.querySelectorAll('.cfb-val').forEach(r=>r.hidden=!!s&&!strip(r.textContent).includes(s))}}}
 /* « Tout effacer » remet aussi les interrupteurs à zéro ; le clic hors de la feuille ne la ferme pas (comme dans Réglages) */
-document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-cfx-reset]');if(!b)return;const top=cfbTop();if(top&&top.cfx)top.cfx[b.dataset.cfxReset]={};if(!curTop()&&top===MKTOP){e.preventDefault();e.stopPropagation();cfbRedraw()}},true);
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-cfx-reset]');if(!b)return;const top=cfbTop();if(top&&top.cfx)top.cfx[b.dataset.cfxReset]={};if(!curTop()&&(top===MKTOP||top===PPTOP)){e.preventDefault();e.stopPropagation();cfbRedraw()}},true);
 
 /* textes mis à jour : plus d'étape de validation, l'espace utilisateur peut tout modifier */
 Object.assign(L.fr,{complete:'Modifier',footerDemo:'Données d’exemple, chiffrées sur ce poste.',
@@ -13391,7 +13417,7 @@ const mkLensOn=()=>MYK.on&&!!MYK.who;
 /* la lentille : toutes les listes se limitent à mes clients */
 {const _pf=pfOk;pfOk=function(p){return _pf(p)&&(!mkLensOn()||mkHas(p))}}
 {const _lr=listResults;listResults=function(tk){const r=_lr(tk);return mkLensOn()?r.filter(x=>mkHas(x.p)):r}}
-{const _ca=cfxApply;cfxApply=function(top,kind,list){const r=_ca(top,kind,list);if(!mkLensOn())return r;return r.filter(x=>mkHas(kind==='contacts'||kind==='myk'?x:x.p))}}
+{const _ca=cfxApply;cfxApply=function(top,kind,list){const r=_ca(top,kind,list);if(!mkLensOn())return r;return r.filter(x=>mkHas((kind==='contacts'||kind==='myk'||kind==='pp')?x:x.p))}}
 {const _rc=renderCore;renderCore=function(){
   if(view==='myk'){const r=mkRender();return r}
   if(!mkLensOn()||!['companies','events'].includes(view))return _rc.apply(this,arguments);
@@ -13589,6 +13615,158 @@ function kxSettings(){
   m.querySelectorAll('[data-st-lang]').forEach(b=>b.onclick=()=>{const x=document.querySelector(`.side [data-lang="${b.dataset.stLang}"]`)||document.querySelector(`[data-lang="${b.dataset.stLang}"]`);if(x)x.click();m.hidden=true;m.innerHTML='';kxSettings()});
   const w=m.querySelector('[data-st-who]');if(w)w.onclick=()=>{m.hidden=true;m.innerHTML='';mkWho(()=>{render();mkPill()})};
 }
+
+
+/* =========================================================
+   CMO D'UNE ENTREPRISE · PRESSE & PARTENAIRES · FUSION DE FICHES (admin et standard)
+   - CMO : CMETA[id].cmos = liste de noms de CMO (le premier est le CMO principal) ; remplace celui du référentiel ;
+   - Presse / Partenaire : PMETA[id].pp = 'press' | 'partner', option sur la fiche d'une personne, onglet dédié ;
+   - Fusion : personnes, entreprises, CMO et événements ; EVMERGES pour les événements ; les fusions sont
+     partagées avec l'équipe (contribution « mrg ») et visibles dans le journal des modifications.
+   ========================================================= */
+var EVMERGES;
+function resolveEv(k){const M=(typeof EVMERGES==='object'&&EVMERGES)||{};let n=0;while(k&&M[k]&&n++<50)k=M[k].to;return k}
+function coCmoNames(co){const o=(CMETA[co.id]||{}).cmos;return Array.isArray(o)?o.filter(Boolean):(co.ref?refCmoNames(co.ref):[])}
+function ppOf(p){const v=p&&(PMETA[p.id]||{}).pp;return v==='press'||v==='partner'?v:''}
+function ppChip(p,sm){const v=ppOf(p);return v?`<span class="pp-chip pp-${v}${sm?' sm':''}">${esc(t('ppL')[v])}</span>`:''}
+EVMERGES={};
+Object.assign(L.fr,{tabPp:'Presse & partenaires',pp:{title:'Presse & partenaires',sub:'Les journalistes et les partenaires référencés dans Konex. Classez une personne depuis sa fiche.',ph:'Chercher un nom, une entreprise, un média…',all:''},
+  ppL:{press:'Presse',partner:'Partenaire'},ppAll:'Tous',ppCat:'Catégorie',ppNone:'Aucune',ppSet:'Presse / partenaire',ppEmpty:'Personne n’est encore classé « Presse » ou « Partenaire ».',
+  ppEmptyH:'Ouvrez la fiche d’une personne et choisissez « Presse » ou « Partenaire », ou ajoutez-la ici.',ppAdd:'+ Ajouter une personne',ppAddT:'Ajouter à Presse & partenaires',ppAddOk:'Ajouter',
+  ppPick:'Choisissez une personne.',ppDone:(n,c)=>`${n} : ${c}.`,ppNPress:'presse',ppNPartner:'partenaires',ppNoRes:'Aucun résultat.',
+  coCmoH:'CMO',coCmoNone:'Aucun CMO',coCmoEdit:'Modifier le CMO',coCmoT:'CMO de l’entreprise',coCmoHint:'Cochez le ou les CMO. Le premier coché est le CMO principal : ses clients sont les contacts de cette entreprise.',
+  coCmoOk:'Enregistrer',coCmoRef:'Revenir au référentiel',coCmoSrcRef:'référentiel',coCmoSrcMan:'modifié dans Konex',coCmoDone:n=>`CMO de « ${n} » mis à jour.`,coCmoQ:'Chercher un CMO…',coCmoMain:'principal',
+  mgBtn:'Fusionner avec une autre fiche…',mgT:{person:'Fusionner deux personnes',company:'Fusionner deux entreprises',cmo:'Fusionner deux CMO',event:'Fusionner deux événements'},
+  mgHint:'Choisissez le doublon, puis la fiche à garder. L’autre disparaît : son historique, ses notes et sa photo passent sur la fiche gardée. Vous pouvez annuler juste après.',
+  mgQ:'Chercher la fiche en double…',mgKeep:'Fiche à garder',mgOk:'Fusionner',mgNeed:'Choisissez la fiche en double.',mgDone:(a,b)=>`« ${a} » fusionné dans « ${b} ».`,
+  mgCt:'Fusion',mgCtUndo:'Fusion annulée',evMergesH:'Événements fusionnés',ctPp:'Presse / partenaire',
+  mgSub:{person:p=>[p.societe,p.email].filter(Boolean).join(' · '),company:c=>`${c.people.length} contact${c.people.length>1?'s':''}`,cmo:c=>`${(c.people||[]).length} client${(c.people||[]).length>1?'s':''}`,event:s=>[s.e.date?numDate(s.e.date.slice(0,10)):'',s.e.lieu,`${s.ins} inscrit${s.ins>1?'s':''}`].filter(Boolean).join(' · ')}});
+Object.assign(L.en,{tabPp:'Press & partners',pp:{title:'Press & partners',sub:'Journalists and partners listed in Konex. Classify a person from their record.',ph:'Search a name, a company, a media…',all:''},
+  ppL:{press:'Press',partner:'Partner'},ppAll:'All',ppCat:'Category',ppNone:'None',ppSet:'Press / partner',ppEmpty:'Nobody is classified as “Press” or “Partner” yet.',
+  ppEmptyH:'Open a person’s record and choose “Press” or “Partner”, or add them here.',ppAdd:'+ Add a person',ppAddT:'Add to Press & partners',ppAddOk:'Add',
+  ppPick:'Choose a person.',ppDone:(n,c)=>`${n}: ${c}.`,ppNPress:'press',ppNPartner:'partners',ppNoRes:'No result.',
+  coCmoH:'CMO',coCmoNone:'No CMO',coCmoEdit:'Change the CMO',coCmoT:'Company CMO',coCmoHint:'Tick one or more CMOs. The first one ticked is the main CMO: the contacts of this company are their clients.',
+  coCmoOk:'Save',coCmoRef:'Back to the reference file',coCmoSrcRef:'reference file',coCmoSrcMan:'changed in Konex',coCmoDone:n=>`CMO of “${n}” updated.`,coCmoQ:'Search a CMO…',coCmoMain:'main',
+  mgBtn:'Merge with another record…',mgT:{person:'Merge two people',company:'Merge two companies',cmo:'Merge two CMOs',event:'Merge two events'},
+  mgHint:'Choose the duplicate, then the record to keep. The other one disappears: its history, notes and photo move to the record kept. You can undo right after.',
+  mgQ:'Search the duplicate record…',mgKeep:'Record to keep',mgOk:'Merge',mgNeed:'Choose the duplicate record.',mgDone:(a,b)=>`“${a}” merged into “${b}”.`,
+  mgCt:'Merge',mgCtUndo:'Merge undone',evMergesH:'Merged events',ctPp:'Press / partner',
+  mgSub:{person:p=>[p.societe,p.email].filter(Boolean).join(' · '),company:c=>`${c.people.length} contact${c.people.length>1?'s':''}`,cmo:c=>`${(c.people||[]).length} client${(c.people||[]).length>1?'s':''}`,event:s=>[s.e.date?numDate(s.e.date.slice(0,10)):'',s.e.lieu,`${s.ins} registration${s.ins>1?'s':''}`].filter(Boolean).join(' · ')}});
+
+/* ---------- sauvegarde : fusions d'événements ---------- */
+{const _vs=vaultState;vaultState=function(){const s=_vs.apply(this,arguments);s.evMerges=EVMERGES;return s}}
+{const _as=applyState;applyState=function(s){EVMERGES=(s&&s.evMerges&&typeof s.evMerges==='object')?s.evMerges:{};return _as.apply(this,arguments)}}
+
+/* ---------- 1. CMO d'une entreprise ---------- */
+{const _dd=drawDrawer;drawDrawer=function(keep){_dd(keep);const top=curTop(),d=$('drawer');if(!top||top.edit)return;const b=d.querySelector('.d-body');if(!b)return;
+  if(top.type==='company'&&!d.querySelector('.co-cmo')){const c=CMAP[top.id];if(c){const nm=coCmoNames(c),man=Array.isArray((CMETA[c.id]||{}).cmos);
+    const h=`<div class="co-cmo"><span class="co-cmo-l">${esc(t('coCmoH'))}</span><span class="co-cmo-v">${nm.length?nm.map((n,i)=>cmoLink(n)+(i===0&&nm.length>1?` <small>(${esc(t('coCmoMain'))})</small>`:'')).join(' · '):`<i>${esc(t('coCmoNone'))}</i>`}${nm.length||man?` <small class="co-cmo-src">· ${esc(man?t('coCmoSrcMan'):t('coCmoSrcRef'))}</small>`:''}</span><button type="button" class="btn-o sm" data-x="co-cmo">${esc(t('coCmoEdit'))}</button></div>`;
+    const a=d.querySelector('.mk-acts');if(a)a.insertAdjacentHTML('afterend',h);else b.insertAdjacentHTML('afterbegin',h)}}
+  if(top.type==='person'&&!d.querySelector('.pp-set')){const p=PMAP[top.id];if(p){const v=ppOf(p);
+    const h=`<div class="pp-set"><span class="co-cmo-l">${esc(t('ppSet'))}</span><div class="pp-seg" role="group">${[['',t('ppNone')],['press',t('ppL').press],['partner',t('ppL').partner]].map(([k,l])=>`<button type="button" data-x="pp-set" data-v="${k}" class="${v===k?'on':''}" aria-pressed="${v===k}">${esc(l)}</button>`).join('')}</div></div>`;
+    const a=d.querySelector('.mk-acts');if(a)a.insertAdjacentHTML('afterend',h);else b.insertAdjacentHTML('afterbegin',h)}}
+  if(['person','company','cmo','event'].includes(top.type)&&find[top.type](top.id)&&!d.querySelector('.mg-foot'))
+    b.insertAdjacentHTML('beforeend',`<div class="mg-foot"><button type="button" class="btn-o sm" data-x="mg-open"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v6a6 6 0 0 0 6 6h6M18 21v-6M14 11l4 4 4-4" transform="translate(-2 0)"/></svg>${esc(t('mgBtn'))}</button></div>`);
+}}
+const cmoLbl=c=>c.rawName||c.name;
+XACT['co-cmo']=()=>{const top=curTop();if(!top)return;const c=CMAP[top.id];if(!c)return;
+  const cur=coCmoNames(c).map(n=>CMOMAP['cmo:'+resolveCmo(normName(n))]).filter(Boolean),sel=cur.map(x=>x.id),man=Array.isArray((CMETA[c.id]||{}).cmos);
+  const all=CMOS.filter(x=>!x.archived&&!(CMOMETA[x.key]||{}).deleted).slice().sort((a,b)=>(sel.includes(b.id)-sel.includes(a.id))||cmp(a.name,b.name));
+  const body=`<input type="search" class="kx-q" id="ccq" placeholder="${esc(t('coCmoQ'))}"><div class="kx-checks" id="ccl">${all.map(x=>`<label data-h="${esc(strip(x.name+' '+(x.team||'')+' '+(x.region||'')))}"><input type="checkbox" value="${esc(x.id)}" data-cc${sel.includes(x.id)?' checked':''}><span>${esc(x.name)}</span><small>${esc([x.team,x.region].filter(Boolean).join(' · '))}</small></label>`).join('')}</div>`;
+  const order=sel.slice();
+  const m=kxModal(t('coCmoT'),c.name+' — '+t('coCmoHint'),body,t('coCmoOk'),async()=>{
+    const ids=order.filter(id=>m.querySelector(`[data-cc][value="${CSS.escape(id)}"]`).checked);
+    CMETA[c.id]={...(CMETA[c.id]||{}),cmos:ids.map(id=>cmoLbl(CMOMAP[id]))};saveVault();rebuild();drawDrawer(true);toast(t('coCmoDone')(c.name));return true},null,
+    man?`<button type="button" class="btn-o" data-cc-ref>${esc(t('coCmoRef'))}</button>`:'');
+  m.querySelectorAll('[data-cc]').forEach(x=>x.onchange=()=>{const i=order.indexOf(x.value);if(x.checked&&i<0)order.push(x.value);if(!x.checked&&i>=0)order.splice(i,1)});
+  const q=m.querySelector('#ccq');q.oninput=()=>{const s=strip(q.value);m.querySelectorAll('#ccl label').forEach(l=>l.hidden=!!s&&!l.dataset.h.includes(s))};
+  const r=m.querySelector('[data-cc-ref]');if(r)r.onclick=()=>{const x={...(CMETA[c.id]||{})};delete x.cmos;if(Object.keys(x).length)CMETA[c.id]=x;else delete CMETA[c.id];m.hidden=true;m.innerHTML='';saveVault();rebuild();drawDrawer(true);toast(t('coCmoDone')(c.name))};
+};
+
+/* ---------- 2. Presse & partenaires ---------- */
+function ppSetCat(id,v){const pm={...(PMETA[id]||{})};if(v)pm.pp=v;else delete pm.pp;if(Object.keys(pm).length)PMETA[id]=pm;else delete PMETA[id];saveVault();rebuild()}
+XACT['pp-set']=b=>{const top=curTop();if(!top||top.type!=='person')return;ppSetCat(top.id,b.dataset.v);drawDrawer(true)};
+VIEWS.push('pp');STD_VIEWS.push('pp');SEARCH_V.splice(SEARCH_V.indexOf('companies')+1,0,'pp');
+let PPF='';
+const ppList=()=>PEOPLE.filter(p=>!p.archived&&ppOf(p));
+function ppRender(){
+  $('content').classList.remove('builder');$('bWrap').hidden=true;{const pb=$('pfBar');if(pb)pb.hidden=true}{const ab=$('addBtn');if(ab)ab.hidden=true}$('clear').classList.toggle('show',!!input.value);
+  const tk=strip(input.value.trim()).split(/\s+/).filter(Boolean),all=ppList(),nP=all.filter(p=>ppOf(p)==='press').length,nA=all.length-nP;
+  const base=all.filter(p=>(!PPF||ppOf(p)===PPF)&&tk.every(x=>(p.hay+' '+strip(t('ppL')[ppOf(p)])).includes(x))).sort(byPerson);
+  const shown=cfxApply(PPTOP,'pp',base);$('listTitle').textContent='';
+  const seg=`<div class="pp-top"><div class="pp-seg">${[['',t('ppAll'),all.length],['press',t('ppL').press,nP],['partner',t('ppL').partner,nA]].map(([k,l,n])=>`<button type="button" data-x="pp-f" data-v="${k}" class="${PPF===k?'on':''}">${esc(l)} <span>${n}</span></button>`).join('')}</div><button type="button" class="btn sm" data-x="pp-add">${esc(t('ppAdd'))}</button></div>`;
+  if(!all.length){grid.innerHTML=seg+`<div class="empty"><b>${esc(t('ppEmpty'))}</b>${esc(t('ppEmptyH'))}</div>`;return}
+  grid.innerHTML=seg+`<div class="pp-bar">${cfxBar(PPTOP,'pp',base)}</div>`+(shown.length?pagedL(shown,(p,i)=>personCard(p,tk,i)):`<div class="empty"><b>${esc(t('noResult'))}</b></div>`);
+}
+{const _rc=renderCore;renderCore=function(){if(view==='pp')return ppRender();return _rc.apply(this,arguments)}}
+{const _rs=renderStats;renderStats=function(){if(view==='pp'){const s=$('stats'),l=ppList(),n=l.filter(p=>ppOf(p)==='press').length;if(s)s.innerHTML=statBox(n,t('ppNPress'))+statBox(l.length-n,t('ppNPartner'));return}return _rs.apply(this,arguments)}}
+{const _cd=cfxDims;cfxDims=function(kind){if(kind!=='pp')return _cd(kind);const D=_cd('contacts');
+  return[{k:'ppc',label:t('ppCat'),get:p=>[t('ppL')[ppOf(p)]||'__none']},...D]}}
+CFB_ICON.ppc=['#D9467A','<path d="M4 11v2a1 1 0 0 0 1 1h2l5 4V6L7 10H5a1 1 0 0 0-1 1z"/><path d="M16 9a3 3 0 0 1 0 6M19 6a7 7 0 0 1 0 12"/>'];
+L.fr.cfxW={...L.fr.cfxW,pp:'personnes'};L.en.cfxW={...L.en.cfxW,pp:'people'};
+XACT['pp-f']=b=>{PPF=b.dataset.v;render()};
+function ppExport(){
+  const tk=strip(input.value.trim()).split(/\s+/).filter(Boolean),fr=lang==='fr';
+  const L0=cfxApply(PPTOP,'pp',ppList().filter(p=>(!PPF||ppOf(p)===PPF)&&tk.every(x=>(p.hay+' '+strip(t('ppL')[ppOf(p)])).includes(x))).sort(byPerson));
+  const head=fr?['Catégorie','Prénom','Nom','Entreprise','Fonction','E-mail','Téléphone','LinkedIn']:['Category','First name','Last name','Company','Job title','Email','Phone','LinkedIn'];
+  const rows=[head,...L0.map(p=>[t('ppL')[ppOf(p)],p.prenom||'',p.nom||'',p.societe||'',p.poste||'',p.email||'',p.phone||'',p.linkedin||''])];
+  download(xlsxBook([{name:fr?'Presse et partenaires':'Press and partners',freeze:1,rows,styles:{0:1}}]),`${fr?'Presse et partenaires':'Press and partners'} - ${isoDay()}.xlsx`).then(ok=>{if(ok)toast(t('lbExported')(L0.length))});
+}
+
+/* sélecteur de fiche : recherche dans un type (personne, entreprise, CMO, événement) */
+const PK_ALL={person:()=>PEOPLE.filter(p=>!p.archived),company:()=>COMPANIES,cmo:()=>CMOS.filter(c=>!c.archived),event:()=>EVSTATS.slice().sort((a,b)=>(b.e.date||'').localeCompare(a.e.date||''))};
+const PK_ID={person:p=>p.id,company:c=>c.id,cmo:c=>c.id,event:s=>s.e.id};
+const PK_NAME={person:p=>p.full,company:c=>c.name,cmo:c=>c.name,event:s=>evName(s.e)};
+const PK_HAY={person:p=>p.hay,company:c=>c.hay||strip(c.name),cmo:c=>c.hay||strip(c.name),event:s=>strip(evName(s.e)+' '+(s.e.date||'')+' '+(s.e.lieu||'')+' '+(s.e.type||''))};
+function pkRows(type,q,skip){const tk=strip(q).split(/\s+/).filter(Boolean);
+  const l=PK_ALL[type]().filter(o=>PK_ID[type](o)!==skip&&(!tk.length||tk.every(x=>PK_HAY[type](o).includes(x)))).slice(0,40);
+  return l.length?l.map(o=>`<label><input type="radio" name="pk" value="${esc(PK_ID[type](o))}"><span>${esc(PK_NAME[type](o))}${type==='person'?ppChip(o,1):''}</span><small>${esc(t('mgSub')[type](o)||'')}</small></label>`).join(''):`<p class="muted small" style="padding:8px">${esc(t('ppNoRes'))}</p>`}
+function pkWire(m,type,skip,onChange){const q=m.querySelector('#pkq'),l=m.querySelector('#pkl');
+  const draw=()=>{l.innerHTML=pkRows(type,q.value,skip);l.querySelectorAll('input[name=pk]').forEach(r=>r.onchange=()=>onChange&&onChange(r.value))};q.oninput=draw;draw()}
+XACT['pp-add']=()=>{
+  const m=kxModal(t('ppAddT'),'',`<input type="search" class="kx-q" id="pkq" placeholder="${esc(t('pp').ph)}"><div class="kx-checks" id="pkl"></div>
+    <div class="kx-f"><span>${esc(t('ppCat'))}</span><div class="pp-seg" id="ppc">${['press','partner'].map((k,i)=>`<label class="${(PPF?k===PPF:i===0)?'on':''}"><input type="radio" name="ppc" value="${k}"${(PPF?k===PPF:i===0)?' checked':''} hidden>${esc(t('ppL')[k])}</label>`).join('')}</div></div>`,t('ppAddOk'),async()=>{
+    const r=m.querySelector('input[name=pk]:checked');if(!r)return t('ppPick');const v=m.querySelector('input[name=ppc]:checked').value,p=PMAP[r.value];
+    ppSetCat(r.value,v);toast(t('ppDone')(p?p.full:'',t('ppL')[v]));return true});
+  m.querySelectorAll('#ppc label').forEach(l=>l.onclick=()=>{m.querySelectorAll('#ppc label').forEach(x=>x.classList.toggle('on',x===l))});
+  pkWire(m,'person','');
+};
+
+/* ---------- 3. Fusion de fiches (admin et standard) ---------- */
+function mergeEv(fromId,toId){
+  const A=EMAP[fromId],B=EMAP[toId];if(!A||!B||fromId===toId||resolveEv(toId)===fromId)return;
+  EVMERGES[fromId]={to:toId,from:evName(A.e),into:evName(B.e),date:new Date().toISOString()};
+  const nk='ev:'+fromId,nt='ev:'+toId;if(NOTES[nk]){NOTES[nt]=(NOTES[nt]||[]).concat(NOTES[nk]);delete NOTES[nk]}
+  if(PHOTOS[fromId]&&!PHOTOS[toId])PHOTOS[toId]=PHOTOS[fromId];
+  const ma=EVMETA[fromId],mb=EVMETA[toId]||{};if(ma){const x={...mb};['type','desc','lieu','date','end','parent'].forEach(k=>{if((x[k]==null||x[k]==='')&&ma[k])x[k]=ma[k]});if(ma.extra)x.extra={...ma.extra,...(mb.extra||{})};if(Object.keys(x).length)EVMETA[toId]=x}
+  saveVault();rebuild();toast(t('mgDone')(evName(A.e),evName(B.e)));
+}
+function undoEvMerge(k){delete EVMERGES[k];saveVault();rebuild();toast(t('undone'))}
+const MG_FN={person:(a,b)=>mergeInto(a,b),company:(a,b)=>mergeCo(a,b),cmo:(a,b)=>mergeCmo(a,b),event:(a,b)=>mergeEv(a,b)};
+const mgWeight={person:p=>(p.nReg||0)+(p.email?1:0)+noteCount(p.id),company:c=>c.people.length+(c.ref?100:0),cmo:c=>(c.people||[]).length+(c.cos||[]).length*10,event:s=>s.ins};
+XACT['mg-open']=()=>{const top=curTop();if(!top)return;const type=top.type,me=find[type](top.id);if(!me||!MG_FN[type])return;const myName=PK_NAME[type](me);
+  const m=kxModal(t('mgT')[type],t('mgHint'),`<div class="mg-me"><b>${esc(myName)}</b><small>${esc(t('mgSub')[type](me)||'')}</small></div>
+    <input type="search" class="kx-q" id="pkq" placeholder="${esc(t('mgQ'))}"><div class="kx-checks" id="pkl"></div><div class="kx-f" id="mgk" hidden></div>`,t('mgOk'),async()=>{
+    const r=m.querySelector('input[name=pk]:checked');if(!r)return t('mgNeed');const keep=m.querySelector('input[name=mgk]:checked').value,drop=keep===top.id?r.value:top.id;
+    const oc=window.confirm;window.confirm=()=>true;try{MG_FN[type](drop,keep)}finally{window.confirm=oc}
+    if(type==='company')return true; /* la fenêtre de fusion des entreprises (nom, RMPM) prend le relais */
+    const kid=type==='person'?(typeof resolve==='function'?resolve(keep):keep):keep;closeDrawer();if(find[type](kid))openFiche(type,kid);return true});
+  pkWire(m,type,top.id,id=>{const o=find[type](id);if(!o)return;const k=m.querySelector('#mgk');const def=mgWeight[type](o)>mgWeight[type](me)?id:top.id;
+    k.hidden=false;k.innerHTML=`<span>${esc(t('mgKeep'))}</span><div class="mg-keep">${[[top.id,me],[id,o]].map(([x,ob])=>`<label><input type="radio" name="mgk" value="${esc(x)}"${x===def?' checked':''}><span><b>${esc(PK_NAME[type](ob))}</b><small>${esc(t('mgSub')[type](ob)||'')}</small></span></label>`).join('')}</div>`});
+};
+/* la fusion est permise en vue standard (les fonctions d'administration sont rétablies pour elle) */
+{const _ar=applyRole;applyRole=function(admin){const r=_ar.apply(this,arguments);if(!admin&&ROLE_ORIG)['mergeInto','mergeCo','mergeCmo','undoMerge','undoCoMerge','undoCmoMerge'].forEach(n=>{if(ROLE_ORIG.fns[n])gSet(n,ROLE_ORIG.fns[n])});return r}}
+/* les fusions sont partagées avec l'équipe : contribution « mrg » (p| personne, c| entreprise, m| CMO, e| événement) */
+const MRG_MAP={p:()=>MERGES,c:()=>CMERGES,m:()=>CMOMERGES,e:()=>EVMERGES};
+{const _sn=shSnap;shSnap=function(){const o=_sn.apply(this,arguments);o.mrg={};Object.entries(MRG_MAP).forEach(([x,f])=>{const M=f()||{};Object.keys(M).forEach(k=>o.mrg[x+'|'+k]=JSON.stringify(M[k]))});return o}}
+{const _df=shDiff;shDiff=function(){const A=SHADOW,r=_df.apply(this,arguments),B=SHADOW;if(!A||!A.mrg||!B||!B.mrg)return r;
+  for(const k of new Set([...Object.keys(A.mrg),...Object.keys(B.mrg)])){if(A.mrg[k]===B.mrg[k])continue;r.ops.push({s:'mrg',k,v:B.mrg[k]?JSON.parse(B.mrg[k]):null});r.inv.push({s:'mrg',k,v:A.mrg[k]?JSON.parse(A.mrg[k]):null})}return r}}
+{const _ok=shOk;shOk=function(o){if(o&&o.s==='mrg'){if(typeof o.k!=='string'||o.k.length>500||!MRG_MAP[o.k[0]]||o.k[1]!=='|')return false;return o.v===null||(!!o.v&&typeof o.v==='object'&&typeof o.v.to==='string'&&o.v.to.length<500)}return _ok(o)}}
+{const _ap=shApply;shApply=function(o){if(o&&o.s==='mrg'&&shOk(o)){const M=MRG_MAP[o.k[0]](),k=o.k.slice(2),old=M[k]||null;if(o.v)M[k]=o.v;else delete M[k];return old}return _ap(o)}}
+{const _ct=ctTarget;ctTarget=function(o){if(o&&o.s==='mrg'){const v=o.v||{},ty={p:'person',c:'company',m:'cmo',e:'event'}[o.k[0]],to=v.to?(o.k[0]==='m'?'cmo:'+v.to:v.to):'';
+  return to&&find[ty]&&find[ty](to)?[ty,to,v.into||'']:[null,null,v.into||o.k.slice(2)]}return _ct(o)}}
+{const _cd=ctDesc;ctDesc=function(c){const o=c&&c.op;if(o&&o.s==='mrg')return o.v?`<b>${esc(t('mgCt'))}</b> : ${esc(o.v.from||'')} → ${esc(o.v.into||'')}`:`<b>${esc(t('mgCtUndo'))}</b>`;
+  if(o&&o.s==='pmeta'&&o.f&&'pp' in o.f){const r=_cd(c);return r.replace('<b>pp</b>',`<b>${esc(t('ctPp'))}</b>`).replace(/: (press|partner)\b/,(x,v)=>': '+esc(t('ppL')[v]))}return _cd(c)}}
 
 if(KXD){
   const I=KXD.info,D=I.dirs;
