@@ -1264,7 +1264,7 @@ span.arch-chip{color:#55615C!important}
 
 /* ---------- Éditions, base partagée, aide, didacticiel ---------- */
 body.std [data-admin]{display:none!important}
-body.std .manage,body.std .flagbar .int,body.std .add-part-w,body.std [data-man-del],body.std .man-del,body.std [data-detach],body.std [data-addsub],body.std [data-man-rm]{display:none!important}
+/* vue standard : tout est modifiable (archivage, interne, participants, regroupements) */
 body.tuto-on .side{z-index:70}
 .ed-tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(255,255,255,.16);border-radius:6px;padding:2px 6px;vertical-align:2px}
 .ed-tag:empty,.ed-tag[hidden]{display:none}
@@ -10273,7 +10273,7 @@ const plKey=k=>{const a=String(k).split(PK);return a.length===2&&a[1]==='meta'?{
   if(!shOk(o))return undefined;const x=plKey(o.k);let P=PLANS[x.id];
   if(x.part==='meta'){const old=P?P.meta:null;
     if(o.v===null){if(old&&old.status==='validated'&&!old.bind)return undefined;delete PLANS[x.id];return old}
-    const v={...o.v,id:x.id};if(v.status==='validated'&&!(old&&old.status==='validated')&&!v.bind)v.status='proposed'; /* seule une administratrice ou un administrateur valide */
+    const v={...o.v,id:x.id};if(v.status==='proposed')v.status='validated'; /* plus d'étape de validation : un événement créé est valable tout de suite */
     if(!P)P=PLANS[x.id]={meta:v,g:{},d:{},s:{},r:{}};else P.meta=v;return old}
   if(!P)P=PLANS[x.id]={meta:{id:x.id,name:'?',status:'proposed'},g:{},d:{},s:{},r:{}};
   P[x.part]=P[x.part]||{};const old=P[x.part][x.item]||null;if(o.v===null)delete P[x.part][x.item];else P[x.part][x.item]=o.v;return old}}
@@ -13012,6 +13012,50 @@ document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest
   const pm=PMETA[top.id]||{},m=d.querySelector('.manage');
   if(pm.prevCos&&pm.prevCos.length&&!d.querySelector('.prev-cos')){const b=d.querySelector('.d-body');if(b)b.insertAdjacentHTML('afterbegin',`<div class="prev-cos"><b>${esc(t('prevCos'))}</b> ${pm.prevCos.map(x=>`${esc(x.name)} <small>(${esc(lang==='fr'?'jusqu’au':'until')} ${esc(numDate(x.until))})</small>`).join(' · ')}</div>`)}
   if(m&&$('archReason')&&!m.querySelector('.arch-hint'))m.insertAdjacentHTML('beforeend',`<small class="arch-hint">${esc(t('archHint'))}</small>`)}}
+
+/* =========================================================
+   VUE STANDARD : LES COMMERCIAUX PEUVENT TOUT MODIFIER, SANS VALIDATION
+   - fiches personnes (y compris archivage, interne/VIP), entreprises (y compris RMPM), CMO, événements (informations,
+     photo, notes), listes d'invités : chaque modification s'applique tout de suite pour toute l'équipe ;
+   - plus d'étape « proposé / à valider » pour les événements créés ;
+   - l'administrateur garde le journal des modifications : il voit qui a changé quoi et quand, et peut annuler au cas par cas.
+   ========================================================= */
+Object.keys(SH_DENY).forEach(k=>{SH_DENY[k]=[]});
+SH_STORES.evm=()=>EVMETA;SH_DENY.evm=[];
+{const _sn=shSnap;shSnap=function(){const o=_sn.apply(this,arguments);if(o.evm)Object.keys(o.evm).forEach(k=>{if(k.startsWith('pl-'))delete o.evm[k]});return o}}
+{const _ok=shOk;shOk=function(o){
+  if(o&&o.s==='note'&&typeof o.k==='string'&&o.k.startsWith('ev:'))return typeof o.id==='string'&&(o.v===null||(!!o.v&&typeof o.v.text==='string'&&o.v.id===o.id&&o.v.text.length<20000));
+  if(o&&o.s==='evm')return typeof o.k==='string'&&!!o.k&&!o.k.startsWith('pl-')&&o.k.length<500&&!!o.f&&typeof o.f==='object'&&!Array.isArray(o.f)&&Object.keys(o.f).every(f=>f.length<80);
+  return _ok(o)}}
+{const _ap=shApply;shApply=function(o){
+  if(o&&o.s==='photo'&&typeof o.k==='string'&&(EMAP[o.k]||(typeof GROUPMAP!=='undefined'&&GROUPMAP[o.k]))&&shOk(o)){const old=PHOTOS[o.k]||null;if(o.v)PHOTOS[o.k]=o.v;else delete PHOTOS[o.k];return old}
+  return _ap(o)}}
+/* les événements créés sont validés d'office ; les anciens « proposés » aussi */
+{const _pn=plNew;plNew=function(meta,guests){const P=_pn(meta,guests);if(P&&P.meta.status==='proposed'){P.meta.status='validated';P.meta.valBy=P.meta.by;P.meta.valAt=P.meta.created}return P}}
+{const _as6=applyState;applyState=function(s){const r=_as6.apply(this,arguments);try{Object.values(PLANS||{}).forEach(P=>{if(P&&P.meta&&P.meta.status==='proposed')P.meta.status='validated'})}catch(_){}return r}}
+L.fr.plCreatedStd=L.fr.plCreated;L.en.plCreatedStd=L.en.plCreated;
+/* l'édition standard n'enlève plus « Modifier » ni les notes sur les événements, et garde le RMPM des entreprises */
+{const _dp=drawerPost;drawerPost=function(top,type,o,d){
+  const keepE=type==='event'&&!ADMIN?$('dEdit'):null,keepN=type==='event'&&!ADMIN?[...d.querySelectorAll('.note-form')].map(n=>[n,n.parentNode,n.nextSibling]):[];
+  const r=_dp(top,type,o,d);
+  if(keepE&&!keepE.isConnected){const btns=d.querySelector('.d-btns'),x=$('dClose');if(btns)btns.insertBefore(keepE,x||null)}
+  keepN.forEach(([n,par,nx])=>{if(!n.isConnected&&par)par.insertBefore(n,nx&&nx.isConnected?nx:null)});
+  return r}}
+{const _sr=stdRights;stdRights=function(){const rows=FORMS.company.rows.slice();_sr();FORMS.company.rows=rows}}
+/* participants ajoutés à la main (aussi sur les événements passés) : disponibles en vue standard et partagés avec l'équipe */
+{const _ar7=applyRole;applyRole=function(admin){const r=_ar7.apply(this,arguments);if(!admin&&ROLE_ORIG)['addPartHTML','addPart','removeManual'].forEach(n=>{if(ROLE_ORIG.fns[n])gSet(n,ROLE_ORIG.fns[n])});return r}}
+{const _ok2=shOk;shOk=function(o){if(o&&o.s==='man'&&typeof o.k==='string'&&o.k&&o.k.length<500)return o.v===null||(!!o.v&&typeof o.v==='object'&&o.v.mid===o.k);return _ok2(o)}}
+{const _ap2=shApply;shApply=function(o){if(o&&o.s==='man'&&shOk(o)){const old=MANROWS.find(r=>r.mid===o.k)||null;MANROWS=MANROWS.filter(r=>r.mid!==o.k);if(o.v)MANROWS.push(o.v);return old}return _ap2(o)}}
+/* journal des modifications côté administrateur */
+Object.assign(L.fr,{navContrib:'Journal des modifications',ctWait:'Appliquée',ctPub:'Appliquée et publiée',shCtN:'Modifications de l’équipe pas encore publiées',
+  ctUndoneT:'Modification annulée. Publiez l’édition pour l’appliquer à toute l’équipe.',ctNone:'Aucune modification pour le moment',ctNoneH:'Les modifications faites par l’équipe apparaîtront ici, avec leur auteur et leur date.'});
+L.fr.contrib={...L.fr.contrib,title:'Journal des modifications',sub:'Tout ce que l’équipe a modifié, qui et quand. Les modifications s’appliquent tout de suite ; vous pouvez en annuler une au cas par cas ou ouvrir la fiche pour la corriger.',all:'Modifications'};
+Object.assign(L.en,{navContrib:'Change log',ctWait:'Applied',ctPub:'Applied and published',shCtN:'Team changes not yet published',
+  ctUndoneT:'Change undone. Publish the edition to apply it for the whole team.',ctNone:'No change yet',ctNoneH:'Changes made by the team will appear here, with their author and date.'});
+L.en.contrib={...L.en.contrib,title:'Change log',sub:'Everything the team changed, who and when. Changes apply at once; you can undo one case by case or open the record to correct it.',all:'Changes'};
+{const _ct2=ctTarget;ctTarget=function(o){if(o&&o.s==='evm'){const s=EMAP[o.k];return s?['event',o.k,evName(s.e)]:[null,null,(o.f&&o.f.name)||o.k]}
+  if(o&&o.s==='note'&&typeof o.k==='string'&&o.k.startsWith('ev:')){const s=EMAP[o.k.slice(3)];return s?['event',s.e.id,evName(s.e)]:[null,null,o.k.slice(3)]}
+  if(o&&o.s==='photo'&&EMAP[o.k])return['event',o.k,evName(EMAP[o.k].e)];return _ct2(o)}}
 
 if(KXD){
   const I=KXD.info,D=I.dirs;
