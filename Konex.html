@@ -8183,7 +8183,7 @@ function lbSummary(){
   return parts.join(' · ');
 }
 function listMailHTML(){
-  const res=sortRes(lbRows(curTokens())),sum=lbSummary(),C=lcols();
+  const res=sortRes(lbRows(curTokens())),sum=lbSummary(),C=lcols().filter(c=>c[0]!=='ins'&&c[0]!=='pres'); /* pas de totaux tous événements confondus */
   const table=mailTable(C.map(colLabel),res.map(r=>`<tr>${C.map(c=>td(esc(c[2](r)))).join('')}</tr>`));
   const intro=LQ.mode==='cmos'?t('mListCmo')(res.length):LQ.mode==='pairs'?t('mListPairs')(res.length):t('mList')(res.length);
   return `<p>${t('hello')}</p><p>${intro}${sum?` (${sum})`:''} :</p>${table}<p>${t('regards')}</p><p><br></p>`;
