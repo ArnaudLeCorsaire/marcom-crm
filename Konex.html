@@ -818,6 +818,34 @@ body.arno-on .drawer .d-body{padding-bottom:100px}
 .cfx-pf{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding-top:8px}
 .prev-cos{font-size:13px;background:var(--bg);border-radius:10px;padding:8px 12px;margin:12px 0}.prev-cos small{color:var(--muted)}
 .arch-hint{display:block;width:100%;color:var(--muted);font-size:12px;margin-top:6px}
+.cfb{display:flex;flex-direction:column;gap:10px;margin:-2px 0 14px}
+.cfb-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.cfb-btn{display:inline-flex;align-items:center;gap:8px;border:0;background:#fff;border-radius:12px;padding:8px 14px;font:inherit;font-size:14px;font-weight:600;color:var(--ink);cursor:pointer;box-shadow:0 0 0 1px var(--line)}
+.cfb-btn.open{box-shadow:0 0 0 1.5px var(--green)}
+.cfb-n{background:var(--green);color:#fff;border-radius:999px;font-size:12px;padding:0 7px;min-width:20px;text-align:center;line-height:20px}
+.cfb-tog{display:inline-flex;align-items:center;gap:10px;background:#fff;border-radius:12px;padding:6px 7px 6px 12px;box-shadow:0 0 0 1px var(--line);font-size:13.5px;font-weight:500;cursor:pointer;color:var(--ink)}
+.cfb-sw{position:relative;width:42px;height:25px;border-radius:999px;background:#E4E7E5;transition:background .2s;flex:none;border:0;padding:0;cursor:pointer}
+.cfb-sw::after{content:"";position:absolute;top:2px;left:2px;width:21px;height:21px;border-radius:50%;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.22);transition:transform .22s cubic-bezier(.3,1.3,.5,1)}
+.cfb-sw[aria-checked="true"]{background:#34C759}.cfb-sw[aria-checked="true"]::after{transform:translateX(17px)}
+.cfb-sum{margin-left:auto;font-size:12.5px;color:var(--muted)}
+.cfb-chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.cfb-chip{display:inline-flex;align-items:center;gap:6px;background:var(--green-light);color:var(--green-dark);border-radius:999px;padding:4px 5px 4px 11px;font:inherit;font-size:13px;font-weight:600;border:0;cursor:pointer;max-width:260px}
+.cfb-chip i{font-style:normal;width:17px;height:17px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-size:11px;flex:none}
+.cfb-clear{border:0;background:none;color:#0A84FF;font:inherit;font-size:13px;font-weight:600;cursor:pointer;padding:2px 4px}
+.cfb-sheet{background:#F2F2F7;border-radius:16px;padding:6px 0 8px;animation:arUp .2s}
+.cfb-sh{margin:8px 18px 6px;font-size:12px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.cfb-group{background:#fff;border-radius:12px;margin:0 8px;overflow:hidden}
+.cfb-row{display:flex;align-items:center;gap:12px;width:100%;border:0;background:none;padding:10px 14px;text-align:left;cursor:pointer;font:inherit;font-size:14.5px;color:var(--ink);position:relative}
+.cfb-row:hover{background:#FAFAFB}
+.cfb-group>.cfb-row+.cfb-row::before,.cfb-vals+.cfb-row::before{content:"";position:absolute;top:0;left:50px;right:0;border-top:1px solid #E5E5EA}
+.cfb-row>span:not(.cfb-ic){flex:1;min-width:0}.cfb-row>em{font-style:normal;color:var(--muted);font-size:14px;max-width:45%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cfb-ic{width:26px;height:26px;border-radius:7px;display:grid;place-items:center;flex:0 0 26px}.cfb-ic svg{width:15px;height:15px}
+.cfb-chev{color:#C4C4C9;flex:none;transition:transform .2s}.cfb-row[aria-expanded="true"] .cfb-chev{transform:rotate(90deg)}
+.cfb-vals{background:#FAFAFB;max-height:300px;overflow:auto}
+.cfb-val{padding:9px 14px 9px 52px;font-size:14px}.cfb-val+.cfb-val::before{content:"";position:absolute;top:0;left:52px;right:0;border-top:1px solid #EDEDF0}
+.cfb-val.zero{opacity:.45}.cfb-chk{color:#0A84FF;flex:none}.cfb-sp{width:16px;flex:none}
+.cfb-row:focus-visible,.cfb-btn:focus-visible,.cfb-sw:focus-visible,.cfb-chip:focus-visible{outline:2px solid #0A84FF;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.cfb-sw::after,.cfb-chev,.cfb-sheet{transition:none;animation:none}}
 .ib-p{border-top-color:#7B4FB5}.ib-p .ib-h span{background:#7B4FB5}.ib-p .ib-h{color:#5E3A8F}
 .ib-p .note-form{margin-top:4px}
 .dash{display:flex;flex-direction:column;gap:16px}
@@ -13090,6 +13118,58 @@ const KX_CONNECTORS={
 };
 XACT['kx-exch']=()=>{const c=KX_CONNECTORS['konex-echange'],d=kxExchange();download(JSON.stringify(d,null,1),`konex-echange-${isoDay()}.json`).then(ok=>{if(ok)toast(t('exDone')(d.personnes.length))})};
 {const _sh2=shareHTML;shareHTML=function(){const h=_sh2();return ADMIN?h+`<div class="sh-how"><b>${esc(t('exT'))}</b><p>${esc(t('exH'))}</p><button type="button" class="btn-o sm" data-x="kx-exch">${esc(t('exBtn'))}</button></div>`:h}}
+
+/* =========================================================
+   BARRE DE FILTRES, STYLE « RÉGLAGES » (proposition B retenue)
+   - interrupteurs pour les choix oui / non : Présents seulement, Internes, Avec e-mail (seulement s'ils changent quelque chose) ;
+   - bouton « Filtres » (avec le nombre de filtres actifs) qui déplie une feuille : une ligne par critère, icône de couleur,
+     valeur choisie à droite, chevron ; un appui déplie les valeurs, cochées d'un appui, avec le nombre de personnes ;
+   - les filtres actifs s'affichent en pastilles vertes, retirées d'un appui.
+   ========================================================= */
+Object.assign(L.fr,{cfbBtn:'Filtres',cfbPres:'Présents seulement',cfbPresC:'Déjà venus seulement',cfbInt:'Internes',cfbEm:'Avec e-mail',cfbAll:'Tous',cfbN:n=>`${n} choisis`,cfbSheetH:'Affiner la liste',cfbClear:'Tout effacer'});
+Object.assign(L.en,{cfbBtn:'Filters',cfbPres:'Attended only',cfbPresC:'Has attended only',cfbInt:'Internal',cfbEm:'With email',cfbAll:'All',cfbN:n=>`${n} selected`,cfbSheetH:'Refine the list',cfbClear:'Clear all'});
+const CFB_ICON={st:['#34A853','<path d="M20 6 9 17l-5-5"/>'],att:['#14A3A3','<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>'],kind:['#F28C28','<circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/>'],
+  co:['#0A84FF','<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 8h2M13 8h2M9 12h2M13 12h2M10 21v-4h4v4"/>'],poste:['#8E5BD9','<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>'],
+  cmo:['#5856D6','<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.7-3.4 3.3-5 6.5-5s5.8 1.6 6.5 5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18.5 15c1.6.7 2.6 2.4 3 5"/>'],cmoReg:['#E5484D','<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>'],
+  geo:['#E5484D','<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>'],city:['#E5484D','<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>'],reg:['#E5484D','<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>'],lieu:['#E5484D','<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>'],
+  ent:['#8E8E93','<circle cx="8" cy="9" r="3"/><circle cx="16" cy="9" r="3"/><path d="M3 20c.6-3 2.6-4.5 5-4.5s4.4 1.5 5 4.5M11 20c.6-3 2.6-4.5 5-4.5s4.4 1.5 5 4.5"/>'],rk:['#E0A100','<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/>'],
+  year:['#14A3A3','<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>'],ev:['#14A3A3','<path d="M12 2l2.4 6.9H22l-6 4.6 2.3 7L12 16l-6.3 4.5 2.3-7-6-4.6h7.6z"/>'],type:['#FF9F0A','<path d="M4 6h16M4 12h10M4 18h7"/>'],email:['#14A3A3','<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>']};
+const cfbIc=k=>{const[c,s]=CFB_ICON[k]||CFB_ICON[k.split(':')[0]]||['#8E8E93','<path d="M4 7h16M4 12h10M4 17h7"/>'];return`<span class="cfb-ic" style="background:${c}"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">${s}</svg></span>`};
+const CFB_CHEV='<svg class="cfb-chev" width="8" height="13" viewBox="0 0 9 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 2 5 5-5 5"/></svg>';
+const CFB_CHK='<svg class="cfb-chk" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+/* interrupteurs : propriétés oui / non des éléments de la liste */
+const cfbP=(kind,x)=>kind==='contacts'?x:x.p;
+const CFB_SW={pres:(kind,x)=>kind==='contacts'?(x.pres||0)>0:!!x.present,int:(kind,x)=>!!(cfbP(kind,x)&&cfbP(kind,x).internal),em:(kind,x)=>!!(cfbP(kind,x)&&cfbP(kind,x).email)};
+{const _ap=cfxApply;cfxApply=function(top,kind,list){let L=_ap(top,kind,list);const S=cfxState(top,kind);
+  Object.keys(CFB_SW).forEach(k=>{if(S['__'+k])L=L.filter(x=>{try{return CFB_SW[k](kind,x)}catch(_){return true}})});return L}}
+function cfbSwitches(kind,full){return Object.keys(CFB_SW).filter(k=>{let y=0,n=0;full.forEach(x=>{try{CFB_SW[k](kind,x)?y++:n++}catch(_){}});return y&&n})}
+cfxBar=function(top,kind,full){
+  const S=cfxState(top,kind),sw=cfbSwitches(kind,full),skip=new Set(['email',...(sw.includes('int')?[]:[])]);
+  const dims=cfxUseful(cfxDims(kind),full).filter(d=>!skip.has(d.k));
+  if(!dims.length&&!sw.length)return'';
+  const shown=cfxApply(top,kind,full).length,actV=dims.flatMap(d=>(S[d.k]||[]).map(v=>[d,v])),nAct=actV.length+sw.filter(k=>S['__'+k]).length;
+  top.cfbSheet=top.cfbSheet||{};const sheet=!!top.cfbSheet[kind],open=top.cfbOpen&&top.cfbOpen.startsWith(kind+'|')?top.cfbOpen.slice(kind.length+1):'';
+  const lab={pres:kind==='contacts'?t('cfbPresC'):t('cfbPres'),int:t('cfbInt'),em:t('cfbEm')};
+  const swH=sw.map(k=>`<label class="cfb-tog">${esc(lab[k])}<button type="button" class="cfb-sw" role="switch" aria-checked="${!!S['__'+k]}" aria-label="${esc(lab[k])}" data-cfb-sw="${kind}|${k}"></button></label>`).join('');
+  const valTxt=d=>{const s=S[d.k]||[];return!s.length?t('cfbAll'):s.length===1?cfxVL(s[0]):t('cfbN')(s.length)};
+  const rowVals=d=>{const others={...S};delete others[d.k];const base=cfxApply({cfx:{[kind]:others}},kind,full),cnt=new Map();base.forEach(x=>new Set(d.get(x)).forEach(v=>cnt.set(v,(cnt.get(v)||0)+1)));const sel=S[d.k]||[];
+    return d.vals.map(([v])=>`<button type="button" class="cfb-row cfb-val${(cnt.get(v)||0)?'':' zero'}" data-cfb-val="${kind}|${esc(d.k)}|${esc(v)}" role="menuitemcheckbox" aria-checked="${sel.includes(v)}"><span>${esc(cfxVL(v))}</span><em>${cnt.get(v)||0}</em>${sel.includes(v)?CFB_CHK:'<i class="cfb-sp"></i>'}</button>`).join('')};
+  return`<div class="cfb" data-cfx-kind="${kind}"><div class="cfb-bar">${dims.length?`<button type="button" class="cfb-btn${sheet?' open':''}" data-cfb-sheet="${kind}" aria-expanded="${sheet}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>${esc(t('cfbBtn'))}${nAct?`<b class="cfb-n">${nAct}</b>`:''}</button>`:''}${swH}
+      ${nAct?`<span class="cfb-sum">${esc(t('cfxOf')(shown,full.length,t('cfxW')[kind]))}</span>`:''}</div>
+    ${actV.length?`<div class="cfb-chips">${actV.map(([d,v])=>`<button type="button" class="cfb-chip" data-cfb-rm="${kind}|${esc(d.k)}|${esc(v)}" title="${esc(d.label)}">${esc(cfxVL(v))}<i>×</i></button>`).join('')}${nAct>1?`<button type="button" class="cfb-clear" data-cfx-reset="${kind}">${esc(t('cfbClear'))}</button>`:''}</div>`:''}
+    ${sheet&&dims.length?`<div class="cfb-sheet"><div class="cfb-sh">${esc(t('cfbSheetH'))}</div><div class="cfb-group">${dims.map(d=>`<button type="button" class="cfb-row" data-cfb-row="${kind}|${esc(d.k)}" aria-expanded="${open===d.k}">${cfbIc(d.k)}<span>${esc(d.label)}</span><em>${esc(valTxt(d))}</em>${CFB_CHEV}</button>${open===d.k?`<div class="cfb-vals" role="menu">${rowVals(d)}</div>`:''}`).join('')}</div></div>`:''}</div>`;
+};
+document.addEventListener('click',e=>{
+  const el=e.target.closest&&e.target.closest('[data-cfb-sw],[data-cfb-sheet],[data-cfb-row],[data-cfb-val],[data-cfb-rm]');if(!el)return;const top=curTop();if(!top)return;
+  e.preventDefault();e.stopPropagation();
+  if(el.dataset.cfbSw){const[k,s]=el.dataset.cfbSw.split('|');const S=cfxState(top,k);S['__'+s]=!S['__'+s];drawDrawer(true);return}
+  if(el.dataset.cfbSheet){const k=el.dataset.cfbSheet;top.cfbSheet=top.cfbSheet||{};top.cfbSheet[k]=!top.cfbSheet[k];top.cfbOpen=null;drawDrawer(true);return}
+  if(el.dataset.cfbRow){const[k,dm]=el.dataset.cfbRow.split('|');const key=k+'|'+dm;top.cfbOpen=top.cfbOpen===key?null:key;drawDrawer(true);return}
+  if(el.dataset.cfbVal||el.dataset.cfbRm){const v0=el.dataset.cfbVal||el.dataset.cfbRm,i=v0.indexOf('|'),j=v0.indexOf('|',i+1),k=v0.slice(0,i),dm=v0.slice(i+1,j),v=v0.slice(j+1);
+    const S=cfxState(top,k),s=new Set(S[dm]||[]);s.has(v)?s.delete(v):s.add(v);if(s.size)S[dm]=[...s];else delete S[dm];drawDrawer(true);return}
+},true);
+/* « Tout effacer » remet aussi les interrupteurs à zéro ; le clic hors de la feuille ne la ferme pas (comme dans Réglages) */
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-cfx-reset]');if(!b)return;const top=curTop();if(top&&top.cfx)top.cfx[b.dataset.cfxReset]={}},true);
 
 if(KXD){
   const I=KXD.info,D=I.dirs;
