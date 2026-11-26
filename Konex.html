@@ -12925,7 +12925,7 @@ function cfxDims(kind){
   if(kind==='regs')D.push(['year',x=>[x.ev?yearOf(x.ev):''],'e'],['ev',x=>[x.ev?evName(x.ev):''],'e'],['type',x=>[x.ev&&x.ev.type?typeL(x.ev.type):''],'e'],['st',x=>[askCatLbl(x)],'e']);
   D.push(['email',x=>[pp(x).email?V.withE:V.noE],'p']);
   extK.filter(k=>!CFX_GEO.some(([,re])=>re.test(normName(k)))).forEach(k=>D.push(['x:'+k,x=>[(pp(x).ext||{})[k]||''],'p',k]));
-  return D.map(([k,get,,lbl])=>({k,get:x=>{const v=(get(x)||[]).map(s=>String(s||'').trim());return v.length?v.map(s=>s||'__none'):['__none']},label:lbl||(t('cfxD')[k]||k)}));
+  return D.map(([k,get,,lbl])=>({k,get:x=>{let v;try{v=(get(x)||[]).map(s=>String(s==null?'':s).trim())}catch(_){v=[]}return v.length?v.map(s=>s||'__none'):['__none']},label:lbl||(t('cfxD')[k]||k)}));
 }
 /* un critère n'apparaît que s'il aide à trier : au moins une valeur renseignée et au moins deux choix */
 function cfxUseful(dims,list){
@@ -12964,7 +12964,7 @@ function cfxPop(top,kind,d,full){
   return _sl(top,name,group,list)}}
 {const _dd5=drawDrawer;drawDrawer=function(keep){_dd5(keep);const top=curTop(),d=$('drawer');if(!top||top.type!=='company'||top.edit)return;const o=find.company(top.id);if(!o)return;
   const lists={contacts:o.people,regs:applyFilt(top,companyRegs(o))};
-  d.querySelectorAll('[data-cfx-anchor]').forEach(a=>{const k=a.dataset.cfxAnchor,row=a.closest('.h3row');const html=cfxBar(top,k,lists[k]);if(row&&html)row.insertAdjacentHTML('afterend',html);
+  d.querySelectorAll('[data-cfx-anchor]').forEach(a=>{const k=a.dataset.cfxAnchor,row=a.closest('.h3row');let html='';try{html=cfxBar(top,k,lists[k])}catch(e){console.warn('Konex filtres',e)}if(row&&html)row.insertAdjacentHTML('afterend',html);
     if(!cfxApply(top,k,lists[k]).length&&lists[k].length){const rows=row&&row.nextElementSibling&&row.nextElementSibling.nextElementSibling;if(rows&&rows.classList.contains('rows')&&!rows.children.length)rows.outerHTML=noneFx()}});
   d.querySelectorAll('.cfx-pop').forEach(pp=>{const r=pp.getBoundingClientRect(),dr=d.getBoundingClientRect();if(r.right>dr.right-12){pp.style.left='auto';pp.style.right='0'}pp.scrollIntoView({block:'nearest'})});
   const q=d.querySelector('[data-cfx-q]');if(q){q.focus();q.oninput=()=>{const s=strip(q.value);d.querySelectorAll('.cfx-o').forEach(l=>l.hidden=!!s&&!l.dataset.h.includes(s))}}}}
