@@ -818,7 +818,7 @@ body.arno-on .drawer .d-body{padding-bottom:100px}
 .cfx-pf{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding-top:8px}
 .prev-cos{font-size:13px;background:var(--bg);border-radius:10px;padding:8px 12px;margin:12px 0}.prev-cos small{color:var(--muted)}
 .arch-hint{display:block;width:100%;color:var(--muted);font-size:12px;margin-top:6px}
-.cfb{display:flex;flex-direction:column;gap:10px;margin:-2px 0 14px}
+.cfb{display:flex;flex-direction:column;gap:8px;margin:-2px 0 12px}
 .cfb-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .cfb-btn{display:inline-flex;align-items:center;gap:8px;border:0;background:#fff;border-radius:12px;padding:8px 14px;font:inherit;font-size:14px;font-weight:600;color:var(--ink);cursor:pointer;box-shadow:0 0 0 1px var(--line)}
 .cfb-btn.open{box-shadow:0 0 0 1.5px var(--green)}
@@ -846,6 +846,20 @@ body.arno-on .drawer .d-body{padding-bottom:100px}
 .cfb-val.zero{opacity:.45}.cfb-chk{color:#0A84FF;flex:none}.cfb-sp{width:16px;flex:none}
 .cfb-row:focus-visible,.cfb-btn:focus-visible,.cfb-sw:focus-visible,.cfb-chip:focus-visible{outline:2px solid #0A84FF;outline-offset:2px}
 @media (prefers-reduced-motion:reduce){.cfb-sw::after,.cfb-chev,.cfb-sheet{transition:none;animation:none}}
+.cfb-anc{position:relative;display:inline-flex}
+.cfb-sheet{position:absolute;top:calc(100% + 8px);left:0;z-index:40;width:min(380px,calc(100vw - 48px));max-height:min(62vh,520px);overflow:auto;box-shadow:0 18px 50px rgba(0,30,20,.28),0 0 0 1px rgba(0,0,0,.04);overscroll-behavior:contain}
+.cfb-sh{display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#F2F2F7;z-index:1;margin:0;padding:10px 12px 6px 18px}
+.cfb-ok{border:0;background:none;color:#0A84FF;font:inherit;font-size:15px;font-weight:700;cursor:pointer;padding:4px 6px;text-transform:none;letter-spacing:0}
+.cfb-vals{max-height:none;overflow:visible}.cfb-vl{max-height:216px;overflow:auto;overscroll-behavior:contain}
+.cfb-q{margin:8px 12px 4px 52px;width:calc(100% - 64px);border:0;background:#E9E9EE;border-radius:9px;padding:7px 10px;font:inherit;font-size:14px;outline:0}
+.cfb-val{padding:7px 14px 7px 52px;font-size:13.5px}
+.cfb-val[hidden]{display:none}
+.cfb-line{display:flex;align-items:center;gap:8px;min-height:34px}.cfb-chips2{display:flex;flex-wrap:wrap;gap:6px;align-items:center;flex:1;min-width:0}
+.cfb-end{margin-left:auto;display:inline-flex;align-items:center;gap:10px;flex:none}
+.cfb-end .cfb-sum{margin-left:0;white-space:nowrap}
+.cfb-exp{display:inline-flex;align-items:center;gap:6px;border:0;background:#fff;border-radius:12px;padding:8px 12px;font:inherit;font-size:13.5px;font-weight:600;color:var(--green-dark);cursor:pointer;box-shadow:0 0 0 1px var(--line)}
+.cfb-exp:hover{box-shadow:0 0 0 1.5px var(--green)}.cfb-exp:disabled{opacity:.45;cursor:default}
+.cfb-bar .cfb-chip{min-height:30px}
 .ib-p{border-top-color:#7B4FB5}.ib-p .ib-h span{background:#7B4FB5}.ib-p .ib-h{color:#5E3A8F}
 .ib-p .note-form{margin-top:4px}
 .dash{display:flex;flex-direction:column;gap:16px}
@@ -13126,8 +13140,8 @@ XACT['kx-exch']=()=>{const c=KX_CONNECTORS['konex-echange'],d=kxExchange();downl
      valeur choisie à droite, chevron ; un appui déplie les valeurs, cochées d'un appui, avec le nombre de personnes ;
    - les filtres actifs s'affichent en pastilles vertes, retirées d'un appui.
    ========================================================= */
-Object.assign(L.fr,{cfbBtn:'Filtres',cfbPres:'Présents seulement',cfbPresC:'Déjà venus seulement',cfbInt:'Internes',cfbEm:'Avec e-mail',cfbAll:'Tous',cfbN:n=>`${n} choisis`,cfbSheetH:'Affiner la liste',cfbClear:'Tout effacer'});
-Object.assign(L.en,{cfbBtn:'Filters',cfbPres:'Attended only',cfbPresC:'Has attended only',cfbInt:'Internal',cfbEm:'With email',cfbAll:'All',cfbN:n=>`${n} selected`,cfbSheetH:'Refine the list',cfbClear:'Clear all'});
+Object.assign(L.fr,{cfbOk:'OK',cfbTot:(n,w)=>`${n} ${w}`,cfbExp:'Exporter',cfbExpT:'Télécharger la liste affichée en Excel',cfbBtn:'Filtres',cfbPres:'Présents seulement',cfbPresC:'Déjà venus seulement',cfbInt:'Internes',cfbEm:'Avec e-mail',cfbAll:'Tous',cfbN:n=>`${n} choisis`,cfbSheetH:'Affiner la liste',cfbClear:'Tout effacer'});
+Object.assign(L.en,{cfbOk:'Done',cfbTot:(n,w)=>`${n} ${w}`,cfbExp:'Export',cfbExpT:'Download the list shown as Excel',cfbBtn:'Filters',cfbPres:'Attended only',cfbPresC:'Has attended only',cfbInt:'Internal',cfbEm:'With email',cfbAll:'All',cfbN:n=>`${n} selected`,cfbSheetH:'Refine the list',cfbClear:'Clear all'});
 const CFB_ICON={st:['#34A853','<path d="M20 6 9 17l-5-5"/>'],att:['#14A3A3','<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>'],kind:['#F28C28','<circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/>'],
   co:['#0A84FF','<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 8h2M13 8h2M9 12h2M13 12h2M10 21v-4h4v4"/>'],poste:['#8E5BD9','<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>'],
   cmo:['#5856D6','<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.7-3.4 3.3-5 6.5-5s5.8 1.6 6.5 5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18.5 15c1.6.7 2.6 2.4 3 5"/>'],cmoReg:['#E5484D','<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>'],
@@ -13154,10 +13168,11 @@ cfxBar=function(top,kind,full){
   const valTxt=d=>{const s=S[d.k]||[];return!s.length?t('cfbAll'):s.length===1?cfxVL(s[0]):t('cfbN')(s.length)};
   const rowVals=d=>{const others={...S};delete others[d.k];const base=cfxApply({cfx:{[kind]:others}},kind,full),cnt=new Map();base.forEach(x=>new Set(d.get(x)).forEach(v=>cnt.set(v,(cnt.get(v)||0)+1)));const sel=S[d.k]||[];
     return d.vals.map(([v])=>`<button type="button" class="cfb-row cfb-val${(cnt.get(v)||0)?'':' zero'}" data-cfb-val="${kind}|${esc(d.k)}|${esc(v)}" role="menuitemcheckbox" aria-checked="${sel.includes(v)}"><span>${esc(cfxVL(v))}</span><em>${cnt.get(v)||0}</em>${sel.includes(v)?CFB_CHK:'<i class="cfb-sp"></i>'}</button>`).join('')};
-  return`<div class="cfb" data-cfx-kind="${kind}"><div class="cfb-bar">${dims.length?`<button type="button" class="cfb-btn${sheet?' open':''}" data-cfb-sheet="${kind}" aria-expanded="${sheet}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>${esc(t('cfbBtn'))}${nAct?`<b class="cfb-n">${nAct}</b>`:''}</button>`:''}${swH}
-      ${nAct?`<span class="cfb-sum">${esc(t('cfxOf')(shown,full.length,t('cfxW')[kind]))}</span>`:''}</div>
-    ${actV.length?`<div class="cfb-chips">${actV.map(([d,v])=>`<button type="button" class="cfb-chip" data-cfb-rm="${kind}|${esc(d.k)}|${esc(v)}" title="${esc(d.label)}">${esc(cfxVL(v))}<i>×</i></button>`).join('')}${nAct>1?`<button type="button" class="cfb-clear" data-cfx-reset="${kind}">${esc(t('cfbClear'))}</button>`:''}</div>`:''}
-    ${sheet&&dims.length?`<div class="cfb-sheet"><div class="cfb-sh">${esc(t('cfbSheetH'))}</div><div class="cfb-group">${dims.map(d=>`<button type="button" class="cfb-row" data-cfb-row="${kind}|${esc(d.k)}" aria-expanded="${open===d.k}">${cfbIc(d.k)}<span>${esc(d.label)}</span><em>${esc(valTxt(d))}</em>${CFB_CHEV}</button>${open===d.k?`<div class="cfb-vals" role="menu">${rowVals(d)}</div>`:''}`).join('')}</div></div>`:''}</div>`;
+  const chips=actV.map(([d,v])=>`<button type="button" class="cfb-chip" data-cfb-rm="${kind}|${esc(d.k)}|${esc(v)}" title="${esc(d.label)}">${esc(cfxVL(v))}<i>×</i></button>`).join('')+(nAct>1?`<button type="button" class="cfb-clear" data-cfx-reset="${kind}">${esc(t('cfbClear'))}</button>`:'');
+  const q=(top.cfbQ||{})[kind+'|'+open]||'';
+  return`<div class="cfb" data-cfx-kind="${kind}"><div class="cfb-bar">${dims.length?`<span class="cfb-anc"><button type="button" class="cfb-btn${sheet?' open':''}" data-cfb-sheet="${kind}" aria-expanded="${sheet}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>${esc(t('cfbBtn'))}${nAct?`<b class="cfb-n">${nAct}</b>`:''}</button>
+      ${sheet?`<div class="cfb-sheet" role="dialog" aria-label="${esc(t('cfbSheetH'))}"><div class="cfb-sh"><span>${esc(t('cfbSheetH'))}</span><button type="button" class="cfb-ok" data-cfb-sheet="${kind}">${esc(t('cfbOk'))}</button></div><div class="cfb-group">${dims.map(d=>`<button type="button" class="cfb-row" data-cfb-row="${kind}|${esc(d.k)}" aria-expanded="${open===d.k}">${cfbIc(d.k)}<span>${esc(d.label)}</span><em>${esc(valTxt(d))}</em>${CFB_CHEV}</button>${open===d.k?`<div class="cfb-vals" role="menu">${d.vals.length>8?`<input type="search" class="cfb-q" data-cfb-q="${kind}|${esc(d.k)}" placeholder="${esc(t('cfxSearch'))}" value="${esc(q)}">`:''}<div class="cfb-vl">${rowVals(d)}</div></div>`:''}`).join('')}</div></div>`:''}</span>`:''}${swH}</div>
+      <div class="cfb-line"><span class="cfb-chips2">${chips}</span><span class="cfb-end"><span class="cfb-sum">${esc(nAct?t('cfxOf')(shown,full.length,t('cfxW')[kind]):t('cfbTot')(full.length,t('cfxW')[kind]))}</span><button type="button" class="cfb-exp" data-cfb-exp="${kind}"${shown?'':' disabled'} title="${esc(t('cfbExpT'))}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>${esc(t('cfbExp'))}</button></span></div></div>`;
 };
 document.addEventListener('click',e=>{
   const el=e.target.closest&&e.target.closest('[data-cfb-sw],[data-cfb-sheet],[data-cfb-row],[data-cfb-val],[data-cfb-rm]');if(!el)return;const top=curTop();if(!top)return;
@@ -13168,6 +13183,25 @@ document.addEventListener('click',e=>{
   if(el.dataset.cfbVal||el.dataset.cfbRm){const v0=el.dataset.cfbVal||el.dataset.cfbRm,i=v0.indexOf('|'),j=v0.indexOf('|',i+1),k=v0.slice(0,i),dm=v0.slice(i+1,j),v=v0.slice(j+1);
     const S=cfxState(top,k),s=new Set(S[dm]||[]);s.has(v)?s.delete(v):s.add(v);if(s.size)S[dm]=[...s];else delete S[dm];drawDrawer(true);return}
 },true);
+/* exporter la liste affichée (avec les filtres) en Excel */
+function cfbExport(kind){const top=curTop();if(!top)return;const o=find[top.type](top.id);if(!o)return;
+  const full=top.type==='company'?(kind==='contacts'?o.people:applyFilt(top,companyRegs(o))):applyFilt(top,ieFilt(top,coFiltered(top,[...(o.regs||[]),...(o.unreg||[])])));
+  const L=cfxApply(top,kind,full),fr=lang==='fr',pp=x=>kind==='contacts'?x:x.p;
+  const head=fr?['Prénom','Nom','Entreprise','Fonction','E-mail','Téléphone','Interne','Présences','Invitations']:['First name','Last name','Company','Job title','Email','Phone','Internal','Attended','Invited'];
+  const ev=kind!=='contacts';if(ev)head.push(...(fr?['Événement','Date','Statut']:['Event','Date','Status']));
+  const rows=[head,...L.map(x=>{const p=pp(x)||{};const r=[p.prenom||'',p.nom||'',p.societe||'',p.poste||'',p.email||'',p.phone||'',p.internal?(fr?'Oui':'Yes'):'',p.pres||0,p.nReg||0];if(ev)r.push(x.ev?evName(x.ev):'',x.ev&&x.ev.date?numDate(x.ev.date.slice(0,10)):'',askCatLbl(x));return r})];
+  const title=top.type==='company'?o.name:evName(o.e),w=t('cfxW')[kind];
+  download(xlsxBook([{name:(w.charAt(0).toUpperCase()+w.slice(1)).slice(0,30),freeze:1,rows,styles:{0:1}}]),`${title} - ${w}.xlsx`.replace(/[\\/:*?"<>|]/g,'-')).then(ok=>{if(ok)toast(t('lbExported')(L.length))});
+}
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-cfb-exp]');if(!b)return;e.preventDefault();e.stopPropagation();cfbExport(b.dataset.cfbExp)},true);
+document.addEventListener('input',e=>{const q=e.target.closest&&e.target.closest('[data-cfb-q]');if(!q)return;const top=curTop();if(!top)return;top.cfbQ=top.cfbQ||{};top.cfbQ[q.dataset.cfbQ]=q.value;
+  const s=strip(q.value);q.parentNode.querySelectorAll('.cfb-val').forEach(r=>r.hidden=!!s&&!strip(r.textContent).includes(s))});
+/* la feuille se ferme d'un clic à côté ou avec Échap */
+document.addEventListener('mousedown',e=>{const top=curTop();if(!top||!top.cfbSheet)return;const k=Object.keys(top.cfbSheet).find(x=>top.cfbSheet[x]);if(!k)return;
+  if(e.target.closest&&e.target.closest('.cfb-anc'))return;top.cfbSheet[k]=false;top.cfbOpen=null;drawDrawer(true)},true);
+document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;const top=curTop();if(!top||!top.cfbSheet)return;const k=Object.keys(top.cfbSheet).find(x=>top.cfbSheet[x]);if(!k)return;e.stopPropagation();top.cfbSheet[k]=false;top.cfbOpen=null;drawDrawer(true)},true);
+/* la recherche garde son filtrage après chaque coche */
+{const _dd7=drawDrawer;drawDrawer=function(k){_dd7(k);const q=$('drawer').querySelector('[data-cfb-q]');if(q&&q.value){const s=strip(q.value);q.parentNode.querySelectorAll('.cfb-val').forEach(r=>r.hidden=!!s&&!strip(r.textContent).includes(s))}}}
 /* « Tout effacer » remet aussi les interrupteurs à zéro ; le clic hors de la feuille ne la ferme pas (comme dans Réglages) */
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-cfx-reset]');if(!b)return;const top=curTop();if(top&&top.cfx)top.cfx[b.dataset.cfxReset]={}},true);
 
