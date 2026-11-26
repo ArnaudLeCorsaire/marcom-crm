@@ -13140,8 +13140,8 @@ XACT['kx-exch']=()=>{const c=KX_CONNECTORS['konex-echange'],d=kxExchange();downl
      valeur choisie à droite, chevron ; un appui déplie les valeurs, cochées d'un appui, avec le nombre de personnes ;
    - les filtres actifs s'affichent en pastilles vertes, retirées d'un appui.
    ========================================================= */
-Object.assign(L.fr,{cfbOk:'OK',cfbTot:(n,w)=>`${n} ${w}`,cfbExp:'Exporter',cfbExpT:'Télécharger la liste affichée en Excel',cfbBtn:'Filtres',cfbPres:'Présents seulement',cfbPresC:'Déjà venus seulement',cfbInt:'Internes',cfbEm:'Avec e-mail',cfbAll:'Tous',cfbN:n=>`${n} choisis`,cfbSheetH:'Affiner la liste',cfbClear:'Tout effacer'});
-Object.assign(L.en,{cfbOk:'Done',cfbTot:(n,w)=>`${n} ${w}`,cfbExp:'Export',cfbExpT:'Download the list shown as Excel',cfbBtn:'Filters',cfbPres:'Attended only',cfbPresC:'Has attended only',cfbInt:'Internal',cfbEm:'With email',cfbAll:'All',cfbN:n=>`${n} selected`,cfbSheetH:'Refine the list',cfbClear:'Clear all'});
+Object.assign(L.fr,{cfbOk:'OK',cfbTot:(n,w)=>`${n} ${w}`,cfbExp:'Exporter',cfbExpT:'Télécharger la liste affichée en Excel',cfbBtn:'Filtres',cfbPres:'Présents seulement',cfbPresC:'Déjà venus seulement',cfbInt:'Internes',cfbExt:'Externes',cfbEm:'Avec e-mail',cfbAll:'Tous',cfbN:n=>`${n} choisis`,cfbSheetH:'Affiner la liste',cfbClear:'Tout effacer'});
+Object.assign(L.en,{cfbOk:'Done',cfbTot:(n,w)=>`${n} ${w}`,cfbExp:'Export',cfbExpT:'Download the list shown as Excel',cfbBtn:'Filters',cfbPres:'Attended only',cfbPresC:'Has attended only',cfbInt:'Internal',cfbExt:'External',cfbEm:'With email',cfbAll:'All',cfbN:n=>`${n} selected`,cfbSheetH:'Refine the list',cfbClear:'Clear all'});
 const CFB_ICON={st:['#34A853','<path d="M20 6 9 17l-5-5"/>'],att:['#14A3A3','<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>'],kind:['#F28C28','<circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/>'],
   co:['#0A84FF','<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 8h2M13 8h2M9 12h2M13 12h2M10 21v-4h4v4"/>'],poste:['#8E5BD9','<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>'],
   cmo:['#5856D6','<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.7-3.4 3.3-5 6.5-5s5.8 1.6 6.5 5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18.5 15c1.6.7 2.6 2.4 3 5"/>'],cmoReg:['#E5484D','<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>'],
@@ -13153,7 +13153,7 @@ const CFB_CHEV='<svg class="cfb-chev" width="8" height="13" viewBox="0 0 9 14" f
 const CFB_CHK='<svg class="cfb-chk" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
 /* interrupteurs : propriétés oui / non des éléments de la liste */
 const cfbP=(kind,x)=>kind==='contacts'?x:x.p;
-const CFB_SW={pres:(kind,x)=>kind==='contacts'?(x.pres||0)>0:!!x.present,int:(kind,x)=>!!(cfbP(kind,x)&&cfbP(kind,x).internal),em:(kind,x)=>!!(cfbP(kind,x)&&cfbP(kind,x).email)};
+const CFB_SW={pres:(kind,x)=>kind==='contacts'?(x.pres||0)>0:!!x.present,int:(kind,x)=>!!(cfbP(kind,x)&&cfbP(kind,x).internal),ext:(kind,x)=>!!(cfbP(kind,x)&&!cfbP(kind,x).internal),em:(kind,x)=>!!(cfbP(kind,x)&&cfbP(kind,x).email)};
 {const _ap=cfxApply;cfxApply=function(top,kind,list){let L=_ap(top,kind,list);const S=cfxState(top,kind);
   Object.keys(CFB_SW).forEach(k=>{if(S['__'+k])L=L.filter(x=>{try{return CFB_SW[k](kind,x)}catch(_){return true}})});return L}}
 function cfbSwitches(kind,full){return Object.keys(CFB_SW).filter(k=>{let y=0,n=0;full.forEach(x=>{try{CFB_SW[k](kind,x)?y++:n++}catch(_){}});return y&&n})}
@@ -13163,7 +13163,7 @@ cfxBar=function(top,kind,full){
   if(!dims.length&&!sw.length)return'';
   const shown=cfxApply(top,kind,full).length,actV=dims.flatMap(d=>(S[d.k]||[]).map(v=>[d,v])),nAct=actV.length+sw.filter(k=>S['__'+k]).length;
   top.cfbSheet=top.cfbSheet||{};const sheet=!!top.cfbSheet[kind],open=top.cfbOpen&&top.cfbOpen.startsWith(kind+'|')?top.cfbOpen.slice(kind.length+1):'';
-  const lab={pres:kind==='contacts'?t('cfbPresC'):t('cfbPres'),int:t('cfbInt'),em:t('cfbEm')};
+  const lab={pres:kind==='contacts'?t('cfbPresC'):t('cfbPres'),int:t('cfbInt'),ext:t('cfbExt'),em:t('cfbEm')};
   const swH=sw.map(k=>`<label class="cfb-tog">${esc(lab[k])}<button type="button" class="cfb-sw" role="switch" aria-checked="${!!S['__'+k]}" aria-label="${esc(lab[k])}" data-cfb-sw="${kind}|${k}"></button></label>`).join('');
   const valTxt=d=>{const s=S[d.k]||[];return!s.length?t('cfbAll'):s.length===1?cfxVL(s[0]):t('cfbN')(s.length)};
   const rowVals=d=>{const others={...S};delete others[d.k];const base=cfxApply({cfx:{[kind]:others}},kind,full),cnt=new Map();base.forEach(x=>new Set(d.get(x)).forEach(v=>cnt.set(v,(cnt.get(v)||0)+1)));const sel=S[d.k]||[];
@@ -13177,7 +13177,7 @@ cfxBar=function(top,kind,full){
 document.addEventListener('click',e=>{
   const el=e.target.closest&&e.target.closest('[data-cfb-sw],[data-cfb-sheet],[data-cfb-row],[data-cfb-val],[data-cfb-rm]');if(!el)return;const top=curTop();if(!top)return;
   e.preventDefault();e.stopPropagation();
-  if(el.dataset.cfbSw){const[k,s]=el.dataset.cfbSw.split('|');const S=cfxState(top,k);S['__'+s]=!S['__'+s];drawDrawer(true);return}
+  if(el.dataset.cfbSw){const[k,s]=el.dataset.cfbSw.split('|');const S=cfxState(top,k);S['__'+s]=!S['__'+s];if(S['__'+s]&&(s==='int'||s==='ext'))S[s==='int'?'__ext':'__int']=false;drawDrawer(true);return}
   if(el.dataset.cfbSheet){const k=el.dataset.cfbSheet;top.cfbSheet=top.cfbSheet||{};top.cfbSheet[k]=!top.cfbSheet[k];top.cfbOpen=null;drawDrawer(true);return}
   if(el.dataset.cfbRow){const[k,dm]=el.dataset.cfbRow.split('|');const key=k+'|'+dm;top.cfbOpen=top.cfbOpen===key?null:key;drawDrawer(true);return}
   if(el.dataset.cfbVal||el.dataset.cfbRm){const v0=el.dataset.cfbVal||el.dataset.cfbRm,i=v0.indexOf('|'),j=v0.indexOf('|',i+1),k=v0.slice(0,i),dm=v0.slice(i+1,j),v=v0.slice(j+1);
