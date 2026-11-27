@@ -4077,7 +4077,14 @@ async function mmbSyncApply(evts){
   let n=0; const done=[], pend=new Set(), seen=new Set(S.log.map(e=>e.src).filter(Boolean));
   for(const ev of evts){ done.push(ev.id); if(seen.has(ev.id)) continue; seen.add(ev.id);
     try{
-      if(ev.k==='edit'){ const p=findP(ev.m)||findP(Object.assign({},ev.m,{emails:[]}))||findP({full:((ev.f||{}).prenom||'')+' '+((ev.f||{}).nom||''),societe:(ev.m||{}).societe}); if(!p){ pend.add(ev.id); continue; }
+      if(ev.k==='edit'){ const p=findP(ev.m)||findP(Object.assign({},ev.m,{emails:[]}))||findP({full:((ev.f||{}).prenom||'')+' '+((ev.f||{}).nom||''),societe:(ev.m||{}).societe}); if(!p){ /* ligne « CMO » (contact interne) : le nom corrigé dans Konex va dans la fiche du CMO */
+          const mm0=ev.m||{}, k0=norm((mm0.prenom||'')+' '+(mm0.nom||'')), k1=norm((mm0.nom||'')+' '+(mm0.prenom||''));
+          const c=(C.cmos||[]).find(c=>{ const me=c.meta||{}, sp=(me.prenom||me.nom)?{prenom:me.prenom||'',nom:me.nom||''}:cmoSplit(c.label), kk=norm(sp.prenom+' '+sp.nom); return kk===k0||kk===k1||norm(c.label)===k0||norm(c.label)===k1; });
+          const f0=ev.f||{};
+          if(c&&(f0.prenom!=null||f0.nom!=null)){ S.cmoMeta=S.cmoMeta||{}; const me=c.meta||{}, sp=(me.prenom||me.nom)?{prenom:me.prenom||'',nom:me.nom||''}:cmoSplit(c.label), mm=S.cmoMeta[c.key]=Object.assign({},S.cmoMeta[c.key]);
+            mm.prenom=f0.prenom!=null?clean(f0.prenom):sp.prenom; mm.nom=f0.nom!=null?clean(f0.nom):sp.nom;
+            logAdd({src:ev.id,t:'note',label:`Nom du CMO corrigé dans la recherche : ${c.label} → ${mm.prenom} ${mm.nom}`}); n++; continue; }
+          pend.add(ev.id); continue; }
         for(const [f,v0] of Object.entries(ev.f||{})){ const v=clean(v0); if(v!==(p[f]||'')){ logAdd({src:ev.id,t:'edit',key:p.anchor,field:f,value:v,label:`${fieldLabel(f)} corrigé dans la recherche : ${p.prenom} ${p.nom} → ${v||'(vide)'}`}); n++; } } }
       else if(ev.k==='merge'||ev.k==='distinct'){ const a=findP(ev.a), b=findP(ev.b); if(!a||!b||a===b) continue;
         logAdd({src:ev.id,t:ev.k,keys:[a.anchor,b.anchor],label:(ev.k==='merge'?'Fiches fusionnées dans la recherche : ':'Personnes différentes (décidé dans la recherche) : ')+`${a.prenom} ${a.nom} / ${b.prenom} ${b.nom}`}); n++; }
@@ -6885,7 +6892,9 @@ function rekeyAfterPublish(cmos){
   let ch=0;const masterRows=id=>(PMAP[id]&&PMAP[id].rows.some(r=>!r.manual));
   // personnes : nouvel e-mail repris dans la master file
   Object.entries(PMETA).forEach(([oid,pm])=>{if(!pm.email)return;const nid=resolve('m:'+lowE(pm.email));if(nid===oid||!PMAP[nid]||masterRows(oid))return;
-    const m={...pm};delete m.email;PMETA[nid]={...m,...(PMETA[nid]||{})};delete PMETA[oid];
+    /* l'e-mail reste dans la fiche : c'est lui que Konex renvoie à « Importer et contrôler » ; l'effacer ferait disparaître l'e-mail au prochain envoi */
+    const m={...pm};PMETA[nid]={...m,...(PMETA[nid]||{})};delete PMETA[oid];
+    [FIXES,FIX_IGNORED,SWAP_IGNORED,FIELD_IGNORED,FIELD_FIXES].forEach(M=>{if(M&&M[oid]){if(!M[nid])M[nid]=M[oid];delete M[oid]}});
     if(NOTES[oid]){NOTES[nid]=(NOTES[nid]||[]).concat(NOTES[oid]);delete NOTES[oid]}
     MANROWS.forEach(r=>{if(r.pid===oid){r.pid=nid;r.email=lowE(pm.email)}});movePhotoKey(oid,nid);
     if(SYNCED&&SYNCED.p)delete SYNCED.p[oid];ch++});
@@ -6909,9 +6918,14 @@ function rekeyAfterPublish(cmos){
 function afterPublish(srcId){
   setTimeout(crmDeliver,0);
   if(SYNCQ.some(e=>!e.tries))return;
-  PEOPLE.forEach(p=>{if(!(p.rows||[]).some(r=>r.src===srcId))return;const pm=PMETA[p.id];
-    if(pm){const m={...pm};['prenom','nom','societe','coRef','coName','poste'].forEach(f=>delete m[f]);PMETA[p.id]=m}
-    delete FIXES[p.id];if(SYNCED&&SYNCED.p)delete SYNCED.p[p.id]});
+  /* une correction faite dans Konex n'est retirée que si la master file la contient vraiment ; sinon elle reste (et la suggestion ne revient pas) */
+  PEOPLE.forEach(p=>{const rows=(p.rows||[]).filter(r=>r.src===srcId&&!r.manual);if(!rows.length)return;const r=rows[0],pm=PMETA[p.id],eq=(a,b)=>String(a??'').trim()===String(b??'').trim();
+    let kept=false;
+    if(pm){const m={...pm};['prenom','nom','poste'].forEach(f=>{if(f in m){if(eq(m[f],r[f]))delete m[f];else kept=true}});
+      if('societe' in m||'coRef' in m||'coName' in m){const want=m.coName||m.societe||(m.coRef&&CMAP[m.coRef]&&CMAP[m.coRef].name)||'';if(want&&normName(want)===normName(r.societe)){delete m.societe;delete m.coRef;delete m.coName}else kept=true}
+      PMETA[p.id]=m}
+    const fx=FIXES[p.id];if(fx){if(eq(fx.prenom,r.prenom)&&eq(fx.nom,r.nom))delete FIXES[p.id];else kept=true}
+    if(SYNCED&&SYNCED.p)delete SYNCED.p[p.id]});
   saveVault(true);buildModel();refreshAll();
 }
 window.MARCOM_HOST={
@@ -13853,6 +13867,7 @@ function kxMovePerson(a,b){const P=PMAP[b];if(!P)return 0;
     PMETA[b]={...m,...(PMETA[b]||{})};delete PMETA[a]}
   kxMvNotes(a,b);movePhotoKey(a,b);
   if(MYK.sp[a]){MYK.sp[b]=MYK.sp[b]||MYK.sp[a];delete MYK.sp[a]}
+  [FIX_IGNORED,SWAP_IGNORED,FIELD_IGNORED,FIELD_FIXES].forEach(M=>{if(M&&M[a]){if(!M[b])M[b]=M[a];delete M[a]}});
   delete FIXES[a];if(SYNCED&&SYNCED.p)delete SYNCED.p[a];
   MANROWS.forEach(r=>{if(r.pid===a)r.pid=b});
   Object.values(PLANS||{}).forEach(Pl=>Object.values((Pl&&Pl.g)||{}).forEach(g=>{if(g&&g.pid===a)g.pid=b}));

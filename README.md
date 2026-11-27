@@ -356,6 +356,13 @@ Corrections issues de cette passe :
 - **Fusion faite dans Konex** : désormais toujours reprise dans « Importer et contrôler ». La fiche gardée était désignée avec les adresses de la fiche fusionnée, et l'outil retombait sur le doublon.
 - **« Personnes différentes » décidé dans Konex** pour deux fiches au prénom et au nom inversés dans la même entreprise : désormais repris dans « Importer et contrôler ».
 
+**Suggestions et corrections de majuscules qui revenaient à chaque version** (corrigé). Trois causes :
+- **Corrections de majuscules des CMO** (« DUPUIS Laurent » → « Laurent Dupuis ») : « Importer et contrôler » ne retrouvait pas ces lignes parmi les clients et n'appliquait rien. Le nom corrigé va maintenant dans la fiche du CMO, donc dans la master file.
+- **Corrections effacées à chaque mise à jour** : Konex retirait ses corrections de nom, de société et de fonction en supposant la master file à jour, sans vérifier. Il ne les retire plus que si la master file les contient vraiment.
+- **E-mails suggérés qui disparaissaient** : quand la master file reprenait l'e-mail, Konex l'effaçait de sa fiche, ne le renvoyait plus, et la master file le perdait au tour suivant. L'e-mail reste maintenant dans la fiche.
+
+En plus, « Ignorer » suit la fiche quand son identifiant change (par exemple quand elle reçoit un e-mail). Tests : `tests/suggestions-test.js` (appliquer) et `tests/suggestions-ignore-test.js` (ignorer). Chacun applique ou ignore tout, laisse l'outil mettre Konex à jour, rouvre Konex et vérifie que rien ne revient.
+
 Pour rejouer : `python3 tests/gen-test-data.py`, puis `node tests/data-e2e1.js` (et `data-e2e2`, `data-e2e4`, `data-e2e5`). Les fichiers générés vont dans `tests/test-data/` (non versionné).
 
 ## Navigation : page événement, Arno, filtres essentiels
