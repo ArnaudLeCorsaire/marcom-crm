@@ -330,6 +330,12 @@ Ce qui est modifié dans Konex reste en place quand on clique sur **Envoyer vers
 
 Test : `tests/master-sync-test.js` (Playwright). Il modifie une série de fiches dans Konex, envoie la master file deux fois et vérifie que rien ne se perd.
 
+## Navigation : page événement, Arno, filtres essentiels
+
+- **Fiche ouverte depuis la page d'un événement** (personne, entreprise, CMO, même en cascade) : la page de l'événement reste en arrière-plan, assombrie, à la même position de défilement. « Retour » ou un clic à côté de la fiche ramène à l'événement.
+- **Arno** reste toujours en bas à droite, au-dessus des fiches ; il ne se déplace plus au milieu de la page en naviguant.
+- **Filtres essentiels** : les interrupteurs Internes / Externes, puis **Entité du Pilot CMO** en tête de la feuille de filtres (fiches entreprise, participants, My Konex, Presse & partenaires). L'entité n'apparaît que si des contacts ont un Pilot CMO (référentiel importé).
+
 ## Arno, l'assistant
 
 Une fois connecté, **Arno** attend en bas à droite de l'écran (bulle avec sa photo — celle de la fiche d'Arnaud Tolon si elle existe dans Konex, sinon une illustration — et une pastille verte « en ligne »). Un clic ouvre la discussion, comme dans une messagerie :
