@@ -332,7 +332,7 @@ Ce qui est modifié dans Konex reste en place à chaque mise à jour :
 
 **Colonne « Presse / Partenaire »** : toujours présente dans la master file, à côté de Téléphone, LinkedIn, VIP et Interne, avec les valeurs « Presse » ou « Partenaire ». Konex la relit à l'import, y compris pour une master file modifiée à la main dans Excel. Le choix fait sur la fiche dans Konex reste prioritaire (« Aucune » efface la valeur de la master file).
 
-Tests : `tests/master-sync-test.js` et `tests/auto-update-test.js` (Playwright). Il modifie une série de fiches dans Konex, envoie la master file deux fois et vérifie que rien ne se perd.
+Tests : `tests/master-sync-test.js` et `tests/auto-update-test.js` (Playwright) : le premier modifie une série de fiches dans Konex, renvoie la master file deux fois et vérifie que rien ne se perd ; le second vérifie la mise à jour automatique (dépôt, décision, absence de boucle).
 
 ## Navigation : page événement, Arno, filtres essentiels
 
