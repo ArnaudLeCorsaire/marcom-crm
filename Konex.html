@@ -3023,7 +3023,7 @@ function compute(){
 
   /* --- CMO : noms harmonisés (casse, accents, fusions décidées) et fiches --- */
   const cmoVar={}, cmoKeyOf=l=>follow(D.cmoMap,norm(l)), cmoDel=k=>!!((S.cmoMeta||{})[k]||{}).deleted;
-  const eachCmo=(p,fn)=>{ const al=p.ref&&p.ref.cmo&&D.refAlign.has(p.refCoKey)?splitCmo(p.ref.cmo):null; for(const [evId,e] of Object.entries(p.ev)){ let oc=null; p.keys.forEach(k=>{ const c=D.cmo[k+'@'+evId]; if(c&&(!oc||c.seq>oc.seq)) oc=c; }); e.cmoPartsRaw=splitCmo(oc?oc.v:[...e.cmo].join(' / ')); e.cmoParts=al&&!oc&&e.cmoPartsRaw.length?al:e.cmoPartsRaw; fn(e,evId); } };
+  const eachCmo=(p,fn)=>{ const al=p.ref&&p.ref.cmo&&(D.refAlign.has(p.refCoKey)||!D.ack.has('rc:'+p.refCoKey))?splitCmo(p.ref.cmo):null; for(const [evId,e] of Object.entries(p.ev)){ let oc=null; p.keys.forEach(k=>{ const c=D.cmo[k+'@'+evId]; if(c&&(!oc||c.seq>oc.seq)) oc=c; }); e.cmoPartsRaw=splitCmo(oc?oc.v:[...e.cmo].join(' / ')); e.cmoParts=al&&!oc&&e.cmoPartsRaw.length?al:e.cmoPartsRaw; fn(e,evId); } };
   REF.cmoNames.forEach(l=>{ const k=cmoKeyOf(l); if(!k||cmoDel(k)) return; const v=cmoVar[k]=cmoVar[k]||{}; v[l]=(v[l]||0)+1000; });
   persons.forEach(p=>eachCmo(p,e=>e.cmoParts.forEach(l=>{ const k=cmoKeyOf(l); if(!k||cmoDel(k)) return; const v=cmoVar[k]=cmoVar[k]||{}; v[l]=(v[l]||0)+1; })));
   const cmoLabel={}; for(const k in cmoVar){ if(D.cmoLabel[k]){ cmoLabel[k]=D.cmoLabel[k]; continue; } let b='',bs=-1; for(const [l,n] of Object.entries(cmoVar[k])){ const sc=n+(isAllCaps(l)?0:0.5)+(l===l.toLowerCase()?-0.3:0)+l.split(' ').length*0.2; if(sc>bs){bs=sc;b=l;} } cmoLabel[k]=b; }
@@ -3617,8 +3617,8 @@ const ITEM={
       <div class="acts" style="margin-top:6px"><button class="btn btn-s" data-act="refLink" data-co="${esc(it.co)}" data-rmpm="${esc(c.r.rmpm)}" type="button">Rattacher à ce groupe</button><button class="btn-o btn-s" data-act="refNo" data-co="${esc(it.co)}" data-rmpm="${esc(c.r.rmpm)}" type="button">Ce n'est pas lui</button></div></div></div>`).join('')}</div>
     <div class="acts"><input class="inp sm" style="max-width:200px" id="rm_${esc(it.key)}" placeholder="Code RMPM"><button class="btn-o btn-s" data-act="refLinkCode" data-co="${esc(it.co)}" data-key="${esc(it.key)}" type="button">Rattacher par code</button><button class="btn-o btn-s" data-act="refLink" data-co="${esc(it.co)}" data-rmpm="" type="button">Aucun groupe ne correspond</button></div></div>`,
   refCmo:it=>`<div class="item medium"><div class="item-head"><b>${esc(it.label)}</b><span class="tag grey">${plural(it.n,'participation')}</span><span class="muted small">${plural(it.persons.length,'client')}</span></div>
-    <p class="why">Pilot CMO du référentiel : <b>${esc(it.refCmo)}</b> · Dans les fichiers : ${Object.entries(it.hist).map(([l,n])=>`${esc(l)} (${n})`).join(', ')}</p>
-    <div class="acts"><button class="btn btn-s" data-act="refAlign" data-co="${esc(it.co)}" type="button">Aligner sur ${esc(it.refCmo)}</button><button class="btn-o btn-s" data-act="ack" data-k="${esc(it.key)}" data-l="${esc('Historique des CMO conservé pour '+it.label)}" type="button">Garder l'historique</button></div></div>`,
+    <p class="why">Le référentiel prévaut : les participations sont rattachées à <b>${esc(it.refCmo)}</b> (Pilot CMO). Dans les fichiers : ${Object.entries(it.hist).map(([l,n])=>`${esc(l)} (${n})`).join(', ')}</p>
+    <div class="acts"><button class="btn btn-s" data-act="refAlign" data-co="${esc(it.co)}" type="button">Confirmer ${esc(it.refCmo)}</button><button class="btn-o btn-s" data-act="ack" data-k="${esc(it.key)}" data-l="${esc('Historique des CMO conservé pour '+it.label)}" type="button">Garder l'historique</button></div></div>`,
   refNone:it=>`<div class="item low"><div class="item-head"><b>${esc(it.label)}</b><span class="tag grey">${plural(it.n,'client')}</span></div>
     <div class="acts"><input class="inp sm" style="max-width:200px" id="rm_${esc(it.key)}" placeholder="Code RMPM"><button class="btn-o btn-s" data-act="refLinkCode" data-co="${esc(it.co)}" data-key="${esc(it.key)}" type="button">Rattacher par code</button><button class="btn-o btn-s" data-act="ack" data-k="${esc(it.key)}" data-l="${esc('Hors référentiel : '+it.label)}" type="button">Hors référentiel</button></div></div>`,
   mapping:it=>`<div class="item medium"><div class="item-head"><b>${esc(it.file)} › ${esc(it.sheet)}</b>${it.st==='invalid'?'<span class="tag red">À compléter</span>':'<span class="tag amber">Proposition à vérifier</span>'}</div>
@@ -3685,7 +3685,7 @@ function filteredPersons(){
 function vMaster(){
   if(!C.persons.length) return emptyFiles();
   const evs=C.evList.filter(e=>!e.excluded), open=ctlOpenTotal(), ex=S.settings.extra;
-  const exp=`${HOST?`<div class="publish"><div><b>Envoyer dans Konex</b><span class="small muted">La master file alimente directement la recherche, les listes et les statistiques de Konex, sans passer par un fichier Excel.${S.lastPublish?' Dernier envoi : '+new Date(S.lastPublish).toLocaleString('fr-BE')+'.':''}</span></div><button class="btn" data-act="publish" type="button">Envoyer dans Konex</button></div>`:''}<div class="card"><div class="row" style="margin-bottom:6px"><h2 style="flex:1">Exporter la master file</h2><span class="muted small">${plural(C.persons.length,'client')} × ${plural(evs.length,'événement')}</span></div>
+  const exp=`${HOST?`<div class="publish"><div><b>Konex est mis à jour automatiquement</b><span class="small muted">Chaque fichier déposé et chaque décision arrivent dans Konex dès que les colonnes de la feuille sont reconnues ; les feuilles incomplètes attendent d'être complétées. Les contrôles restent à traiter ici.${S.lastPublish?' Dernière mise à jour : '+new Date(S.lastPublish).toLocaleString('fr-BE')+'.':''}</span></div></div>`:''}<div class="card"><div class="row" style="margin-bottom:6px"><h2 style="flex:1">Exporter la master file</h2><span class="muted small">${plural(C.persons.length,'client')} × ${plural(evs.length,'événement')}</span></div>
     ${open?`<div class="note amber" style="margin:8px 0 12px">Il reste ${plural(open,'point')} à vérifier dans les contrôles. Vous pouvez exporter quand même ; la liste des points restants est jointe dans l'onglet « Contrôles » du fichier Excel. <button class="btn-link" data-act="go" data-v="controls" type="button">Voir les contrôles</button></div>`:'<p class="sub">Tous les contrôles sont traités.</p>'}
     <div class="fmt-grid">
       <button class="fmt" data-act="export" data-fmt="xlsx" type="button"><b>${svg(IC.down,16)} Master file Excel <span class="ext">.xlsx</span></b><span>Recommandé. Une ligne par client, un bloc de 5 colonnes par événement, couleurs par statut, listes déroulantes de présence, filtres et volets figés. Onglets Événements, Statuts, Contrôles, Journal et Sources.</span></button>
@@ -4139,9 +4139,35 @@ const mmbFresh=()=>{if(MMB_DIRTY&&S){MMB_DIRTY=false;compute()}};
 {const _ap=window.mmbAutoPublish;window.mmbAutoPublish=async()=>{mmbFresh();return _ap()}}
 {const _pb=ACT.publish;ACT.publish=async(...a)=>{mmbFresh();return _pb(...a)}}
 window.mmbWake=()=>{if(MMB_DIRTY||MMB_RDIRTY){mmbFresh();render()}};
+/* =====================================================================
+   KONEX À JOUR AUTOMATIQUEMENT — plus de bouton « Envoyer dans Konex »
+   Tout fichier déposé et toute décision prise ici arrivent dans Konex dès que les colonnes de la feuille sont reconnues
+   (feuilles « Proposition à vérifier » comprises, feuilles incomplètes exclues). Les contrôles restent en place ;
+   chaque décision met Konex à jour. Les mises à jour venues de Konex ne relancent pas d'envoi (pas d'aller-retour).
+   ===================================================================== */
+let MMB_PUB_T=0,MMB_PUB_BUSY=false,MMB_PUB_AGAIN=false,MMB_FROM_KX=0,MMB_UPL=false;
+function mmbPubArgs(){ const rows=masterFlat(), st=[['Statut','Étape','Valeurs reconnues','Couleur'],...S.statuses.map(s=>[s.label,s.stage===0?'Automatique (non invité)':(STAGES.find(g=>g.v===s.stage)||{}).l||'',(s.aliases||[]).join(', '),'#'+hex6(s.color)])];
+  return {rows,statuses:st,decisions:mmbDecisions(),ref:C.ref&&C.ref.rows.length?{name:S.ref.name,at:S.ref.at,rows:C.ref.rows.map(r=>Object.assign({},r,{cmoL:splitCmo(r.cmo||'').map(l=>{const k=follow(C.D.cmoMap,norm(l));return C.cmoByKey[k]?C.cmoByKey[k].label:l;}).join(' / ')}))}:null,cmos:C.cmos.map(c=>({label:c.label,variants:Object.keys(c.variants||{}),meta:Object.assign({},c.meta)}))}; }
+const mmbHash=o=>{ const js=JSON.stringify([o.rows,o.statuses,o.ref&&o.ref.rows,o.decisions]); let h=5381; for(let i=0;i<js.length;i++) h=(Math.imul(h,33)+js.charCodeAt(i))|0; return (h>>>0).toString(36)+'-'+js.length; };
+async function mmbPush(force){
+  if(!HOST||!S) return false; if(MMB_PUB_BUSY){ MMB_PUB_AGAIN=true; return false; }
+  MMB_PUB_BUSY=true;
+  try{ mmbFresh(); if(!C||!C.persons.length) return false; const a=mmbPubArgs(), h=mmbHash(a); if(!force&&h===S.pubHash) return false;
+    a.quiet=true; const ok=await HOST.publishMaster(a);
+    if(ok){ S.pubHash=h; S.lastPublish=Date.now(); scheduleSave(); if(MMB_UPL){ MMB_UPL=false; toast('Konex est à jour avec les fichiers déposés.'); } if(!mmbHidden()) render(); }
+    return ok; }
+  catch(e){ console.warn('Konex update',e); return false; }
+  finally{ MMB_PUB_BUSY=false; if(MMB_PUB_AGAIN){ MMB_PUB_AGAIN=false; mmbSchedule(); } } }
+function mmbSchedule(ms){ clearTimeout(MMB_PUB_T); MMB_PUB_T=setTimeout(()=>mmbPush(false),ms==null?1500:ms); }
+{const _ch=changed;changed=function(msg){ const r=_ch(msg); if(!MMB_FROM_KX) mmbSchedule(); return r; }}
+{const _sa=window.mmbSyncApply;window.mmbSyncApply=async evts=>{ MMB_FROM_KX++; try{ return await _sa(evts); }finally{ MMB_FROM_KX--; } }}
+{const _if=importFiles;importFiles=async function(l){ MMB_UPL=true; return _if(l); }}
+ACT.publish=async()=>mmbPush(true);
+window.mmbAutoPublish=async()=>{ clearTimeout(MMB_PUB_T); return mmbPush(false); };
+window.mmbPushNow=window.mmbAutoPublish;
 /* Instantané des saisies du CRM (fiches et participations ajoutées, informations complémentaires) : remplace le précédent */
 window.mmbCrmHash=()=>(S&&S.crm&&S.crm.hash)||'';
-window.mmbCrmApply=snap=>{ if(!S||!snap) return false; if(S.crm&&S.crm.hash===snap.hash) return true; S.crm=snap; changed(); return true; };
+window.mmbCrmApply=snap=>{ if(!S||!snap) return false; if(S.crm&&S.crm.hash===snap.hash) return true; S.crm=snap; MMB_FROM_KX++; try{ changed(); }finally{ MMB_FROM_KX--; } return true; };
 
 /* =====================================================================
    EXPORTS
@@ -4598,7 +4624,7 @@ function loadDemo(){
    DÉMARRAGE
    ===================================================================== */
 if(HOST){ document.body.classList.add('embed');
-  window.mmbEnter=async key=>{ KEY=key; const d=await kvGet('data'); S=migrate(d?await openState(key,d):defaultState()); if(!d){ pendingSave=true; await flushSave(); } enter(); if(HOST.entered) HOST.entered(window); };
+  window.mmbEnter=async key=>{ KEY=key; const d=await kvGet('data'); S=migrate(d?await openState(key,d):defaultState()); if(!d){ pendingSave=true; await flushSave(); } enter(); if(HOST.entered) HOST.entered(window); if(typeof mmbSchedule==='function') mmbSchedule(3000); };
   ['mousemove','keydown','click','wheel','touchstart'].forEach(t=>document.addEventListener(t,()=>HOST.activity(),{passive:true,capture:true}));
   HOST.builderReady(window); }
 else showLock();
@@ -13852,6 +13878,11 @@ function kxIdRemap(S0){let n=0;
   if(n){saveVault(true);buildModel();refreshAll()}return n}
 /* une seule livraison à la fois : une décision n'est jamais envoyée deux fois à « Importer et contrôler » */
 {const _sd=syncDeliver;let busy=null,again=false;syncDeliver=function(){if(busy){again=true;return busy}busy=(async()=>{try{do{again=false;await _sd()}while(again)}finally{busy=null}})();return busy}}
+/* mise à jour automatique depuis « Importer et contrôler » : sans message, et jamais pendant une saisie en cours */
+{const H=window.MARCOM_HOST,_pq=H.publishMaster;H.publishMaster=async function(a){
+  if(a&&a.quiet){let n=0;while(typeof shEditing==='function'&&shEditing()&&n++<900)await new Promise(r=>setTimeout(r,2000));
+    const _t=window.toast;window.toast=(m,err)=>{if(err)_t(m,err)};try{return await _pq.call(this,a)}finally{window.toast=_t}}
+  return _pq.call(this,a)}}
 {const H=window.MARCOM_HOST,_pm=H.publishMaster;H.publishMaster=async function(a){const snap=kxIdSnap();const ok=await _pm.call(this,a);if(ok){try{kxIdRemap(snap)}catch(e){console.warn('remap',e)}}return ok}}
 
 
