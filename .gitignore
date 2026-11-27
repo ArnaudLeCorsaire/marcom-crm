@@ -2,3 +2,4 @@
 konex-utilisateurs.json
 data/
 __pycache__/
+tests/test-data/

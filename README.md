@@ -334,6 +334,30 @@ Ce qui est modifié dans Konex reste en place à chaque mise à jour :
 
 Tests : `tests/master-sync-test.js` et `tests/auto-update-test.js` (Playwright) : le premier modifie une série de fiches dans Konex, renvoie la master file deux fois et vérifie que rien ne se perd ; le second vérifie la mise à jour automatique (dépôt, décision, absence de boucle).
 
+## Fiabilité des données : passe complète (jeu de données fictif)
+
+Les données réelles étant confidentielles, la chaîne complète a été vérifiée avec un **jeu de données fictif et réaliste**, généré par `tests/gen-test-data.py` :
+- un référentiel RMPM (lignes de titre, groupes en majuscules, plusieurs Pilot CMO, 15 % d'entreprises hors référentiel) ;
+- une trentaine de listes d'invités aux formats variés : en-têtes en français, en anglais ou en néerlandais, titre au-dessus du tableau, nom complet dans une seule colonne, CSV Windows à points-virgules, fichiers à deux feuilles (inscriptions + présences jour J), statuts en clair ou en Oui / Non / x ;
+- des pièges courants : doublons, majuscules, prénom et nom inversés, e-mails manquants ou invalides, sociétés mal orthographiées, collaborateurs BNP Paribas, CMO différents du référentiel ;
+- un second jeu cinq fois plus gros (`SCALE=5`) : 4 700 personnes, 600 entreprises.
+
+Ce qui a été vérifié, avec les tests `tests/data-e2e*.js` (Playwright) :
+- **Fidélité** : chaque participant et chaque présence de la master file se retrouvent à l'identique dans Konex (0 écart sur 31 événements). Une master file exportée puis réimportée dans un Konex vierge donne exactement les mêmes chiffres.
+- **Scénario de vie** : dépôt, décisions en lot, saisies dans Konex, verrouillage puis réouverture, nouvelle version d'un fichier, ajout puis retrait d'un fichier. Les saisies Konex sont conservées à chaque étape.
+- **Décisions prises dans Konex** (fusions, personnes différentes, fusions d'entreprises) : toutes reprises dans « Importer et contrôler », et elles ne réapparaissent pas.
+- **Base partagée** : l'admin publie, un commercial reçoit et modifie (téléphone, Presse / Partenaire, secteur, CMO d'entreprise, note, fusion), l'admin récupère, dépose un nouveau fichier et republie, puis le commercial retrouve tout après réouverture.
+- **Volume** : 25 fichiers importés en 10 s, mise à jour de Konex en 2 s, 0,4 s après une modification, aucune erreur sur tous les écrans, toutes les fiches et tous les contrôles.
+
+Corrections issues de cette passe :
+- **Feuilles « Présences », « Jour J », « Inscriptions », « Check-in »…** d'un même fichier : elles alimentent le même événement, au lieu de créer un faux événement « X – jour J ».
+- **Numérotation des fichiers** (« 05 Webinaire ESG.xlsx », « (2) Forum.xlsx ») : retirée du nom de l'événement.
+- **Faux doublons dans Konex** : deux homonymes ayant chacun une adresse professionnelle d'un domaine différent, dans deux entreprises différentes, ne sont plus proposés (12 039 → 1 337 propositions sur le gros jeu, 659 → 117 sur le jeu normal). Deux entreprises qui ne diffèrent que par un numéro ne sont plus proposées non plus.
+- **Fusion faite dans Konex** : désormais toujours reprise dans « Importer et contrôler ». La fiche gardée était désignée avec les adresses de la fiche fusionnée, et l'outil retombait sur le doublon.
+- **« Personnes différentes » décidé dans Konex** pour deux fiches au prénom et au nom inversés dans la même entreprise : désormais repris dans « Importer et contrôler ».
+
+Pour rejouer : `python3 tests/gen-test-data.py`, puis `node tests/data-e2e1.js` (et `data-e2e2`, `data-e2e4`, `data-e2e5`). Les fichiers générés vont dans `tests/test-data/` (non versionné).
+
 ## Navigation : page événement, Arno, filtres essentiels
 
 - **Fiche ouverte depuis la page d'un événement** (personne, entreprise, CMO, même en cascade) : la page de l'événement reste en arrière-plan, assombrie, à la même position de défilement. « Retour » ou un clic à côté de la fiche ramène à l'événement.

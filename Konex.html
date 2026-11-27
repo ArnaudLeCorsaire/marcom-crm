@@ -2179,7 +2179,10 @@ function guessDate(s){
 }
 function guessEventName(fileName,sheetName,multi){
   let b=String(fileName).replace(/\.[a-z0-9]+$/i,'');
-  if(multi&&sheetName&&!/^(sheet|feuil|feuille|blad|tabelle)\s*\d*$/i.test(sheetName)) b+=' – '+sheetName;
+  /* une feuille « Présences », « Jour J », « Inscriptions », « Check-in »… décrit le même événement que les autres feuilles du fichier */
+  const SAME_EV=/^\s*((liste|list|export|feuille|onglet)\s+)?(des\s+|of\s+)?(pr[ée]sences?|presence|attendance|attendees?|jour\s*j|day\s*of|d\s*day|check\s*-?\s*in|checkin|inscriptions?|inscrits?|registrations?|registered|invit[ée]s?|invitations?|guests?|participants?|r[ée]ponses?|responses?|rsvp|aanwezig(heid|en)?|inschrijvingen|deelnemers|genodigden|confirm[ée]s?|final|finale|base)(\s+(jour\s*j|day\s*of|j|final|finale|\d+))*\s*$/i;
+  if(multi&&sheetName&&!/^(sheet|feuil|feuille|blad|tabelle)\s*\d*$/i.test(sheetName)&&!SAME_EV.test(String(sheetName).normalize('NFD').replace(/[\u0300-\u036f]/g,''))) b+=' – '+sheetName;
+  b=b.replace(/^\s*(?:\(?\d{1,3}\)|\d{1,3}(?=[\s._)–-]))[\s._)–-]*(?=\D)/,'');
   const MON='(?:'+Object.keys(MONTHS).sort((x,y)=>y.length-x.length).join('|')+')';
   b=b.replace(/[_]+/g,' ')
      .replace(new RegExp('\\b(?:du\\s+)?\\d{1,2}(?:er)?\\s*(?:[-–&]|au)\\s*\\d{1,2}(?:er)?\\s+'+MON+'\\.?(?:\\s+20\\d{2})?\\b','gi'),' ')
@@ -4066,7 +4069,10 @@ async function mmbSyncApply(evts){
   const full=p=>norm(p.prenom+' '+p.nom), rev=p=>norm(p.nom+' '+p.prenom);
   const findP=m=>{ if(!m) return null; for(const e of (m.emails||[])){ const p=C.persons.find(x=>x.emails.includes(e)); if(p) return p; }
     const k=norm(m.full||((m.prenom||'')+' '+(m.nom||''))); if(!k) return null; const l=C.persons.filter(p=>full(p)===k||rev(p)===k);
-    if(l.length===1) return l[0]; const l2=l.filter(p=>norm(p.societe)===norm(m.societe||'')); return l2.length===1?l2[0]:null; };
+    if(l.length===1) return l[0]; const l2=l.filter(p=>norm(p.societe)===norm(m.societe||'')); if(l2.length===1) return l2[0];
+    /* homonymes ou fiches au prénom / nom inversés : on garde l'orientation exacte, puis la présence ou non d'un e-mail */
+    const L=l2.length?l2:l, ex=L.filter(p=>norm(p.prenom)===norm(m.prenom||'')&&norm(p.nom)===norm(m.nom||'')); if(ex.length===1) return ex[0];
+    const noE=!(m.emails||[]).length, l3=(ex.length?ex:L).filter(p=>noE?!(p.emails||[]).length:(p.emails||[]).length); return l3.length===1?l3[0]:null; };
   const cmoK=x=>{ const c=(C.cmos||[]).find(c=>norm(c.label)===norm(x)); return c?c.key:norm(x); };
   let n=0; const done=[], pend=new Set(), seen=new Set(S.log.map(e=>e.src).filter(Boolean));
   for(const ev of evts){ done.push(ev.id); if(seen.has(ev.id)) continue; seen.add(ev.id);
@@ -6814,7 +6820,10 @@ function syncDiff(){
     if(!Object.keys(ov).length)return;const prev=SYNCED.p[p.id]||{},ch={};
     Object.entries(ov).forEach(([f,v])=>{if(prev[f]!==v)ch[f]=v});
     if(Object.keys(ch).length){add({k:'edit',m:personMatch(p),f:ch});SYNCED.p[p.id]={...prev,...ch};n++}});
-  Object.entries(MERGES).forEach(([from,m])=>{if(SYNCED.m[from])return;SYNCED.m[from]=add({k:'merge',a:idMatch(from),b:PMAP[resolve(m.to)]?personMatch(PMAP[resolve(m.to)]):idMatch(m.to)});n++});
+  Object.entries(MERGES).forEach(([from,m])=>{if(SYNCED.m[from])return;const ia=idMatch(from),tp=PMAP[resolve(m.to)],ib=tp?personMatch(tp):idMatch(m.to);
+    /* la fiche gardée porte aussi les adresses de la fiche fusionnée : on la désigne par ses propres adresses, sinon l'outil retombe sur le doublon */
+    if(tp){const own=String(m.to).startsWith('m:')?[m.to.slice(2)]:[],drop=new Set(ia.emails||[]);ib.emails=[...new Set([...own,...(ib.emails||[])])].filter(e=>!drop.has(e))}
+    SYNCED.m[from]=add({k:'merge',a:ia,b:ib});n++});
   Object.keys(IGNORED).forEach(k=>{if(SYNCED.i[k])return;const[a,b]=k.split('||');SYNCED.i[k]=add({k:'distinct',a:PMAP[a]?personMatch(PMAP[a]):idMatch(a),b:PMAP[b]?personMatch(PMAP[b]):idMatch(b)});n++});
   Object.entries(CMERGES).forEach(([k,m])=>{if(SYNCED.cm[k])return;SYNCED.cm[k]=add({k:'coMerge',from:m.from,to:m.into});n++});
   Object.entries(CIGNORED).forEach(([k,m])=>{if(SYNCED.ci[k])return;SYNCED.ci[k]=add({k:'coDistinct',a:m.a,b:m.b});n++});
@@ -13914,6 +13923,21 @@ CFB_ICON.pent=['#0A84FF','<circle cx="12" cy="8" r="3.5"/><path d="M5 20c.8-3.6 
 {const _cd=cfxDims;cfxDims=function(kind){const D=_cd(kind),k0=kind==='parts'?'regs':kind,pp=x=>k0==='regs'?x.p:x;
   const pent={k:'pent',label:t('cfxD').pent,get:x=>{const p=pp(x),c=p&&p.pilotCmoId&&CMOMAP[p.pilotCmoId];const v=c&&c.team;return[v||'__none']}};
   const first=D.filter(d=>d.k==='ppc'),rest=D.filter(d=>d.k!=='ppc');return[...first,pent,...rest]}}
+
+
+/* =========================================================
+   DOUBLONS : moins de fausses alertes
+   - deux personnes au même nom, chacune avec une adresse professionnelle d'un domaine différent et dans deux entreprises
+     différentes, sont des homonymes (même règle que « Importer et contrôler ») ;
+   - deux entreprises dont les noms ne diffèrent que par un numéro (« Fonds 1 » / « Fonds 2 ») sont distinctes.
+   ========================================================= */
+const kxDom=e=>{const d=String(e||'').split('@')[1]||'';return d.toLowerCase()};
+const kxGeneric=d=>!d||(typeof GENERIC_DOM!=='undefined'&&GENERIC_DOM.has&&GENERIC_DOM.has(d))||/^(gmail|googlemail|hotmail|outlook|live|yahoo|icloud|me|msn|skynet|telenet|proximus|scarlet|voo|orange|free|wanadoo|laposte|gmx|protonmail|proton|aol)\./.test(d);
+const kxCoK=p=>p.coId||normName(p.societe);
+function kxHomonym(A,B){const da=(A.emails||[]).map(kxDom).filter(d=>!kxGeneric(d)),db=(B.emails||[]).map(kxDom).filter(d=>!kxGeneric(d));
+  if(!da.length||!db.length||da.some(d=>db.includes(d)))return false;const ca=kxCoK(A),cb=kxCoK(B);return!!ca&&!!cb&&ca!==cb}
+{const _c=compare;compare=function(A,B){const r=_c(A,B);if((r==='sameName'||r==='close'||r==='swapped')&&kxHomonym(A,B))return null;return r}}
+{const _cc=compareCo;compareCo=function(A,B){const r=_cc(A,B);if(!r)return r;const na=(String(A.name||A.core).match(/\d+/g)||[]).join(' '),nb=(String(B.name||B.core).match(/\d+/g)||[]).join(' ');return na!==nb&&(na||nb)?null:r}}
 
 if(KXD){
   const I=KXD.info,D=I.dirs;
