@@ -809,11 +809,8 @@ ol.ar-list{counter-reset:arn}ol.ar-list li{counter-increment:arn;padding-left:24
 /* ne jamais rien cacher : la page garde une marge en bas pour la bulle ; la fenêtre flotte sans décaler la page */
 body.arno-on main{padding-bottom:110px}
 body.arno-on .drawer .d-body{padding-bottom:100px}
-/* une fiche est ouverte : la bulle se range à gauche de la fiche, pour ne rien recouvrir */
-@media (min-width:1100px){body.drawer-on:not(.pgmode) .arno:not(.open){right:calc(min(580px,100vw) + 16px)}}
+/* Arno reste toujours en bas à droite, au-dessus des fiches (la fiche garde une marge en bas pour ne rien cacher) */
 .ar-win{top:auto;height:min(640px,calc(100vh - 40px));max-height:none;right:20px;bottom:20px}
-/* une fiche est ouverte : la fenêtre se place à côté de la fiche quand l'écran le permet */
-@media (min-width:1320px){body.drawer-on:not(.pgmode) .ar-win{right:calc(min(580px,100vw) + 20px)}}
 @media (max-width:700px){.ar-win{left:0;right:0;top:0;bottom:0;width:auto;height:auto;border-radius:0}}
 .ar-sent{margin:0 0 6px;font-weight:600}
 @media print{.arno{display:none}}
@@ -934,15 +931,15 @@ body.myk-on .mk-pill{box-shadow:0 0 0 2px var(--green),0 6px 20px rgba(0,40,25,.
 .mk2-mini div{display:flex;flex-direction:column;min-width:0}.mk2-mini .link{text-align:left;font-weight:600}.mk2-mini small{color:var(--muted);font-size:12px}
 .mk-h4 small{text-transform:none;letter-spacing:0;font-weight:500;margin-left:6px}
 .mk-tw{overflow:auto;max-height:62vh;border:1px solid var(--line);border-radius:12px}
-.mk-t{border-collapse:separate;border-spacing:0;font-size:13px;min-width:100%}
-.mk-t th,.mk-t td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:center;white-space:nowrap}
-.mk-t thead th{position:sticky;top:0;background:var(--card2);z-index:2;font-weight:600;max-width:130px;vertical-align:bottom}
-.mk-t thead th span{display:block;max-width:120px;overflow:hidden;text-overflow:ellipsis;font-size:12px}.mk-t thead th small{color:var(--muted);font-weight:500;font-size:11px}
-.mk-t .mk-th0{position:sticky;left:0;background:var(--card);z-index:1;text-align:left;min-width:230px;display:flex;align-items:center;gap:6px}
-.mk-t thead .mk-th0{z-index:3;background:var(--card2)}
+.mk-ht{border-collapse:separate;border-spacing:0;font-size:13px;min-width:100%}
+.mk-ht th,.mk-ht td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:center;white-space:nowrap}
+.mk-ht thead th{position:sticky;top:0;background:var(--card2);z-index:2;font-weight:600;max-width:130px;vertical-align:bottom}
+.mk-ht thead th span{display:block;max-width:120px;overflow:hidden;text-overflow:ellipsis;font-size:12px}.mk-ht thead th small{color:var(--muted);font-weight:500;font-size:11px}
+.mk-ht .mk-th0{position:sticky;left:0;background:var(--card);z-index:1;text-align:left;min-width:230px}.mk-th0-in{display:flex;align-items:center;gap:6px}
+.mk-ht thead .mk-th0{z-index:3;background:var(--card2)}
 .mk-nm{display:flex;flex-direction:column;min-width:0}.mk-nm .link{text-align:left;font-weight:600}.mk-nm small{color:var(--muted);font-size:11.5px;font-weight:400}
 .mk-c{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;font-style:normal;font-size:12px;font-weight:800}
-.mk-c.ok{background:var(--green-light);color:var(--green-dark)}.mk-c.no{background:var(--red-light);color:var(--red)}.mk-c.na{color:var(--bd3)}
+.mk-c.ok{background:var(--green-light);color:var(--green-dark)}.mk-c.no{background:var(--red-light);color:var(--red)}.mk-c.na{color:var(--muted)}
 .mk-leg{display:flex;gap:16px;font-size:12px;color:var(--muted)}.mk-leg span{display:inline-flex;gap:6px;align-items:center}
 .mk-caret{opacity:.55;margin-left:2px}
 .mk-menu{position:absolute;top:calc(100% + 8px);right:0;width:290px;background:var(--card);border-radius:14px;box-shadow:0 18px 50px rgba(0,20,12,.3),0 0 0 1px var(--line);padding:6px;display:flex;flex-direction:column;animation:arUp .16s}
@@ -985,6 +982,8 @@ html[data-theme="dark"] .pp-press{color:#F7A8C6;background:#3D1828}html[data-the
 .mg-keep label{justify-content:flex-start;text-align:left}.kx-f .mg-keep input{width:auto;flex:none;margin:3px 0 0}
 .mg-keep label:has(input:checked){border-color:var(--green);background:var(--green-light)}
 @media (max-width:560px){.mg-keep{grid-template-columns:1fr}}
+.pg-bg{z-index:19;transform:none!important;transition:none;pointer-events:none;overflow:hidden}
+.pg-bg[hidden]{display:none!important}
 .ib-p{border-top-color:#7B4FB5}.ib-p .ib-h span{background:#7B4FB5}.ib-p .ib-h{color:#5E3A8F}
 .ib-p .note-form{margin-top:4px}
 .dash{display:flex;flex-direction:column;gap:16px}
@@ -2180,7 +2179,10 @@ function guessDate(s){
 }
 function guessEventName(fileName,sheetName,multi){
   let b=String(fileName).replace(/\.[a-z0-9]+$/i,'');
-  if(multi&&sheetName&&!/^(sheet|feuil|feuille|blad|tabelle)\s*\d*$/i.test(sheetName)) b+=' – '+sheetName;
+  /* une feuille « Présences », « Jour J », « Inscriptions », « Check-in »… décrit le même événement que les autres feuilles du fichier */
+  const SAME_EV=/^\s*((liste|list|export|feuille|onglet)\s+)?(des\s+|of\s+)?(pr[ée]sences?|presence|attendance|attendees?|jour\s*j|day\s*of|d\s*day|check\s*-?\s*in|checkin|inscriptions?|inscrits?|registrations?|registered|invit[ée]s?|invitations?|guests?|participants?|r[ée]ponses?|responses?|rsvp|aanwezig(heid|en)?|inschrijvingen|deelnemers|genodigden|confirm[ée]s?|final|finale|base)(\s+(jour\s*j|day\s*of|j|final|finale|\d+))*\s*$/i;
+  if(multi&&sheetName&&!/^(sheet|feuil|feuille|blad|tabelle)\s*\d*$/i.test(sheetName)&&!SAME_EV.test(String(sheetName).normalize('NFD').replace(/[\u0300-\u036f]/g,''))) b+=' – '+sheetName;
+  b=b.replace(/^\s*(?:\(?\d{1,3}\)|\d{1,3}(?=[\s._)–-]))[\s._)–-]*(?=\D)/,'');
   const MON='(?:'+Object.keys(MONTHS).sort((x,y)=>y.length-x.length).join('|')+')';
   b=b.replace(/[_]+/g,' ')
      .replace(new RegExp('\\b(?:du\\s+)?\\d{1,2}(?:er)?\\s*(?:[-–&]|au)\\s*\\d{1,2}(?:er)?\\s+'+MON+'\\.?(?:\\s+20\\d{2})?\\b','gi'),' ')
@@ -3024,7 +3026,7 @@ function compute(){
 
   /* --- CMO : noms harmonisés (casse, accents, fusions décidées) et fiches --- */
   const cmoVar={}, cmoKeyOf=l=>follow(D.cmoMap,norm(l)), cmoDel=k=>!!((S.cmoMeta||{})[k]||{}).deleted;
-  const eachCmo=(p,fn)=>{ const al=p.ref&&p.ref.cmo&&D.refAlign.has(p.refCoKey)?splitCmo(p.ref.cmo):null; for(const [evId,e] of Object.entries(p.ev)){ let oc=null; p.keys.forEach(k=>{ const c=D.cmo[k+'@'+evId]; if(c&&(!oc||c.seq>oc.seq)) oc=c; }); e.cmoPartsRaw=splitCmo(oc?oc.v:[...e.cmo].join(' / ')); e.cmoParts=al&&!oc&&e.cmoPartsRaw.length?al:e.cmoPartsRaw; fn(e,evId); } };
+  const eachCmo=(p,fn)=>{ const al=p.ref&&p.ref.cmo&&(D.refAlign.has(p.refCoKey)||!D.ack.has('rc:'+p.refCoKey))?splitCmo(p.ref.cmo):null; for(const [evId,e] of Object.entries(p.ev)){ let oc=null; p.keys.forEach(k=>{ const c=D.cmo[k+'@'+evId]; if(c&&(!oc||c.seq>oc.seq)) oc=c; }); e.cmoPartsRaw=splitCmo(oc?oc.v:[...e.cmo].join(' / ')); e.cmoParts=al&&!oc&&e.cmoPartsRaw.length?al:e.cmoPartsRaw; fn(e,evId); } };
   REF.cmoNames.forEach(l=>{ const k=cmoKeyOf(l); if(!k||cmoDel(k)) return; const v=cmoVar[k]=cmoVar[k]||{}; v[l]=(v[l]||0)+1000; });
   persons.forEach(p=>eachCmo(p,e=>e.cmoParts.forEach(l=>{ const k=cmoKeyOf(l); if(!k||cmoDel(k)) return; const v=cmoVar[k]=cmoVar[k]||{}; v[l]=(v[l]||0)+1; })));
   const cmoLabel={}; for(const k in cmoVar){ if(D.cmoLabel[k]){ cmoLabel[k]=D.cmoLabel[k]; continue; } let b='',bs=-1; for(const [l,n] of Object.entries(cmoVar[k])){ const sc=n+(isAllCaps(l)?0:0.5)+(l===l.toLowerCase()?-0.3:0)+l.split(' ').length*0.2; if(sc>bs){bs=sc;b=l;} } cmoLabel[k]=b; }
@@ -3618,8 +3620,8 @@ const ITEM={
       <div class="acts" style="margin-top:6px"><button class="btn btn-s" data-act="refLink" data-co="${esc(it.co)}" data-rmpm="${esc(c.r.rmpm)}" type="button">Rattacher à ce groupe</button><button class="btn-o btn-s" data-act="refNo" data-co="${esc(it.co)}" data-rmpm="${esc(c.r.rmpm)}" type="button">Ce n'est pas lui</button></div></div></div>`).join('')}</div>
     <div class="acts"><input class="inp sm" style="max-width:200px" id="rm_${esc(it.key)}" placeholder="Code RMPM"><button class="btn-o btn-s" data-act="refLinkCode" data-co="${esc(it.co)}" data-key="${esc(it.key)}" type="button">Rattacher par code</button><button class="btn-o btn-s" data-act="refLink" data-co="${esc(it.co)}" data-rmpm="" type="button">Aucun groupe ne correspond</button></div></div>`,
   refCmo:it=>`<div class="item medium"><div class="item-head"><b>${esc(it.label)}</b><span class="tag grey">${plural(it.n,'participation')}</span><span class="muted small">${plural(it.persons.length,'client')}</span></div>
-    <p class="why">Pilot CMO du référentiel : <b>${esc(it.refCmo)}</b> · Dans les fichiers : ${Object.entries(it.hist).map(([l,n])=>`${esc(l)} (${n})`).join(', ')}</p>
-    <div class="acts"><button class="btn btn-s" data-act="refAlign" data-co="${esc(it.co)}" type="button">Aligner sur ${esc(it.refCmo)}</button><button class="btn-o btn-s" data-act="ack" data-k="${esc(it.key)}" data-l="${esc('Historique des CMO conservé pour '+it.label)}" type="button">Garder l'historique</button></div></div>`,
+    <p class="why">Le référentiel prévaut : les participations sont rattachées à <b>${esc(it.refCmo)}</b> (Pilot CMO). Dans les fichiers : ${Object.entries(it.hist).map(([l,n])=>`${esc(l)} (${n})`).join(', ')}</p>
+    <div class="acts"><button class="btn btn-s" data-act="refAlign" data-co="${esc(it.co)}" type="button">Confirmer ${esc(it.refCmo)}</button><button class="btn-o btn-s" data-act="ack" data-k="${esc(it.key)}" data-l="${esc('Historique des CMO conservé pour '+it.label)}" type="button">Garder l'historique</button></div></div>`,
   refNone:it=>`<div class="item low"><div class="item-head"><b>${esc(it.label)}</b><span class="tag grey">${plural(it.n,'client')}</span></div>
     <div class="acts"><input class="inp sm" style="max-width:200px" id="rm_${esc(it.key)}" placeholder="Code RMPM"><button class="btn-o btn-s" data-act="refLinkCode" data-co="${esc(it.co)}" data-key="${esc(it.key)}" type="button">Rattacher par code</button><button class="btn-o btn-s" data-act="ack" data-k="${esc(it.key)}" data-l="${esc('Hors référentiel : '+it.label)}" type="button">Hors référentiel</button></div></div>`,
   mapping:it=>`<div class="item medium"><div class="item-head"><b>${esc(it.file)} › ${esc(it.sheet)}</b>${it.st==='invalid'?'<span class="tag red">À compléter</span>':'<span class="tag amber">Proposition à vérifier</span>'}</div>
@@ -3686,7 +3688,7 @@ function filteredPersons(){
 function vMaster(){
   if(!C.persons.length) return emptyFiles();
   const evs=C.evList.filter(e=>!e.excluded), open=ctlOpenTotal(), ex=S.settings.extra;
-  const exp=`${HOST?`<div class="publish"><div><b>Envoyer dans Konex</b><span class="small muted">La master file alimente directement la recherche, les listes et les statistiques de Konex, sans passer par un fichier Excel.${S.lastPublish?' Dernier envoi : '+new Date(S.lastPublish).toLocaleString('fr-BE')+'.':''}</span></div><button class="btn" data-act="publish" type="button">Envoyer dans Konex</button></div>`:''}<div class="card"><div class="row" style="margin-bottom:6px"><h2 style="flex:1">Exporter la master file</h2><span class="muted small">${plural(C.persons.length,'client')} × ${plural(evs.length,'événement')}</span></div>
+  const exp=`${HOST?`<div class="publish"><div><b>Konex est mis à jour automatiquement</b><span class="small muted">Chaque fichier déposé et chaque décision arrivent dans Konex dès que les colonnes de la feuille sont reconnues ; les feuilles incomplètes attendent d'être complétées. Les contrôles restent à traiter ici.${S.lastPublish?' Dernière mise à jour : '+new Date(S.lastPublish).toLocaleString('fr-BE')+'.':''}</span></div></div>`:''}<div class="card"><div class="row" style="margin-bottom:6px"><h2 style="flex:1">Exporter la master file</h2><span class="muted small">${plural(C.persons.length,'client')} × ${plural(evs.length,'événement')}</span></div>
     ${open?`<div class="note amber" style="margin:8px 0 12px">Il reste ${plural(open,'point')} à vérifier dans les contrôles. Vous pouvez exporter quand même ; la liste des points restants est jointe dans l'onglet « Contrôles » du fichier Excel. <button class="btn-link" data-act="go" data-v="controls" type="button">Voir les contrôles</button></div>`:'<p class="sub">Tous les contrôles sont traités.</p>'}
     <div class="fmt-grid">
       <button class="fmt" data-act="export" data-fmt="xlsx" type="button"><b>${svg(IC.down,16)} Master file Excel <span class="ext">.xlsx</span></b><span>Recommandé. Une ligne par client, un bloc de 5 colonnes par événement, couleurs par statut, listes déroulantes de présence, filtres et volets figés. Onglets Événements, Statuts, Contrôles, Journal et Sources.</span></button>
@@ -4067,7 +4069,10 @@ async function mmbSyncApply(evts){
   const full=p=>norm(p.prenom+' '+p.nom), rev=p=>norm(p.nom+' '+p.prenom);
   const findP=m=>{ if(!m) return null; for(const e of (m.emails||[])){ const p=C.persons.find(x=>x.emails.includes(e)); if(p) return p; }
     const k=norm(m.full||((m.prenom||'')+' '+(m.nom||''))); if(!k) return null; const l=C.persons.filter(p=>full(p)===k||rev(p)===k);
-    if(l.length===1) return l[0]; const l2=l.filter(p=>norm(p.societe)===norm(m.societe||'')); return l2.length===1?l2[0]:null; };
+    if(l.length===1) return l[0]; const l2=l.filter(p=>norm(p.societe)===norm(m.societe||'')); if(l2.length===1) return l2[0];
+    /* homonymes ou fiches au prénom / nom inversés : on garde l'orientation exacte, puis la présence ou non d'un e-mail */
+    const L=l2.length?l2:l, ex=L.filter(p=>norm(p.prenom)===norm(m.prenom||'')&&norm(p.nom)===norm(m.nom||'')); if(ex.length===1) return ex[0];
+    const noE=!(m.emails||[]).length, l3=(ex.length?ex:L).filter(p=>noE?!(p.emails||[]).length:(p.emails||[]).length); return l3.length===1?l3[0]:null; };
   const cmoK=x=>{ const c=(C.cmos||[]).find(c=>norm(c.label)===norm(x)); return c?c.key:norm(x); };
   let n=0; const done=[], pend=new Set(), seen=new Set(S.log.map(e=>e.src).filter(Boolean));
   for(const ev of evts){ done.push(ev.id); if(seen.has(ev.id)) continue; seen.add(ev.id);
@@ -4140,9 +4145,35 @@ const mmbFresh=()=>{if(MMB_DIRTY&&S){MMB_DIRTY=false;compute()}};
 {const _ap=window.mmbAutoPublish;window.mmbAutoPublish=async()=>{mmbFresh();return _ap()}}
 {const _pb=ACT.publish;ACT.publish=async(...a)=>{mmbFresh();return _pb(...a)}}
 window.mmbWake=()=>{if(MMB_DIRTY||MMB_RDIRTY){mmbFresh();render()}};
+/* =====================================================================
+   KONEX À JOUR AUTOMATIQUEMENT — plus de bouton « Envoyer dans Konex »
+   Tout fichier déposé et toute décision prise ici arrivent dans Konex dès que les colonnes de la feuille sont reconnues
+   (feuilles « Proposition à vérifier » comprises, feuilles incomplètes exclues). Les contrôles restent en place ;
+   chaque décision met Konex à jour. Les mises à jour venues de Konex ne relancent pas d'envoi (pas d'aller-retour).
+   ===================================================================== */
+let MMB_PUB_T=0,MMB_PUB_BUSY=false,MMB_PUB_AGAIN=false,MMB_FROM_KX=0,MMB_UPL=false;
+function mmbPubArgs(){ const rows=masterFlat(), st=[['Statut','Étape','Valeurs reconnues','Couleur'],...S.statuses.map(s=>[s.label,s.stage===0?'Automatique (non invité)':(STAGES.find(g=>g.v===s.stage)||{}).l||'',(s.aliases||[]).join(', '),'#'+hex6(s.color)])];
+  return {rows,statuses:st,decisions:mmbDecisions(),ref:C.ref&&C.ref.rows.length?{name:S.ref.name,at:S.ref.at,rows:C.ref.rows.map(r=>Object.assign({},r,{cmoL:splitCmo(r.cmo||'').map(l=>{const k=follow(C.D.cmoMap,norm(l));return C.cmoByKey[k]?C.cmoByKey[k].label:l;}).join(' / ')}))}:null,cmos:C.cmos.map(c=>({label:c.label,variants:Object.keys(c.variants||{}),meta:Object.assign({},c.meta)}))}; }
+const mmbHash=o=>{ const js=JSON.stringify([o.rows,o.statuses,o.ref&&o.ref.rows,o.decisions]); let h=5381; for(let i=0;i<js.length;i++) h=(Math.imul(h,33)+js.charCodeAt(i))|0; return (h>>>0).toString(36)+'-'+js.length; };
+async function mmbPush(force){
+  if(!HOST||!S) return false; if(MMB_PUB_BUSY){ MMB_PUB_AGAIN=true; return false; }
+  MMB_PUB_BUSY=true;
+  try{ mmbFresh(); if(!C||!C.persons.length) return false; const a=mmbPubArgs(), h=mmbHash(a); if(!force&&h===S.pubHash) return false;
+    a.quiet=true; const ok=await HOST.publishMaster(a);
+    if(ok){ S.pubHash=h; S.lastPublish=Date.now(); scheduleSave(); if(MMB_UPL){ MMB_UPL=false; toast('Konex est à jour avec les fichiers déposés.'); } if(!mmbHidden()) render(); }
+    return ok; }
+  catch(e){ console.warn('Konex update',e); return false; }
+  finally{ MMB_PUB_BUSY=false; if(MMB_PUB_AGAIN){ MMB_PUB_AGAIN=false; mmbSchedule(); } } }
+function mmbSchedule(ms){ clearTimeout(MMB_PUB_T); MMB_PUB_T=setTimeout(()=>mmbPush(false),ms==null?1500:ms); }
+{const _ch=changed;changed=function(msg){ const r=_ch(msg); if(!MMB_FROM_KX) mmbSchedule(); return r; }}
+{const _sa=window.mmbSyncApply;window.mmbSyncApply=async evts=>{ MMB_FROM_KX++; try{ return await _sa(evts); }finally{ MMB_FROM_KX--; } }}
+{const _if=importFiles;importFiles=async function(l){ MMB_UPL=true; return _if(l); }}
+ACT.publish=async()=>mmbPush(true);
+window.mmbAutoPublish=async()=>{ clearTimeout(MMB_PUB_T); return mmbPush(false); };
+window.mmbPushNow=window.mmbAutoPublish;
 /* Instantané des saisies du CRM (fiches et participations ajoutées, informations complémentaires) : remplace le précédent */
 window.mmbCrmHash=()=>(S&&S.crm&&S.crm.hash)||'';
-window.mmbCrmApply=snap=>{ if(!S||!snap) return false; if(S.crm&&S.crm.hash===snap.hash) return true; S.crm=snap; changed(); return true; };
+window.mmbCrmApply=snap=>{ if(!S||!snap) return false; if(S.crm&&S.crm.hash===snap.hash) return true; S.crm=snap; MMB_FROM_KX++; try{ changed(); }finally{ MMB_FROM_KX--; } return true; };
 
 /* =====================================================================
    EXPORTS
@@ -4599,7 +4630,7 @@ function loadDemo(){
    DÉMARRAGE
    ===================================================================== */
 if(HOST){ document.body.classList.add('embed');
-  window.mmbEnter=async key=>{ KEY=key; const d=await kvGet('data'); S=migrate(d?await openState(key,d):defaultState()); if(!d){ pendingSave=true; await flushSave(); } enter(); if(HOST.entered) HOST.entered(window); };
+  window.mmbEnter=async key=>{ KEY=key; const d=await kvGet('data'); S=migrate(d?await openState(key,d):defaultState()); if(!d){ pendingSave=true; await flushSave(); } enter(); if(HOST.entered) HOST.entered(window); if(typeof mmbSchedule==='function') mmbSchedule(3000); };
   ['mousemove','keydown','click','wheel','touchstart'].forEach(t=>document.addEventListener(t,()=>HOST.activity(),{passive:true,capture:true}));
   HOST.builderReady(window); }
 else showLock();
@@ -6789,7 +6820,10 @@ function syncDiff(){
     if(!Object.keys(ov).length)return;const prev=SYNCED.p[p.id]||{},ch={};
     Object.entries(ov).forEach(([f,v])=>{if(prev[f]!==v)ch[f]=v});
     if(Object.keys(ch).length){add({k:'edit',m:personMatch(p),f:ch});SYNCED.p[p.id]={...prev,...ch};n++}});
-  Object.entries(MERGES).forEach(([from,m])=>{if(SYNCED.m[from])return;SYNCED.m[from]=add({k:'merge',a:idMatch(from),b:PMAP[resolve(m.to)]?personMatch(PMAP[resolve(m.to)]):idMatch(m.to)});n++});
+  Object.entries(MERGES).forEach(([from,m])=>{if(SYNCED.m[from])return;const ia=idMatch(from),tp=PMAP[resolve(m.to)],ib=tp?personMatch(tp):idMatch(m.to);
+    /* la fiche gardée porte aussi les adresses de la fiche fusionnée : on la désigne par ses propres adresses, sinon l'outil retombe sur le doublon */
+    if(tp){const own=String(m.to).startsWith('m:')?[m.to.slice(2)]:[],drop=new Set(ia.emails||[]);ib.emails=[...new Set([...own,...(ib.emails||[])])].filter(e=>!drop.has(e))}
+    SYNCED.m[from]=add({k:'merge',a:ia,b:ib});n++});
   Object.keys(IGNORED).forEach(k=>{if(SYNCED.i[k])return;const[a,b]=k.split('||');SYNCED.i[k]=add({k:'distinct',a:PMAP[a]?personMatch(PMAP[a]):idMatch(a),b:PMAP[b]?personMatch(PMAP[b]):idMatch(b)});n++});
   Object.entries(CMERGES).forEach(([k,m])=>{if(SYNCED.cm[k])return;SYNCED.cm[k]=add({k:'coMerge',from:m.from,to:m.into});n++});
   Object.entries(CIGNORED).forEach(([k,m])=>{if(SYNCED.ci[k])return;SYNCED.ci[k]=add({k:'coDistinct',a:m.a,b:m.b});n++});
@@ -13524,12 +13558,12 @@ Object.assign(XACT,{
    ========================================================= */
 Object.assign(L.fr,{mk2Hello:n=>`Bonjour ${n}`,mk2Sub:'Votre portefeuille dans Konex : vos clients, leurs venues, vos rappels.',mk2Hist:'Historique de participation',mk2HistH:'Les derniers événements où vos clients étaient invités.',
   mk2Pres:'Présent',mk2Abs:'Absent',mk2Na:'Pas invité',mk2NoEv:'Aucun de ces clients n’a encore été invité.',mk2Next:'Prochains rappels',mk2NextEv:'Prochains événements',mk2SeeAll:'Tout voir',mk2Client:'Client',
-  mk2Menu:'Mon compte',mk2Open:'Ouvrir My Konex',mk2Settings:'Paramètres',mk2Lock:'Verrouiller',mk2Who:'Changer d’identité',
+  mk2Menu:'Mon compte',mk2Open:'Mes infos',mk2Settings:'Paramètres',mk2Lock:'Verrouiller',mk2Who:'Changer d’identité',
   stT:'Paramètres',stH:'Réglages de Konex sur cet ordinateur.',stLook:'Apparence',stLight:'Clair',stDark:'Sombre',stAuto:'Automatique',stAutoH:'Suit le réglage de l’ordinateur',stLang:'Langue',stId:'Identité',stOk:'Fermer',
   mkExpSheet:'Mes clients',mkExpHist:'Historique',mkExpDone:n=>`${n} client${n>1?'s':''} exporté${n>1?'s':''}.`});
 Object.assign(L.en,{mk2Hello:n=>`Hello ${n}`,mk2Sub:'Your portfolio in Konex: your clients, their attendance, your reminders.',mk2Hist:'Attendance history',mk2HistH:'The latest events your clients were invited to.',
   mk2Pres:'Attended',mk2Abs:'Absent',mk2Na:'Not invited',mk2NoEv:'None of these clients has been invited yet.',mk2Next:'Next reminders',mk2NextEv:'Next events',mk2SeeAll:'See all',mk2Client:'Client',
-  mk2Menu:'My account',mk2Open:'Open My Konex',mk2Settings:'Settings',mk2Lock:'Lock',mk2Who:'Change identity',
+  mk2Menu:'My account',mk2Open:'My info',mk2Settings:'Settings',mk2Lock:'Lock',mk2Who:'Change identity',
   stT:'Settings',stH:'Konex settings on this computer.',stLook:'Appearance',stLight:'Light',stDark:'Dark',stAuto:'Automatic',stAutoH:'Follows the computer setting',stLang:'Language',stId:'Identity',stOk:'Close',
   mkExpSheet:'My clients',mkExpHist:'History',mkExpDone:n=>`${n} client${n>1?'s':''} exported.`});
 /* ---------- apparence ---------- */
@@ -13556,8 +13590,8 @@ function mkHistHTML(L){
   const ids=new Set(L.map(p=>p.id)),evs=EVSTATS.filter(s=>!s.e.gid&&(s.e.date||'').slice(0,10)<=isoDay()&&s.regs.some(r=>r.p&&ids.has(r.p.id))).sort((a,b)=>(b.e.date||'').localeCompare(a.e.date||'')).slice(0,12);
   if(!evs.length)return`<p class="mk-empty">${esc(t('mk2NoEv'))}</p>`;
   const cell=(p,s)=>{const h=p.hist.find(x=>x.ev.id===s.e.id||x.ev.gid===s.e.id);return h?(h.present?`<td><i class="mk-c ok" title="${esc(t('mk2Pres'))}">✓</i></td>`:`<td><i class="mk-c no" title="${esc(askCatLbl(h))}">✕</i></td>`):'<td><i class="mk-c na">·</i></td>'};
-  return`<div class="mk-tw"><table class="mk-t"><thead><tr><th class="mk-th0">${esc(t('mk2Client'))}</th>${evs.map(s=>`<th title="${esc(evName(s.e))}"><span>${esc(evName(s.e))}</span><small>${esc(numWhen(s.e))}</small></th>`).join('')}</tr></thead>
-    <tbody>${L.slice(0,200).map(p=>`<tr><th class="mk-th0"><button type="button" class="mk-star${MYK.sp[p.id]?' on':''}" data-x="mk-star" data-p="${esc(p.id)}" aria-pressed="${!!MYK.sp[p.id]}">★</button><span class="mk-nm"><button type="button" class="link" data-open="person" data-id="${esc(p.id)}">${esc(p.full)}</button><small>${esc(p.societe||'')}</small></span></th>${evs.map(s=>cell(p,s)).join('')}</tr>`).join('')}</tbody></table></div>
+  return`<div class="mk-tw"><table class="mk-ht"><thead><tr><th class="mk-th0">${esc(t('mk2Client'))}</th>${evs.map(s=>`<th title="${esc(evName(s.e))}"><span>${esc(evName(s.e))}</span><small>${esc(numWhen(s.e))}</small></th>`).join('')}</tr></thead>
+    <tbody>${L.slice(0,200).map(p=>`<tr><th class="mk-th0"><div class="mk-th0-in"><button type="button" class="mk-star${MYK.sp[p.id]?' on':''}" data-x="mk-star" data-p="${esc(p.id)}" aria-pressed="${!!MYK.sp[p.id]}">★</button><span class="mk-nm"><button type="button" class="link" data-open="person" data-id="${esc(p.id)}">${esc(p.full)}</button><small>${esc(p.societe||'')}</small></span></div></th>${evs.map(s=>cell(p,s)).join('')}</tr>`).join('')}</tbody></table></div>
     <div class="mk-leg"><span><i class="mk-c ok">✓</i>${esc(t('mk2Pres'))}</span><span><i class="mk-c no">✕</i>${esc(t('mk2Abs'))}</span><span><i class="mk-c na">·</i>${esc(t('mk2Na'))}</span></div>${L.length>200?`<p class="mk-more">${esc(t('mkMore')(L.length-200))}</p>`:''}`;
 }
 /* ---------- la page ---------- */
@@ -13853,7 +13887,57 @@ function kxIdRemap(S0){let n=0;
   if(n){saveVault(true);buildModel();refreshAll()}return n}
 /* une seule livraison à la fois : une décision n'est jamais envoyée deux fois à « Importer et contrôler » */
 {const _sd=syncDeliver;let busy=null,again=false;syncDeliver=function(){if(busy){again=true;return busy}busy=(async()=>{try{do{again=false;await _sd()}while(again)}finally{busy=null}})();return busy}}
+/* mise à jour automatique depuis « Importer et contrôler » : sans message, et jamais pendant une saisie en cours */
+{const H=window.MARCOM_HOST,_pq=H.publishMaster;H.publishMaster=async function(a){
+  if(a&&a.quiet){let n=0;while(typeof shEditing==='function'&&shEditing()&&n++<900)await new Promise(r=>setTimeout(r,2000));
+    const _t=window.toast;window.toast=(m,err)=>{if(err)_t(m,err)};try{return await _pq.call(this,a)}finally{window.toast=_t}}
+  return _pq.call(this,a)}}
 {const H=window.MARCOM_HOST,_pm=H.publishMaster;H.publishMaster=async function(a){const snap=kxIdSnap();const ok=await _pm.call(this,a);if(ok){try{kxIdRemap(snap)}catch(e){console.warn('remap',e)}}return ok}}
+
+
+/* =========================================================
+   FICHE OUVERTE DEPUIS LA PAGE D'UN ÉVÉNEMENT : la page de l'événement reste en arrière-plan (assombrie),
+   au lieu de laisser réapparaître la liste derrière ; un clic à côté de la fiche ramène à l'événement.
+   Vaut pour toute fiche (personne, entreprise, CMO) ouverte, même en cascade, depuis un événement.
+   ========================================================= */
+let PGSNAP=null;
+const pgEvIdx=()=>{for(let i=stack.length-1;i>=0;i--)if(stack[i].type==='event')return i;return -1};
+function pgBgSync(){const d=$('drawer'),top=curTop();let bg=$('pgBg');
+  if(top&&top.type==='event'&&!top.edit)PGSNAP={id:top.id,html:d.innerHTML,sc:PGSNAP&&PGSNAP.id===top.id?PGSNAP.sc:0,v:(PGSNAP&&PGSNAP.v||0)+1};
+  const i=pgEvIdx(),show=!!top&&top.type!=='event'&&i>=0&&!!PGSNAP&&PGSNAP.id===stack[i].id;
+  document.body.classList.toggle('pgbg',show);
+  if(!show){if(bg){bg.hidden=true;bg.innerHTML='';bg.dataset.v=''}return}
+  if(!bg){bg=document.createElement('div');bg.id='pgBg';bg.className='drawer pg open pg-bg';bg.setAttribute('aria-hidden','true');bg.inert=true;$('overlay').parentNode.insertBefore(bg,$('overlay'))}
+  if(bg.dataset.v!==String(PGSNAP.v)){bg.innerHTML=PGSNAP.html;bg.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));bg.querySelectorAll('input,select,textarea,button').forEach(e=>e.tabIndex=-1);bg.dataset.v=String(PGSNAP.v)}
+  bg.hidden=false;const sc=PGSNAP.sc||0;requestAnimationFrame(()=>{const x=bg.querySelector('.d-body');if(x)x.scrollTop=sc})}
+{const _dd=drawDrawer;drawDrawer=function(keep){_dd(keep);try{pgBgSync()}catch(e){console.warn('pgbg',e)}
+  const bk=$('dBack');if(bk)bk.onclick=()=>{pendingPhoto=undefined;stack.pop();const t2=curTop();if(t2&&t2.type==='event')pgRestore();else drawDrawer()}}}
+{const _of=openFiche;openFiche=function(type,id,fromDrawer){const top=curTop();if(fromDrawer&&top&&top.type==='event'&&PGSNAP&&PGSNAP.id===top.id){const x=$('drawer').querySelector('.d-body');PGSNAP.sc=x?x.scrollTop:0}return _of.apply(this,arguments)}}
+{const _cd=closeDrawer;closeDrawer=function(){_cd.apply(this,arguments);try{pgBgSync()}catch(_){}}}
+function pgRestore(){const sc=PGSNAP?PGSNAP.sc||0:0;drawDrawer();requestAnimationFrame(()=>{const x=$('drawer').querySelector('.d-body');if(x)x.scrollTop=sc})}
+$('overlay').onclick=()=>{const i=pgEvIdx();if(document.body.classList.contains('pgbg')&&i>=0){stack.length=i+1;pgRestore();return}closeDrawer()};
+
+/* filtres essentiels : Interne / Externe (interrupteurs) et l'entité du Pilot CMO, en tête de la feuille de filtres */
+Object.assign(L.fr.cfxD,{pent:'Entité du Pilot CMO'});Object.assign(L.en.cfxD,{pent:'Pilot CMO entity'});
+CFB_ICON.pent=['#0A84FF','<circle cx="12" cy="8" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/><path d="M3 4h4M17 4h4"/>'];
+{const _cd=cfxDims;cfxDims=function(kind){const D=_cd(kind),k0=kind==='parts'?'regs':kind,pp=x=>k0==='regs'?x.p:x;
+  const pent={k:'pent',label:t('cfxD').pent,get:x=>{const p=pp(x),c=p&&p.pilotCmoId&&CMOMAP[p.pilotCmoId];const v=c&&c.team;return[v||'__none']}};
+  const first=D.filter(d=>d.k==='ppc'),rest=D.filter(d=>d.k!=='ppc');return[...first,pent,...rest]}}
+
+
+/* =========================================================
+   DOUBLONS : moins de fausses alertes
+   - deux personnes au même nom, chacune avec une adresse professionnelle d'un domaine différent et dans deux entreprises
+     différentes, sont des homonymes (même règle que « Importer et contrôler ») ;
+   - deux entreprises dont les noms ne diffèrent que par un numéro (« Fonds 1 » / « Fonds 2 ») sont distinctes.
+   ========================================================= */
+const kxDom=e=>{const d=String(e||'').split('@')[1]||'';return d.toLowerCase()};
+const kxGeneric=d=>!d||(typeof GENERIC_DOM!=='undefined'&&GENERIC_DOM.has&&GENERIC_DOM.has(d))||/^(gmail|googlemail|hotmail|outlook|live|yahoo|icloud|me|msn|skynet|telenet|proximus|scarlet|voo|orange|free|wanadoo|laposte|gmx|protonmail|proton|aol)\./.test(d);
+const kxCoK=p=>p.coId||normName(p.societe);
+function kxHomonym(A,B){const da=(A.emails||[]).map(kxDom).filter(d=>!kxGeneric(d)),db=(B.emails||[]).map(kxDom).filter(d=>!kxGeneric(d));
+  if(!da.length||!db.length||da.some(d=>db.includes(d)))return false;const ca=kxCoK(A),cb=kxCoK(B);return!!ca&&!!cb&&ca!==cb}
+{const _c=compare;compare=function(A,B){const r=_c(A,B);if((r==='sameName'||r==='close'||r==='swapped')&&kxHomonym(A,B))return null;return r}}
+{const _cc=compareCo;compareCo=function(A,B){const r=_cc(A,B);if(!r)return r;const na=(String(A.name||A.core).match(/\d+/g)||[]).join(' '),nb=(String(B.name||B.core).match(/\d+/g)||[]).join(' ');return na!==nb&&(na||nb)?null:r}}
 
 if(KXD){
   const I=KXD.info,D=I.dirs;

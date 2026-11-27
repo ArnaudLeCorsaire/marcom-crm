@@ -93,7 +93,7 @@ Chaque espace garde ses propres données sur le poste (`marcom-crm-standard` pou
 
 1. Onglet **Espace administrateur** : choisissez le mot de passe de cet espace la première fois, puis saisissez-le à chaque ouverture. Les données des anciennes versions s'ouvrent avec leur mot de passe actuel.
 2. **Administration › Importer et contrôler** : déposez les fichiers Excel/CSV (listes d'invités, réponses, présences) et, si disponible, le référentiel RMPM.
-3. Suivez les 6 étapes (voir [Construction de la master file](#construction-de-la-master-file-importer-et-contrôler)), puis **Envoyer dans Konex**.
+3. Suivez les 6 étapes (voir [Construction de la master file](#construction-de-la-master-file-importer-et-contrôler)). Konex est mis à jour **automatiquement** : il n'y a plus de bouton « Envoyer dans Konex ».
 4. Traitez les **Contrôles qualité** du menu de gauche.
 5. **Base partagée** : créez le dossier partagé (une seule fois) avec une clé d'équipe d'au moins 12 caractères, puis **Publier l'édition pour l'équipe**.
 6. Pensez à **Sauvegarder** régulièrement (fichier chiffré).
@@ -304,7 +304,7 @@ Le bouton **My Konex**, en haut à droite, ouvre l'espace personnel de la person
 - **Onglets** : Mes clients, Mes entreprises, Mes événements (à venir : combien de mes clients sont invités ; passés : combien sont venus), Mes rappels, Mes envois, Mes modifications, Mes listes.
 - **Limiter tout Konex à mes clients** : un interrupteur qui restreint la recherche (personnes, entreprises, événements), « Créer une liste », les listes des fiches entreprises et des participants, et les exports. Le bouton My Konex affiche alors le nombre de clients et une croix pour revenir à toute la base. Les statistiques restent calculées sur toute la base.
 - Pas de statistiques de portefeuille ni de taux de participation pour l'instant (données pas encore fiables) : l'historique en tableau les remplace.
-- **Menu du compte** (clic sur My Konex) : ouvrir My Konex, limiter Konex à mes clients, changer d'identité, **Paramètres**, verrouiller.
+- **Menu du compte** (clic sur My Konex) : Mes infos, limiter Konex à mes clients, changer d'identité, **Paramètres**, verrouiller.
 - **Paramètres** : apparence **Clair / Sombre / Automatique** (suit le réglage de l'ordinateur), langue, identité. Le thème est mémorisé sur l'ordinateur. L'outil « Importer et contrôler » reste en clair.
 
 Sur chaque fiche personne et entreprise : **Suivre** (étoile), **Inviter à un événement** (choix de l'événement à venir ; pour une entreprise, choix des contacts) et **Ajouter un rappel** (une date et ce qu'il faut faire). Le rappel apparaît dans les notes de la fiche et dans « Mes rappels », en rouge une fois la date passée, avec un bouton « Fait ».
@@ -315,9 +315,13 @@ Sur chaque fiche personne et entreprise : **Suivre** (étoile), **Inviter à un 
 - **Presse & partenaires** : sur la fiche d'une personne, le choix **Aucune / Presse / Partenaire**. Un onglet dédié dans Rechercher (**Presse & partenaires**, après RMPM) liste ces personnes, avec Tous / Presse / Partenaire, la barre de filtres (dont « Catégorie »), l'export Excel et le bouton **Ajouter une personne**. Une pastille Presse ou Partenaire apparaît sur les cartes.
 - **Fusion de fiches** (admin et vue standard) : en bas de chaque fiche personne, entreprise, CMO et événement, **Fusionner avec une autre fiche…**. On cherche le doublon, on choisit la fiche à garder ; l'autre disparaît et son historique, ses notes et sa photo passent sur la fiche gardée. Pour les entreprises, la fenêtre habituelle demande aussi le nom et le RMPM à garder. Les fusions sont partagées avec l'équipe (contribution « mrg »), annulables juste après (« Annuler ») et visibles dans le journal de l'admin. Les fusions d'événements sont enregistrées dans `evMerges` ; les doublons détectés automatiquement restent dans les onglets de contrôle de l'admin.
 
-## Konex et « Importer et contrôler » : envoyer la master file sans conflit
+## Konex et « Importer et contrôler » : mise à jour automatique, sans conflit
 
-Ce qui est modifié dans Konex reste en place quand on clique sur **Envoyer vers Konex** dans « Importer et contrôler » :
+**Plus de bouton « Envoyer dans Konex ».** Tout fichier déposé dans « Importer et contrôler » et toute décision qui y est prise (fusion, correction, harmonisation, statut…) arrivent automatiquement dans Konex, environ une seconde et demie après, dès que les colonnes de la feuille sont reconnues. Les feuilles « Proposition à vérifier » sont comprises ; les feuilles incomplètes attendent d'être complétées. Tous les contrôles restent en place et chaque décision met Konex à jour. Une mise à jour n'interrompt jamais une saisie en cours dans Konex : elle attend qu'elle soit terminée. Les informations venues de Konex ne relancent pas d'envoi, donc pas d'aller-retour en boucle. La première connexion après la mise à jour de l'outil synchronise Konex une fois.
+
+**Le référentiel RMPM prévaut** (avec ce qui lui a été ajouté, comme le CMO choisi pour une entreprise dans Konex) sur les autres fichiers déposés. Quand le CMO noté dans une liste d'invités diffère du Pilot CMO du référentiel, les participations sont rattachées au Pilot CMO. Le contrôle « CMO de l'historique ≠ Pilot CMO » reste affiché pour **confirmer**, ou pour **garder l'historique** au cas par cas.
+
+Ce qui est modifié dans Konex reste en place à chaque mise à jour :
 - **Fiches renommées** (personne sans e-mail, entreprise, événement) : après l'envoi, Konex retrouve la fiche sous son nouveau nom et y replace tout ce qui y était attaché : téléphone, secteur, notes, photo, Presse / Partenaire, CMO choisi, suivi, invitations, fusions. C'est aussi le cas quand l'identifiant d'un événement change parce qu'un homonyme a disparu.
 - **Renommage d'une entreprise** : envoyé comme une décision durable à « Importer et contrôler ». L'ancien nom ne revient plus au deuxième envoi.
 - **Informations complémentaires** (téléphone, VIP, notes…) : « Importer et contrôler » les rattache aussi à une fiche renommée dans Konex.
@@ -328,7 +332,37 @@ Ce qui est modifié dans Konex reste en place quand on clique sur **Envoyer vers
 
 **Colonne « Presse / Partenaire »** : toujours présente dans la master file, à côté de Téléphone, LinkedIn, VIP et Interne, avec les valeurs « Presse » ou « Partenaire ». Konex la relit à l'import, y compris pour une master file modifiée à la main dans Excel. Le choix fait sur la fiche dans Konex reste prioritaire (« Aucune » efface la valeur de la master file).
 
-Test : `tests/master-sync-test.js` (Playwright). Il modifie une série de fiches dans Konex, envoie la master file deux fois et vérifie que rien ne se perd.
+Tests : `tests/master-sync-test.js` et `tests/auto-update-test.js` (Playwright) : le premier modifie une série de fiches dans Konex, renvoie la master file deux fois et vérifie que rien ne se perd ; le second vérifie la mise à jour automatique (dépôt, décision, absence de boucle).
+
+## Fiabilité des données : passe complète (jeu de données fictif)
+
+Les données réelles étant confidentielles, la chaîne complète a été vérifiée avec un **jeu de données fictif et réaliste**, généré par `tests/gen-test-data.py` :
+- un référentiel RMPM (lignes de titre, groupes en majuscules, plusieurs Pilot CMO, 15 % d'entreprises hors référentiel) ;
+- une trentaine de listes d'invités aux formats variés : en-têtes en français, en anglais ou en néerlandais, titre au-dessus du tableau, nom complet dans une seule colonne, CSV Windows à points-virgules, fichiers à deux feuilles (inscriptions + présences jour J), statuts en clair ou en Oui / Non / x ;
+- des pièges courants : doublons, majuscules, prénom et nom inversés, e-mails manquants ou invalides, sociétés mal orthographiées, collaborateurs BNP Paribas, CMO différents du référentiel ;
+- un second jeu cinq fois plus gros (`SCALE=5`) : 4 700 personnes, 600 entreprises.
+
+Ce qui a été vérifié, avec les tests `tests/data-e2e*.js` (Playwright) :
+- **Fidélité** : chaque participant et chaque présence de la master file se retrouvent à l'identique dans Konex (0 écart sur 31 événements). Une master file exportée puis réimportée dans un Konex vierge donne exactement les mêmes chiffres.
+- **Scénario de vie** : dépôt, décisions en lot, saisies dans Konex, verrouillage puis réouverture, nouvelle version d'un fichier, ajout puis retrait d'un fichier. Les saisies Konex sont conservées à chaque étape.
+- **Décisions prises dans Konex** (fusions, personnes différentes, fusions d'entreprises) : toutes reprises dans « Importer et contrôler », et elles ne réapparaissent pas.
+- **Base partagée** : l'admin publie, un commercial reçoit et modifie (téléphone, Presse / Partenaire, secteur, CMO d'entreprise, note, fusion), l'admin récupère, dépose un nouveau fichier et republie, puis le commercial retrouve tout après réouverture.
+- **Volume** : 25 fichiers importés en 10 s, mise à jour de Konex en 2 s, 0,4 s après une modification, aucune erreur sur tous les écrans, toutes les fiches et tous les contrôles.
+
+Corrections issues de cette passe :
+- **Feuilles « Présences », « Jour J », « Inscriptions », « Check-in »…** d'un même fichier : elles alimentent le même événement, au lieu de créer un faux événement « X – jour J ».
+- **Numérotation des fichiers** (« 05 Webinaire ESG.xlsx », « (2) Forum.xlsx ») : retirée du nom de l'événement.
+- **Faux doublons dans Konex** : deux homonymes ayant chacun une adresse professionnelle d'un domaine différent, dans deux entreprises différentes, ne sont plus proposés (12 039 → 1 337 propositions sur le gros jeu, 659 → 117 sur le jeu normal). Deux entreprises qui ne diffèrent que par un numéro ne sont plus proposées non plus.
+- **Fusion faite dans Konex** : désormais toujours reprise dans « Importer et contrôler ». La fiche gardée était désignée avec les adresses de la fiche fusionnée, et l'outil retombait sur le doublon.
+- **« Personnes différentes » décidé dans Konex** pour deux fiches au prénom et au nom inversés dans la même entreprise : désormais repris dans « Importer et contrôler ».
+
+Pour rejouer : `python3 tests/gen-test-data.py`, puis `node tests/data-e2e1.js` (et `data-e2e2`, `data-e2e4`, `data-e2e5`). Les fichiers générés vont dans `tests/test-data/` (non versionné).
+
+## Navigation : page événement, Arno, filtres essentiels
+
+- **Fiche ouverte depuis la page d'un événement** (personne, entreprise, CMO, même en cascade) : la page de l'événement reste en arrière-plan, assombrie, à la même position de défilement. « Retour » ou un clic à côté de la fiche ramène à l'événement.
+- **Arno** reste toujours en bas à droite, au-dessus des fiches ; il ne se déplace plus au milieu de la page en naviguant.
+- **Filtres essentiels** : les interrupteurs Internes / Externes, puis **Entité du Pilot CMO** en tête de la feuille de filtres (fiches entreprise, participants, My Konex, Presse & partenaires). L'entité n'apparaît que si des contacts ont un Pilot CMO (référentiel importé).
 
 ## Arno, l'assistant
 
@@ -460,7 +494,7 @@ Module de l'espace administrateur (anciennement *MarCom Master Builder*). Il tra
 
 5. **Contrôles** — Feuilles à vérifier, valeurs de présence inconnues, e-mails invalides, nom/prénom inversés, même e-mail avec noms différents, doublons probables, entreprises à harmoniser, statuts contradictoires, événements à vérifier, rapprochements et écarts avec le référentiel, entreprises absentes du référentiel, CMO à associer, fiches incomplètes, lignes non reprises. Décision **au cas par cas ou en lot** ; toutes les décisions sont consignées dans le **Journal**.
 6. **Master file & export** — Aperçu filtrable, puis :
-   - **Envoyer dans Konex** : alimente directement la recherche, les listes et les statistiques ;
+   - Konex est alimenté **automatiquement** (recherche, listes, statistiques) ;
    - **Excel (.xlsx)** — recommandé : une ligne par client, un bloc de colonnes par événement, couleurs par statut, listes déroulantes, filtres, volets figés, onglets Événements / Statuts / Contrôles / Journal / Sources ;
    - **CSV** (séparateur `;`, compatible Excel FR) ;
    - **CSV « une ligne par participation »** ;
@@ -489,7 +523,7 @@ L'espace administrateur et le module de construction de la master file partagent
 | Saisies : téléphone, LinkedIn, **VIP**, **interne**, notes, champs ajoutés, fiches archivées, entreprises, événements, CMO (avec leurs champs ajoutés) | ✅ | ✅ (via la master file) |
 
 - Le module est chargé **en arrière-plan** dès la connexion administrateur : une décision prise dans Konex lui parvient **tout de suite**.
-- En **quittant** « Importer et contrôler », la master file est **renvoyée automatiquement** dans Konex si elle a changé (une fois le premier envoi fait et toutes les feuilles validées). Le bouton « Envoyer dans Konex » reste disponible.
+- Konex est mis à jour **automatiquement** à chaque fichier déposé et à chaque décision (voir « Mise à jour automatique, sans conflit »).
 - Les contrôles des deux outils sont complémentaires : le module vérifie les fichiers bruts (e-mails invalides, statuts inconnus, statuts contradictoires, événements, référentiel, lignes non reprises), Konex vérifie la base consolidée (doublons, inversions, fautes de frappe, champs incohérents, CMO). Une question tranchée d'un côté n'est plus reposée de l'autre.
 
 ## Filtrer les participants : fiches entreprises et pages événements
