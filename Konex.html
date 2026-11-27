@@ -809,11 +809,8 @@ ol.ar-list{counter-reset:arn}ol.ar-list li{counter-increment:arn;padding-left:24
 /* ne jamais rien cacher : la page garde une marge en bas pour la bulle ; la fenêtre flotte sans décaler la page */
 body.arno-on main{padding-bottom:110px}
 body.arno-on .drawer .d-body{padding-bottom:100px}
-/* une fiche est ouverte : la bulle se range à gauche de la fiche, pour ne rien recouvrir */
-@media (min-width:1100px){body.drawer-on:not(.pgmode) .arno:not(.open){right:calc(min(580px,100vw) + 16px)}}
+/* Arno reste toujours en bas à droite, au-dessus des fiches (la fiche garde une marge en bas pour ne rien cacher) */
 .ar-win{top:auto;height:min(640px,calc(100vh - 40px));max-height:none;right:20px;bottom:20px}
-/* une fiche est ouverte : la fenêtre se place à côté de la fiche quand l'écran le permet */
-@media (min-width:1320px){body.drawer-on:not(.pgmode) .ar-win{right:calc(min(580px,100vw) + 20px)}}
 @media (max-width:700px){.ar-win{left:0;right:0;top:0;bottom:0;width:auto;height:auto;border-radius:0}}
 .ar-sent{margin:0 0 6px;font-weight:600}
 @media print{.arno{display:none}}
@@ -985,6 +982,8 @@ html[data-theme="dark"] .pp-press{color:#F7A8C6;background:#3D1828}html[data-the
 .mg-keep label{justify-content:flex-start;text-align:left}.kx-f .mg-keep input{width:auto;flex:none;margin:3px 0 0}
 .mg-keep label:has(input:checked){border-color:var(--green);background:var(--green-light)}
 @media (max-width:560px){.mg-keep{grid-template-columns:1fr}}
+.pg-bg{z-index:19;transform:none!important;transition:none;pointer-events:none;overflow:hidden}
+.pg-bg[hidden]{display:none!important}
 .ib-p{border-top-color:#7B4FB5}.ib-p .ib-h span{background:#7B4FB5}.ib-p .ib-h{color:#5E3A8F}
 .ib-p .note-form{margin-top:4px}
 .dash{display:flex;flex-direction:column;gap:16px}
@@ -13854,6 +13853,36 @@ function kxIdRemap(S0){let n=0;
 /* une seule livraison à la fois : une décision n'est jamais envoyée deux fois à « Importer et contrôler » */
 {const _sd=syncDeliver;let busy=null,again=false;syncDeliver=function(){if(busy){again=true;return busy}busy=(async()=>{try{do{again=false;await _sd()}while(again)}finally{busy=null}})();return busy}}
 {const H=window.MARCOM_HOST,_pm=H.publishMaster;H.publishMaster=async function(a){const snap=kxIdSnap();const ok=await _pm.call(this,a);if(ok){try{kxIdRemap(snap)}catch(e){console.warn('remap',e)}}return ok}}
+
+
+/* =========================================================
+   FICHE OUVERTE DEPUIS LA PAGE D'UN ÉVÉNEMENT : la page de l'événement reste en arrière-plan (assombrie),
+   au lieu de laisser réapparaître la liste derrière ; un clic à côté de la fiche ramène à l'événement.
+   Vaut pour toute fiche (personne, entreprise, CMO) ouverte, même en cascade, depuis un événement.
+   ========================================================= */
+let PGSNAP=null;
+const pgEvIdx=()=>{for(let i=stack.length-1;i>=0;i--)if(stack[i].type==='event')return i;return -1};
+function pgBgSync(){const d=$('drawer'),top=curTop();let bg=$('pgBg');
+  if(top&&top.type==='event'&&!top.edit)PGSNAP={id:top.id,html:d.innerHTML,sc:PGSNAP&&PGSNAP.id===top.id?PGSNAP.sc:0,v:(PGSNAP&&PGSNAP.v||0)+1};
+  const i=pgEvIdx(),show=!!top&&top.type!=='event'&&i>=0&&!!PGSNAP&&PGSNAP.id===stack[i].id;
+  document.body.classList.toggle('pgbg',show);
+  if(!show){if(bg){bg.hidden=true;bg.innerHTML='';bg.dataset.v=''}return}
+  if(!bg){bg=document.createElement('div');bg.id='pgBg';bg.className='drawer pg open pg-bg';bg.setAttribute('aria-hidden','true');bg.inert=true;$('overlay').parentNode.insertBefore(bg,$('overlay'))}
+  if(bg.dataset.v!==String(PGSNAP.v)){bg.innerHTML=PGSNAP.html;bg.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));bg.querySelectorAll('input,select,textarea,button').forEach(e=>e.tabIndex=-1);bg.dataset.v=String(PGSNAP.v)}
+  bg.hidden=false;const sc=PGSNAP.sc||0;requestAnimationFrame(()=>{const x=bg.querySelector('.d-body');if(x)x.scrollTop=sc})}
+{const _dd=drawDrawer;drawDrawer=function(keep){_dd(keep);try{pgBgSync()}catch(e){console.warn('pgbg',e)}
+  const bk=$('dBack');if(bk)bk.onclick=()=>{pendingPhoto=undefined;stack.pop();const t2=curTop();if(t2&&t2.type==='event')pgRestore();else drawDrawer()}}}
+{const _of=openFiche;openFiche=function(type,id,fromDrawer){const top=curTop();if(fromDrawer&&top&&top.type==='event'&&PGSNAP&&PGSNAP.id===top.id){const x=$('drawer').querySelector('.d-body');PGSNAP.sc=x?x.scrollTop:0}return _of.apply(this,arguments)}}
+{const _cd=closeDrawer;closeDrawer=function(){_cd.apply(this,arguments);try{pgBgSync()}catch(_){}}}
+function pgRestore(){const sc=PGSNAP?PGSNAP.sc||0:0;drawDrawer();requestAnimationFrame(()=>{const x=$('drawer').querySelector('.d-body');if(x)x.scrollTop=sc})}
+$('overlay').onclick=()=>{const i=pgEvIdx();if(document.body.classList.contains('pgbg')&&i>=0){stack.length=i+1;pgRestore();return}closeDrawer()};
+
+/* filtres essentiels : Interne / Externe (interrupteurs) et l'entité du Pilot CMO, en tête de la feuille de filtres */
+Object.assign(L.fr.cfxD,{pent:'Entité du Pilot CMO'});Object.assign(L.en.cfxD,{pent:'Pilot CMO entity'});
+CFB_ICON.pent=['#0A84FF','<circle cx="12" cy="8" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/><path d="M3 4h4M17 4h4"/>'];
+{const _cd=cfxDims;cfxDims=function(kind){const D=_cd(kind),k0=kind==='parts'?'regs':kind,pp=x=>k0==='regs'?x.p:x;
+  const pent={k:'pent',label:t('cfxD').pent,get:x=>{const p=pp(x),c=p&&p.pilotCmoId&&CMOMAP[p.pilotCmoId];const v=c&&c.team;return[v||'__none']}};
+  const first=D.filter(d=>d.k==='ppc'),rest=D.filter(d=>d.k!=='ppc');return[...first,pent,...rest]}}
 
 if(KXD){
   const I=KXD.info,D=I.dirs;
